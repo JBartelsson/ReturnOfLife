@@ -259,7 +259,7 @@ GameObject:
   m_Layer: 0
   m_Name: Testing
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -5487077368411116049, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -272,7 +272,7 @@ Transform:
   m_GameObject: {fileID: 1045059058}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -25.7, y: -14.6, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -290,6 +290,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ddb9f60cc1b5e244b04c87b09c33436, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  width: 5
+  height: 5
 --- !u!1 &1907196924
 GameObject:
   m_ObjectHideFlags: 0
