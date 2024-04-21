@@ -12,13 +12,26 @@ public class GridManager : MonoBehaviour
     [SerializeField] private int width = 5;
     [SerializeField] private int height = 5;
 
+    public static GridManager Instance { get; private set; }
+    public Grid<GridTile> Grid { get => _grid; set => _grid = value; }
 
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Debug.LogError("Grid Manager already exists!");
+        }
+    }
     void Start()
     {
         _grid = new Grid<GridTile>(width, height, 3f, transform.position);
         debugTextArray = new TextMesh[width, height];
         _grid.OnGridChanged += _grid_OnGridChanged;
-        _grid.InitGrid((Grid<GridTile> g, int x, int y) => new GridTile("basic", g, x, y ));
+        _grid.InitGrid((Grid<GridTile> g, int x, int y) => new GridTile(g, x, y ));
         ApplyNeighbors();
     }
 
@@ -58,42 +71,20 @@ public class GridManager : MonoBehaviour
     private void _grid_OnGridChanged(object sender, Grid<GridTile>.OnGridChangedEventArgs e)
     {
         Grid<GridTile> grid = sender as Grid<GridTile>;
-        Debug.Log(debugTextArray[e.x, e.y]);
         if (debugTextArray[e.x, e.y] == null)
         {
-            debugTextArray[e.x, e.y] = UtilsClass.CreateWorldText(e.gridObject.Content, null, grid.GetWorldPosition(e.x, e.y) + new Vector3(grid.CellSize, grid.CellSize) * .5f, 15, Color.white, TextAnchor.MiddleCenter);
+            debugTextArray[e.x, e.y] = UtilsClass.CreateWorldText(e.gridObject.ToString(), null, grid.GetWorldPosition(e.x, e.y) + new Vector3(grid.CellSize, grid.CellSize) * .5f, 15, Color.white, TextAnchor.MiddleCenter);
             Debug.DrawLine(grid.GetWorldPosition(e.x, e.y), grid.GetWorldPosition(e.x, e.y + 1), Color.white, 100f); ;
             Debug.DrawLine(grid.GetWorldPosition(e.x, e.y), grid.GetWorldPosition(e.x + 1, e.y), Color.white, 100f);
         } else
         {
-            debugTextArray[e.x, e.y].text = e.gridObject.Content;
+            debugTextArray[e.x, e.y].text = e.gridObject.ToString();
         }
     }
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            _grid.GetGridObject(UtilsClass.GetMouseWorldPosition()).UpdateContent(Random.Range(0, 1000).ToString());
-        }
-        if (Input.GetMouseButtonDown(1))
-        {
-            GridTile selectedGridObject = _grid.GetGridObject(UtilsClass.GetMouseWorldPosition());
-            Debug.Log(selectedGridObject.Content);
-            int breakout = 0;
-            do
-            {
-                selectedGridObject.UpdateContent("yeah");
-                selectedGridObject = selectedGridObject.TopNeighbor;
-                breakout++;
-                if (breakout > 100)
-                {
-                    Debug.Log("Breakout");
-                    break;
-                }
-            } while (selectedGridObject != null);
-
-        }
+        
     }
 
 }

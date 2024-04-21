@@ -46,7 +46,7 @@ public class Grid<TGridObject>
             for (int y = 0; y < gridArray.GetLength(1); y++)
             {
                 gridArray[x, y] = createGridObject(this, x, y);
-                UpdateGritContent(x, y, gridArray[x, y]);
+                UpdateGridContent(x, y, gridArray[x, y]);
             }
         }
     }
@@ -62,7 +62,7 @@ public class Grid<TGridObject>
         if (x >= 0 && y >= 0 && x<= width && y <= height)
         {
             gridArray[x, y] = value;
-            UpdateGritContent(x, y, gridArray[x, y]);
+            UpdateGridContent(x, y, gridArray[x, y]);
         }
     }
 
@@ -96,7 +96,7 @@ public class Grid<TGridObject>
         return GetGridObject(x, y);
     }
 
-    public void UpdateGritContent(int x, int y, TGridObject gridObject)
+    public void UpdateGridContent(int x, int y, TGridObject gridObject)
     {
         OnGridChanged?.Invoke(this, new OnGridChangedEventArgs()
         {
