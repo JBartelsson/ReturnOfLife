@@ -9,49 +9,84 @@ using UnityEngine;
 public class PlantableEditor : Editor
 {
     private const string ASSEMBLY_NAME = "PlantFunctionAssembly";
-    private int selected;
+    private int selectedPlant, selectedEditor;
     private const string DEFAULT_OPTION = "None";
     public override void OnInspectorGUI()
     {
         Plantable targetPlantable = target as Plantable;
         base.OnInspectorGUI();
-        var allPlantFunctions = GetAll();
-        
+        var allPlantFunctions = GetAll<PlantFunction>();
+        var allPlantEditors = GetAll<PlantEditor>();
 
-        List<string> options = new() { DEFAULT_OPTION};
-
-        foreach (var item in allPlantFunctions)
+        //Plant Functions
+        List<string> optionsPlants = new() { DEFAULT_OPTION};
+        foreach (var plantFunctions in allPlantFunctions)
         {
-            options.Add(item.ToString());
+            optionsPlants.Add(plantFunctions.ToString());
         }
-        int lastSelected = 0;
+        int lastSelectedPlantFunction = 0;
         if (targetPlantable.PlantFunction != null)
         {
-            lastSelected = allPlantFunctions.IndexOf(targetPlantable.PlantFunction.GetType()) + 1;
+            lastSelectedPlantFunction = allPlantFunctions.IndexOf(targetPlantable.PlantFunction.GetType()) + 1;
+        }
+        selectedPlant = EditorGUILayout.Popup("Plant Execution Function", lastSelectedPlantFunction, optionsPlants.ToArray());
+        
+        //Plant Editors
+        List<string> optionsEditors = new() { DEFAULT_OPTION };
+        foreach (var plantEditor in allPlantEditors)
+        {
+            optionsEditors.Add(plantEditor.ToString());
+        }
+        int lastSelectedPlantEditor = 0;
+        if (targetPlantable.PlantEditor != null)
+        {
+            lastSelectedPlantEditor = allPlantEditors.IndexOf(targetPlantable.PlantEditor.GetType()) + 1;
         }
 
-        selected = EditorGUILayout.Popup("Plant Execution Function", lastSelected, options.ToArray());
 
-        if (lastSelected == selected) return;
-        if (options[selected] == DEFAULT_OPTION)
-        {
-            targetPlantable.PlantFunction = null;
-        } else
-        {
-            targetPlantable.PlantFunction = Activator.CreateInstance(allPlantFunctions[selected - 1]) as PlantFunction;
+        selectedEditor = EditorGUILayout.Popup("Plant Editor", lastSelectedPlantEditor, optionsEditors.ToArray());
 
+        if (lastSelectedPlantFunction != selectedPlant)
+        {
+            if (optionsPlants[selectedPlant] == DEFAULT_OPTION)
+            {
+                targetPlantable.PlantFunction = null;
+            }
+            else
+            {
+                targetPlantable.PlantFunction = Activator.CreateInstance(allPlantFunctions[selectedPlant - 1]) as PlantFunction;
+
+            }
+            Debug.Log(targetPlantable.PlantFunction.GetType());
+            EditorUtility.SetDirty(target);
         }
-        Debug.Log(targetPlantable.PlantFunction.GetType());
-        EditorUtility.SetDirty(target);
+
+        if (lastSelectedPlantEditor != selectedEditor)
+        {
+            if (optionsEditors[selectedEditor] == DEFAULT_OPTION)
+            {
+                Debug.Log($"{selectedEditor}: None picked");
+                targetPlantable.PlantEditor = null;
+            }
+            else
+            {
+                Debug.Log("Editor set");
+
+                targetPlantable.PlantEditor = Activator.CreateInstance(allPlantEditors[selectedEditor - 1]) as PlantEditor;
+
+            }
+            EditorUtility.SetDirty(target);
+        }
+        
         AssetDatabase.SaveAssetIfDirty(target);
     }
 
     
 
-    List<System.Type> GetAll()
+    List<System.Type> GetAll<TType>()
     {
         return AppDomain.CurrentDomain.GetAssemblies()
             .SelectMany(assembly => assembly.GetTypes())
-            .Where(type => type.IsSubclassOf(typeof(PlantFunction))).ToList();
+            .Where(type => type.IsSubclassOf(typeof(TType))).ToList();
     }
 }

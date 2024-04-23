@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
             this.plantableReference = plantableReference;
         }
     }
-    
+
 
     public enum GameState
     {
@@ -38,7 +38,10 @@ public class GameManager : MonoBehaviour
     private List<PlantableCard> discardPile = new();
     private int currentMana = 0;
     private int currentTurns = 0;
+    private int currentPlayedCards = 0;
+    private bool selectedPlantNeedNeighbor = false;
     private PlantableCard selectedCard;
+    private GridTile playedTile;
 
     private void Awake()
     {
@@ -54,9 +57,13 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        SwitchState(GameState.Init);
+        GridManager.Instance.OnGridReady += Instance_OnGridReady;
     }
 
+    private void Instance_OnGridReady(object sender, EventArgs e)
+    {
+        SwitchState(GameState.Init);
+    }
 
     public void SwitchState(GameState newGameState)
     {
@@ -77,16 +84,21 @@ public class GameManager : MonoBehaviour
                 SwitchState(GameState.SelectCards);
                 break;
             case GameState.SelectCards:
+                for (int i = 0; i < currentHand.Count; i++)
+                {
+                    Debug.Log($"HAND: Slot {i + 1}: {currentHand[i].plantableReference.visualization}");
+                }
                 break;
             case GameState.SetPlant:
                 break;
             case GameState.PlantEditor:
+                InitEditor();
                 break;
             case GameState.SpecialAbility:
                 break;
             case GameState.None:
                 break;
-           
+
             default:
                 break;
         }
@@ -100,6 +112,9 @@ public class GameManager : MonoBehaviour
         drawPile.Clear();
         discardPile.Clear();
         currentTurns = 0;
+        currentPlayedCards = 0;
+        selectedPlantNeedNeighbor = false;
+
         foreach (StartDeckSO.DeckEntry deckEntry in startDeck.Deck)
         {
             for (int i = 0; i < deckEntry.amount; i++)
@@ -108,6 +123,17 @@ public class GameManager : MonoBehaviour
                 Debug.Log($"Added {deckEntry.plantableReference.visualization} to deck");
             }
         }
+    }
+
+    private void InitEditor()
+    {
+        GridManager.Instance.Grid.ForEachGridTile((x) =>
+        {
+            if (selectedCard.plantableReference.PlantEditor.CheckField(x, playedTile))
+            {
+                x.ChangeMarkedStatus(true);
+            }
+        });
     }
 
     private void Update()
@@ -137,15 +163,36 @@ public class GameManager : MonoBehaviour
         }
         if (currentGameState == GameState.SetPlant)
         {
+
             if (Input.GetMouseButtonDown(0))
             {
+                Debug.Log("SET PLANT CLICK");
+
                 GridTile gridTile = GridManager.Instance.Grid.GetGridObject(UtilsClass.GetMouseWorldPosition());
-                if (selectedCard.plantableReference.ExecuteFunction(gridTile))
+                if (selectedCard.plantableReference.ExecuteFunction(gridTile, selectedPlantNeedNeighbor))
                 {
-                    PlayCard();
-                } else
+                    PlayCard(gridTile);
+                }
+                else
                 {
                     Debug.Log("CANT EXECUTE FUNCTION THERE");
+                }
+            }
+        }
+        if (currentGameState == GameState.PlantEditor)
+        {
+            Debug.Log("PLANT EDITOR");
+            if (Input.GetMouseButtonDown(0))
+            {
+                GridTile selectedGridTile = GridManager.Instance.Grid.GetGridObject(UtilsClass.GetMouseWorldPosition());
+                if (selectedCard.plantableReference.PlantEditor.CheckField(selectedGridTile, playedTile))
+                {
+                    selectedCard.plantableReference.PlantEditor.ExecuteEditor(selectedCard.plantableReference, playedTile, selectedGridTile);
+                    EndCardPlaying();
+                }
+                else
+                {
+                    Debug.Log("CANT EXECUTE EDITOR FUNCTION THERE");
                 }
             }
         }
@@ -158,21 +205,32 @@ public class GameManager : MonoBehaviour
         SwitchState(GameState.SetPlant);
     }
 
-    private void PlayCard()
+    private void PlayCard(GridTile selectedTile)
     {
+        this.playedTile = selectedTile;
         currentMana -= selectedCard.plantableReference.manaCost;
         currentHand.Remove(selectedCard);
         discardPile.Add(selectedCard);
+        currentPlayedCards++;
+        selectedPlantNeedNeighbor = true;
+
         Debug.Log($"PLAYED: {selectedCard}");
-        EndTurn();
+        if (selectedCard.plantableReference.PlantEditor != null)
+        {
+            SwitchState(GameState.PlantEditor);
+            return;
+        }
+        EndCardPlaying();
     }
 
-    private void EndTurn()
+    private void EndCardPlaying()
     {
+        GridManager.Instance.Grid.ForEachGridTile((x) => x.ChangeMarkedStatus(false));
         if (currentMana > 0)
         {
-            SwitchState(GameState.DrawCards);
-        } else
+            SwitchState(GameState.SelectCards);
+        }
+        else
         {
             SwitchState(GameState.StartTurn);
         }
@@ -207,13 +265,11 @@ public class GameManager : MonoBehaviour
         {
             DrawSingleCard();
         }
-        for (int i = 0; i < currentHand.Count; i++)
-        {
-            Debug.Log($"HAND: Slot {i + 1}: {currentHand[i].plantableReference.visualization}");
-        }
+
     }
 
-    private void DrawSingleCard() {
+    private void DrawSingleCard()
+    {
         int randomIndex = UnityEngine.Random.Range(0, drawPile.Count);
         PlantableCard drawCard = drawPile[randomIndex];
         currentHand.Add(drawCard);

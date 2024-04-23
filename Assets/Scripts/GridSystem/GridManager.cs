@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using CodeMonkey.Utils;
 using System.Runtime.CompilerServices;
+using System;
 
 public class GridManager : MonoBehaviour
 {
@@ -14,6 +15,8 @@ public class GridManager : MonoBehaviour
 
     public static GridManager Instance { get; private set; }
     public Grid<GridTile> Grid { get => _grid; set => _grid = value; }
+
+    public event EventHandler OnGridReady;
 
     private void Awake()
     {
@@ -33,6 +36,7 @@ public class GridManager : MonoBehaviour
         _grid.OnGridChanged += _grid_OnGridChanged;
         _grid.InitGrid((Grid<GridTile> g, int x, int y) => new GridTile(g, x, y ));
         ApplyNeighbors();
+        OnGridReady?.Invoke(this, EventArgs.Empty);
     }
 
     public void ApplyNeighbors()
@@ -79,6 +83,14 @@ public class GridManager : MonoBehaviour
         } else
         {
             debugTextArray[e.x, e.y].text = e.gridObject.ToString();
+        }
+        if (grid.GetGridObject(e.x, e.y).Marked)
+        {
+            debugTextArray[e.x, e.y].color = Color.red;
+        } else
+        {
+            debugTextArray[e.x, e.y].color = Color.white;
+
         }
     }
 

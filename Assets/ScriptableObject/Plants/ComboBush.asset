@@ -14,12 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   manaCost: 1
+  turnDelay: 0
   visualization: C
   plantFunction:
     rid: 1710084117497380867
+  plantEditor:
+    rid: -2
   references:
     version: 2
     RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
     - rid: 1710084117497380867
       type: {class: BushPlantFunction, ns: , asm: ReturnOfLifeAssembly}
       data: 

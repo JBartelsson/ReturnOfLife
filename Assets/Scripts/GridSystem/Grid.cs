@@ -57,6 +57,17 @@ public class Grid<TGridObject>
         y = Mathf.FloorToInt((worldPosition - originPosition).y / cellSize);
     }
 
+    public void ForEachGridTile(Action<TGridObject> Action)
+    {
+        for (int x = 0; x < gridArray.GetLength(0); x++)
+        {
+            for (int y = 0; y < gridArray.GetLength(1); y++)
+            {
+                Action(gridArray[x, y]);
+            }
+        }
+    }
+
     public void SetGridObject(int x, int y, TGridObject value)
     {
         if (x >= 0 && y >= 0 && x<= width && y <= height)
