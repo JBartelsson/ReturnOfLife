@@ -9,84 +9,144 @@ using UnityEngine;
 public class PlantableEditor : Editor
 {
     private const string ASSEMBLY_NAME = "PlantFunctionAssembly";
-    private int selectedPlant, selectedEditor;
+    private int selectedScript, selectedEditor;
     private const string DEFAULT_OPTION = "None";
+    public class ReflectionDropDown
+    {
+        public int lastSelected = 0;
+        public Type scriptType;
+        public List<object> allScripts;
+        public string fieldName = "BASE";
+    }
+    private List<ReflectionDropDown> reflectionDropDownList = new();
+    private void Awake()
+    {
+        SearchNewClasses();
+
+    }
+
+    private void SearchNewClasses()
+    {
+        reflectionDropDownList.Clear();
+        reflectionDropDownList.Add(new ReflectionDropDown()
+        {
+            scriptType = typeof(PlantFunctionBase),
+            allScripts = GetAll<PlantFunctionBase>(),
+            fieldName = "Plant Function"
+        });
+        reflectionDropDownList.Add(new ReflectionDropDown()
+        {
+            scriptType = typeof(PlantAccessCheckBase),
+            allScripts = GetAll<PlantAccessCheckBase>(),
+            fieldName = "Plant Access Check"
+        });
+        reflectionDropDownList.Add(new ReflectionDropDown()
+        {
+            scriptType = typeof(PlantEditorBase),
+            allScripts = GetAll<PlantEditorBase>(),
+            fieldName = "Plant Editor"
+        });
+
+    }
     public override void OnInspectorGUI()
     {
         Plantable targetPlantable = target as Plantable;
         base.OnInspectorGUI();
-        var allPlantFunctions = GetAll<PlantFunctionBase>();
-        var allPlantEditors = GetAll<PlantEditorBase>();
-
-        //Plant Functions
-        List<string> optionsPlants = new() { DEFAULT_OPTION};
-        foreach (var plantFunctions in allPlantFunctions)
-        {
-            optionsPlants.Add(plantFunctions.ToString());
-        }
-        int lastSelectedPlantFunction = 0;
-        if (targetPlantable.PlantFunction != null)
-        {
-            lastSelectedPlantFunction = allPlantFunctions.IndexOf(targetPlantable.PlantFunction.GetType()) + 1;
-        }
-        selectedPlant = EditorGUILayout.Popup("Plant Execution Function", lastSelectedPlantFunction, optionsPlants.ToArray());
-        
-        //Plant Editors
-        List<string> optionsEditors = new() { DEFAULT_OPTION };
-        foreach (var plantEditor in allPlantEditors)
-        {
-            optionsEditors.Add(plantEditor.ToString());
-        }
-        int lastSelectedPlantEditor = 0;
-        if (targetPlantable.PlantEditor != null)
-        {
-            lastSelectedPlantEditor = allPlantEditors.IndexOf(targetPlantable.PlantEditor.GetType()) + 1;
-        }
 
 
-        selectedEditor = EditorGUILayout.Popup("Plant Editor", lastSelectedPlantEditor, optionsEditors.ToArray());
-
-        if (lastSelectedPlantFunction != selectedPlant)
+        foreach (var dropDown in reflectionDropDownList)
         {
-            if (optionsPlants[selectedPlant] == DEFAULT_OPTION)
+            //Plant Functions
+            List<string> options = new() { DEFAULT_OPTION};
+            foreach (var scripts in dropDown.allScripts)
             {
-                targetPlantable.PlantFunction = null;
+                options.Add(scripts.ToString());
             }
-            else
+            int lastSelected = 0;
+            switch (dropDown.scriptType.ToString())
             {
-                targetPlantable.PlantFunction = Activator.CreateInstance(allPlantFunctions[selectedPlant - 1]) as PlantFunctionBase;
+                case nameof(PlantFunctionBase):
+                    if (targetPlantable.PlantFunction != null)
+                    {
+                        lastSelected = dropDown.allScripts.IndexOf(targetPlantable.PlantFunction.GetType()) + 1;
+                    }
+                    break;
+                case nameof(PlantEditorBase):
+                    if (targetPlantable.PlantEditor != null)
+                    {
+                        lastSelected = dropDown.allScripts.IndexOf(targetPlantable.PlantEditor.GetType()) + 1;
+                    }
+                    break;
+                case nameof(PlantAccessCheckBase):
+                    if (targetPlantable.PlantAccessCheck != null)
+                    {
+                        lastSelected = dropDown.allScripts.IndexOf(targetPlantable.PlantAccessCheck.GetType()) + 1;
+                    }
+                    break;
+                default:
+                    Debug.LogError("Type not found in Plantable Editor!");
+                    break;
+            }
+
+            selectedScript = EditorGUILayout.Popup(dropDown.fieldName, lastSelected, options.ToArray());
+            bool defaultOption = options[selectedScript] == DEFAULT_OPTION;
+
+            if (lastSelected != selectedScript)
+            {
+                Type searchClass = GetTypeFromString(dropDown.allScripts[selectedScript - 1].ToString());
+                switch (dropDown.scriptType.ToString())
+                {
+                    case nameof(PlantFunctionBase):
+                        if (defaultOption)
+                        {
+                            targetPlantable.PlantFunction = null;
+                            break;
+                        }
+                        targetPlantable.PlantFunction = (PlantFunctionBase)Activator.CreateInstance(searchClass);
+                        break;
+                    case nameof(PlantEditorBase):
+                        if (defaultOption)
+                        {
+                            targetPlantable.PlantEditor = null;
+                            break;
+                        }
+                        targetPlantable.PlantEditor = (PlantEditorBase)Activator.CreateInstance(searchClass);
+                        break;
+                    case nameof(PlantAccessCheckBase):
+                        if (defaultOption)
+                        {
+                            targetPlantable.PlantAccessCheck = null;
+                            break;
+                        }
+                        targetPlantable.PlantAccessCheck = (PlantAccessCheckBase)Activator.CreateInstance(searchClass);
+                        break;
+                    default:
+                        Debug.LogError("Type not found in Plantable Editor!");
+                        break;
+                }
+                EditorUtility.SetDirty(target);
 
             }
-            Debug.Log(targetPlantable.PlantFunction.GetType());
-            EditorUtility.SetDirty(target);
         }
 
-        if (lastSelectedPlantEditor != selectedEditor)
-        {
-            if (optionsEditors[selectedEditor] == DEFAULT_OPTION)
-            {
-                Debug.Log($"{selectedEditor}: None picked");
-                targetPlantable.PlantEditor = null;
-            }
-            else
-            {
-                Debug.Log("Editor set");
-
-                targetPlantable.PlantEditor = Activator.CreateInstance(allPlantEditors[selectedEditor - 1]) as PlantEditorBase;
-
-            }
-            EditorUtility.SetDirty(target);
-        }
-        
         AssetDatabase.SaveAssetIfDirty(target);
+        GUI.backgroundColor = Color.yellow;
+        if (GUILayout.Button("Search for new Classes"))
+        {
+            SearchNewClasses();
+        }
     }
 
-    
-
-    List<System.Type> GetAll<TType>()
+    List<object> GetAll<TType>()
     {
         return AppDomain.CurrentDomain.GetAssemblies()
             .SelectMany(assembly => assembly.GetTypes())
-            .Where(type => type.IsSubclassOf(typeof(TType))).ToList();
+            .Where(type => type.IsSubclassOf(typeof(TType))).Cast<object>().ToList();
+    }
+
+    Type GetTypeFromString(string name)
+    {
+        return AppDomain.CurrentDomain.GetAssemblies()
+            .SelectMany(assembly => assembly.GetTypes()).First(t => t.Name == name);
     }
 }

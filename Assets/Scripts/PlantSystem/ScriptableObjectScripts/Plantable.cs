@@ -17,9 +17,11 @@ public class Plantable : ScriptableObject
     public string visualization = "0";
     [SerializeReference] protected PlantFunctionBase plantFunction;
     [SerializeReference] protected PlantEditorBase plantEditor = null;
+    [SerializeReference] private PlantAccessCheckBase plantAccessCheck = null;
 
     public PlantFunctionBase PlantFunction { get => plantFunction; set => plantFunction = value; }
     public PlantEditorBase PlantEditor { get => plantEditor; set => plantEditor = value; }
+    public PlantAccessCheckBase PlantAccessCheck { get => plantAccessCheck; set => plantAccessCheck = value; }
 
     public virtual bool ExecuteFunction(GridTile gridTile, bool needNeighbor)
     {
