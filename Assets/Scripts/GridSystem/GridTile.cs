@@ -14,6 +14,8 @@ public class GridTile
     private Grid<GridTile> grid;
     private bool marked = false;
 
+    public event EventHandler OnContentUpdated;
+
     public GridTile(Grid<GridTile> grid, int x, int y)
     {
         this.grid = grid;
@@ -30,14 +32,11 @@ public class GridTile
     public int Y { get => y; set => y = value; }
     public bool Marked { get => marked; set => marked = value; }
 
-    public void AddPlantable(Plantable plantable)
+    public void AddPlantable(CallerArgs callerArgs)
     {
-        if (content.Any((x) => x.type == Plantable.PlantableType.Plant) && plantable.type == Plantable.PlantableType.Plant)
-        {
-            Debug.LogWarning("Trying to place two plants on another!");
-            return;
-        }
-        content.Add(plantable);
+        if (!IsAccessible(callerArgs)) return;
+        content.Add(callerArgs.callingPlantable);
+        OnContentUpdated?.Invoke(this, EventArgs.Empty);
         grid.UpdateGridContent(x, y, this);
     }
 
@@ -95,6 +94,19 @@ public class GridTile
         if (this.RightNeighbor != null)
             action(this.RightNeighbor);
 
+    }
+
+    public bool IsAccessible(CallerArgs callerArgs)
+    {
+        //if one Plant of content is not accessible, then the GridTile can not be used
+        bool isAccessible = true;
+        Debug.Log(isAccessible);
+        content.ForEach((x) => {
+            isAccessible = isAccessible && x.PlantAccessCheck.IsAccessible(callerArgs);
+        });
+        Debug.Log(isAccessible);
+
+        return isAccessible;
     }
 
     public bool HasNeighboredPlant()

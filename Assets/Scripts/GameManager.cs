@@ -43,6 +43,9 @@ public class GameManager : MonoBehaviour
     private PlantableCard selectedCard;
     private GridTile playedTile;
 
+    //Args
+    private CallerArgs callerArgs = new CallerArgs();
+    private EditorCallerArgs editorArgs = new EditorCallerArgs();
     private void Awake()
     {
         if (Instance == null)
@@ -127,12 +130,14 @@ public class GameManager : MonoBehaviour
 
     private void InitEditor()
     {
+        editorArgs.SetValues(selectedCard.plantable, playedTile, selectedPlantNeedNeighbor, CALLER_TYPE.EDITOR);
         GridManager.Instance.Grid.ForEachGridTile((x) =>
         {
             if (selectedCard.plantable.PlantEditor.CheckField(new EditorCallerArgs()
             {
                 playedTile = playedTile,
-                selectedGridTile = x
+                selectedGridTile = x,
+                callerType = CALLER_TYPE.EDITOR
             }))
             {
                 x.ChangeMarkedStatus(true);
@@ -173,7 +178,13 @@ public class GameManager : MonoBehaviour
                 Debug.Log("SET PLANT CLICK");
 
                 GridTile gridTile = GridManager.Instance.Grid.GetGridObject(UtilsClass.GetMouseWorldPosition());
-                if (selectedCard.plantable.ExecuteFunction(gridTile, selectedPlantNeedNeighbor))
+                CallerArgs callerArgs = new CallerArgs()
+                {
+                    playedTile = gridTile,
+                    needNeighbor = selectedPlantNeedNeighbor,
+                    callingPlantable = selectedCard.plantable
+                };
+                if (selectedCard.plantable.ExecuteFunction(callerArgs))
                 {
                     PlayCard(gridTile);
                 }
@@ -188,12 +199,7 @@ public class GameManager : MonoBehaviour
             if (Input.GetMouseButtonDown(0))
             {
                 GridTile selectedGridTile = GridManager.Instance.Grid.GetGridObject(UtilsClass.GetMouseWorldPosition());
-                EditorCallerArgs editorArgs = new EditorCallerArgs()
-                {
-                    playedTile = playedTile,
-                    selectedGridTile = selectedGridTile,
-                    callingPlantable = selectedCard.plantable
-                };
+                editorArgs.selectedGridTile = selectedGridTile;
                 if (selectedCard.plantable.PlantEditor.CheckField(editorArgs))
                 {
                     selectedCard.plantable.PlantEditor.ExecuteEditor(editorArgs);

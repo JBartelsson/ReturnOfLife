@@ -23,16 +23,28 @@ public class Plantable : ScriptableObject
     public PlantEditorBase PlantEditor { get => plantEditor; set => plantEditor = value; }
     public PlantAccessCheckBase PlantAccessCheck { get => plantAccessCheck; set => plantAccessCheck = value; }
 
-    public virtual bool ExecuteFunction(GridTile gridTile, bool needNeighbor)
+    public bool ExecuteFunction(CallerArgs callerArgs)
     {
-        if (gridTile.ContainsPlant()) return false;
-        if (needNeighbor && !gridTile.HasNeighboredPlant()) return false;
-       return PlantFunction.Execute(new CallerArgs()
-       {
-           callingPlantable = this,
-           playedTile = gridTile,
-           needNeighbor = needNeighbor
-       });
+        GridTile gridTile = callerArgs.playedTile;
+        Debug.Log(gridTile);
+        if (!gridTile.IsAccessible(callerArgs)) return false;
+        if (callerArgs.needNeighbor && !gridTile.HasNeighboredPlant()) return false;
+       return PlantFunction.Execute(callerArgs);
+    }
+
+    public bool IsAccessible(CallerArgs callerArgs)
+    {
+        return plantAccessCheck.IsAccessible(callerArgs);
+    }
+
+    public bool CheckField(EditorCallerArgs editorCallerArgs)
+    {
+        return PlantEditor.CheckField(editorCallerArgs);
+    }
+
+    public void ExecuteEditor(EditorCallerArgs editorCallerArgs)
+    {
+        plantEditor.ExecuteEditor(editorCallerArgs);
     }
 
 }

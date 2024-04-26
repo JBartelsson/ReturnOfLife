@@ -10,12 +10,14 @@ public class MotherBushPlantFunction : PlantFunctionBase
     public override bool Execute(CallerArgs callerArgs)
     {
         GridTile gridTile = callerArgs.playedTile;
-        Plantable caller = callerArgs.callingPlantable;
-        gridTile.AddPlantable(caller);
-        gridTile.BottomNeighbor?.AddPlantable(caller);
-        gridTile.TopNeighbor?.AddPlantable(caller);
-        gridTile.LeftNeighbor?.AddPlantable(caller);
-        gridTile.RightNeighbor?.AddPlantable(caller);
+        // Play first normal
+        gridTile.AddPlantable(callerArgs);
+        // then with effect caller type
+        callerArgs.callerType = CALLER_TYPE.EFFECT;
+        gridTile.BottomNeighbor?.AddPlantable(callerArgs);
+        gridTile.TopNeighbor?.AddPlantable(callerArgs);
+        gridTile.LeftNeighbor?.AddPlantable(callerArgs);
+        gridTile.RightNeighbor?.AddPlantable(callerArgs);
         return true;
     }
 }

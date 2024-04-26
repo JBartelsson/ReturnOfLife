@@ -7,10 +7,10 @@ public class SinglePlacementFunction : PlantFunctionBase
 {
 
 
-    public override bool Execute(CallerArgs plantableExecuteArgs)
+    public override bool Execute(CallerArgs callerArgs)
     {
-        GridTile gridTile = plantableExecuteArgs.playedTile;
-        gridTile.AddPlantable(plantableExecuteArgs.callingPlantable);
+        GridTile gridTile = callerArgs.playedTile;
+        gridTile.AddPlantable(callerArgs);
         return true;
     }
 }

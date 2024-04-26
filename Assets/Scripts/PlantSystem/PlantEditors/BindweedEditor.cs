@@ -11,13 +11,14 @@ public class BindweedEditor: PlantEditorBase
     {
         GridTile selectedGridTile = callerArgs.selectedGridTile;
         GridTile caller = callerArgs.playedTile;
+        Debug.Log($"SELECTED GRID TILE IS {selectedGridTile}");
         //If not on same axis, return
         if (!selectedGridTile.OnSameAxisAs(caller)) return false;
         //if Distance is greater than 3 return
         if (selectedGridTile.DistanceTo(caller) > BINDWEED_RANGE) return false;
         if (selectedGridTile == caller) return false;
-        //If tile already contains plant
-        if (selectedGridTile.ContainsPlant()) return false;
+        //If tile is accessible
+        if (!selectedGridTile.IsAccessible(callerArgs)) return false;
         return true;
     }
     
@@ -27,6 +28,6 @@ public class BindweedEditor: PlantEditorBase
         GridTile selectedTile = callerArgs.selectedGridTile;
         GridTile caller = callerArgs.playedTile;
         Debug.Log($"{selectedTile.X}, {selectedTile.Y}");
-        selectedTile.AddPlantable(callerArgs.callingPlantable);
+        selectedTile.AddPlantable(callerArgs);
     }
 }

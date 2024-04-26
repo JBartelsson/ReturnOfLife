@@ -6,5 +6,5 @@ using UnityEngine;
 [Serializable]
 public abstract class PlantAccessCheckBase
 {
-    public abstract bool Execute(CallerArgs plantableExecuteArgs);
+    public abstract bool IsAccessible(CallerArgs callerArgs);
 }

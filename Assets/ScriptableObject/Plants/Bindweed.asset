@@ -19,13 +19,18 @@ MonoBehaviour:
   plantFunction:
     rid: 1710084229292359680
   plantEditor:
-    rid: 1710084157000908800
+    rid: 1710084229292359682
+  plantAccessCheck:
+    rid: 1710084229292359687
   references:
     version: 2
     RefIds:
-    - rid: 1710084157000908800
-      type: {class: BindweedEditor, ns: , asm: ReturnOfLifeAssembly}
-      data: 
     - rid: 1710084229292359680
       type: {class: SinglePlacementFunction, ns: , asm: ReturnOfLifeAssembly}
+      data: 
+    - rid: 1710084229292359682
+      type: {class: BindweedEditor, ns: , asm: ReturnOfLifeAssembly}
+      data: 
+    - rid: 1710084229292359687
+      type: {class: NoOtherPlantsPlacable, ns: , asm: ReturnOfLifeAssembly}
       data: 

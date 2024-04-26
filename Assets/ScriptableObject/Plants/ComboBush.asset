@@ -17,14 +17,19 @@ MonoBehaviour:
   turnDelay: 0
   visualization: C
   plantFunction:
-    rid: 1710084117497380867
+    rid: 1710084229292359688
   plantEditor:
     rid: -2
+  plantAccessCheck:
+    rid: 1710084229292359685
   references:
     version: 2
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 1710084117497380867
+    - rid: 1710084229292359685
+      type: {class: CanBeTargetedByEditorAndEffects, ns: , asm: ReturnOfLifeAssembly}
+      data: 
+    - rid: 1710084229292359688
       type: {class: BushPlantFunction, ns: , asm: ReturnOfLifeAssembly}
       data: 
