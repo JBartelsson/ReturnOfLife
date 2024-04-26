@@ -86,10 +86,15 @@ public class GridTile
 
     public void ForEachNeighbor(Action<GridTile> action)
     {
-        action(this.TopNeighbor);
-        action(this.BottomNeighbor);
-        action(this.LeftNeighbor);
-        action(this.RightNeighbor);
+        if (this.TopNeighbor != null)
+            action(this.TopNeighbor);
+        if (this.BottomNeighbor != null)
+            action(this.BottomNeighbor);
+        if (this.LeftNeighbor != null)
+            action(this.LeftNeighbor);
+        if (this.RightNeighbor != null)
+            action(this.RightNeighbor);
+
     }
 
     public bool HasNeighboredPlant()

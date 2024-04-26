@@ -17,7 +17,7 @@ MonoBehaviour:
   turnDelay: 0
   visualization: B
   plantFunction:
-    rid: 1710084157000908801
+    rid: 1710084229292359680
   plantEditor:
     rid: 1710084157000908800
   references:
@@ -26,6 +26,6 @@ MonoBehaviour:
     - rid: 1710084157000908800
       type: {class: BindweedEditor, ns: , asm: ReturnOfLifeAssembly}
       data: 
-    - rid: 1710084157000908801
-      type: {class: BushPlantFunction, ns: , asm: ReturnOfLifeAssembly}
+    - rid: 1710084229292359680
+      type: {class: SinglePlacementFunction, ns: , asm: ReturnOfLifeAssembly}
       data: 

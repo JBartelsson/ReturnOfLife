@@ -13,11 +13,11 @@ public class GameManager : MonoBehaviour
     [Serializable]
     public class PlantableCard
     {
-        public Plantable plantableReference;
+        public Plantable plantable;
 
         public PlantableCard(Plantable plantableReference)
         {
-            this.plantableReference = plantableReference;
+            this.plantable = plantableReference;
         }
     }
 
@@ -86,7 +86,7 @@ public class GameManager : MonoBehaviour
             case GameState.SelectCards:
                 for (int i = 0; i < currentHand.Count; i++)
                 {
-                    Debug.Log($"HAND: Slot {i + 1}: {currentHand[i].plantableReference.visualization}");
+                    Debug.Log($"HAND: Slot {i + 1}: {currentHand[i].plantable.visualization}");
                 }
                 break;
             case GameState.SetPlant:
@@ -129,7 +129,11 @@ public class GameManager : MonoBehaviour
     {
         GridManager.Instance.Grid.ForEachGridTile((x) =>
         {
-            if (selectedCard.plantableReference.PlantEditor.CheckField(x, playedTile))
+            if (selectedCard.plantable.PlantEditor.CheckField(new EditorCallerArgs()
+            {
+                playedTile = playedTile,
+                selectedGridTile = x
+            }))
             {
                 x.ChangeMarkedStatus(true);
             }
@@ -169,7 +173,7 @@ public class GameManager : MonoBehaviour
                 Debug.Log("SET PLANT CLICK");
 
                 GridTile gridTile = GridManager.Instance.Grid.GetGridObject(UtilsClass.GetMouseWorldPosition());
-                if (selectedCard.plantableReference.ExecuteFunction(gridTile, selectedPlantNeedNeighbor))
+                if (selectedCard.plantable.ExecuteFunction(gridTile, selectedPlantNeedNeighbor))
                 {
                     PlayCard(gridTile);
                 }
@@ -181,13 +185,18 @@ public class GameManager : MonoBehaviour
         }
         if (currentGameState == GameState.PlantEditor)
         {
-            Debug.Log("PLANT EDITOR");
             if (Input.GetMouseButtonDown(0))
             {
                 GridTile selectedGridTile = GridManager.Instance.Grid.GetGridObject(UtilsClass.GetMouseWorldPosition());
-                if (selectedCard.plantableReference.PlantEditor.CheckField(selectedGridTile, playedTile))
+                EditorCallerArgs editorArgs = new EditorCallerArgs()
                 {
-                    selectedCard.plantableReference.PlantEditor.ExecuteEditor(selectedCard.plantableReference, playedTile, selectedGridTile);
+                    playedTile = playedTile,
+                    selectedGridTile = selectedGridTile,
+                    callingPlantable = selectedCard.plantable
+                };
+                if (selectedCard.plantable.PlantEditor.CheckField(editorArgs))
+                {
+                    selectedCard.plantable.PlantEditor.ExecuteEditor(editorArgs);
                     EndCardPlaying();
                 }
                 else
@@ -208,14 +217,14 @@ public class GameManager : MonoBehaviour
     private void PlayCard(GridTile selectedTile)
     {
         this.playedTile = selectedTile;
-        currentMana -= selectedCard.plantableReference.manaCost;
+        currentMana -= selectedCard.plantable.manaCost;
         currentHand.Remove(selectedCard);
         discardPile.Add(selectedCard);
         currentPlayedCards++;
         selectedPlantNeedNeighbor = true;
 
         Debug.Log($"PLAYED: {selectedCard}");
-        if (selectedCard.plantableReference.PlantEditor != null)
+        if (selectedCard.plantable.PlantEditor != null)
         {
             SwitchState(GameState.PlantEditor);
             return;

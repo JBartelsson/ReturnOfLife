@@ -15,8 +15,8 @@ public class PlantableEditor : Editor
     {
         Plantable targetPlantable = target as Plantable;
         base.OnInspectorGUI();
-        var allPlantFunctions = GetAll<PlantFunction>();
-        var allPlantEditors = GetAll<PlantEditor>();
+        var allPlantFunctions = GetAll<PlantFunctionBase>();
+        var allPlantEditors = GetAll<PlantEditorBase>();
 
         //Plant Functions
         List<string> optionsPlants = new() { DEFAULT_OPTION};
@@ -54,7 +54,7 @@ public class PlantableEditor : Editor
             }
             else
             {
-                targetPlantable.PlantFunction = Activator.CreateInstance(allPlantFunctions[selectedPlant - 1]) as PlantFunction;
+                targetPlantable.PlantFunction = Activator.CreateInstance(allPlantFunctions[selectedPlant - 1]) as PlantFunctionBase;
 
             }
             Debug.Log(targetPlantable.PlantFunction.GetType());
@@ -72,7 +72,7 @@ public class PlantableEditor : Editor
             {
                 Debug.Log("Editor set");
 
-                targetPlantable.PlantEditor = Activator.CreateInstance(allPlantEditors[selectedEditor - 1]) as PlantEditor;
+                targetPlantable.PlantEditor = Activator.CreateInstance(allPlantEditors[selectedEditor - 1]) as PlantEditorBase;
 
             }
             EditorUtility.SetDirty(target);
