@@ -3,8 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 [Serializable]
-public abstract class PlantEditorBase
+public abstract class PlantEditorBase : PlantScriptBase
 {
+
+    public PlantEditorBase()
+    {
+        if (ExecutionType == EXECUTION_TYPE.AFTER_PLACEMENT)
+        {
+            ExecutionType = EXECUTION_TYPE.IMMEDIATE;
+        }
+    }
 
     public abstract bool CheckField(EditorCallerArgs callerArgs);
 

@@ -8,7 +8,7 @@ using static Plantable;
 public class GridTile
 {
     private GridTile topNeighbor, bottomNeighbor, leftNeighbor, rightNeighbor = null;
-    private List<Plantable> content = new();
+    private List<PlantInstance> content = new();
     private int x;
     private int y;
     private Grid<GridTile> grid;
@@ -27,7 +27,7 @@ public class GridTile
     public GridTile BottomNeighbor { get => bottomNeighbor; set => bottomNeighbor = value; }
     public GridTile LeftNeighbor { get => leftNeighbor; set => leftNeighbor = value; }
     public GridTile RightNeighbor { get => rightNeighbor; set => rightNeighbor = value; }
-    public List<Plantable> Content { get => content; set => content = value; }
+    public List<PlantInstance> Content { get => content; set => content = value; }
     public int X { get => x; set => x = value; }
     public int Y { get => y; set => y = value; }
     public bool Marked { get => marked; set => marked = value; }
@@ -35,7 +35,7 @@ public class GridTile
     public void AddPlantable(CallerArgs callerArgs)
     {
         if (!IsAccessible(callerArgs)) return;
-        content.Add(callerArgs.callingPlantable);
+        content.Add(callerArgs.callingPlantInstance);
         OnContentUpdated?.Invoke(this, EventArgs.Empty);
         grid.UpdateGridContent(x, y, this);
     }
@@ -48,10 +48,10 @@ public class GridTile
 
     public override string ToString()
     {
-         Plantable plant = content.FirstOrDefault((x) => x.type == Plantable.PlantableType.Plant);
+         PlantInstance plant = content.FirstOrDefault((x) => x.Plantable.type == Plantable.PlantableType.Plant);
         if (plant != null)
         {
-            return plant.visualization;
+            return plant.DebugVisualization();
         } else
         {
             return "-";
@@ -76,7 +76,7 @@ public class GridTile
 
     public bool ContainsPlant()
     {
-        if (this.Content.Any((x) => x.type == PlantableType.Plant))
+        if (this.Content.Any((x) => x.Plantable.type == PlantableType.Plant))
         {
             return true;
         }
@@ -85,26 +85,41 @@ public class GridTile
 
     public void ForEachNeighbor(Action<GridTile> action)
     {
+        ForTopAndBottomNeighbor(action);
+        ForLeftAndRightNeighbor(action);
+
+    }
+
+    public void ForTopAndBottomNeighbor(Action<GridTile> action)
+    {
         if (this.TopNeighbor != null)
             action(this.TopNeighbor);
         if (this.BottomNeighbor != null)
             action(this.BottomNeighbor);
+    }
+
+    public void ForLeftAndRightNeighbor(Action<GridTile> action)
+    {
         if (this.LeftNeighbor != null)
             action(this.LeftNeighbor);
         if (this.RightNeighbor != null)
             action(this.RightNeighbor);
+    }
 
+    public void ForEachAdjacentTile(Action<GridTile> action)
+    {
+        ForEachNeighbor(action);
+        RightNeighbor?.ForTopAndBottomNeighbor(action);
+        LeftNeighbor?.ForTopAndBottomNeighbor(action);
     }
 
     public bool IsAccessible(CallerArgs callerArgs)
     {
         //if one Plant of content is not accessible, then the GridTile can not be used
         bool isAccessible = true;
-        Debug.Log(isAccessible);
-        content.ForEach((x) => {
-            isAccessible = isAccessible && x.PlantAccessCheck.IsAccessible(callerArgs);
+        content.ForEach((plantInstance) => {
+            isAccessible = isAccessible && plantInstance.IsAccessible(callerArgs);
         });
-        Debug.Log(isAccessible);
 
         return isAccessible;
     }
@@ -112,9 +127,10 @@ public class GridTile
     public bool HasNeighboredPlant()
     {
         bool hasNeighboredPlant = false;
-        this.ForEachNeighbor((x) =>
+        this.ForEachNeighbor((gridTile) =>
         {
-            if (x.ContainsPlant())
+            Debug.Log($"{gridTile.x}, {gridTile.y}");
+            if (gridTile.ContainsPlant())
             {
                 hasNeighboredPlant = true;
             }

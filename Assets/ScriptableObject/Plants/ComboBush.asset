@@ -15,21 +15,17 @@ MonoBehaviour:
   type: 0
   manaCost: 1
   turnDelay: 0
+  triggerAmount: 1
   visualization: C
   plantFunction:
-    rid: 1710084229292359688
+    executionType: 2
+    scriptType:
+      _classRef: ComboBushPlantFunction, ReturnOfLifeAssembly
   plantEditor:
-    rid: -2
+    executionType: 3
+    scriptType:
+      _classRef: 
   plantAccessCheck:
-    rid: 1710084229292359685
-  references:
-    version: 2
-    RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
-    - rid: 1710084229292359685
-      type: {class: CanBeTargetedByEditorAndEffects, ns: , asm: ReturnOfLifeAssembly}
-      data: 
-    - rid: 1710084229292359688
-      type: {class: BushPlantFunction, ns: , asm: ReturnOfLifeAssembly}
-      data: 
+    executionType: 3
+    scriptType:
+      _classRef: CanBeTargetedByEditorAndEffects, ReturnOfLifeAssembly

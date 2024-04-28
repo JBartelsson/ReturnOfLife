@@ -15,21 +15,24 @@ MonoBehaviour:
   type: 0
   manaCost: 1
   turnDelay: 0
+  triggerAmount: 1
   visualization: M
   plantFunction:
-    rid: 1710084229292359689
+    rid: 1710084251715108880
   plantEditor:
     rid: -2
   plantAccessCheck:
-    rid: 1710084229292359686
+    rid: 1710084251715108881
   references:
     version: 2
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 1710084229292359686
-      type: {class: NoOtherPlantsPlacable, ns: , asm: ReturnOfLifeAssembly}
-      data: 
-    - rid: 1710084229292359689
-      type: {class: SinglePlacementFunction, ns: , asm: ReturnOfLifeAssembly}
-      data: 
+    - rid: 1710084251715108880
+      type: {class: Plantable/PlantScriptCall, ns: , asm: ReturnOfLifeAssembly}
+      data:
+        executionType: 2
+    - rid: 1710084251715108881
+      type: {class: Plantable/PlantScriptCall, ns: , asm: ReturnOfLifeAssembly}
+      data:
+        executionType: 3

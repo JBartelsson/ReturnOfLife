@@ -10,22 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2e8b50ae5f69e2046bcf6f1f5f58bf0c, type: 3}
-  m_Name: Bindweed
+  m_Name: BasicFertilizer
   m_EditorClassIdentifier: 
   type: 0
   manaCost: 1
   turnDelay: 0
   triggerAmount: 1
-  visualization: B
+  visualization: F
   plantFunction:
-    executionType: 2
-    scriptType:
-      _classRef: SinglePlacementFunction, ReturnOfLifeAssembly
-  plantEditor:
     executionType: 0
     scriptType:
-      _classRef: BindweedEditor, ReturnOfLifeAssembly
+      _classRef: BasicFertilizerFunction, ReturnOfLifeAssembly
+  plantEditor:
+    executionType: 3
+    scriptType:
+      _classRef: 
   plantAccessCheck:
     executionType: 3
     scriptType:
-      _classRef: NoOtherPlantsPlacable, ReturnOfLifeAssembly
+      _classRef: 

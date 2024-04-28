@@ -4,22 +4,23 @@ using UnityEngine;
 
 public class CallerArgs
 {
-    public Plantable callingPlantable;
+    public PlantInstance callingPlantInstance;
     public GridTile playedTile;
     public bool needNeighbor = false;
     public CALLER_TYPE callerType = CALLER_TYPE.NONE;
+    public GameManager gameManager;
 
     public CallerArgs()
     {
 
     }
-    public CallerArgs(Plantable newCallingPlantable, GridTile newPlayedTile, bool newNeedNeighbor, CALLER_TYPE newCallerType)
+    public CallerArgs(PlantInstance newCallingPlantable, GridTile newPlayedTile, bool newNeedNeighbor, CALLER_TYPE newCallerType)
     {
         SetValues(newCallingPlantable, newPlayedTile, newNeedNeighbor, newCallerType);
     }
-    public void SetValues(Plantable newCallingPlantable, GridTile newPlayedTile, bool newNeedNeighbor, CALLER_TYPE newCallerType)
+    public void SetValues(PlantInstance newCallingPlantable, GridTile newPlayedTile, bool newNeedNeighbor, CALLER_TYPE newCallerType)
     {
-        callingPlantable = newCallingPlantable;
+        callingPlantInstance = newCallingPlantable;
         playedTile = newPlayedTile;
         needNeighbor = newNeedNeighbor;
         callerType = newCallerType;

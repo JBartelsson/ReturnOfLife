@@ -14,7 +14,7 @@ public class EditorCallerArgs : CallerArgs
         }
     }
 
-    public void SetValues(Plantable newCallingPlantable, GridTile newPlayedTile, GridTile newSelectedTile, bool newNeedNeighbor, CALLER_TYPE newCallerType)
+    public void SetValues(PlantInstance newCallingPlantable, GridTile newPlayedTile, GridTile newSelectedTile, bool newNeedNeighbor, CALLER_TYPE newCallerType)
     {
         SetValues(newCallingPlantable, newPlayedTile, newNeedNeighbor, newCallerType);
         selectedGridTile = newSelectedTile;

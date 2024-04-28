@@ -11,7 +11,6 @@ public class BindweedEditor: PlantEditorBase
     {
         GridTile selectedGridTile = callerArgs.selectedGridTile;
         GridTile caller = callerArgs.playedTile;
-        Debug.Log($"SELECTED GRID TILE IS {selectedGridTile}");
         //If not on same axis, return
         if (!selectedGridTile.OnSameAxisAs(caller)) return false;
         //if Distance is greater than 3 return
