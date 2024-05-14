@@ -36,8 +36,12 @@ public class GridTile
     {
         if (!IsAccessible(callerArgs)) return;
         content.Add(callerArgs.callingPlantInstance);
+        if (!ContainsPlant())
+        {
+            grid.UpdateGridContent(x, y, this);
+        }
         OnContentUpdated?.Invoke(this, EventArgs.Empty);
-        grid.UpdateGridContent(x, y, this);
+        GameManager.Instance.AddFieldScore(1);
     }
 
     public void ChangeMarkedStatus(bool status)
@@ -48,7 +52,7 @@ public class GridTile
 
     public override string ToString()
     {
-         PlantInstance plant = content.FirstOrDefault((x) => x.Plantable.type == Plantable.PlantableType.Plant);
+        PlantInstance plant = content.FirstOrDefault();
         if (plant != null)
         {
             return plant.DebugVisualization();
@@ -76,7 +80,7 @@ public class GridTile
 
     public bool ContainsPlant()
     {
-        if (this.Content.Any((x) => x.Plantable.type == PlantableType.Plant))
+        if (this.Content.Count != 0)
         {
             return true;
         }

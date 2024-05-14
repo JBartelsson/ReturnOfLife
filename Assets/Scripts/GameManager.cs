@@ -27,6 +27,30 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public struct Score
+    {
+        public int Points
+        {
+            get => points;
+            set => points = value;
+        }
+
+        public int Fields
+        {
+            get => fields;
+            set => fields = value;
+        }
+
+        public int SpecialFields
+        {
+            get => specialFields;
+            set => specialFields = value;
+        }
+
+        private int points;
+        private int fields;
+        private int specialFields;
+    }
 
 
     public enum GameState
@@ -51,10 +75,20 @@ public class GameManager : MonoBehaviour
     private PlantableCard selectedCard;
     private GridTile playedTile;
     private PlantInstance selectedPlantBlueprint = null;
+    //Score Related
+    private Score currentScore;
+
+    public Score CurrentScore
+    {
+        get => currentScore;
+        set => currentScore = value;
+    }
 
     //Args
     private CallerArgs callerArgs = new CallerArgs();
     private EditorCallerArgs editorArgs = new EditorCallerArgs();
+    
+    
     private void Awake()
     {
         if (Instance == null)
@@ -317,5 +351,22 @@ public class GameManager : MonoBehaviour
     {
         currentFertilizers.Add(fertilizer);
     }
+    
+    //Score related
+    public void AddFieldScore(int amount)
+    {
+        currentScore.Fields += amount;
+    }
+    
+    public void AddPointScore(int amount)
+    {
+        currentScore.Points += amount;
+    }
+    
+    public void AddSpecialFieldScore(int amount)
+    {
+        currentScore.SpecialFields += amount;
+    }
+    
 
 }

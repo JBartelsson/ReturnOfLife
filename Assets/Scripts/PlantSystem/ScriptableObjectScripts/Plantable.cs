@@ -65,12 +65,13 @@ public class Plantable : ScriptableObject
     {
         Plant, Fertilizer
     }
-    public PlantableType type;
     public int manaCost = 1;
     public int turnDelay = 0;
     public int triggerAmount = 1;
 
     public string visualization = "0";
+    public int regularPoints;
+    public int fertilizedPoints;
     [SerializeField] private PlantFunctionCall plantFunction;
     [SerializeField] private PlantEditorCall plantEditor = null;
     [SerializeField] private PlantAccessCheckCall plantAccessCheck = null;
