@@ -12,11 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e8b50ae5f69e2046bcf6f1f5f58bf0c, type: 3}
   m_Name: Bindweed
   m_EditorClassIdentifier: 
-  type: 0
   manaCost: 1
   turnDelay: 0
   triggerAmount: 1
   visualization: B
+  regularPoints: 0
+  fertilizedPoints: 0
+  plantSprite: {fileID: 21300000, guid: e2b3c7eef1072794896bf773c3a6375f, type: 3}
   plantFunction:
     executionType: 2
     scriptType:
@@ -29,3 +31,7 @@ MonoBehaviour:
     executionType: 3
     scriptType:
       _classRef: NoOtherPlantsPlacable, ReturnOfLifeAssembly
+  plantPassiveCall:
+    executionType: 3
+    scriptType:
+      _classRef: 

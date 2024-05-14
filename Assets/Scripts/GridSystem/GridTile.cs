@@ -11,35 +11,72 @@ public class GridTile
     private List<PlantInstance> content = new();
     private int x;
     private int y;
-    private Grid<GridTile> grid;
+    private Grid grid;
     private bool marked = false;
 
     public event EventHandler OnContentUpdated;
 
-    public GridTile(Grid<GridTile> grid, int x, int y)
+    public GridTile(Grid grid, int x, int y)
     {
         this.grid = grid;
         this.x = x;
         this.y = y;
     }
 
-    public GridTile TopNeighbor { get => topNeighbor; set => topNeighbor = value; }
-    public GridTile BottomNeighbor { get => bottomNeighbor; set => bottomNeighbor = value; }
-    public GridTile LeftNeighbor { get => leftNeighbor; set => leftNeighbor = value; }
-    public GridTile RightNeighbor { get => rightNeighbor; set => rightNeighbor = value; }
-    public List<PlantInstance> Content { get => content; set => content = value; }
-    public int X { get => x; set => x = value; }
-    public int Y { get => y; set => y = value; }
-    public bool Marked { get => marked; set => marked = value; }
+    public GridTile TopNeighbor
+    {
+        get => topNeighbor;
+        set => topNeighbor = value;
+    }
+
+    public GridTile BottomNeighbor
+    {
+        get => bottomNeighbor;
+        set => bottomNeighbor = value;
+    }
+
+    public GridTile LeftNeighbor
+    {
+        get => leftNeighbor;
+        set => leftNeighbor = value;
+    }
+
+    public GridTile RightNeighbor
+    {
+        get => rightNeighbor;
+        set => rightNeighbor = value;
+    }
+
+    public List<PlantInstance> Content
+    {
+        get => content;
+        set => content = value;
+    }
+
+    public int X
+    {
+        get => x;
+        set => x = value;
+    }
+
+    public int Y
+    {
+        get => y;
+        set => y = value;
+    }
+
+    public bool Marked
+    {
+        get => marked;
+        set => marked = value;
+    }
 
     public void AddPlantable(CallerArgs callerArgs)
     {
         if (!IsAccessible(callerArgs)) return;
         content.Add(callerArgs.callingPlantInstance);
-        if (!ContainsPlant())
-        {
-            grid.UpdateGridContent(x, y, this);
-        }
+        Debug.Log($"CONTENT OF {x}, {y} is {content.Count} long");
+        grid.UpdateGridContent(x, y, this);
         OnContentUpdated?.Invoke(this, EventArgs.Empty);
         GameManager.Instance.AddFieldScore(1);
     }
@@ -56,7 +93,8 @@ public class GridTile
         if (plant != null)
         {
             return plant.DebugVisualization();
-        } else
+        }
+        else
         {
             return "-";
         }
@@ -68,6 +106,7 @@ public class GridTile
         {
             return true;
         }
+
         return false;
     }
 
@@ -84,6 +123,7 @@ public class GridTile
         {
             return true;
         }
+
         return false;
     }
 
@@ -91,7 +131,6 @@ public class GridTile
     {
         ForTopAndBottomNeighbor(action);
         ForLeftAndRightNeighbor(action);
-
     }
 
     public void ForTopAndBottomNeighbor(Action<GridTile> action)
@@ -121,9 +160,7 @@ public class GridTile
     {
         //if one Plant of content is not accessible, then the GridTile can not be used
         bool isAccessible = true;
-        content.ForEach((plantInstance) => {
-            isAccessible = isAccessible && plantInstance.IsAccessible(callerArgs);
-        });
+        content.ForEach((plantInstance) => { isAccessible = isAccessible && plantInstance.IsAccessible(callerArgs); });
 
         return isAccessible;
     }

@@ -55,7 +55,7 @@ public class GameManager : MonoBehaviour
 
     public enum GameState
     {
-        Init, DrawCards, StartTurn, SelectCards, SetPlant, PlantEditor, SpecialAbility, LevelEnd, None
+        Init, DrawCards, EndTurn, SelectCards, SetPlant, PlantEditor, SpecialAbility, LevelEnd, None
     }
     [Header("Game Options")]
     [SerializeField] private StartDeckSO startDeck;
@@ -119,15 +119,12 @@ public class GameManager : MonoBehaviour
         {
             case GameState.Init:
                 InitializeLevel();
-                SwitchState(GameState.StartTurn);
                 break;
-            case GameState.StartTurn:
-                StartTurn();
-                SwitchState(GameState.DrawCards);
+            case GameState.EndTurn:
+                EndTurn();
                 break;
             case GameState.DrawCards:
                 DrawCards();
-                SwitchState(GameState.SelectCards);
                 break;
             case GameState.SelectCards:
                 for (int i = 0; i < currentHand.Count; i++)
@@ -169,6 +166,9 @@ public class GameManager : MonoBehaviour
                 Debug.Log($"Added {deckEntry.plantableReference.visualization} to deck, Its Plant Instance: {deck.Last().plantBlueprint}");
             }
         }
+        drawPile.AddRange(deck);
+        SwitchState(GameState.EndTurn);
+
     }
 
     private void InitEditor()
@@ -220,8 +220,9 @@ public class GameManager : MonoBehaviour
             {
                 Debug.Log("SET PLANT CLICK");
 
-                GridTile gridTile = GridManager.Instance.Grid.GetGridObject(UtilsClass.GetMouseWorldPosition());
+                GridTile gridTile = GridManager.Instance.Grid.GetGridObject(Input.mousePosition);
                 callerArgs.playedTile = gridTile;
+                Debug.Log(gridTile);
                 if (selectedPlantBlueprint.Execute(callerArgs))
                 {
                     
@@ -237,7 +238,7 @@ public class GameManager : MonoBehaviour
         {
             if (Input.GetMouseButtonDown(0))
             {
-                GridTile selectedGridTile = GridManager.Instance.Grid.GetGridObject(UtilsClass.GetMouseWorldPosition());
+                GridTile selectedGridTile = GridManager.Instance.Grid.GetGridObject(Input.mousePosition);
                 editorArgs.selectedGridTile = selectedGridTile;
                 if (selectedPlantBlueprint.CheckField(editorArgs))
                 {
@@ -302,25 +303,30 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            SwitchState(GameState.StartTurn);
+            SwitchState(GameState.EndTurn);
         }
 
     }
 
-    private void StartTurn()
+    private void EndTurn()
     {
 
+        Debug.Log($"=====END TURN {currentTurns}=====");
+        HandlePassives();
         currentTurns++;
         if (currentTurns > standardTurns)
         {
             EndLevel();
             return;
         }
-        Debug.Log($"=====START TURN {currentTurns}=====");
         currentMana = standardMana;
         discardPile.AddRange(currentHand);
-        drawPile.AddRange(deck);
+        SwitchState(GameState.DrawCards);
 
+    }
+
+    private void HandlePassives()
+    {
     }
 
     private void EndLevel()
@@ -335,6 +341,7 @@ public class GameManager : MonoBehaviour
         {
             DrawSingleCard();
         }
+        SwitchState(GameState.SelectCards);
 
     }
 
