@@ -2,7 +2,7 @@ using UnityEngine;
 using TMPro;
 using static EventManager.GameEvents;
 
-public class GameMissionsUI : MonoBehaviour
+public class GameTurnsUI : MonoBehaviour
 {
     private TMP_Text label;
 

@@ -1,17 +1,34 @@
 using System.Collections;
 using UnityEngine;
+using TMPro;
+using UnityEngine.UI;
+using System;
 
 public class Game : MonoBehaviour
 {
     public int turn = 0;
 
-    IEnumerator Start()
+    public Button nextTurn;
+
+    public Button clearMission;
+
+    private void Awake()
     {
-        for (int i = 0; i < 3; i++)
+        nextTurn = GameObject.Find("Next Turn").GetComponent<Button>();
+        nextTurn.onClick.AddListener(AdvanceTurn);
+        clearMission = GameObject.Find("Clear Mission").GetComponent<Button>();
+        clearMission.onClick.AddListener(ClearMission);
+    }
+
+    private void ClearMission()
+    {
+        int tempMissionNumber = GameObject.Find("Mission Number").GetComponent<TMP_Dropdown>().value;
+        EventManager.Game.OnMissionCompleted?.Invoke(new EventManager.GameEvents.MissionCompletedArgs()
         {
-            yield return new WaitForSeconds(2.0f);
-            AdvanceTurn();
-        }
+            sender = this,
+            missionNumber = tempMissionNumber,
+            missionText = "Blub"
+        });
     }
 
     public void AdvanceTurn()

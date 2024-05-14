@@ -9,6 +9,9 @@ public static class EventManager
     public class GameEvents
     {
         public UnityAction<TurnChangedArgs> OnTurnChanged;
+
+        public UnityAction<MissionCompletedArgs> OnMissionCompleted;
+
         public class Args
         {
             public Component sender;
@@ -17,7 +20,13 @@ public static class EventManager
         {
             public int turnNumber = 0;
         }
-        //public UnityAction<Component, int> OnMissionCompleted;
+
+        public class MissionCompletedArgs : Args
+        {
+            public int missionNumber = 0;
+            public String missionText = "Blub";
+        }
+
         public event EventHandler OnTest;
     }
 }
