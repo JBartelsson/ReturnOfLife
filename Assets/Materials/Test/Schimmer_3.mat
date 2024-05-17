@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Schimmer_3
-  m_Shader: {fileID: -6465566751694194690, guid: 8c5e7a2cb35206945bd827c308e9b436, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 9fb37b1949a6eb24fbf410296a648600, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -52,7 +52,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex_1:
-        m_Texture: {fileID: 2800000, guid: edc8435797e8ced42838166976cfa747, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -109,14 +109,14 @@ Material:
     - _GlossyReflections: 0
     - _Metallic: 0
     - _NoiseScale: 0
-    - _NoiseScale_1: 50
+    - _NoiseScale_1: 60
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _ScrollSpeed: 0
-    - _ScrollSpeed_1: 0.005
+    - _ScrollSpeed_1: 0.008
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
