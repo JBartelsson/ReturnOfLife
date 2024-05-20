@@ -74,11 +74,13 @@ public class GridTile
     public void AddPlantable(CallerArgs callerArgs)
     {
         if (!IsAccessible(callerArgs)) return;
+        if (!ContainsPlant())
+        {
+            GameManager.Instance.AddFieldScore(1);
+        }
         content.Add(callerArgs.callingPlantInstance);
-        Debug.Log($"CONTENT OF {x}, {y} is {content.Count} long");
         grid.UpdateGridContent(x, y, this);
         OnContentUpdated?.Invoke(this, EventArgs.Empty);
-        GameManager.Instance.AddFieldScore(1);
     }
 
     public void ChangeMarkedStatus(bool status)

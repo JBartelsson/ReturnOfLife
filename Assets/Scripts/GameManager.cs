@@ -9,8 +9,8 @@ using static GameManager;
 
 public class GameManager : MonoBehaviour
 {
-
     public static GameManager Instance { get; private set; }
+
     [Serializable]
     public class PlantableCard
     {
@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    [Serializable]
     public struct Score
     {
         public int Points
@@ -55,10 +56,20 @@ public class GameManager : MonoBehaviour
 
     public enum GameState
     {
-        Init, DrawCards, EndTurn, SelectCards, SetPlant, PlantEditor, SpecialAbility, LevelEnd, None
+        Init,
+        DrawCards,
+        EndTurn,
+        SelectCards,
+        SetPlant,
+        PlantEditor,
+        SpecialAbility,
+        LevelEnd,
+        None
     }
-    [Header("Game Options")]
-    [SerializeField] private StartDeckSO startDeck;
+
+    [Header("Game Options")] [SerializeField]
+    private StartDeckSO startDeck;
+
     [SerializeField] private int handSize = 5;
     [SerializeField] private int standardMana = 3;
     [SerializeField] private int standardTurns = 3;
@@ -74,7 +85,9 @@ public class GameManager : MonoBehaviour
     private bool selectedPlantNeedNeighbor = false;
     private PlantableCard selectedCard;
     private GridTile playedTile;
+
     private PlantInstance selectedPlantBlueprint = null;
+
     //Score Related
     private Score currentScore;
 
@@ -87,8 +100,8 @@ public class GameManager : MonoBehaviour
     //Args
     private CallerArgs callerArgs = new CallerArgs();
     private EditorCallerArgs editorArgs = new EditorCallerArgs();
-    
-    
+
+
     private void Awake()
     {
         if (Instance == null)
@@ -100,6 +113,7 @@ public class GameManager : MonoBehaviour
             Debug.LogError("Game Manager already exists!");
         }
     }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -131,6 +145,7 @@ public class GameManager : MonoBehaviour
                 {
                     Debug.Log($"HAND: Slot {i + 1}: {currentHand[i].plantBlueprint.Plantable.visualization}");
                 }
+
                 break;
             case GameState.SetPlant:
                 break;
@@ -163,12 +178,13 @@ public class GameManager : MonoBehaviour
             for (int i = 0; i < deckEntry.amount; i++)
             {
                 deck.Add(new PlantableCard(deckEntry.plantableReference));
-                Debug.Log($"Added {deckEntry.plantableReference.visualization} to deck, Its Plant Instance: {deck.Last().plantBlueprint}");
+                Debug.Log(
+                    $"Added {deckEntry.plantableReference.visualization} to deck, Its Plant Instance: {deck.Last().plantBlueprint}");
             }
         }
+
         drawPile.AddRange(deck);
         SwitchState(GameState.EndTurn);
-
     }
 
     private void InitEditor()
@@ -177,11 +193,11 @@ public class GameManager : MonoBehaviour
         GridManager.Instance.Grid.ForEachGridTile((x) =>
         {
             if (selectedPlantBlueprint.CheckField(new EditorCallerArgs()
-            {
-                playedTile = playedTile,
-                selectedGridTile = x,
-                callerType = CALLER_TYPE.EDITOR
-            }))
+                {
+                    playedTile = playedTile,
+                    selectedGridTile = x,
+                    callerType = CALLER_TYPE.EDITOR
+                }))
             {
                 x.ChangeMarkedStatus(true);
             }
@@ -196,26 +212,30 @@ public class GameManager : MonoBehaviour
             {
                 PlayCard(currentHand[0]);
             }
+
             if (Input.GetKeyDown(KeyCode.Alpha2))
             {
                 PlayCard(currentHand[1]);
             }
+
             if (Input.GetKeyDown(KeyCode.Alpha3))
             {
                 PlayCard(currentHand[2]);
             }
+
             if (Input.GetKeyDown(KeyCode.Alpha4))
             {
                 PlayCard(currentHand[3]);
             }
+
             if (Input.GetKeyDown(KeyCode.Alpha5))
             {
                 PlayCard(currentHand[4]);
             }
         }
+
         if (currentGameState == GameState.SetPlant)
         {
-
             if (Input.GetMouseButtonDown(0))
             {
                 Debug.Log("SET PLANT CLICK");
@@ -225,7 +245,6 @@ public class GameManager : MonoBehaviour
                 Debug.Log(gridTile);
                 if (selectedPlantBlueprint.Execute(callerArgs))
                 {
-                    
                     PlantCard(gridTile);
                 }
                 else
@@ -234,6 +253,7 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
+
         if (currentGameState == GameState.PlantEditor)
         {
             if (Input.GetMouseButtonDown(0))
@@ -269,6 +289,7 @@ public class GameManager : MonoBehaviour
             selectedPlantBlueprint.Execute(callerArgs);
             EndCardPlaying();
         }
+
         if (selectedPlantBlueprint.GetPlantFunctionExecuteType() == EXECUTION_TYPE.AFTER_PLACEMENT)
         {
             SwitchState(GameState.SetPlant);
@@ -278,7 +299,7 @@ public class GameManager : MonoBehaviour
     private void PlantCard(GridTile selectedTile)
     {
         this.playedTile = selectedTile;
-        
+
         selectedPlantNeedNeighbor = true;
 
         Debug.Log($"PLANTED: {selectedCard}");
@@ -287,6 +308,7 @@ public class GameManager : MonoBehaviour
             SwitchState(GameState.PlantEditor);
             return;
         }
+
         EndCardPlaying();
     }
 
@@ -305,12 +327,10 @@ public class GameManager : MonoBehaviour
         {
             SwitchState(GameState.EndTurn);
         }
-
     }
 
     private void EndTurn()
     {
-
         Debug.Log($"=====END TURN {currentTurns}=====");
         HandlePassives();
         currentTurns++;
@@ -319,10 +339,10 @@ public class GameManager : MonoBehaviour
             EndLevel();
             return;
         }
+
         currentMana = standardMana;
         discardPile.AddRange(currentHand);
         SwitchState(GameState.DrawCards);
-
     }
 
     private void HandlePassives()
@@ -341,8 +361,8 @@ public class GameManager : MonoBehaviour
         {
             DrawSingleCard();
         }
-        SwitchState(GameState.SelectCards);
 
+        SwitchState(GameState.SelectCards);
     }
 
     private void DrawSingleCard()
@@ -351,29 +371,26 @@ public class GameManager : MonoBehaviour
         PlantableCard drawCard = drawPile[randomIndex];
         currentHand.Add(drawCard);
         drawPile.Remove(drawCard);
-
     }
 
     public void AddFertilizer(Fertilizer fertilizer)
     {
         currentFertilizers.Add(fertilizer);
     }
-    
+
     //Score related
     public void AddFieldScore(int amount)
     {
         currentScore.Fields += amount;
     }
-    
+
     public void AddPointScore(int amount)
     {
         currentScore.Points += amount;
     }
-    
+
     public void AddSpecialFieldScore(int amount)
     {
         currentScore.SpecialFields += amount;
     }
-    
-
 }
