@@ -13,6 +13,10 @@ public class GridTile
     private int y;
     private Grid grid;
     private bool marked = false;
+    private SpecialFieldType fieldType = SpecialFieldType.NONE;
+
+    public SpecialFieldType FieldType => fieldType;
+
 
     public event EventHandler OnContentUpdated;
 
@@ -81,6 +85,12 @@ public class GridTile
         content.Add(callerArgs.callingPlantInstance);
         grid.UpdateGridContent(x, y, this);
         OnContentUpdated?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void ChangeFieldType(SpecialFieldType newFieldType)
+    {
+        fieldType = newFieldType;
+        grid.UpdateGridContent(x,y, this);
     }
 
     public void ChangeMarkedStatus(bool status)

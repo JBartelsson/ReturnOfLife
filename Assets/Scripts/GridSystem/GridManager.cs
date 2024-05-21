@@ -93,10 +93,7 @@ public class GridManager : MonoBehaviour
     {
         Grid grid = sender as Grid;
         if (gridVisualization[e.x, e.y] == null) return;
-        if (e.gridObject.Content.Count > 0)
-            gridVisualization[e.x, e.y].SetNewSprite(e.gridObject.Content[0]);
-
-        //mark grid Tile if its used for an editor
-        gridVisualization[e.x, e.y].SetMarkedState(e.gridObject.Marked);
+        gridVisualization[e.x, e.y].UpdateContent(e.gridObject);
+       
     }
 }

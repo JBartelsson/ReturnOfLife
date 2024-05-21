@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using CodeMonkey.Utils;
 using System;
+using System.Linq;
 
 public class Grid
 {
@@ -17,6 +18,35 @@ public class Grid
     {
         get => plantInstances;
         set => plantInstances = value;
+    }
+
+    private List<SpecialField> specialFields = new();
+
+    public List<SpecialField> SpecialFields
+    {
+        get => specialFields;
+        set => specialFields = value;
+    }
+
+    public class SpecialField
+    {
+        public SpecialFieldType FieldType;
+        public List<GridTile> SpecialFieldGridTiles = new();
+
+        public bool IsFulfilled()
+        {
+            bool fulfilled = true;
+            foreach (GridTile gridTile in SpecialFieldGridTiles)
+            {
+                if (!gridTile.ContainsPlant())
+                {
+                    fulfilled = false;
+                    break;
+                }
+            }
+
+            return fulfilled;
+        }
     }
 
     public float CellSize { get => cellSize; set => cellSize = value; }
@@ -132,6 +162,29 @@ public class Grid
             y = y,
             gridObject = gridObject
         });
+    }
+
+    public void AddSpecialField(SpecialFieldsLayoutSO.Index index, SpecialFieldsLayoutSO.Index offset, SpecialFieldType fieldType)
+    {
+        int x = index.X - offset.X;
+        int y = index.Y - offset.Y;
+        GridTile gridTile = GetGridObject(x, y);
+        gridTile.ChangeFieldType(fieldType);
+        Debug.Log(specialFields);
+        if (specialFields.Any((x) => x.FieldType == fieldType))
+        {
+            specialFields.First((x) => x.FieldType == fieldType).SpecialFieldGridTiles.Add(gridTile);
+        }
+        else
+        {
+            specialFields.Add(new SpecialField()
+            {
+                FieldType = fieldType,
+                SpecialFieldGridTiles = new ()
+            });
+        }
+        
+        Debug.Log($"ADDED GRID TILE: {gridTile.X}, {gridTile.Y}: {fieldType}");
     }
 
 }

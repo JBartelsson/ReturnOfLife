@@ -73,6 +73,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int handSize = 5;
     [SerializeField] private int standardMana = 3;
     [SerializeField] private int standardTurns = 3;
+    [SerializeField] private EnemiesSO testEnemy;
     private GameState currentGameState = GameState.None;
     private List<PlantableCard> deck = new();
     private List<PlantableCard> currentHand = new();
@@ -165,6 +166,7 @@ public class GameManager : MonoBehaviour
 
     private void InitializeLevel()
     {
+        SpecialFieldsGenerator.GenerateSpecialFields(GridManager.Instance, testEnemy);
         deck.Clear();
         currentHand.Clear();
         drawPile.Clear();
@@ -246,6 +248,7 @@ public class GameManager : MonoBehaviour
                 if (selectedPlantBlueprint.Execute(callerArgs))
                 {
                     PlantCard(gridTile);
+                    CheckSpecialFields();
                 }
                 else
                 {
@@ -263,6 +266,7 @@ public class GameManager : MonoBehaviour
                 if (selectedPlantBlueprint.CheckField(editorArgs))
                 {
                     selectedPlantBlueprint.ExecuteEditor(editorArgs);
+                    CheckSpecialFields();
                     EndCardPlaying();
                 }
                 else
@@ -270,6 +274,14 @@ public class GameManager : MonoBehaviour
                     Debug.Log("CANT EXECUTE EDITOR FUNCTION THERE");
                 }
             }
+        }
+    }
+
+    public void CheckSpecialFields()
+    {
+        foreach (var specialField in GridManager.Instance.Grid.SpecialFields)
+        {
+            Debug.Log($"SpecialField is {specialField.IsFulfilled()}");
         }
     }
 
