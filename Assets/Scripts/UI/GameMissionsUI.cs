@@ -21,7 +21,7 @@ public class GameMissionsUI : MonoBehaviour
 
     private void OnEnable()
     {
-        EventManager.Game.OnMissionCompleted += UpdateMission;
+        EventManager.Game.Level.OnMissionCompleted += UpdateMission;
     }
 
     private void Game_OnTest(object sender, System.EventArgs e)
@@ -31,10 +31,10 @@ public class GameMissionsUI : MonoBehaviour
 
     private void OnDisable()
     {
-        EventManager.Game.OnMissionCompleted -= UpdateMission;
+        EventManager.Game.Level.OnMissionCompleted -= UpdateMission;
     }
 
-    private void UpdateMission(MissionCompletedArgs args)
+    private void UpdateMission(LevelEvents.MissionCompletedArgs args)
     {
         missions[args.missionNumber].SetText(args.missionText.ToString());
         missions[args.missionNumber].GetComponentInChildren<Toggle>().isOn = true;

@@ -6,5 +6,6 @@ using UnityEngine;
 [Serializable]
 public abstract class PlantFunctionBase : PlantScriptBase
 {
-    public abstract bool Execute(CallerArgs callerArgs);
+    public abstract void Execute(CallerArgs callerArgs);
+    public abstract bool CanExecute(CallerArgs callerArgs);
 }

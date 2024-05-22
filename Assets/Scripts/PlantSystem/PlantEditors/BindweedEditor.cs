@@ -26,7 +26,6 @@ public class BindweedEditor: PlantEditorBase
     {
         GridTile selectedTile = callerArgs.selectedGridTile;
         GridTile caller = callerArgs.playedTile;
-        Debug.Log($"{selectedTile.X}, {selectedTile.Y}");
         selectedTile.AddPlantable(callerArgs);
     }
 }

@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80d95370bce8dba44bcb83a9b06bc4ca, type: 3}
+  m_Name: TestPlanetProgression
+  m_EditorClassIdentifier: 
+  progression:
+  - stage: 0
+    allowedEnemies:
+    - {fileID: 11400000, guid: 023d8026bf0fb6545bddf4ff6e7e98c7, type: 2}
+  - stage: 1
+    allowedEnemies:
+    - {fileID: 11400000, guid: 70b513f0b8f871549a72e22a23f0bb51, type: 2}
+  - stage: 2
+    allowedEnemies:
+    - {fileID: 11400000, guid: 41e650e89d93fef48a1115d9cb96e8f7, type: 2}
+  - stage: 3
+    allowedEnemies:
+    - {fileID: 11400000, guid: 89cbfcaebd8e23449af7ecb961f524b4, type: 2}
+  - stage: 4
+    allowedEnemies:
+    - {fileID: 11400000, guid: 4271f4cc431bef949bae1b6ab03abb37, type: 2}

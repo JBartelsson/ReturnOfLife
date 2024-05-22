@@ -7,7 +7,7 @@ using UnityEngine;
 public class MotherBushPlantFunction : PlantFunctionBase
 {
 
-    public override bool Execute(CallerArgs callerArgs)
+    public override void Execute(CallerArgs callerArgs)
     {
         GridTile gridTile = callerArgs.playedTile;
         // Play first normal
@@ -18,6 +18,10 @@ public class MotherBushPlantFunction : PlantFunctionBase
         gridTile.TopNeighbor?.AddPlantable(callerArgs);
         gridTile.LeftNeighbor?.AddPlantable(callerArgs);
         gridTile.RightNeighbor?.AddPlantable(callerArgs);
+    }
+
+    public override bool CanExecute(CallerArgs callerArgs)
+    {
         return true;
     }
 }

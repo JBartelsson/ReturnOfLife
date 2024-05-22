@@ -14,7 +14,6 @@ public class SpecialFieldsEditor : Editor
             var layout = AssetDatabase.LoadAssetAtPath<SpecialFieldsLayoutSO>(SOpath);
             layout.LoadDataString();
         }
-        Debug.Log("Reloaded");
     }
     public override void OnInspectorGUI()
     {
@@ -35,8 +34,11 @@ public class SpecialFieldsEditor : Editor
                 // hard-coded some cheesy color map - improve it by all means!
                 GUI.color = Color.gray;
                 if (!cell.selected) GUI.color = Color.gray;
-                if (cell.selected) GUI.color = Color.green;
-                if (x == grid.CenterCellX && y == grid.CenterCellY) GUI.color = Color.red;
+                if (cell.selected)
+                {
+                    GUI.color = Color.green;
+                    if (x == grid.CenterCellX && y == grid.CenterCellY && !isPositions) GUI.color = Color.red;
+                }
 
                 if (GUILayout.Button($"", GUILayout.Width(20)))
                 {
@@ -78,6 +80,12 @@ public class SpecialFieldsEditor : Editor
             
 
             GUILayout.EndHorizontal();
+        }
+
+        if (isPositions)
+        {
+            grid.CenterCellX = Mathf.FloorToInt(grid.Data.GetLength(0) / 2f);
+            grid.CenterCellY = Mathf.FloorToInt(grid.Data.GetLength(1) / 2f);
         }
         if (changed)
         {

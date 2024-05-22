@@ -57,6 +57,12 @@ public class GridVisualization : MonoBehaviour
         }
     }
 
+    private void ClearGridTile()
+    {
+        fertilizedParticles.Stop();
+        SetNewSprite((Sprite)null);
+    }
+
     public void SetMarkedState(bool marked)
     {
         visualizer.sharedMaterial = marked ? markedMaterial : standardVisualizationMaterial;
@@ -65,7 +71,13 @@ public class GridVisualization : MonoBehaviour
     public void UpdateContent(GridTile gridObject)
     {
         if (gridObject.Content.Count > 0)
+        {
             SetNewSprite(gridObject.Content[0]);
+        }
+        else
+        {
+            ClearGridTile();
+        }
 
         //mark grid Tile if its used for an editor
         SetMarkedState(gridObject.Marked);

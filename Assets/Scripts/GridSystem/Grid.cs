@@ -94,14 +94,11 @@ public class Grid
         Debug.DrawLine(worldPosition, worldPosition + Vector3.up, Color.green, 100f);
         Ray clickRay = Camera.main.ScreenPointToRay(worldPosition);
         gridPlane.Raycast(clickRay, out float enter);
-        Debug.Log(enter);
         Vector3 intersectionPoint = clickRay.origin + clickRay.direction.normalized * enter;
         Debug.DrawRay(clickRay.origin, clickRay.direction * 100f, Color.yellow, 100f);
         Debug.DrawLine(intersectionPoint, originPosition , Color.red, 100f);
         x = Mathf.FloorToInt((intersectionPoint - originPosition).x / cellSize);
         y = Mathf.FloorToInt((intersectionPoint - originPosition).z / cellSize);
-        Debug.Log($"X: {x}");
-        Debug.Log($"Y: {y}");
     }
 
     public void ForEachGridTile(Action<GridTile> Action)
@@ -138,7 +135,7 @@ public class Grid
 
     public GridTile GetGridObject(int x, int y)
     {
-        if (x >= 0 && y >= 0 && x <= width && y <= height)
+        if (x >= 0 && y >= 0 && x < width && y < height)
         {
             return gridArray[x, y];
         } else
@@ -163,21 +160,20 @@ public class Grid
             gridObject = gridObject
         });
     }
-
+    
     public void AddSpecialField(SpecialFieldsLayoutSO.Index index, SpecialFieldsLayoutSO.Index offset, SpecialFieldType fieldType, EnemiesSO currentEnemy)
     {
         int x = index.X - offset.X;
         int y = index.Y - offset.Y;
         GridTile gridTile = GetGridObject(x, y);
+        if (gridTile == null) return;
         //If no Special Field has been rendered, just add it
         if (gridTile.FieldType == SpecialFieldType.NONE)
         {
-            Debug.Log("CHANGED GRID FIELD TYPE CAUSE ITS NONE");
             gridTile.ChangeFieldType(fieldType);
         }
         else
         {
-            Debug.Log("OVERLAPPING I THINK");
 
             //If there are two Special Fields overlapping, check for the priority
             if (currentEnemy.SpecialFieldPriority.Priority.IndexOf(gridTile.FieldType) >
@@ -201,7 +197,11 @@ public class Grid
             });
         }
         
-        Debug.Log($"ADDED GRID TILE: {gridTile.X}, {gridTile.Y}: {fieldType}");
+    }
+
+    public void ResetGrid()
+    {
+        ForEachGridTile((x) => x.Reset());
     }
 
 }
