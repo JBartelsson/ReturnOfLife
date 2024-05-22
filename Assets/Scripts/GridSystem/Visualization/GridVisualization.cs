@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -8,10 +9,27 @@ public class GridVisualization : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private Material standardVisualizationMaterial;
-    [FormerlySerializedAs("MarkedMaterial")] [FormerlySerializedAs("standardMarkedMaterial")] [SerializeField] private Material markedMaterial;
+
+    [FormerlySerializedAs("MarkedMaterial")] [FormerlySerializedAs("standardMarkedMaterial")] [SerializeField]
+    private Material markedMaterial;
+
     [SerializeField] private MeshRenderer visualizer;
-    [FormerlySerializedAs("fertilzedParticles")] [SerializeField] private ParticleSystem fertilizedParticles;
-    [SerializeField] private GameObject fieldMarker;
+
+    [FormerlySerializedAs("fertilzedParticles")] [SerializeField]
+    private ParticleSystem fertilizedParticles;
+
+    [Header("Special Fields")] [SerializeField]
+    private GameObject fieldMarker;
+
+    [SerializeField] private MeshRenderer fieldMarkerMeshRenderer;
+    [SerializeField] private List<FieldMaterial> fieldMaterials;
+
+    [Serializable]
+    public class FieldMaterial
+    {
+        public SpecialFieldType FieldType;
+        public Material Material;
+    }
 
     private void Awake()
     {
@@ -19,7 +37,6 @@ public class GridVisualization : MonoBehaviour
         visualizer.sharedMaterial = standardVisualizationMaterial;
         fertilizedParticles.Stop();
         fieldMarker.SetActive(false);
-
     }
 
     public void SetNewSprite(Sprite newSprite)
@@ -37,14 +54,12 @@ public class GridVisualization : MonoBehaviour
         else
         {
             fertilizedParticles.Stop();
-
         }
     }
 
     public void SetMarkedState(bool marked)
     {
         visualizer.sharedMaterial = marked ? markedMaterial : standardVisualizationMaterial;
-
     }
 
     public void UpdateContent(GridTile gridObject)
@@ -60,38 +75,14 @@ public class GridVisualization : MonoBehaviour
 
     private void ShowFieldType(SpecialFieldType gridObjectFieldType)
     {
-        fieldMarker.SetActive(false);
-        if (gridObjectFieldType != SpecialFieldType.NONE)
+        if (gridObjectFieldType == SpecialFieldType.NONE)
         {
-            fieldMarker.SetActive(true);
+            fieldMarker.SetActive(false);
+            return;
         }
-        switch (gridObjectFieldType)
-        {
-            case SpecialFieldType.SHOP:
-                break;
-            case SpecialFieldType.CARD_REMOVE:
-                break;
-            case SpecialFieldType.CARD_ADD:
-                break;
-            case SpecialFieldType.RETRIGGER:
-                break;
-            case SpecialFieldType.DUPLICATE:
-                break;
-            case SpecialFieldType.MANA:
-                fieldMarker.SetActive(true);
-                break;
-            case SpecialFieldType.ESSENCE:
-                break;
-            case SpecialFieldType.UNLOCK_PLANT:
-                break;
-            case SpecialFieldType.HALF_ECO:
-                break;
-            case SpecialFieldType.TIME_PLAY:
-                break;
-            case SpecialFieldType.NONE:
-                break;
-            default:
-                break;
-        }
+
+        fieldMarker.SetActive(true);
+        fieldMarkerMeshRenderer.sharedMaterial =
+            fieldMaterials.First((x) => x.FieldType == gridObjectFieldType).Material;
     }
 }

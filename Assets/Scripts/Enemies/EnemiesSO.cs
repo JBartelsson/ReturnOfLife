@@ -26,10 +26,13 @@ public class EnemiesSO : ScriptableObject
     [SerializeField] private List<MissionGoal> missions;
     [FormerlySerializedAs("specialFieldsLayout")] [SerializeField] private SpecialFieldsPositionsSO specialFieldsPositions;
     [FormerlySerializedAs("allowedSpecialFields")] [SerializeField] private List<SpecialFieldsLayoutSO> allowedSpecialFieldLayouts;
+    [SerializeField] private List<SpecialFieldType> allowedSpecialFields;
 
+    public SpecialFieldPrioritySO SpecialFieldPriority => specialFieldPriority;
+
+    [SerializeField] private SpecialFieldPrioritySO specialFieldPriority;
     
 
-    [SerializeField] private List<SpecialFieldType> allowedSpecialFields;
     public List<MissionGoal> Missions
     {
         get => missions;

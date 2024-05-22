@@ -5318,3 +5318,25 @@ MonoBehaviour:
   visualizer: {fileID: 421605569967163468}
   fertilizedParticles: {fileID: 340961616963226282}
   fieldMarker: {fileID: 2140894653925894352}
+  fieldMarkerMeshRenderer: {fileID: 3294752264081071358}
+  fieldMaterials:
+  - FieldType: 0
+    Material: {fileID: 2100000, guid: b5311ca4d2f9ccb4386c81ae228b5b1c, type: 2}
+  - FieldType: 1
+    Material: {fileID: 2100000, guid: db58282f11578fd439550810e82b50c3, type: 2}
+  - FieldType: 2
+    Material: {fileID: 2100000, guid: 90dfa4226dbe0df43b093c6c618b4da1, type: 2}
+  - FieldType: 3
+    Material: {fileID: 2100000, guid: 6b48e10ea18579241b12614ea659742f, type: 2}
+  - FieldType: 4
+    Material: {fileID: 2100000, guid: cf30447936b9ac7448502dda341b1a01, type: 2}
+  - FieldType: 5
+    Material: {fileID: 2100000, guid: eeef4a2b50aae73489a12ba20a600c75, type: 2}
+  - FieldType: 6
+    Material: {fileID: 2100000, guid: 193535bf897b27245979b801292ebd09, type: 2}
+  - FieldType: 7
+    Material: {fileID: 2100000, guid: 0b23580a6cddbd34187c9cb4ebfe2dad, type: 2}
+  - FieldType: 8
+    Material: {fileID: 2100000, guid: e1c59e6503f708a49b619f5b055faae6, type: 2}
+  - FieldType: 9
+    Material: {fileID: 2100000, guid: c9fe702bfa595d048b1f851ca8898593, type: 2}

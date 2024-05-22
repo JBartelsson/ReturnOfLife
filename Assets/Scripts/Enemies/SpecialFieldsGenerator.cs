@@ -19,7 +19,7 @@ public class SpecialFieldsGenerator : MonoBehaviour
             foreach (SpecialFieldsLayoutSO.Index specialFieldIndex in randomLayout.GetSelectedFields())
             {
                 Debug.Log($"Tried to add {randomLayout.name} to {index}");
-                gridManager.Grid.AddSpecialField(specialFieldIndex, offset, randomSpecialFieldType);
+                gridManager.Grid.AddSpecialField(specialFieldIndex, offset, randomSpecialFieldType, currentEnemy);
                 allowedLayouts.Remove(randomLayout);
                 allowedFields.Remove(randomSpecialFieldType);
             }

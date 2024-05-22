@@ -281,7 +281,7 @@ public class GameManager : MonoBehaviour
     {
         foreach (var specialField in GridManager.Instance.Grid.SpecialFields)
         {
-            Debug.Log($"SpecialField is {specialField.IsFulfilled()}");
+            Debug.Log($"SpecialField {specialField.FieldType} is {specialField.IsFulfilled()}");
         }
     }
 

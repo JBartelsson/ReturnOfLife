@@ -164,13 +164,30 @@ public class Grid
         });
     }
 
-    public void AddSpecialField(SpecialFieldsLayoutSO.Index index, SpecialFieldsLayoutSO.Index offset, SpecialFieldType fieldType)
+    public void AddSpecialField(SpecialFieldsLayoutSO.Index index, SpecialFieldsLayoutSO.Index offset, SpecialFieldType fieldType, EnemiesSO currentEnemy)
     {
         int x = index.X - offset.X;
         int y = index.Y - offset.Y;
         GridTile gridTile = GetGridObject(x, y);
-        gridTile.ChangeFieldType(fieldType);
-        Debug.Log(specialFields);
+        //If no Special Field has been rendered, just add it
+        if (gridTile.FieldType == SpecialFieldType.NONE)
+        {
+            Debug.Log("CHANGED GRID FIELD TYPE CAUSE ITS NONE");
+            gridTile.ChangeFieldType(fieldType);
+        }
+        else
+        {
+            Debug.Log("OVERLAPPING I THINK");
+
+            //If there are two Special Fields overlapping, check for the priority
+            if (currentEnemy.SpecialFieldPriority.Priority.IndexOf(gridTile.FieldType) >
+                currentEnemy.SpecialFieldPriority.Priority.IndexOf(fieldType))
+            {
+                specialFields.First((x) => x.FieldType == gridTile.FieldType).SpecialFieldGridTiles.Remove(gridTile);
+                gridTile.ChangeFieldType(fieldType);
+            }
+        }
+        //In the end, still add the new field to the List of SpecialFields
         if (specialFields.Any((x) => x.FieldType == fieldType))
         {
             specialFields.First((x) => x.FieldType == fieldType).SpecialFieldGridTiles.Add(gridTile);
