@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97a52167ff5b84a43baa628fc2458301, type: 3}
   m_Name: SpecialFieldPriority
   m_EditorClassIdentifier: 
-  priority: 
+  priority: 09000000080000000000000007000000060000000200000001000000040000000300000005000000

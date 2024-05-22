@@ -339,7 +339,7 @@ MonoBehaviour:
   handSize: 5
   standardMana: 3
   standardTurns: 3
-  testEnemy: {fileID: 11400000, guid: 023d8026bf0fb6545bddf4ff6e7e98c7, type: 2}
+  testEnemy: {fileID: 11400000, guid: 70b513f0b8f871549a72e22a23f0bb51, type: 2}
 --- !u!1 &1045059058
 GameObject:
   m_ObjectHideFlags: 0
