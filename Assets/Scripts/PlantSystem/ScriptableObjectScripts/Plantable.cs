@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using TypeReferences;
 using UnityEngine;
+using UnityEngine.Serialization;
+
 [CreateAssetMenu(menuName = "ScriptableObjects/Plantable")]
 public class Plantable : ScriptableObject
 {
@@ -11,7 +13,7 @@ public class Plantable : ScriptableObject
 
     public abstract class Executable
     {
-        [SerializeField] protected EXECUTION_TYPE executionType;
+        [SerializeField] protected EXECUTION_TYPE executionType = EXECUTION_TYPE.NONE;
         public EXECUTION_TYPE ExecutionType { get => executionType; set => executionType = value; }
 
     }
@@ -59,6 +61,21 @@ public class Plantable : ScriptableObject
             this.executionType = exectutionType;
         }
     }
+    
+    [Serializable]
+    public class PlantPassiveCall : Executable
+    {
+        [ClassExtends(typeof(PlantPassiveBase))]
+        public ClassTypeReference scriptType = typeof(PlantPassiveBase);
+
+        public ClassTypeReference ScriptType { get => scriptType; set => scriptType = value; }
+
+        public PlantPassiveCall(Type plantScriptType, EXECUTION_TYPE executionType)
+        {
+            this.scriptType = plantScriptType;
+            this.executionType = executionType;
+        }
+    }
 
 
     public enum PlantableType
@@ -72,12 +89,29 @@ public class Plantable : ScriptableObject
     public string visualization = "0";
     public int regularPoints;
     public int fertilizedPoints;
+    [SerializeField] private Sprite plantSprite;
+
+    
+
     [SerializeField] private PlantFunctionCall plantFunction;
     [SerializeField] private PlantEditorCall plantEditor = null;
     [SerializeField] private PlantAccessCheckCall plantAccessCheck = null;
+    [FormerlySerializedAs("plantPassive")] [SerializeField] private PlantPassiveCall plantPassiveCall = null;
+
 
     public PlantFunctionCall PlantFunction { get => plantFunction; set => plantFunction = value; }
     public PlantEditorCall PlantEditor { get => plantEditor; set => plantEditor = value; }
     public PlantAccessCheckCall PlantAccessCheck { get => plantAccessCheck; set => plantAccessCheck = value; }
+    public PlantPassiveCall PlantPassive
+    {
+        get => plantPassiveCall;
+        set => plantPassiveCall = value;
+    }
+    
+    public Sprite PlantSprite
+    {
+        get => plantSprite;
+        set => plantSprite = value;
+    }
 }
 

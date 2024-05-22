@@ -31,5 +31,6 @@ public enum CALLER_TYPE
     NONE,
     EDITOR,
     EFFECT,
-    PLACEMENT
+    PLACEMENT,
+    PASSIVE
 }

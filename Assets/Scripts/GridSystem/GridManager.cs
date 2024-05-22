@@ -8,13 +8,20 @@ using System;
 public class GridManager : MonoBehaviour
 {
     // Start is called before the first frame update
-    private Grid<GridTile> _grid;
-    private TextMesh[,] debugTextArray;
+    private Grid _grid;
+    private GridVisualization[,] gridVisualization;
     [SerializeField] private int width = 5;
     [SerializeField] private int height = 5;
+    [SerializeField] private float cellSize = 1f;
+    [SerializeField] private GameObject gridSpritePrefab;
 
     public static GridManager Instance { get; private set; }
-    public Grid<GridTile> Grid { get => _grid; set => _grid = value; }
+
+    public Grid Grid
+    {
+        get => _grid;
+        set => _grid = value;
+    }
 
     public event EventHandler OnGridReady;
 
@@ -29,12 +36,22 @@ public class GridManager : MonoBehaviour
             Debug.LogError("Grid Manager already exists!");
         }
     }
+
     void Start()
     {
-        _grid = new Grid<GridTile>(width, height, 3f, transform.position);
-        debugTextArray = new TextMesh[width, height];
-        _grid.OnGridChanged += _grid_OnGridChanged;
-        _grid.InitGrid((Grid<GridTile> g, int x, int y) => new GridTile(g, x, y ));
+        _grid = new Grid(width, height, cellSize, transform.position);
+        gridVisualization = new GridVisualization[width, height];
+        _grid.OnGridTileChanged += GridTileOnGridTileChanged;
+        _grid.InitGrid((Grid g, int x, int y) => new GridTile(g, x, y));
+        _grid.ForEachGridTile((gridTile) =>
+        {
+            Vector3 spritePrefabPosition = _grid.GetWorldPosition(gridTile.X, gridTile.Y);
+            spritePrefabPosition += new Vector3(cellSize * .5f, 0, cellSize * .5f);
+            GameObject spawnedObject =
+                Instantiate(gridSpritePrefab, spritePrefabPosition, Quaternion.identity, this.transform);
+            spawnedObject.name = $"GridTile: {gridTile.X}, {gridTile.Y}";
+            gridVisualization[gridTile.X, gridTile.Y] = spawnedObject.GetComponent<GridVisualization>();
+        });
         ApplyNeighbors();
         OnGridReady?.Invoke(this, EventArgs.Empty);
     }
@@ -72,31 +89,11 @@ public class GridManager : MonoBehaviour
         }
     }
 
-    private void _grid_OnGridChanged(object sender, Grid<GridTile>.OnGridChangedEventArgs e)
+    private void GridTileOnGridTileChanged(object sender, Grid.OnGridChangedEventArgs e)
     {
-        Grid<GridTile> grid = sender as Grid<GridTile>;
-        if (debugTextArray[e.x, e.y] == null)
-        {
-            debugTextArray[e.x, e.y] = UtilsClass.CreateWorldText(e.gridObject.ToString(), null, grid.GetWorldPosition(e.x, e.y) + new Vector3(grid.CellSize, grid.CellSize) * .5f, 15, Color.white, TextAnchor.MiddleCenter);
-            Debug.DrawLine(grid.GetWorldPosition(e.x, e.y), grid.GetWorldPosition(e.x, e.y + 1), Color.white, 100f); ;
-            Debug.DrawLine(grid.GetWorldPosition(e.x, e.y), grid.GetWorldPosition(e.x + 1, e.y), Color.white, 100f);
-        } else
-        {
-            debugTextArray[e.x, e.y].text = e.gridObject.ToString();
-        }
-        if (grid.GetGridObject(e.x, e.y).Marked)
-        {
-            debugTextArray[e.x, e.y].color = Color.red;
-        } else
-        {
-            debugTextArray[e.x, e.y].color = Color.white;
-
-        }
+        Grid grid = sender as Grid;
+        if (gridVisualization[e.x, e.y] == null) return;
+        gridVisualization[e.x, e.y].UpdateContent(e.gridObject);
+       
     }
-
-    private void Update()
-    {
-        
-    }
-
 }

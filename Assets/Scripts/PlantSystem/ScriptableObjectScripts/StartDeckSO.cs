@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-[CreateAssetMenu(menuName = "Scriptable Object/StartDeck")]
+[CreateAssetMenu(menuName = "ScriptableObjects/StartDeck")]
 
 public class StartDeckSO : ScriptableObject
 {
