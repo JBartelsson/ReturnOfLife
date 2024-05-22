@@ -202,6 +202,8 @@ public class Grid
     public void ResetGrid()
     {
         ForEachGridTile((x) => x.Reset());
+        SpecialFields.Clear();
+        plantInstances.Clear();
     }
 
 }

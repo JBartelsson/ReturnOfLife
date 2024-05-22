@@ -30,10 +30,10 @@ public class GameManager : MonoBehaviour
     [Serializable]
     public struct Score
     {
-        public int Points
+        public int EcoPoints
         {
-            get => points;
-            set => points = value;
+            get => ecoPoints;
+            set => ecoPoints = value;
         }
 
         public int Fields
@@ -48,7 +48,7 @@ public class GameManager : MonoBehaviour
             set => specialFields = value;
         }
 
-        private int points;
+        private int ecoPoints;
         private int fields;
         private int specialFields;
     }
@@ -171,6 +171,7 @@ public class GameManager : MonoBehaviour
     {
         currentEnemy = planetProgression.GetRandomEnemy(currentStage);
         GridManager.Instance.Grid.ResetGrid();
+        currentScore = new Score();
         SpecialFieldsGenerator.GenerateSpecialFields(GridManager.Instance, currentEnemy);
         deck.Clear();
         currentHand.Clear();
@@ -286,10 +287,20 @@ public class GameManager : MonoBehaviour
 
     private void CheckSpecialFields()
     {
+        int specialFieldAmount = 0;
         foreach (var specialField in GridManager.Instance.Grid.SpecialFields)
         {
             // Debug.Log($"SpecialField {specialField.FieldType} is {specialField.IsFulfilled()}");
+            if (specialField.IsFulfilled()) specialFieldAmount++;
+
         }
+
+        currentScore.SpecialFields = specialFieldAmount;
+        EventManager.Game.Level.OnScoreChanged?.Invoke(new EventManager.GameEvents.LevelEvents.ScoreChangedArgs()
+        {
+            sender = this,
+            newScore = currentScore
+        });
     }
 
     private void PlayCard(PlantableCard plantableCard)
@@ -422,11 +433,21 @@ public class GameManager : MonoBehaviour
     public void AddFieldScore(int amount)
     {
         currentScore.Fields += amount;
+        EventManager.Game.Level.OnScoreChanged?.Invoke(new EventManager.GameEvents.LevelEvents.ScoreChangedArgs()
+        {
+            sender = this,
+            newScore = currentScore
+        });
     }
 
     public void AddPointScore(int amount)
     {
-        currentScore.Points += amount;
+        currentScore.EcoPoints += amount;
+        EventManager.Game.Level.OnScoreChanged?.Invoke(new EventManager.GameEvents.LevelEvents.ScoreChangedArgs()
+        {
+            sender = this,
+            newScore = currentScore
+        });
     }
 
     public void AddSpecialFieldScore(int amount)
