@@ -358,14 +358,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 067d3a90c282a7346a3771cfc78b5ff3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cardImage: {fileID: 0}
-  _costDrop: {fileID: 0}
-  _cardRarity: {fileID: 0}
+  _cardImage: {fileID: 6612825900506483587}
+  _costDrop: {fileID: 1215338025049925912}
+  _cardRarity: {fileID: 846844938053952974}
   _elementBackground: {fileID: 0}
-  _playCost: {fileID: 0}
-  _cardName: {fileID: 0}
-  _cardType: {fileID: 0}
-  _cardText: {fileID: 0}
+  _playCost: {fileID: 1919844937375009681}
+  _cardName: {fileID: 3796568494908355340}
+  _cardType: {fileID: 2210080189181217361}
+  _cardText: {fileID: 1245631948852558066}
   _basicElementBackground: {fileID: 0}
   _snowElementBackground: {fileID: 0}
   _sunElementBackground: {fileID: 0}
