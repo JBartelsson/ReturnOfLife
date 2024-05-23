@@ -14,26 +14,26 @@ public class GameManager : MonoBehaviour
     [Serializable]
     public class PlantableCard
     {
-        public PlantInstance plantBlueprint;
+        public PlantInstance PlantBlueprint;
 
         public PlantableCard(PlantInstance plantBlueprint)
         {
-            this.plantBlueprint = plantBlueprint;
+            this.PlantBlueprint = plantBlueprint;
         }
 
         public PlantableCard(Plantable plantable)
         {
-            this.plantBlueprint = new PlantInstance(plantable);
+            this.PlantBlueprint = new PlantInstance(plantable);
         }
     }
 
     [Serializable]
     public struct Score
     {
-        public int Points
+        public int EcoPoints
         {
-            get => points;
-            set => points = value;
+            get => ecoPoints;
+            set => ecoPoints = value;
         }
 
         public int Fields
@@ -48,7 +48,7 @@ public class GameManager : MonoBehaviour
             set => specialFields = value;
         }
 
-        private int points;
+        private int ecoPoints;
         private int fields;
         private int specialFields;
     }
@@ -73,7 +73,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int handSize = 5;
     [SerializeField] private int standardMana = 3;
     [SerializeField] private int standardTurns = 3;
-    [SerializeField] private EnemiesSO testEnemy;
+    [SerializeField] private PlanetProgressionSO planetProgression;
     private GameState currentGameState = GameState.None;
     private List<PlantableCard> deck = new();
     private List<PlantableCard> currentHand = new();
@@ -92,6 +92,9 @@ public class GameManager : MonoBehaviour
     //Score Related
     private Score currentScore;
 
+    // Progression Related
+    private EnemiesSO currentEnemy;
+    private PlanetProgressionSO.Stage currentStage = PlanetProgressionSO.Stage.STAGE1;
     public Score CurrentScore
     {
         get => currentScore;
@@ -126,7 +129,7 @@ public class GameManager : MonoBehaviour
         SwitchState(GameState.Init);
     }
 
-    public void SwitchState(GameState newGameState)
+    private void SwitchState(GameState newGameState)
     {
         currentGameState = newGameState;
         //Debug.Log($"GAME MANAGER: Switching to State {currentGameState}");
@@ -144,7 +147,7 @@ public class GameManager : MonoBehaviour
             case GameState.SelectCards:
                 for (int i = 0; i < currentHand.Count; i++)
                 {
-                    Debug.Log($"HAND: Slot {i + 1}: {currentHand[i].plantBlueprint.Plantable.visualization}");
+                    Debug.Log($"HAND: Slot {i + 1}: {currentHand[i].PlantBlueprint.Plantable.visualization}");
                 }
 
                 break;
@@ -166,7 +169,10 @@ public class GameManager : MonoBehaviour
 
     private void InitializeLevel()
     {
-        SpecialFieldsGenerator.GenerateSpecialFields(GridManager.Instance, testEnemy);
+        currentEnemy = planetProgression.GetRandomEnemy(currentStage);
+        GridManager.Instance.Grid.ResetGrid();
+        currentScore = new Score();
+        SpecialFieldsGenerator.GenerateSpecialFields(GridManager.Instance, currentEnemy);
         deck.Clear();
         currentHand.Clear();
         drawPile.Clear();
@@ -180,8 +186,6 @@ public class GameManager : MonoBehaviour
             for (int i = 0; i < deckEntry.amount; i++)
             {
                 deck.Add(new PlantableCard(deckEntry.plantableReference));
-                Debug.Log(
-                    $"Added {deckEntry.plantableReference.visualization} to deck, Its Plant Instance: {deck.Last().plantBlueprint}");
             }
         }
 
@@ -191,7 +195,7 @@ public class GameManager : MonoBehaviour
 
     private void InitEditor()
     {
-        editorArgs.SetValues(selectedCard.plantBlueprint, playedTile, selectedPlantNeedNeighbor, CALLER_TYPE.EDITOR);
+        editorArgs.SetValues(selectedCard.PlantBlueprint, playedTile, selectedPlantNeedNeighbor, CALLER_TYPE.EDITOR);
         GridManager.Instance.Grid.ForEachGridTile((x) =>
         {
             if (selectedPlantBlueprint.CheckField(new EditorCallerArgs()
@@ -244,9 +248,10 @@ public class GameManager : MonoBehaviour
 
                 GridTile gridTile = GridManager.Instance.Grid.GetGridObject(Input.mousePosition);
                 callerArgs.playedTile = gridTile;
-                Debug.Log(gridTile);
-                if (selectedPlantBlueprint.Execute(callerArgs))
+                if (gridTile == null) return;
+                if (selectedPlantBlueprint.CanExecute(callerArgs))
                 {
+                    selectedPlantBlueprint.Execute(callerArgs);
                     PlantCard(gridTile);
                     CheckSpecialFields();
                 }
@@ -255,6 +260,7 @@ public class GameManager : MonoBehaviour
                     Debug.Log("CANT EXECUTE FUNCTION THERE");
                 }
             }
+            return;
         }
 
         if (currentGameState == GameState.PlantEditor)
@@ -262,6 +268,7 @@ public class GameManager : MonoBehaviour
             if (Input.GetMouseButtonDown(0))
             {
                 GridTile selectedGridTile = GridManager.Instance.Grid.GetGridObject(Input.mousePosition);
+                if (selectedGridTile == null) return;
                 editorArgs.selectedGridTile = selectedGridTile;
                 if (selectedPlantBlueprint.CheckField(editorArgs))
                 {
@@ -274,21 +281,37 @@ public class GameManager : MonoBehaviour
                     Debug.Log("CANT EXECUTE EDITOR FUNCTION THERE");
                 }
             }
+            return;
         }
     }
 
-    public void CheckSpecialFields()
+    private void CheckSpecialFields()
     {
+        int specialFieldAmount = 0;
         foreach (var specialField in GridManager.Instance.Grid.SpecialFields)
         {
-            Debug.Log($"SpecialField {specialField.FieldType} is {specialField.IsFulfilled()}");
+            // Debug.Log($"SpecialField {specialField.FieldType} is {specialField.IsFulfilled()}");
+            if (specialField.IsFulfilled()) specialFieldAmount++;
+
         }
+
+        currentScore.SpecialFields = specialFieldAmount;
+        EventManager.Game.Level.OnScoreChanged?.Invoke(new EventManager.GameEvents.LevelEvents.ScoreChangedArgs()
+        {
+            sender = this,
+            newScore = currentScore
+        });
     }
 
     private void PlayCard(PlantableCard plantableCard)
     {
+        if (currentMana - plantableCard.PlantBlueprint.Plantable.manaCost < 0)
+        {
+            Debug.Log($"CANT PLAY CARD BECAUSE OF MANA");
+            return;
+        }
         selectedCard = plantableCard;
-        selectedPlantBlueprint = new PlantInstance(selectedCard.plantBlueprint, currentFertilizers);
+        selectedPlantBlueprint = new PlantInstance(selectedCard.PlantBlueprint, currentFertilizers);
         Debug.Log($"PLAYED {selectedPlantBlueprint}");
         callerArgs = new CallerArgs()
         {
@@ -306,6 +329,7 @@ public class GameManager : MonoBehaviour
         {
             SwitchState(GameState.SetPlant);
         }
+
     }
 
     private void PlantCard(GridTile selectedTile)
@@ -328,6 +352,10 @@ public class GameManager : MonoBehaviour
     {
         GridManager.Instance.Grid.ForEachGridTile((x) => x.ChangeMarkedStatus(false));
         currentMana -= selectedPlantBlueprint.Plantable.manaCost;
+        EventManager.Game.Level.OnManaChanged?.Invoke(new EventManager.GameEvents.LevelEvents.ManaChangedArgs()
+        {
+            newMana = currentMana
+        });
         currentHand.Remove(selectedCard);
         discardPile.Add(selectedCard);
         currentPlayedCards++;
@@ -335,13 +363,9 @@ public class GameManager : MonoBehaviour
         {
             SwitchState(GameState.SelectCards);
         }
-        else
-        {
-            SwitchState(GameState.EndTurn);
-        }
     }
 
-    private void EndTurn()
+    public void EndTurn()
     {
         Debug.Log($"=====END TURN {currentTurns}=====");
         HandlePassives();
@@ -353,7 +377,16 @@ public class GameManager : MonoBehaviour
         }
 
         currentMana = standardMana;
+        EventManager.Game.Level.OnManaChanged?.Invoke(new EventManager.GameEvents.LevelEvents.ManaChangedArgs()
+        {
+            newMana = currentMana
+        });
         discardPile.AddRange(currentHand);
+        EventManager.Game.Level.OnTurnChanged?.Invoke(new EventManager.GameEvents.LevelEvents.TurnChangedArgs()
+        {
+            sender = this,
+            turnNumber =  currentTurns
+        });
         SwitchState(GameState.DrawCards);
     }
 
@@ -363,8 +396,14 @@ public class GameManager : MonoBehaviour
 
     private void EndLevel()
     {
-        Debug.Log($"LEVEL ENDED");
-        SwitchState(GameState.LevelEnd);
+        if (currentEnemy.RequirementsMet())
+        {
+            NextLevel();
+        }
+        else
+        {
+            GameOver();
+        }
     }
 
     private void DrawCards()
@@ -394,15 +433,49 @@ public class GameManager : MonoBehaviour
     public void AddFieldScore(int amount)
     {
         currentScore.Fields += amount;
+        EventManager.Game.Level.OnScoreChanged?.Invoke(new EventManager.GameEvents.LevelEvents.ScoreChangedArgs()
+        {
+            sender = this,
+            newScore = currentScore
+        });
     }
 
     public void AddPointScore(int amount)
     {
-        currentScore.Points += amount;
+        currentScore.EcoPoints += amount;
+        EventManager.Game.Level.OnScoreChanged?.Invoke(new EventManager.GameEvents.LevelEvents.ScoreChangedArgs()
+        {
+            sender = this,
+            newScore = currentScore
+        });
     }
 
     public void AddSpecialFieldScore(int amount)
     {
         currentScore.SpecialFields += amount;
+    }
+
+    private void GameOver()
+    {
+        Debug.Log($"GAME OVER!");
+    }
+
+    private void NextLevel()
+    {
+        Debug.Log($"WON LEVEL");
+
+        if (currentStage == PlanetProgressionSO.Stage.BOSS)
+        {
+            WinGame();
+            return;
+        }
+        currentStage++;
+        SwitchState(GameState.Init);
+    }
+
+    private void WinGame()
+    {
+        Debug.Log($"GAME WON!");
+
     }
 }

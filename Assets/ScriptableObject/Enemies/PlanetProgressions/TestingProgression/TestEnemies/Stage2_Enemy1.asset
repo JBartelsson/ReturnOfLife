@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3b747eb152af934bbfc2b934204a5fc, type: 3}
+  m_Name: Stage2_Enemy1
+  m_EditorClassIdentifier: 
+  missions:
+  - MissionType: 0
+    Amount: 100
+  - MissionType: 1
+    Amount: 20
+  - MissionType: 2
+    Amount: 50
+  specialFieldsPositions: {fileID: 11400000, guid: dc673b99285a37042960373abe7b5aa2, type: 2}
+  allowedSpecialFieldLayouts:
+  - {fileID: 11400000, guid: 5c9a9c593462b8f41af8af091f6202f6, type: 2}
+  - {fileID: 11400000, guid: 2518695e5a5e8254fa47a9314fdb0267, type: 2}
+  - {fileID: 11400000, guid: 615ce35a95ddcb242bc77d8781dadcc6, type: 2}
+  - {fileID: 11400000, guid: 13f23b38025e23e408ea5bf33470f781, type: 2}
+  - {fileID: 11400000, guid: 333e6823a9e8b5347b1a9c41168b1698, type: 2}
+  allowedSpecialFields: 0000000001000000050000000800000009000000
+  specialFieldPriority: {fileID: 11400000, guid: efc67fa5ff0bab045a54ce343065d94e, type: 2}

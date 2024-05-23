@@ -182,12 +182,21 @@ public class GridTile
         bool hasNeighboredPlant = false;
         this.ForEachNeighbor((gridTile) =>
         {
-            Debug.Log($"{gridTile.x}, {gridTile.y}");
             if (gridTile.ContainsPlant())
             {
                 hasNeighboredPlant = true;
             }
         });
         return hasNeighboredPlant;
+    }
+
+    public void Reset()
+    {
+        content.Clear();
+        fieldType = SpecialFieldType.NONE;
+        //empty the event
+        OnContentUpdated = delegate { };
+        marked = false;
+        grid.UpdateGridContent(x,y, this);
     }
 }

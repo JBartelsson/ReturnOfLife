@@ -54,4 +54,9 @@ public class EnemiesSO : ScriptableObject
         get => allowedSpecialFields;
         set => allowedSpecialFields = value;
     }
+
+    public bool RequirementsMet()
+    {
+        return true;
+    }
 }

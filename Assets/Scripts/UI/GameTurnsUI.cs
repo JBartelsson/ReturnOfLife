@@ -13,20 +13,16 @@ public class GameTurnsUI : MonoBehaviour
 
     private void OnEnable()
     {
-        EventManager.Game.OnTurnChanged += UpdateTurn;
+        EventManager.Game.Level.OnTurnChanged += UpdateTurn;
     }
-
-    private void Game_OnTest(object sender, System.EventArgs e)
-    {
-        throw new System.NotImplementedException();
-    }
+    
 
     private void OnDisable()
     {
-        EventManager.Game.OnTurnChanged -= UpdateTurn;
+        EventManager.Game.Level.OnTurnChanged -= UpdateTurn;
     }
 
-    private void UpdateTurn(TurnChangedArgs args)
+    private void UpdateTurn(LevelEvents.TurnChangedArgs args)
     {
         label.SetText("Turn: \n" + args.turnNumber.ToString() + "/3");
     }

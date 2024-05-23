@@ -56,6 +56,11 @@ public class GridManager : MonoBehaviour
         OnGridReady?.Invoke(this, EventArgs.Empty);
     }
 
+    public void InitGrid()
+    {
+        
+    }
+
     public void ApplyNeighbors()
     {
         for (int x = 0; x < _grid.Width; x++)

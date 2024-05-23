@@ -5,9 +5,13 @@ using UnityEngine;
 
 public class BasicFertilizerFunction : PlantFunctionBase
 {
-    public override bool Execute(CallerArgs callerArgs)
+    public override void Execute(CallerArgs callerArgs)
     {
         callerArgs.gameManager.AddFertilizer(Fertilizer.Basic);
+    }
+
+    public override bool CanExecute(CallerArgs callerArgs)
+    {
         return true;
     }
 }

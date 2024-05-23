@@ -17,14 +17,15 @@ public class ComboBushPlantFunction : PlantFunctionBase
 
     public bool AlreadyTriggered { get => alreadyTriggered; set => alreadyTriggered = value; }
 
-    public override bool Execute(CallerArgs callerArgs)
+    public override void Execute(CallerArgs callerArgs)
     {
-        Debug.Log($"ALREADY TRIGGERED EXECUTE: {alreadyTriggered}");
-        Debug.Log($"ALREADY TRIGGERED prop EXECUTE: {AlreadyTriggered}");
-
         bushInstance = callerArgs.callingPlantInstance;
         callerArgs.playedTile.AddPlantable(callerArgs);
         callerArgs.playedTile.OnContentUpdated += PlayedTile_OnContentUpdated;
+    }
+
+    public override bool CanExecute(CallerArgs callerArgs)
+    {
         return true;
     }
 

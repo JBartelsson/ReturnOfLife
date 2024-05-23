@@ -105,16 +105,21 @@ public class PlantInstance
         return fertilizers.Where((x) => x == Fertilizer.Retrigger).Count() + plantable.triggerAmount;
     }
 
-    public bool Execute(CallerArgs callerArgs)
+    public void Execute(CallerArgs callerArgs)
+    {
+        if (CanExecute(callerArgs))
+        plantFunction.Execute(callerArgs);
+    }
+
+    public bool CanExecute(CallerArgs callerArgs)
     {
         GridTile gridTile = callerArgs.playedTile;
-        Debug.Log(gridTile);
         if (plantFunction.ExecutionType != EXECUTION_TYPE.IMMEDIATE)
         {
             if (!gridTile.IsAccessible(callerArgs)) return false;
             if (callerArgs.needNeighbor && !gridTile.HasNeighboredPlant()) return false;
         }
-        return plantFunction.Execute(callerArgs);
+        return plantFunction.CanExecute(callerArgs);
     }
 
     public bool IsAccessible(CallerArgs callerArgs)

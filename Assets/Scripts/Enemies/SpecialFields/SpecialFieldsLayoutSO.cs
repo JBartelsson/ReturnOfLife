@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
-[CreateAssetMenu(fileName = "SpecialFieldsLayout", menuName = "ScriptableObjects/SpecialFieldLayout")]
+[CreateAssetMenu(fileName = "SpecialFieldsLayout", menuName = "ScriptableObjects/Enemies/SpecialFieldLayout")]
 public class SpecialFieldsLayoutSO : ScriptableObject
 {
     [Serializable]
@@ -19,18 +20,13 @@ public class SpecialFieldsLayoutSO : ScriptableObject
         [FormerlySerializedAs("marked")] public bool selected = false;
         public Index index;
     }
-    [SerializeField]
-    private Field[,] data;
 
-   
-    [SerializeField]
-    private int centerCellX = -1;
-    [SerializeField]
+    [SerializeField] private Field[,] data;
 
-    private int centerCellY = -1;
-    [SerializeField]
 
-    private string dataString = "";
+    [SerializeField] private int centerCellX = -1;
+    [SerializeField] private int centerCellY = -1;
+    [SerializeField] private string dataString = "";
 
     public int CenterCellX
     {
@@ -43,13 +39,13 @@ public class SpecialFieldsLayoutSO : ScriptableObject
         get => centerCellY;
         set => centerCellY = value;
     }
+
     public Field[,] Data
     {
         get => data;
         set => data = value;
     }
 
-    
 
     public class Index
     {
@@ -61,8 +57,10 @@ public class SpecialFieldsLayoutSO : ScriptableObject
 
         public int X = 0;
         public int Y = 0;
+
         public static Index operator +(Index a, Index b)
             => new Index(a.X + b.X, a.Y + b.Y);
+
         public static Index operator -(Index a, Index b)
             => new Index(a.X - b.X, a.Y - b.Y);
 
@@ -106,11 +104,10 @@ public class SpecialFieldsLayoutSO : ScriptableObject
     {
         int localX = 0;
         int localY = 0;
-        Debug.Log($"Data string on awake: {dataString}");
         OnValidate();
         foreach (char c in dataString)
         {
-            data[localX, localY] = new Field(new Index(localX, localY),c.ToString() == "1");
+            data[localX, localY] = new Field(new Index(localX, localY), c.ToString() == "1");
             localX++;
             if (localX > across - 1)
             {
@@ -133,7 +130,7 @@ public class SpecialFieldsLayoutSO : ScriptableObject
             for (int x = 0; x < data.GetLength(1); x++)
             {
                 localDataString += data[x, y].selected ? "1" : "0";
-            } 
+            }
         }
 
         dataString = localDataString;
@@ -149,16 +146,43 @@ public class SpecialFieldsLayoutSO : ScriptableObject
         return true;
     }
 
-    public List<Index> GetSelectedFields()
+    public List<Index> GetRandomlyMirroredSelectedFields()
     {
         List<Index> result = new();
+        Index origin = new Index(centerCellX, centerCellY);
+        //Apply Random mirroring
+        int mirroring = Random.Range(0, 4);
         for (int x = 0; x < data.GetLength(0); x++)
         {
             for (int y = 0; y < data.GetLength(1); y++)
             {
                 if (data[x, y].selected)
                 {
-                    result.Add(new Index(x,y));
+                    Index relativeIndex = new Index(x, y) - origin;
+                    Index transformedIndex;
+                    switch (mirroring)
+                    {
+                        // No mirroring
+                        case 0:
+                            transformedIndex = new Index(relativeIndex.X, relativeIndex.Y);
+                            break;
+                        // X Mirroring
+                        case 1:
+                            transformedIndex = new Index(-relativeIndex.X, relativeIndex.Y);
+                            break;
+                        //Y Mirroring
+                        case 2:
+                            transformedIndex = new Index(relativeIndex.X, -relativeIndex.Y);
+                            break;
+                        //X and Y Mirroring
+                        case 3:
+                            transformedIndex = new Index(-relativeIndex.X, -relativeIndex.Y);
+                            break;
+                        default:
+                            transformedIndex = new Index(0, 0);
+                            break;
+                    }
+                    result.Add(transformedIndex + origin);
                 }
             }
         }
