@@ -130,7 +130,7 @@ Transform:
   m_GameObject: {fileID: 3178469624528404317}
   serializedVersion: 2
   m_LocalRotation: {x: 0.4453981, y: -0, z: -0, w: 0.89533263}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.093, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -189,7 +189,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
+  - {fileID: 2100000, guid: 1bb8c3e025fe0f043945273891686fa5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -210,7 +210,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: c441728ab1afad34fa166c38dec77ded, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e2b3c7eef1072794896bf773c3a6375f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -5340,3 +5340,5 @@ MonoBehaviour:
     Material: {fileID: 2100000, guid: e1c59e6503f708a49b619f5b055faae6, type: 2}
   - FieldType: 9
     Material: {fileID: 2100000, guid: c9fe702bfa595d048b1f851ca8898593, type: 2}
+  plantFertilizedMaterial: {fileID: 2100000, guid: 1bb8c3e025fe0f043945273891686fa5, type: 2}
+  plantNonFertilizedMaterial: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}

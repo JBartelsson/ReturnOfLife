@@ -87,6 +87,8 @@ public class Plantable : ScriptableObject
     public int triggerAmount = 1;
 
     public string visualization = "0";
+
+
     public int regularPoints;
     public int fertilizedPoints;
     [SerializeField] private Sprite plantSprite;

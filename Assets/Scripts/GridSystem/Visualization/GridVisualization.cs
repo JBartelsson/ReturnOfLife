@@ -31,6 +31,9 @@ public class GridVisualization : MonoBehaviour
         public Material Material;
     }
 
+    [SerializeField] private Material plantFertilizedMaterial;
+    [SerializeField] private Material plantNonFertilizedMaterial;
+
     private void Awake()
     {
         spriteRenderer.sprite = null;
@@ -46,14 +49,27 @@ public class GridVisualization : MonoBehaviour
 
     public void SetNewSprite(PlantInstance plantInstance)
     {
-        SetNewSprite((plantInstance.Plantable.PlantSprite));
+        Sprite newSprite = plantInstance.Plantable.PlantSprite;
+        SetNewSprite(newSprite);
         if (plantInstance.IsBasicFertilized())
         {
-            fertilizedParticles.Play();
+            spriteRenderer.material = plantFertilizedMaterial;
+            Debug.Log($"Sprite Width: {newSprite.rect.width}, {newSprite.rect.height}");
+            var croppedTexture = new Texture2D((int)newSprite.rect.width,
+                (int)newSprite.rect.height);
+            var pixels = newSprite.texture.GetPixels(  0, 
+                0, 
+                (int)newSprite.rect.width, 
+                (int)newSprite.rect.height );
+            Debug.Log($"PIXELS LENGTH: {pixels.Length}");
+            croppedTexture.SetPixels( pixels );
+            croppedTexture.Apply();
+            plantFertilizedMaterial.SetTexture("_MainTex", croppedTexture);
         }
         else
         {
-            fertilizedParticles.Stop();
+            spriteRenderer.material = plantNonFertilizedMaterial;
+
         }
     }
 
