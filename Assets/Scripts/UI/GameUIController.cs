@@ -11,6 +11,7 @@ public class GameUIController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI ecoText;
     [SerializeField] private TextMeshProUGUI fieldsText;
     [SerializeField] private TextMeshProUGUI specialFieldsText;
+    [SerializeField] private List<TextMeshProUGUI> missionList;
 
 
     private void OnEnable()
