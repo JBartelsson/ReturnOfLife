@@ -14,25 +14,26 @@ public class CardUI : MonoBehaviour
     [SerializeField] private Image _cardImage;
     [SerializeField] private Image _costDrop;
     [SerializeField] private Image _cardRarity;
-    [SerializeField] private Image _elementBackground;
+    [SerializeField] private Image _elementIcon;
 
     [SerializeField] private TextMeshProUGUI _playCost;
     [SerializeField] private TextMeshProUGUI _cardName;
     [SerializeField] private TextMeshProUGUI _cardType;
     [SerializeField] private TextMeshProUGUI _cardText;
 
-    [Header("Sprite Assets")] //references to the art folder in assets
-    [SerializeField] private Sprite _basicElementBackground;
-    [SerializeField] private Sprite _snowElementBackground;
-    [SerializeField] private Sprite _sunElementBackground;
-    [SerializeField] private Sprite _windElementBackground;
-    [SerializeField] private Sprite _waterElementBackground;
+    [Header("Hidden Properties ")] //references properties of the cards, that arent shown directly on the card, but in mechanics
+    [SerializeField] private int _turnDelay;
 
-    [SerializeField] private Sprite _basicRarityIcon;
+    [Header("Sprite Assets")] //references to the art folder in assets
+    [SerializeField] private Sprite _basicElementIcon;
+    [SerializeField] private Sprite _snowElementIcon;
+    [SerializeField] private Sprite _sunElementIcon;
+    [SerializeField] private Sprite _windElementIcon;
+    [SerializeField] private Sprite _waterElementIcon;
+
     [SerializeField] private Sprite _commonRarityIcon;
     [SerializeField] private Sprite _rareRarityIcon;
     [SerializeField] private Sprite _epicRarityIcon;
-    [SerializeField] private Sprite _legendaryRarityIcon;
 
     private readonly string EFFECTTYPE_PLANT = "Plant";
     private readonly string EFFECTTYPE_FERTILIZER = "Fertilizer";
@@ -44,6 +45,7 @@ public class CardUI : MonoBehaviour
     private void Awake()
     {
         _card = GetComponent<Card>();
+        SetHiddenProperties();
         SetCardUI();
     }
 
@@ -52,13 +54,26 @@ public class CardUI : MonoBehaviour
         Awake();
     }
 
+    private void SetHiddenProperties()
+    {
+        if (_card != null && _card.CardData != null)
+        {
+            SetTurnDelay();
+        }
+    }
+
+    private void SetTurnDelay()
+    {
+        _turnDelay = _card.CardData.TurnDelay;
+    }
+
     private void SetCardUI()
     {
         if (_card != null && _card.CardData != null)
         {
             SetCardTexts();
             SetRarityIcon();
-            SetElementBackground();
+            SetElementIcon();
             SetCardImage();
         }
     }
@@ -90,9 +105,6 @@ public class CardUI : MonoBehaviour
     {
         switch( _card.CardData.Rarity)
         {
-            case CardRarity.Basic:
-                _cardRarity.sprite = _basicRarityIcon;
-                break;
             case CardRarity.Common:
                 _cardRarity.sprite = _commonRarityIcon;
                 break;
@@ -102,30 +114,27 @@ public class CardUI : MonoBehaviour
             case CardRarity.Epic:
                 _cardRarity.sprite = _epicRarityIcon;
                 break;
-            case CardRarity.Legendary:
-                _cardRarity.sprite = _legendaryRarityIcon;
-                break;
         }
     }
 
-    private void SetElementBackground()
+    private void SetElementIcon()
     {
         switch (_card.CardData.Element)
         {
             case CardElement.Basic:
-                _elementBackground.sprite = _basicElementBackground;
+                _elementIcon.sprite = _basicElementIcon;
                 break;
             case CardElement.Snow:
-                _elementBackground.sprite = _snowElementBackground;
+                _elementIcon.sprite = _snowElementIcon;
                 break;
             case CardElement.Sun:
-                _elementBackground.sprite = _sunElementBackground;
+                _elementIcon.sprite = _sunElementIcon;
                 break;
             case CardElement.Wind:
-                _elementBackground.sprite = _windElementBackground;
+                _elementIcon.sprite = _windElementIcon;
                 break;
             case CardElement.Water:
-                _elementBackground.sprite = _waterElementBackground;
+                _elementIcon.sprite = _waterElementIcon;
                 break;
         }
     }
