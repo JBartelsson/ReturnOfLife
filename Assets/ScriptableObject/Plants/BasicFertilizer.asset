@@ -12,11 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e8b50ae5f69e2046bcf6f1f5f58bf0c, type: 3}
   m_Name: BasicFertilizer
   m_EditorClassIdentifier: 
-  type: 0
+  plantSprite: {fileID: 21300000, guid: 0d0517264a9475848b0724362fb7e690, type: 3}
+  <CardName>k__BackingField: Epiphany
+  <CardText>k__BackingField: Upgrades the next card you play.
+  <PlayCost>k__BackingField: 1
+  <Element>k__BackingField: 0
+  <EffectType>k__BackingField: 0
+  <Rarity>k__BackingField: 1
+  <TurnDelay>k__BackingField: 0
   manaCost: 1
   turnDelay: 0
   triggerAmount: 1
   visualization: F
+  regularPoints: 0
+  fertilizedPoints: 0
   plantFunction:
     executionType: 0
     scriptType:
@@ -27,5 +36,9 @@ MonoBehaviour:
       _classRef: 
   plantAccessCheck:
     executionType: 3
+    scriptType:
+      _classRef: 
+  plantPassiveCall:
+    executionType: 0
     scriptType:
       _classRef: 

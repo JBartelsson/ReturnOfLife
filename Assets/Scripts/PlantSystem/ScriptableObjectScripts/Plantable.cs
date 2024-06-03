@@ -76,12 +76,35 @@ public class Plantable : ScriptableObject
             this.executionType = executionType;
         }
     }
-
-
-    public enum PlantableType
+    public enum CardRarity
     {
-        Plant, Fertilizer
+        Common,
+        Rare,
+        Epic
     }
+
+    public enum CardElement
+    {
+        Basic,
+        Snow,
+        Sun,
+        Wind,
+        Water
+    }
+
+    public enum CardEffectType
+    {
+        Plant, Wisdom
+    }
+    [Header("Card Stats")]
+    [SerializeField] private Sprite plantSprite;
+    [field: SerializeField] public string CardName { get; private set; }
+    [field: SerializeField, TextArea] public string CardText { get; private set; }
+    [field: SerializeField] public int PlayCost { get; private set; }
+    [field: SerializeField] public CardElement Element { get; private set; }
+    [field: SerializeField] public CardEffectType EffectType { get; private set; }
+    [field: SerializeField] public CardRarity Rarity { get; private set; }
+    [field: SerializeField] public int TurnDelay { get; private set; }
     public int manaCost = 1;
     public int turnDelay = 0;
     public int triggerAmount = 1;
@@ -89,11 +112,11 @@ public class Plantable : ScriptableObject
     public string visualization = "0";
 
 
-    public int regularPoints;
-    public int fertilizedPoints;
-    [SerializeField] private Sprite plantSprite;
+    [field: SerializeField]public int regularPoints;
+    [field: SerializeField]public int fertilizedPoints;
 
     
+    [Header("Card Functions")]
 
     [SerializeField] private PlantFunctionCall plantFunction;
     [SerializeField] private PlantEditorCall plantEditor = null;

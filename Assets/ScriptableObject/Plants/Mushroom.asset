@@ -12,27 +12,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e8b50ae5f69e2046bcf6f1f5f58bf0c, type: 3}
   m_Name: Mushroom
   m_EditorClassIdentifier: 
-  type: 0
+  plantSprite: {fileID: 21300000, guid: 387d69c679337bb49b863d4a457a6a05, type: 3}
+  <CardName>k__BackingField: Mushroom
+  <CardText>k__BackingField: 
+  <PlayCost>k__BackingField: 1
+  <Element>k__BackingField: 0
+  <EffectType>k__BackingField: 0
+  <Rarity>k__BackingField: 0
+  <TurnDelay>k__BackingField: 0
   manaCost: 1
   turnDelay: 0
   triggerAmount: 1
   visualization: M
+  regularPoints: 0
+  fertilizedPoints: 0
   plantFunction:
-    rid: 1710084251715108880
+    executionType: 0
+    scriptType:
+      _classRef: 
   plantEditor:
-    rid: -2
+    executionType: 0
+    scriptType:
+      _classRef: 
   plantAccessCheck:
-    rid: 1710084251715108881
-  references:
-    version: 2
-    RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
-    - rid: 1710084251715108880
-      type: {class: Plantable/PlantScriptCall, ns: , asm: ReturnOfLifeAssembly}
-      data:
-        executionType: 2
-    - rid: 1710084251715108881
-      type: {class: Plantable/PlantScriptCall, ns: , asm: ReturnOfLifeAssembly}
-      data:
-        executionType: 3
+    executionType: 0
+    scriptType:
+      _classRef: 
+  plantPassiveCall:
+    executionType: 0
+    scriptType:
+      _classRef: 

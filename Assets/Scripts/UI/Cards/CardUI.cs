@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,7 +9,7 @@ public class CardUI : MonoBehaviour
 {
     #region Fields and Properties
 
-    private Card _card;
+    [SerializeField] private Plantable _card;
 
     [Header("Prefab Elements")] //references objects in the card prefab
     [SerializeField] private Image _cardImage;
@@ -36,27 +37,20 @@ public class CardUI : MonoBehaviour
     [SerializeField] private Sprite _epicRarityIcon;
 
     private readonly string EFFECTTYPE_PLANT = "Plant";
-    private readonly string EFFECTTYPE_FERTILIZER = "Fertilizer";
+    private readonly string EFFECTTYPE_WISDOM = "Wisdom";
 
     #endregion
 
     #region Methods
 
-    private void Awake()
-    {
-        _card = GetComponent<Card>();
-        SetHiddenProperties();
-        SetCardUI();
-    }
-
     private void OnValidate()
     {
-        Awake();
+        SetCardUI(_card);
     }
 
     private void SetHiddenProperties()
     {
-        if (_card != null && _card.CardData != null)
+        if (_card != null)
         {
             SetTurnDelay();
         }
@@ -64,38 +58,53 @@ public class CardUI : MonoBehaviour
 
     private void SetTurnDelay()
     {
-        _turnDelay = _card.CardData.TurnDelay;
+        _turnDelay = _card.TurnDelay;
     }
 
-    private void SetCardUI()
+    public void SetCardUI(PlantInstance plantInstance)
     {
-        if (_card != null && _card.CardData != null)
+        SetCardUI(plantInstance.Plantable);
+    }
+    public void SetCardUI(Plantable card)
+    {
+        _card = card;
+        if (_card != null)
         {
+            ToggleVisibility(true);
             SetCardTexts();
             SetRarityIcon();
             SetElementIcon();
             SetCardImage();
         }
+        else
+        {
+            ToggleVisibility(false);
+        }
+    }
+
+    private void ToggleVisibility(bool visible)
+    {
+        this.gameObject.SetActive(visible);
     }
 
     private void SetCardTexts()
     {
         SetCardEffectTypeText();
 
-        _cardName.text = _card.CardData.CardName;
-        _playCost.text = _card.CardData.PlayCost.ToString();
-        _cardText.text = _card.CardData.CardText;
+        _cardName.text = _card.CardName;
+        _playCost.text = _card.PlayCost.ToString();
+        _cardText.text = _card.CardText;
     }
 
     private void SetCardEffectTypeText()
     {
-        switch(_card.CardData.EffectType)
+        switch(_card.EffectType)
         {
-            case CardEffectType.Plant:
-                _cardType.text = EFFECTTYPE_PLANT;
+            case Plantable.CardEffectType.Plant:
+                // _cardType.text = EFFECTTYPE_PLANT;
                 break;
-            case CardEffectType.Fertilizer:
-                _cardType.text = EFFECTTYPE_FERTILIZER;
+            case Plantable.CardEffectType.Wisdom:
+                // _cardType.text = EFFECTTYPE_WISDOM;
                 break;
 
         }
@@ -103,15 +112,15 @@ public class CardUI : MonoBehaviour
 
     private void SetRarityIcon()
     {
-        switch( _card.CardData.Rarity)
+        switch( _card.Rarity)
         {
-            case CardRarity.Common:
+            case Plantable.CardRarity.Common:
                 _cardRarity.sprite = _commonRarityIcon;
                 break;
-            case CardRarity.Rare:
+            case Plantable.CardRarity.Rare:
                 _cardRarity.sprite = _rareRarityIcon;
                 break;
-            case CardRarity.Epic:
+            case Plantable.CardRarity.Epic:
                 _cardRarity.sprite = _epicRarityIcon;
                 break;
         }
@@ -119,21 +128,21 @@ public class CardUI : MonoBehaviour
 
     private void SetElementIcon()
     {
-        switch (_card.CardData.Element)
+        switch (_card.Element)
         {
-            case CardElement.Basic:
+            case Plantable.CardElement.Basic:
                 _elementIcon.sprite = _basicElementIcon;
                 break;
-            case CardElement.Snow:
+            case Plantable.CardElement.Snow:
                 _elementIcon.sprite = _snowElementIcon;
                 break;
-            case CardElement.Sun:
+            case Plantable.CardElement.Sun:
                 _elementIcon.sprite = _sunElementIcon;
                 break;
-            case CardElement.Wind:
+            case Plantable.CardElement.Wind:
                 _elementIcon.sprite = _windElementIcon;
                 break;
-            case CardElement.Water:
+            case Plantable.CardElement.Water:
                 _elementIcon.sprite = _waterElementIcon;
                 break;
         }
@@ -141,7 +150,7 @@ public class CardUI : MonoBehaviour
 
     private void SetCardImage()
     {
-        _cardImage.sprite = _card.CardData.Image;
+        _cardImage.sprite = _card.PlantSprite;
     }
 
     #endregion

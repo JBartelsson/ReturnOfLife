@@ -8,27 +8,13 @@ public static class EventManager
 
     public class GameEvents
     {
-
-        public UnityAction<TurnChangedArgs> OnTurnChanged;
-
-        public UnityAction<MissionCompletedArgs> OnMissionCompleted;
-
-
         public LevelEvents Level = new LevelEvents();
         public class Args
         {
             public Component sender;
         }
-        public class TurnChangedArgs : Args
-        {
-            public int turnNumber = 0;
-        }
-
-        public class MissionCompletedArgs : Args
-        {
-            public int missionNumber = 0;
-            public String missionText = "Blub";
-        }
+       
+        
         public class LevelEvents
         {
             public UnityAction<TurnChangedArgs> OnTurnChanged;
@@ -37,6 +23,7 @@ public static class EventManager
 
             public UnityAction<ScoreChangedArgs> OnScoreChanged;
             public UnityAction<ManaChangedArgs> OnManaChanged;
+            public UnityAction<Args> OnDrawCards;
 
         
             public class TurnChangedArgs : Args
@@ -58,7 +45,8 @@ public static class EventManager
             {
                 public int missionNumber = 0;
                 public String missionText = "Blub";
-            } 
+            }
+
         }
         
 
