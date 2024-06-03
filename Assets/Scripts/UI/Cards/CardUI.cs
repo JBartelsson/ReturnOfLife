@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using static Plantable;
 
 public class CardUI : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public class CardUI : MonoBehaviour
     [SerializeField] private Image _costDrop;
     [SerializeField] private Image _cardRarity;
     [SerializeField] private Image _elementIcon;
+    [SerializeField] private Image _typeIcon;
 
     [SerializeField] private TextMeshProUGUI _playCost;
     [SerializeField] private TextMeshProUGUI _cardName;
@@ -35,6 +37,9 @@ public class CardUI : MonoBehaviour
     [SerializeField] private Sprite _commonRarityIcon;
     [SerializeField] private Sprite _rareRarityIcon;
     [SerializeField] private Sprite _epicRarityIcon;
+
+    [SerializeField] private Sprite _plantTypeIcon;
+    [SerializeField] private Sprite _wisdomTypeIcon;
 
     private readonly string EFFECTTYPE_PLANT = "Plant";
     private readonly string EFFECTTYPE_WISDOM = "Wisdom";
@@ -74,6 +79,7 @@ public class CardUI : MonoBehaviour
             SetCardTexts();
             SetRarityIcon();
             SetElementIcon();
+            //SetTypeIcon();
             SetCardImage();
         }
         else
@@ -94,6 +100,19 @@ public class CardUI : MonoBehaviour
         _cardName.text = _card.CardName;
         _playCost.text = _card.PlayCost.ToString();
         _cardText.text = _card.CardText;
+    }
+
+    private void SetTypeIcon()
+    {
+        switch (_card.EffectType)
+        {
+            case Plantable.CardEffectType.Plant:
+                _typeIcon.sprite = _plantTypeIcon;
+                break;
+            case Plantable.CardEffectType.Wisdom:
+                _typeIcon.sprite = _wisdomTypeIcon;
+                break;
+        }
     }
 
     private void SetCardEffectTypeText()
