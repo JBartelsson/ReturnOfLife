@@ -71,6 +71,9 @@ public class GameManager : MonoBehaviour
     private StartDeckSO startDeck;
 
     [SerializeField] private int handSize = 5;
+
+    
+
     [SerializeField] private int standardMana = 3;
     [SerializeField] private int standardTurns = 3;
     [SerializeField] private PlanetProgressionSO planetProgression;
@@ -100,7 +103,9 @@ public class GameManager : MonoBehaviour
         get => currentScore;
         set => currentScore = value;
     }
+    public int HandSize => handSize;
 
+    public List<PlantableCard> CurrentHand => currentHand;
     //Args
     private CallerArgs callerArgs = new CallerArgs();
     private EditorCallerArgs editorArgs = new EditorCallerArgs();
@@ -382,6 +387,7 @@ public class GameManager : MonoBehaviour
             newMana = currentMana
         });
         discardPile.AddRange(currentHand);
+        currentHand.Clear();
         EventManager.Game.Level.OnTurnChanged?.Invoke(new EventManager.GameEvents.LevelEvents.TurnChangedArgs()
         {
             sender = this,
@@ -413,6 +419,10 @@ public class GameManager : MonoBehaviour
             DrawSingleCard();
         }
 
+        EventManager.Game.Level.OnDrawCards?.Invoke(new EventManager.GameEvents.Args()
+        {
+            sender = this
+        });
         SwitchState(GameState.SelectCards);
     }
 
