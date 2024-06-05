@@ -17,7 +17,7 @@ MonoBehaviour:
   <CardText>k__BackingField: Upgrades the next card you play.
   <PlayCost>k__BackingField: 1
   <Element>k__BackingField: 0
-  <EffectType>k__BackingField: 0
+  <EffectType>k__BackingField: 1
   <Rarity>k__BackingField: 1
   <TurnDelay>k__BackingField: 0
   manaCost: 1
