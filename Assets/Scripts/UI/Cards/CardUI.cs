@@ -7,7 +7,7 @@ using TMPro;
 using UnityEngine.EventSystems;
 using static Plantable;
 
-public class CardUI : MonoBehaviour
+public class CardUI : MonoBehaviour, IPointerClickHandler
 {
     #region Fields and Properties
 
