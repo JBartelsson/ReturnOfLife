@@ -23,7 +23,7 @@ public class CardUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _cardName;
     [SerializeField] private TextMeshProUGUI _cardType;
     [SerializeField] private TextMeshProUGUI _cardText;
-
+ 
     [Header("Hidden Properties ")] //references properties of the cards, that arent shown directly on the card, but in mechanics
     [SerializeField] private int _turnDelay;
 
