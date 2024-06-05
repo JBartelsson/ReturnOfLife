@@ -24,6 +24,8 @@ public static class EventManager
             public UnityAction<ScoreChangedArgs> OnScoreChanged;
             public UnityAction<ManaChangedArgs> OnManaChanged;
             public UnityAction<Args> OnDrawCards;
+            public UnityAction<Args> OnUpdateCards;
+            public UnityAction<Args> OnInCardSelection;
 
         
             public class TurnChangedArgs : Args

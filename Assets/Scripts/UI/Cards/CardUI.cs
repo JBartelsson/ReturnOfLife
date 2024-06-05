@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.EventSystems;
 using static Plantable;
 
 public class CardUI : MonoBehaviour
@@ -11,6 +12,13 @@ public class CardUI : MonoBehaviour
     #region Fields and Properties
 
     [SerializeField] private Plantable _card;
+    private int _cardIndex = 0;
+
+    public int CardIndex
+    {
+        get => _cardIndex;
+        set => _cardIndex = value;
+    }
 
     [Header("Prefab Elements")] //references objects in the card prefab
     [SerializeField] private Image _cardImage;
@@ -23,7 +31,7 @@ public class CardUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _cardName;
     [SerializeField] private TextMeshProUGUI _cardType;
     [SerializeField] private TextMeshProUGUI _cardText;
- 
+
     [Header("Hidden Properties ")] //references properties of the cards, that arent shown directly on the card, but in mechanics
     [SerializeField] private int _turnDelay;
 
@@ -173,4 +181,9 @@ public class CardUI : MonoBehaviour
     }
 
     #endregion
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        GameManager.Instance.TryPlayCard(_cardIndex);
+    }
 }

@@ -83,8 +83,8 @@ public class GridTile
             GameManager.Instance.AddFieldScore(1);
         }
         content.Add(callerArgs.callingPlantInstance);
-        grid.UpdateGridContent(x, y, this);
         OnContentUpdated?.Invoke(this, EventArgs.Empty);
+        grid.UpdateGridContent(x, y, this);
     }
 
     public void ChangeFieldType(SpecialFieldType newFieldType)
@@ -170,11 +170,10 @@ public class GridTile
 
     public bool IsAccessible(CallerArgs callerArgs)
     {
-        //if one Plant of content is not accessible, then the GridTile can not be used
-        bool isAccessible = true;
-        content.ForEach((plantInstance) => { isAccessible = isAccessible && plantInstance.IsAccessible(callerArgs); });
+        if (content.Count == 0) return true;
+        //The first plant determines if the field is accessible, this needs to be a bit more structured as it can cause problems later on maybe
+        return content[0].IsAccessible(callerArgs);
 
-        return isAccessible;
     }
 
     public bool HasNeighboredPlant()

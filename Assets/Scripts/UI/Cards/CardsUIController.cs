@@ -11,11 +11,16 @@ public class CardsUIController : MonoBehaviour
     private void OnEnable()
     {
         EventManager.Game.Level.OnDrawCards += OnDrawCards;
+        EventManager.Game.Level.OnUpdateCards += OnUpdateCards;
     }
-    
+
+  
+
     private void OnDisable()
     {
         EventManager.Game.Level.OnDrawCards -= OnDrawCards;
+        EventManager.Game.Level.OnUpdateCards -= OnUpdateCards;
+
     }
 
     private void InitCards(int handSize)
@@ -25,6 +30,7 @@ public class CardsUIController : MonoBehaviour
         {
             GameObject newCard = Instantiate(cardPrefab, cardsParent);
             CardUI cardUI = newCard.GetComponent<CardUI>();
+            cardUI.CardIndex = i;
             currentCards.Add(cardUI);
         }
     }
@@ -36,11 +42,21 @@ public class CardsUIController : MonoBehaviour
         {
             InitCards(GameManager.Instance.HandSize);
         };
-        for (int i = 0; i < GameManager.Instance.CurrentHand.Count; i++)
+        for (int i = 0; i < currentCards.Count; i++)
         {
-            currentCards[i].SetCardUI(GameManager.Instance.CurrentHand[i].PlantBlueprint);
+            if (i < GameManager.Instance.CurrentHand.Count)
+            {
+                currentCards[i].SetCardUI(GameManager.Instance.CurrentHand[i].PlantBlueprint);
+            }
+            else
+            {
+                currentCards[i].SetCardUI((Plantable)null);
+            }
         }
-
-        
+    }
+    
+    private void OnUpdateCards(EventManager.GameEvents.Args arg0)
+    {
+        OnDrawCards(arg0);
     }
 }

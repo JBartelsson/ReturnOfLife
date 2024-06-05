@@ -8,7 +8,6 @@ public class CanBeTargetedByEditorAndEffects : PlantAccessCheckBase
 {
     public override bool IsAccessible(CallerArgs callerArgs)
     {
-        Debug.Log(callerArgs.callerType);
         //Can be targeted by effects and editors
         if (callerArgs.callerType == CALLER_TYPE.EFFECT || callerArgs.callerType == CALLER_TYPE.EDITOR) return true;
 
