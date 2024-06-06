@@ -418,10 +418,21 @@ public class GameManager : MonoBehaviour
 
     private void DrawSingleCard()
     {
+        if (drawPile.Count == 0)
+        {
+            ReshuffleDiscardPile();
+        }
         int randomIndex = UnityEngine.Random.Range(0, drawPile.Count);
+        
         PlantableCard drawCard = drawPile[randomIndex];
         currentHand.Add(drawCard);
         drawPile.Remove(drawCard);
+    }
+
+    private void ReshuffleDiscardPile()
+    {
+        drawPile.AddRange(discardPile);
+        discardPile.Clear();
     }
 
     public void AddFertilizer(Fertilizer fertilizer)

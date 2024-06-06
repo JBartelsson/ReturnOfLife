@@ -91,6 +91,14 @@ public class SpecialFieldsLayoutSO : ScriptableObject
         if (data == null || data.Length != (across * down))
         {
             data = new Field[across, down];
+            string newDataString = "";
+            for (int i = 0; i < across * down; i++)
+            {
+                newDataString += "0";
+            }
+
+            dataString = newDataString;
+            LoadDataString();
             EditorUtility.SetDirty(this);
         }
     }
@@ -99,6 +107,8 @@ public class SpecialFieldsLayoutSO : ScriptableObject
     {
         OnValidate();
     }
+    
+    
 #endif
     public void LoadDataString()
     {
@@ -119,6 +129,7 @@ public class SpecialFieldsLayoutSO : ScriptableObject
 
     private void Awake()
     {
+        OnValidate();
         LoadDataString();
     }
 

@@ -33,6 +33,7 @@ public class SpecialFieldsEditor : Editor
 
                 // hard-coded some cheesy color map - improve it by all means!
                 GUI.color = Color.gray;
+                Debug.Log($"{x}, {y}");
                 if (!cell.selected) GUI.color = Color.gray;
                 if (cell.selected)
                 {
