@@ -18,7 +18,7 @@ public class SpecialFieldsEditor : Editor
     public override void OnInspectorGUI()
     {
         var grid = (SpecialFieldsLayoutSO)target;
-        bool isPositions = target.GetType() == typeof(SpecialFieldsPositionsSO);
+        bool isPositions = target.GetType() == typeof(LevelLayoutSO);
         Debug.Log("");
 
         EditorGUILayout.BeginVertical();

@@ -11,7 +11,7 @@ public class SpecialFieldsGenerator : MonoBehaviour
         
         List<SpecialFieldsLayoutSO> allowedLayouts = new List<SpecialFieldsLayoutSO>(currentEnemy.AllowedSpecialFieldLayouts);
         List<SpecialFieldType> allowedFields = new List<SpecialFieldType>(currentEnemy.AllowedSpecialFields);
-        foreach (SpecialFieldsLayoutSO.Index index in currentEnemy.SpecialFieldsPositions.GetRandomlyMirroredSelectedFields())
+        foreach (SpecialFieldsLayoutSO.Index index in currentEnemy.LevelLayout.GetRandomlyMirroredSelectedFields())
         {
             SpecialFieldsLayoutSO randomLayout = allowedLayouts[Random.Range(0, allowedLayouts.Count)];
             SpecialFieldType randomSpecialFieldType = allowedFields[Random.Range(0, allowedFields.Count)];
