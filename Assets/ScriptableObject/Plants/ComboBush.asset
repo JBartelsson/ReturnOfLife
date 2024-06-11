@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e8b50ae5f69e2046bcf6f1f5f58bf0c, type: 3}
   m_Name: ComboBush
   m_EditorClassIdentifier: 
-  plantSprite: {fileID: 21300000, guid: b937ee836e36e444fb2cd2ec2efaaaed, type: 3}
+  plantSprite: {fileID: 21300000, guid: a588770723659aa448f506270b644ad1, type: 3}
   <CardName>k__BackingField: Lycoperdon
   <CardText>k__BackingField: Colonizes adjecent spots if hit by another plant effect.
   <PlayCost>k__BackingField: 1

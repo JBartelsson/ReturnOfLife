@@ -816,7 +816,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4244db174c471a74ba030e1518279d90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startDeck: {fileID: 11400000, guid: 6cfc85603940aea46b2e3056cfe7c002, type: 2}
+  startDeck: {fileID: 11400000, guid: bc616bb0d582d564c82c73b9c79e3880, type: 2}
   handSize: 5
   standardMana: 3
   standardTurns: 3

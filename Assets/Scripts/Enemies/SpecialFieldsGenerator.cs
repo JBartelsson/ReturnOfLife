@@ -11,18 +11,18 @@ public class SpecialFieldsGenerator : MonoBehaviour
         
         List<SpecialFieldsLayoutSO> allowedLayouts = new List<SpecialFieldsLayoutSO>(currentEnemy.AllowedSpecialFieldLayouts);
         List<SpecialFieldType> allowedFields = new List<SpecialFieldType>(currentEnemy.AllowedSpecialFields);
-        foreach (SpecialFieldsLayoutSO.Index index in currentEnemy.LevelLayout.GetRandomlyMirroredSelectedFields())
-        {
-            SpecialFieldsLayoutSO randomLayout = allowedLayouts[Random.Range(0, allowedLayouts.Count)];
-            SpecialFieldType randomSpecialFieldType = allowedFields[Random.Range(0, allowedFields.Count)];
-            SpecialFieldsLayoutSO.Index offset = randomLayout.GetCenterField() - index; 
-            foreach (SpecialFieldsLayoutSO.Index specialFieldIndex in randomLayout.GetRandomlyMirroredSelectedFields())
-            {
-                gridManager.Grid.AddSpecialField(specialFieldIndex, offset, randomSpecialFieldType, currentEnemy);
-                allowedLayouts.Remove(randomLayout);
-                allowedFields.Remove(randomSpecialFieldType);
-            }
-        }
+        // foreach (SpecialFieldsLayoutSO.Index index in currentEnemy.LevelLayout.GetRandomlyMirroredSelectedFields())
+        // {
+        //     SpecialFieldsLayoutSO randomLayout = allowedLayouts[Random.Range(0, allowedLayouts.Count)];
+        //     SpecialFieldType randomSpecialFieldType = allowedFields[Random.Range(0, allowedFields.Count)];
+        //     SpecialFieldsLayoutSO.Index offset = randomLayout.GetCenterField() - index; 
+        //     foreach (SpecialFieldsLayoutSO.Index specialFieldIndex in randomLayout.GetRandomlyMirroredSelectedFields())
+        //     {
+        //         gridManager.Grid.AddSpecialField(specialFieldIndex, offset, randomSpecialFieldType, currentEnemy);
+        //         allowedLayouts.Remove(randomLayout);
+        //         allowedFields.Remove(randomSpecialFieldType);
+        //     }
+        // }
     }
 }
 
