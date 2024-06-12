@@ -116,6 +116,20 @@
                 },
                 "m_SlotId": 1
             }
+        },
+        {
+            "m_OutputSlot": {
+                "m_Node": {
+                    "m_Id": "dd3009f447964c2ab0f298a9f4924513"
+                },
+                "m_SlotId": 7
+            },
+            "m_InputSlot": {
+                "m_Node": {
+                    "m_Id": "ae76fce904224b78aaa473a2b3d82884"
+                },
+                "m_SlotId": 0
+            }
         }
     ],
     "m_VertexContext": {
