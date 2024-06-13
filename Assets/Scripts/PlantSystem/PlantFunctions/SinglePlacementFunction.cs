@@ -11,6 +11,8 @@ public class SinglePlacementFunction : PlantFunctionBase
     {
         GridTile gridTile = callerArgs.playedTile;
         gridTile.AddPlantable(callerArgs);
+        callerArgs.gameManager.AddPointScore(callerArgs.callingPlantInstance.Plantable.regularPoints);
+
     }
 
     public override bool CanExecute(CallerArgs callerArgs)

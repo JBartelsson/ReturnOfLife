@@ -201,13 +201,15 @@ public class GameManager : MonoBehaviour
 
     private void InitEditor()
     {
-        editorArgs.SetValues(selectedCard.PlantBlueprint, playedTile, selectedPlantNeedNeighbor, CALLER_TYPE.EDITOR);
+        editorArgs.SetValues(selectedPlantBlueprint, playedTile, selectedPlantNeedNeighbor, CALLER_TYPE.EDITOR);
+        editorArgs.EditorCallingPlantInstance = selectedPlantBlueprint;
         GridManager.Instance.Grid.ForEachGridTile((x) =>
         {
             if (selectedPlantBlueprint.CheckField(new EditorCallerArgs()
                 {
                     playedTile = playedTile,
                     selectedGridTile = x,
+                    EditorCallingPlantInstance = selectedPlantBlueprint,
                     callerType = CALLER_TYPE.EDITOR
                 }))
             {
@@ -356,7 +358,10 @@ public class GameManager : MonoBehaviour
     private void EndCardPlaying()
     {
         GridManager.Instance.Grid.ForEachGridTile((x) => x.ChangeMarkedStatus(false));
-        
+        if (selectedPlantBlueprint.Plantable.EffectType != Plantable.CardEffectType.Wisdom)
+        {
+            currentFertilizers.Clear();
+        }
         SwitchState(GameState.SelectCards);
     }
 
@@ -441,7 +446,7 @@ public class GameManager : MonoBehaviour
     }
 
     //Score related
-    public void AddFieldScore(int amount)
+    private void AddFieldScore(int amount)
     {
         currentScore.Fields += amount;
         EventManager.Game.Level.OnScoreChanged?.Invoke(new EventManager.GameEvents.LevelEvents.ScoreChangedArgs()
@@ -461,7 +466,7 @@ public class GameManager : MonoBehaviour
         });
     }
 
-    public void AddSpecialFieldScore(int amount)
+    private void AddSpecialFieldScore(int amount)
     {
         currentScore.SpecialFields += amount;
     }

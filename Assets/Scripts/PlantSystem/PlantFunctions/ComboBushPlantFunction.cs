@@ -21,6 +21,15 @@ public class ComboBushPlantFunction : PlantFunctionBase
     {
         bushInstance = callerArgs.callingPlantInstance;
         callerArgs.playedTile.AddPlantable(callerArgs);
+        if (bushInstance.IsBasicFertilized())
+        {
+            callerArgs.gameManager.AddPointScore(bushInstance.Plantable.fertilizedPoints);
+        }
+        else
+        {
+            callerArgs.gameManager.AddPointScore(bushInstance.Plantable.regularPoints);
+
+        }
         callerArgs.playedTile.OnContentUpdated += PlayedTile_OnContentUpdated;
         EventManager.Game.Level.OnInCardSelection += OnCardPlayingEnded;
     }
@@ -35,10 +44,11 @@ public class ComboBushPlantFunction : PlantFunctionBase
         return true;
     }
 
-    private void PlayedTile_OnContentUpdated(object sender, EventArgs e)
+    private void PlayedTile_OnContentUpdated(object sender, PlantInstance plantInstance)
     {
         GridTile callingGridTile = sender as GridTile;
         if (callingGridTile == null) return;
+        if (plantInstance.Plantable == bushInstance.Plantable) return;
         Debug.Log($"TILE {callingGridTile.X}, {callingGridTile.Y} UPDATED, Executing Lycoperdon Function alreadyTriggered: {alreadyTriggered}");
         Debug.Log(this.GetHashCode());
         // if (alreadyTriggered) return;

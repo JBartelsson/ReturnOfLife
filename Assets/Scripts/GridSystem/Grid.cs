@@ -160,7 +160,7 @@ public class Grid
             gridObject = gridObject
         });
     }
-    
+
     public void AddSpecialField(SpecialFieldsLayoutSO.Index index, SpecialFieldsLayoutSO.Index offset, SpecialFieldType fieldType, EnemiesSO currentEnemy)
     {
         int x = index.X - offset.X;

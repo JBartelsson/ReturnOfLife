@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2e8b50ae5f69e2046bcf6f1f5f58bf0c, type: 3}
-  m_Name: ComboBush
+  m_Name: Antisocial
   m_EditorClassIdentifier: 
-  plantSprite: {fileID: 21300000, guid: b937ee836e36e444fb2cd2ec2efaaaed, type: 3}
-  <CardName>k__BackingField: Lycoperdon
-  <CardText>k__BackingField: Colonizes adjecent spots if hit by another plant effect.
+  plantSprite: {fileID: 21300000, guid: 4ce3cef2c1476d04da69bfeb8c09c97d, type: 3}
+  <CardName>k__BackingField: Antisocial
+  <CardText>k__BackingField: 
   <PlayCost>k__BackingField: 1
   <Element>k__BackingField: 0
   <EffectType>k__BackingField: 0
@@ -23,21 +23,21 @@ MonoBehaviour:
   manaCost: 1
   turnDelay: 0
   triggerAmount: 1
-  visualization: C
-  regularPoints: 20
-  fertilizedPoints: 20
+  visualization: M
+  regularPoints: 60
+  fertilizedPoints: 150
   plantFunction:
     executionType: 2
     scriptType:
-      _classRef: ComboBushPlantFunction, ReturnOfLifeAssembly
+      _classRef: AntisocialFunction, ReturnOfLifeAssembly
   plantEditor:
-    executionType: 3
+    executionType: 0
     scriptType:
       _classRef: 
   plantAccessCheck:
-    executionType: 3
+    executionType: 0
     scriptType:
-      _classRef: CanBeTargetedByEditorAndEffects, ReturnOfLifeAssembly
+      _classRef: NoOtherPlantsPlacable, ReturnOfLifeAssembly
   plantPassiveCall:
     executionType: 0
     scriptType:

@@ -5,6 +5,7 @@ using UnityEngine;
 public class EditorCallerArgs : CallerArgs
 {
     public GridTile selectedGridTile;
+    public PlantInstance EditorCallingPlantInstance;
 
     public EditorCallerArgs()
     {
@@ -14,9 +15,10 @@ public class EditorCallerArgs : CallerArgs
         }
     }
 
-    public void SetValues(PlantInstance newCallingPlantable, GridTile newPlayedTile, GridTile newSelectedTile, bool newNeedNeighbor, CALLER_TYPE newCallerType)
+    public void SetValues(PlantInstance newCallingPlantable, PlantInstance newEditorCallingPlantInstance, GridTile newPlayedTile, GridTile newSelectedTile, bool newNeedNeighbor, CALLER_TYPE newCallerType)
     {
         SetValues(newCallingPlantable, newPlayedTile, newNeedNeighbor, newCallerType);
         selectedGridTile = newSelectedTile;
+        EditorCallingPlantInstance = newEditorCallingPlantInstance;
     }
 } 

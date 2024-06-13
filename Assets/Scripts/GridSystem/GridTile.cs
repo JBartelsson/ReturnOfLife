@@ -18,7 +18,7 @@ public class GridTile
     public SpecialFieldType FieldType => fieldType;
 
 
-    public event EventHandler OnContentUpdated;
+    public event EventHandler<PlantInstance> OnContentUpdated;
 
     public GridTile(Grid grid, int x, int y)
     {
@@ -57,6 +57,15 @@ public class GridTile
         set => content = value;
     }
 
+    public PlantInstance PlantInstance
+    {
+        get
+        {
+            if (content.Count == 0) return null;
+            return content[0];
+        }
+    }
+
     public int X
     {
         get => x;
@@ -80,10 +89,9 @@ public class GridTile
         if (!IsAccessible(callerArgs)) return;
         if (!ContainsPlant())
         {
-            GameManager.Instance.AddFieldScore(1);
         }
         content.Add(callerArgs.callingPlantInstance);
-        OnContentUpdated?.Invoke(this, EventArgs.Empty);
+        OnContentUpdated?.Invoke(this, callerArgs.callingPlantInstance);
         grid.UpdateGridContent(x, y, this);
     }
 

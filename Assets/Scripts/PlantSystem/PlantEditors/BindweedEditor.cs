@@ -12,7 +12,7 @@ public class BindweedEditor: PlantEditorBase
         GridTile selectedGridTile = callerArgs.selectedGridTile;
         GridTile caller = callerArgs.playedTile;
         //If not on same axis, return
-        if (!selectedGridTile.OnSameAxisAs(caller)) return false;
+        if (!selectedGridTile.OnSameAxisAs(caller) && !callerArgs.EditorCallingPlantInstance.IsBasicFertilized()) return false;
         //if Distance is greater than 3 return
         if (selectedGridTile.DistanceTo(caller) > BINDWEED_RANGE) return false;
         if (selectedGridTile == caller) return false;
