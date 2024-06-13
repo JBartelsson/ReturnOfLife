@@ -113,9 +113,9 @@ Material:
     - _Surface: 0
     - _WorkflowMode: 1
     - _ZWrite: 1
-    - _poly_brightness: 0.7
-    - _poly_frequency: 0.15
-    - _poly_power: 0.11
+    - _poly_brightness: 1.5
+    - _poly_frequency: 0.67
+    - _poly_power: 0.53
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
