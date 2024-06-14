@@ -187,7 +187,11 @@
             "m_Id": "2282f7b73f0b43cf8882f0dda99a3a04"
         }
     ],
-    "m_GroupDatas": [],
+    "m_GroupDatas": [
+        {
+            "m_Id": "9861eb8e0bf1427890c5257fb4fc7569"
+        }
+    ],
     "m_StickyNoteDatas": [],
     "m_Edges": [
         {
@@ -1724,7 +1728,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector4Node",
     "m_ObjectId": "239e652911454a868356ace66b97cdd3",
     "m_Group": {
-        "m_Id": ""
+        "m_Id": "9861eb8e0bf1427890c5257fb4fc7569"
     },
     "m_Name": "Vector 4",
     "m_DrawState": {
@@ -2374,7 +2378,7 @@
     "m_Type": "UnityEditor.ShaderGraph.AddNode",
     "m_ObjectId": "3ffe2167efac4e44a0f8d811e7bbc090",
     "m_Group": {
-        "m_Id": ""
+        "m_Id": "9861eb8e0bf1427890c5257fb4fc7569"
     },
     "m_Name": "Add",
     "m_DrawState": {
@@ -4699,6 +4703,17 @@
 }
 
 {
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.GroupData",
+    "m_ObjectId": "9861eb8e0bf1427890c5257fb4fc7569",
+    "m_Title": "Bugfixing",
+    "m_Position": {
+        "x": 10.0,
+        "y": 10.0
+    }
+}
+
+{
     "m_SGVersion": 1,
     "m_Type": "UnityEditor.ShaderGraph.Internal.Vector1ShaderProperty",
     "m_ObjectId": "990ba3adf0fb410a9f7e61a060ac15fb",
@@ -5264,7 +5279,7 @@
     "m_Type": "UnityEditor.ShaderGraph.MultiplyNode",
     "m_ObjectId": "aec56e941835412db9fb34268294ac31",
     "m_Group": {
-        "m_Id": ""
+        "m_Id": "9861eb8e0bf1427890c5257fb4fc7569"
     },
     "m_Name": "Multiply",
     "m_DrawState": {
@@ -6200,7 +6215,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector4Node",
     "m_ObjectId": "d65dcc0efd6f46359b8e656addfb7a6d",
     "m_Group": {
-        "m_Id": ""
+        "m_Id": "9861eb8e0bf1427890c5257fb4fc7569"
     },
     "m_Name": "Vector 4",
     "m_DrawState": {
@@ -6994,7 +7009,7 @@
     "m_Type": "UnityEditor.ShaderGraph.SplitNode",
     "m_ObjectId": "f5397c650259453fa3d6835a7bdfa515",
     "m_Group": {
-        "m_Id": ""
+        "m_Id": "9861eb8e0bf1427890c5257fb4fc7569"
     },
     "m_Name": "Split",
     "m_DrawState": {

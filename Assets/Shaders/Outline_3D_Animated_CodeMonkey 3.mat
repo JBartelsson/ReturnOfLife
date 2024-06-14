@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-5157650590922775181
+--- !u!114 &-5613838331512347931
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20,8 +20,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Wind_Shader
-  m_Shader: {fileID: -6465566751694194690, guid: 7b8587a5ebb7a2343b2a26da840a0e6a, type: 3}
+  m_Name: Outline_3D_Animated_CodeMonkey 3
+  m_Shader: {fileID: -6465566751694194690, guid: 9d30421dabe7c4242a0728d38b146cfb, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -40,7 +40,7 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _Texture3D:
+    - _MainTex_1:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -58,7 +58,13 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _OutlineThickness: 0.1
+    - _QueueControl: 0
+    - _QueueOffset: 0
     - _WindIntensity: 0.4
     - _WindSpeed: 0.3
-    m_Colors: []
+    m_Colors:
+    - _OutlineColor: {r: 0.2213583, g: 1, b: 0, a: 1}
+    - _OutlineColor2: {r: 0, g: 0.1984982, b: 1, a: 1}
+    - _OutlineColor_3D: {r: 0, g: 0.031032836, b: 0.78616345, a: 0}
   m_BuildTextureStacks: []
