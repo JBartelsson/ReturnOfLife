@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e8b50ae5f69e2046bcf6f1f5f58bf0c, type: 3}
   m_Name: Bindweed
   m_EditorClassIdentifier: 
-  plantSprite: {fileID: 21300000, guid: e2d68be4c5a80b9498b180040f37dd16, type: 3}
+  plantSprite: {fileID: 21300000, guid: b702e0a87d26f7b47a7c5a8657f12d32, type: 3}
   <CardName>k__BackingField: Bindweed
   <CardText>k__BackingField: Place another Bindweed 3 tiles away after planting.
   <PlayCost>k__BackingField: 1
