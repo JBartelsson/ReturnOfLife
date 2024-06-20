@@ -88,11 +88,14 @@ public class SpecialFieldsLayoutSO : ScriptableObject
     {
         return data[x, y];
     }
+    
 
     public void LoadDataString()
     {
         int localX = 0;
         int localY = 0;
+        int oldGridSize = Mathf.FloorToInt(Mathf.Sqrt(dataString.Length));
+        if (oldGridSize != gridSize) SpecialFieldsEditor.ChangeGridSize(this, true);
         foreach (char c in dataString)
         {
             data[localX, localY] = new Field(new Index(localX, localY), (SpecialFieldType)Convert.ToInt32(c.ToString(), 16));
@@ -107,6 +110,7 @@ public class SpecialFieldsLayoutSO : ScriptableObject
 
     private void Awake()
     {
+        
         LoadDataString();
     }
 
@@ -117,7 +121,8 @@ public class SpecialFieldsLayoutSO : ScriptableObject
         {
             for (int x = 0; x < data.GetLength(1); x++)
             {
-                localDataString += data[x, y].specialFieldType.ToString("X");
+                
+                localDataString += SpecialFieldsEditor.ConvertFieldToSingleString(data[x, y].specialFieldType).ToString();
             }
         }
 

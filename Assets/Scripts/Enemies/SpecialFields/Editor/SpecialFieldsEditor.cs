@@ -19,98 +19,135 @@ public class SpecialFieldsEditor : Editor
         }
     }
 
-    private static void ChangeGridSize(SpecialFieldsLayoutSO specialFieldsLayoutSO)
+    public static void ChangeGridSize(SpecialFieldsLayoutSO specialFieldsLayoutSO, bool reset = false)
     {
         int gridSize = specialFieldsLayoutSO.GridSize;
         if (gridSize <= 0) return;
-        if (specialFieldsLayoutSO.Data == null || specialFieldsLayoutSO.Data.Length != (gridSize * gridSize))
+        if (specialFieldsLayoutSO.Data == null || specialFieldsLayoutSO.Data.Length != (gridSize * gridSize) || reset)
         {
             specialFieldsLayoutSO.Data = new SpecialFieldsLayoutSO.Field[gridSize, gridSize];
-            string newDataString = "";
             for (int x = 0; x < gridSize; x++)
             {
                 for (int y = 0; y < gridSize; y++)
                 {
                     specialFieldsLayoutSO.Data[x, y] =
                         new SpecialFieldsLayoutSO.Field(new SpecialFieldsLayoutSO.Index(x, y));
-                    newDataString += "0";
                 }
             }
 
-            specialFieldsLayoutSO.DataString = newDataString;
+            if (!reset)
+            {
+                specialFieldsLayoutSO.LoadDataString();
+            }
+            else
+            {
+                specialFieldsLayoutSO.SaveDataString();
+            }
+
             EditorUtility.SetDirty(specialFieldsLayoutSO);
         }
     }
 
-    private SpecialFieldType selectedType = SpecialFieldType.NONE;
-    private readonly Dictionary<SpecialFieldType, Color> paletteDictionary = new Dictionary<SpecialFieldType, Color>()
+    public static char ConvertFieldToSingleString(SpecialFieldType fieldType)
     {
-        { SpecialFieldType.NONE , Color.black},
-        { SpecialFieldType.NORMAL_FIELD , Color.gray},
-        { SpecialFieldType.MULTIPLY , Color.red},
-    };
-    
+        //Convert Special Field to Hex for Saving
+
+        string fieldString = fieldType.ToString("X");
+        //Get Last character of hex conversion to delete leading zeros
+        return fieldString[^1];
+    }
+
+    private SpecialFieldType selectedType = SpecialFieldType.NONE;
+
+    private static readonly Dictionary<SpecialFieldType, Color> paletteDictionary =
+        new Dictionary<SpecialFieldType, Color>()
+        {
+            { SpecialFieldType.NONE, Color.black },
+            { SpecialFieldType.NORMAL_FIELD, Color.gray },
+            { SpecialFieldType.MULTIPLY, Color.red },
+        };
+
     public override void OnInspectorGUI()
     {
+        var grid = (SpecialFieldsLayoutSO)target;
+        int oldGridSize = grid.GridSize;
         SerializedProperty gridSizeProperty = serializedObject.FindProperty("gridSize");
         EditorGUILayout.PropertyField(gridSizeProperty);
-        var grid = (SpecialFieldsLayoutSO)target;
-        bool isPositions = target.GetType() == typeof(LevelLayoutSO);
-        int newGridSize = gridSizeProperty.intValue;
-        if (GUILayout.Button("Apply"))
+        bool changed = false;
+        if (GUILayout.Button("Apply Grid Size"))
         {
+            serializedObject.ApplyModifiedProperties();
             ChangeGridSize(grid);
+            changed = true;
         }
 
+        GUI.color = Color.red;
+        if (GUILayout.Button("Reset Grid"))
+        {
+            ChangeGridSize(grid, true);
+            changed = true;
+        }
+        GUI.color = Color.clear;
 
-        EditorGUILayout.BeginVertical();
 
-        bool changed = false;
         if (grid.Data == null) return;
+
         foreach (var item in paletteDictionary)
         {
             GUI.color = Color.clear;
             GUI.contentColor = Color.black;
-            GUILayout.TextField(item.Key.ToString() + ":");
             GUI.color = item.Value;
-            
-            if (GUILayout.Button("", GUILayout.Width(20)))
+            GUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField($"{item.Key.ToString()}");
+            if (GUILayout.Button("", GUILayout.Width(200)))
             {
                 selectedType = item.Key;
             }
+
+            GUILayout.EndHorizontal();
         }
+
+        EditorGUILayout.BeginVertical();
+
+        GUI.color = paletteDictionary[selectedType];
+
+        EditorGUILayout.LabelField($"Selected Type: {selectedType.ToString()}");
+
         for (int y = grid.Data.GetLength(1) - 1; y >= 0; y--)
         {
             GUILayout.BeginHorizontal();
             for (int x = 0; x < grid.Data.GetLength(0); x++)
             {
                 var cell = grid.Data[x, y];
-                
-                // choose color according to the dictionary
-                if (paletteDictionary.ContainsKey(cell.specialFieldType))
+                if (cell != null)
                 {
-                    GUI.color = paletteDictionary[cell.specialFieldType];
-                }
-                else
-                {
-                    GUI.color = Color.magenta;
-                }
-                if (GUILayout.Button($"", GUILayout.Width(20)))
-                {
-                    if (Event.current.button == 1)
+                    // choose color according to the dictionary
+                    if (paletteDictionary.ContainsKey(cell.specialFieldType))
                     {
-                        //Right button
-                        grid.ToggleCell(x, y, SpecialFieldType.NONE);
+                        GUI.color = paletteDictionary[cell.specialFieldType];
                     }
                     else
                     {
-                        //Left button
-
-                        grid.ToggleCell(x, y, selectedType);
+                        GUI.color = Color.magenta;
                     }
 
+                    if (GUILayout.Button($"", GUILayout.Width(20)))
+                    {
+                        if (Event.current.button == 1)
+                        {
+                            //Right button
+                            grid.ToggleCell(x, y, SpecialFieldType.NONE);
+                        }
+                        else
+                        {
+                            //Left button
 
-                    changed = true;
+                            grid.ToggleCell(x, y, selectedType);
+                        }
+
+
+                        changed = true;
+                    }
                 }
             }
 
@@ -118,24 +155,6 @@ public class SpecialFieldsEditor : Editor
             GUILayout.EndHorizontal();
         }
 
-        if (isPositions)
-        {
-            grid.CenterCellX = Mathf.FloorToInt(grid.Data.GetLength(0) / 2f);
-            grid.CenterCellY = Mathf.FloorToInt(grid.Data.GetLength(1) / 2f);
-        }
-
-        if (changed)
-        {
-            grid.SaveDataString();
-            EditorUtility.SetDirty(grid);
-            Undo.RecordObject(grid, "Changed SpecialFields");
-        }
-
-        if (grid.CenterCellX == -1 && !isPositions)
-        {
-            GUI.contentColor = new Color(90, 0, 0);
-            GUILayout.Label("WARNING: No Center Point set! (Use Rightclick!)");
-        }
 
         GUI.color = Color.yellow;
 
@@ -143,6 +162,10 @@ public class SpecialFieldsEditor : Editor
         GUI.color = Color.white;
 
         EditorGUILayout.EndVertical();
-        serializedObject.ApplyModifiedProperties();
+        if (changed)
+        {
+            grid.SaveDataString();
+            Undo.RecordObject(grid, "Changed SpecialFields");
+        }
     }
 }
