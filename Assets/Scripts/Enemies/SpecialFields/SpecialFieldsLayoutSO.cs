@@ -110,7 +110,7 @@ public class SpecialFieldsLayoutSO : ScriptableObject
 
     private void Awake()
     {
-        
+        SpecialFieldsEditor.ChangeGridSize(this);
         LoadDataString();
     }
 

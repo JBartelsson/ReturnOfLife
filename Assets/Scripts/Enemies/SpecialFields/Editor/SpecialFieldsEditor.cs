@@ -80,7 +80,11 @@ public class SpecialFieldsEditor : Editor
             ChangeGridSize(grid);
             changed = true;
         }
-
+        GUI.color = Color.green;
+        if (GUILayout.Button("Save Asset (So it Shows in Git)"))
+        {
+            AssetDatabase.SaveAssetIfDirty(grid);
+        }
         GUI.color = Color.red;
         if (GUILayout.Button("Reset Grid"))
         {
