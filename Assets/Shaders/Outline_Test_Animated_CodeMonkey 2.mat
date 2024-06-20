@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-4724066813784895868
+--- !u!114 &-8277616899535246421
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20,8 +20,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Outline_3_Animated_CodeMonkey 2
-  m_Shader: {fileID: -6465566751694194690, guid: 6e2ac5be83deda54d95cf7551bbebae2, type: 3}
+  m_Name: Outline_Test_Animated_CodeMonkey 2
+  m_Shader: {fileID: -6465566751694194690, guid: 5e15d30948e9ff24e93b73ae74943f9c, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -54,9 +54,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _OutlineThickness: 4
-    - _Scale: 1
+    - _OutlineThickness: 1
+    - _Scale: 0
+    - _Scale_2: 1
     m_Colors:
-    - _OutlineColor: {r: 0.2213583, g: 1, b: 0, a: 1}
-    - _OutlineColor2: {r: 0, g: 0.1984982, b: 1, a: 1}
+    - _OutlineColor: {r: 0.262814, g: 2, b: 0, a: 1}
+    - _OutlineColor2: {r: 0, g: 0.8000002, b: 4, a: 1}
   m_BuildTextureStacks: []

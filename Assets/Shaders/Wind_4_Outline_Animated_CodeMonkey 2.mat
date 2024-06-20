@@ -55,10 +55,10 @@ Material:
     m_Ints: []
     m_Floats:
     - _OutlineThickness: 0.5
-    - _Scale: -0.1
-    - _Scale_2: 0.95
-    - _WindIntensity: 0.4
-    - _WindSpeed: 0.4
+    - _Scale: -0.02
+    - _Scale_2: 1.05
+    - _WindIntensity: 0.2
+    - _WindSpeed: 0.3
     m_Colors:
     - _OutlineColor: {r: 0.262814, g: 2, b: 0, a: 1}
     - _OutlineColor2: {r: 0, g: 0.39533505, b: 1.9766748, a: 1}

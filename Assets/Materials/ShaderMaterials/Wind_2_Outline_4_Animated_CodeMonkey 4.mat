@@ -43,7 +43,7 @@ Material:
     m_Floats:
     - _OutlineThickness: 4.1
     - _Scale: -0.09
-    - _WindIntensity: 0.4
+    - _WindIntensity: 0.2
     - _WindSpeed: 0.3
     m_Colors:
     - _OutlineColor: {r: 0.2213583, g: 1, b: 0, a: 1}

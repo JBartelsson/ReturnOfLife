@@ -118,8 +118,8 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Scale: -0.1
-    - _Scale_2: 0.95
+    - _Scale: -0.02
+    - _Scale_2: 1.05
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
