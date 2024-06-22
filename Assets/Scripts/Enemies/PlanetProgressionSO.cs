@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using log4net.Core;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -16,20 +17,20 @@ public class PlanetProgressionSO : ScriptableObject
     public class StageEnemies
     {
         [SerializeField] private Stage stage;
-        [SerializeField] private List<EnemiesSO> allowedEnemies;
+        [SerializeField] private List<LevelSO> allowedEnemies;
 
         public Stage Stage => stage;
 
-        public List<EnemiesSO> AllowedEnemies => allowedEnemies;
+        public List<LevelSO> AllowedEnemies => allowedEnemies;
     }
 
     [SerializeField] private List<StageEnemies> progression;
 
     public List<StageEnemies> Progression => progression;
 
-    public EnemiesSO GetRandomEnemy(Stage stage)
+    public LevelSO GetRandomEnemy(Stage stage)
     {
-        List<EnemiesSO> enemiesList =
+        List<LevelSO> enemiesList =
             progression.FirstOrDefault((stageEnemies) => stageEnemies.Stage == stage)?.AllowedEnemies;
         //Return random enemy of List
         if (enemiesList != null) return enemiesList[Random.Range(0, enemiesList.Count)];

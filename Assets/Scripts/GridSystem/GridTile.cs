@@ -95,9 +95,10 @@ public class GridTile
         grid.UpdateGridContent(x, y, this);
     }
 
-    public void ChangeFieldType(SpecialFieldType newFieldType)
+    public void ChangeFieldType(SpecialFieldType newFieldType, bool invokeEvent = true)
     {
         fieldType = newFieldType;
+        if (invokeEvent)
         grid.UpdateGridContent(x,y, this);
     }
 
@@ -112,11 +113,11 @@ public class GridTile
         PlantInstance plant = content.FirstOrDefault();
         if (plant != null)
         {
-            return plant.DebugVisualization();
+            return $"{x}, {y}: {plant.Plantable.name}, {fieldType}";
         }
         else
         {
-            return "-";
+            return $"{x}, {y}: No Plant, {fieldType}";
         }
     }
 
@@ -205,5 +206,10 @@ public class GridTile
         OnContentUpdated = delegate { };
         marked = false;
         grid.UpdateGridContent(x,y, this);
+    }
+
+    public void ResetSubscriptions()
+    {
+        OnContentUpdated = delegate { };
     }
 }

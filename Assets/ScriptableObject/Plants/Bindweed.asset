@@ -24,8 +24,8 @@ MonoBehaviour:
   turnDelay: 0
   triggerAmount: 1
   visualization: B
-  regularPoints: 0
-  fertilizedPoints: 0
+  regularPoints: 20
+  fertilizedPoints: 20
   plantFunction:
     executionType: 2
     scriptType:

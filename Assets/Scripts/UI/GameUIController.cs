@@ -9,9 +9,6 @@ public class GameUIController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI manaText;
     [Header("Score")]
     [SerializeField] private TextMeshProUGUI ecoText;
-    [SerializeField] private TextMeshProUGUI fieldsText;
-    [SerializeField] private TextMeshProUGUI specialFieldsText;
-    [SerializeField] private List<TextMeshProUGUI> missionList;
 
 
     private void OnEnable()
@@ -23,9 +20,7 @@ public class GameUIController : MonoBehaviour
 
     private void OnScoreChanged(EventManager.GameEvents.LevelEvents.ScoreChangedArgs args)
     {
-        ecoText.SetText(args.newScore.EcoPoints.ToString());
-        fieldsText.SetText(args.newScore.Fields.ToString());
-        specialFieldsText.SetText(args.newScore.SpecialFields.ToString());
+        ecoText.SetText($"{args.newScore.EcoPoints.ToString()}/{args.currentLevel.NeededEcoPoints}");
     }
 
     private void OnManaChanged(EventManager.GameEvents.LevelEvents.ManaChangedArgs args)

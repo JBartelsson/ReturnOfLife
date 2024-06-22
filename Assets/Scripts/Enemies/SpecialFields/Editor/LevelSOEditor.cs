@@ -2,49 +2,49 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(SpecialFieldsLayoutSO), true)]
-public class SpecialFieldsEditor : Editor
+[CustomEditor(typeof(LevelSO), true)]
+public class LevelSOEditor : Editor
 {
     [UnityEditor.Callbacks.DidReloadScripts]
     private static void OnScriptsReloaded()
     {
-        string[] assetNames = AssetDatabase.FindAssets("t:" + typeof(SpecialFieldsLayoutSO).Name,
+        string[] assetNames = AssetDatabase.FindAssets("t:" + typeof(LevelSO).Name,
             new[] { "Assets/ScriptableObject" });
         foreach (string SOName in assetNames)
         {
             var SOpath = AssetDatabase.GUIDToAssetPath(SOName);
-            var layout = AssetDatabase.LoadAssetAtPath<SpecialFieldsLayoutSO>(SOpath);
+            var layout = AssetDatabase.LoadAssetAtPath<LevelSO>(SOpath);
             ChangeGridSize(layout);
             layout.LoadDataString();
         }
     }
 
-    public static void ChangeGridSize(SpecialFieldsLayoutSO specialFieldsLayoutSO, bool reset = false)
+    public static void ChangeGridSize(LevelSO levelSo, bool reset = false)
     {
-        int gridSize = specialFieldsLayoutSO.GridSize;
+        int gridSize = levelSo.GridSize;
         if (gridSize <= 0) return;
-        if (specialFieldsLayoutSO.Data == null || specialFieldsLayoutSO.Data.Length != (gridSize * gridSize) || reset)
+        if (levelSo.Data == null || levelSo.Data.Length != (gridSize * gridSize) || reset)
         {
-            specialFieldsLayoutSO.Data = new SpecialFieldsLayoutSO.Field[gridSize, gridSize];
+            levelSo.Data = new LevelSO.Field[gridSize, gridSize];
             for (int x = 0; x < gridSize; x++)
             {
                 for (int y = 0; y < gridSize; y++)
                 {
-                    specialFieldsLayoutSO.Data[x, y] =
-                        new SpecialFieldsLayoutSO.Field(new SpecialFieldsLayoutSO.Index(x, y));
+                    levelSo.Data[x, y] =
+                        new LevelSO.Field(new LevelSO.Index(x, y));
                 }
             }
 
             if (!reset)
             {
-                specialFieldsLayoutSO.LoadDataString();
+                levelSo.LoadDataString();
             }
             else
             {
-                specialFieldsLayoutSO.SaveDataString();
+                levelSo.SaveDataString();
             }
 
-            EditorUtility.SetDirty(specialFieldsLayoutSO);
+            EditorUtility.SetDirty(levelSo);
         }
     }
 
@@ -69,28 +69,33 @@ public class SpecialFieldsEditor : Editor
 
     public override void OnInspectorGUI()
     {
-        var grid = (SpecialFieldsLayoutSO)target;
+        var grid = (LevelSO)target;
         int oldGridSize = grid.GridSize;
         SerializedProperty gridSizeProperty = serializedObject.FindProperty("gridSize");
+        SerializedProperty ecoProperty = serializedObject.FindProperty("neededECOPoints");
         EditorGUILayout.PropertyField(gridSizeProperty);
+        EditorGUILayout.PropertyField(ecoProperty);
+        serializedObject.ApplyModifiedProperties();
         bool changed = false;
         if (GUILayout.Button("Apply Grid Size"))
         {
-            serializedObject.ApplyModifiedProperties();
             ChangeGridSize(grid);
             changed = true;
         }
+
         GUI.color = Color.green;
         if (GUILayout.Button("Save Asset (So it Shows in Git)"))
         {
             AssetDatabase.SaveAssetIfDirty(grid);
         }
+
         GUI.color = Color.red;
         if (GUILayout.Button("Reset Grid"))
         {
             ChangeGridSize(grid, true);
             changed = true;
         }
+
         GUI.color = Color.clear;
 
 

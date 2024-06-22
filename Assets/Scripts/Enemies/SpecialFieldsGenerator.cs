@@ -9,7 +9,7 @@ public class SpecialFieldsGenerator : MonoBehaviour
     public static void GenerateSpecialFields(GridManager gridManager, EnemiesSO currentEnemy)
     {
         
-        List<SpecialFieldsLayoutSO> allowedLayouts = new List<SpecialFieldsLayoutSO>(currentEnemy.AllowedSpecialFieldLayouts);
+        List<LevelSO> allowedLayouts = new List<LevelSO>(currentEnemy.AllowedSpecialFieldLayouts);
         List<SpecialFieldType> allowedFields = new List<SpecialFieldType>(currentEnemy.AllowedSpecialFields);
         // foreach (SpecialFieldsLayoutSO.Index index in currentEnemy.LevelLayout.GetRandomlyMirroredSelectedFields())
         // {

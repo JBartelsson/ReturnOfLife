@@ -54,14 +54,12 @@ public class GridVisualization : MonoBehaviour
         if (plantInstance.IsBasicFertilized())
         {
             spriteRenderer.material = plantFertilizedMaterial;
-            Debug.Log($"Sprite Width: {newSprite.rect.width}, {newSprite.rect.height}");
             var croppedTexture = new Texture2D((int)newSprite.rect.width,
                 (int)newSprite.rect.height);
             var pixels = newSprite.texture.GetPixels(  0, 
                 0, 
                 (int)newSprite.rect.width, 
                 (int)newSprite.rect.height );
-            Debug.Log($"PIXELS LENGTH: {pixels.Length}");
             croppedTexture.SetPixels( pixels );
             croppedTexture.Apply();
             plantFertilizedMaterial.SetTexture("_MainTex", croppedTexture);

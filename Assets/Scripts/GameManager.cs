@@ -95,7 +95,7 @@ public class GameManager : MonoBehaviour
     private Score currentScore;
 
     // Progression Related
-    private EnemiesSO currentEnemy;
+    private LevelSO currentLevel;
     private PlanetProgressionSO.Stage currentStage = PlanetProgressionSO.Stage.STAGE1;
 
     public Score CurrentScore
@@ -129,6 +129,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         GridManager.Instance.OnGridReady += Instance_OnGridReady;
+        BuildLevel();
     }
 
     private void Instance_OnGridReady(object sender, EventArgs e)
@@ -172,13 +173,16 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void BuildLevel()
+    {
+        currentLevel = planetProgression.GetRandomEnemy(currentStage);
+        GridManager.Instance.BuildGrid(currentLevel);
+    }
 
     private void InitializeLevel()
     {
-        currentEnemy = planetProgression.GetRandomEnemy(currentStage);
-        GridManager.Instance.Grid.ResetGrid();
-        currentScore = new Score();
-        SpecialFieldsGenerator.GenerateSpecialFields(GridManager.Instance, currentEnemy);
+        Debug.Log("RESETTING LEVEL");
+        SetPointScore(0);
         deck.Clear();
         currentHand.Clear();
         drawPile.Clear();
@@ -273,16 +277,11 @@ public class GameManager : MonoBehaviour
         int specialFieldAmount = 0;
         foreach (var specialField in GridManager.Instance.Grid.SpecialFields)
         {
-            // Debug.Log($"SpecialField {specialField.FieldType} is {specialField.IsFulfilled()}");
+            Debug.Log($"SpecialField {specialField.FieldType} is {specialField.IsFulfilled()}");
             if (specialField.IsFulfilled()) specialFieldAmount++;
         }
 
         currentScore.SpecialFields = specialFieldAmount;
-        EventManager.Game.Level.OnScoreChanged?.Invoke(new EventManager.GameEvents.LevelEvents.ScoreChangedArgs()
-        {
-            sender = this,
-            newScore = currentScore
-        });
     }
 
     public void TryPlayCard(int index)
@@ -362,6 +361,7 @@ public class GameManager : MonoBehaviour
         {
             currentFertilizers.Clear();
         }
+
         SwitchState(GameState.SelectCards);
     }
 
@@ -397,7 +397,7 @@ public class GameManager : MonoBehaviour
 
     private void EndLevel()
     {
-        if (currentEnemy.RequirementsMet())
+        if (currentLevel.RequirementsMet(this))
         {
             NextLevel();
         }
@@ -427,8 +427,9 @@ public class GameManager : MonoBehaviour
         {
             ReshuffleDiscardPile();
         }
+
         int randomIndex = UnityEngine.Random.Range(0, drawPile.Count);
-        
+
         PlantableCard drawCard = drawPile[randomIndex];
         currentHand.Add(drawCard);
         drawPile.Remove(drawCard);
@@ -446,23 +447,20 @@ public class GameManager : MonoBehaviour
     }
 
     //Score related
-    private void AddFieldScore(int amount)
-    {
-        currentScore.Fields += amount;
-        EventManager.Game.Level.OnScoreChanged?.Invoke(new EventManager.GameEvents.LevelEvents.ScoreChangedArgs()
-        {
-            sender = this,
-            newScore = currentScore
-        });
-    }
 
     public void AddPointScore(int amount)
     {
-        currentScore.EcoPoints += amount;
+        SetPointScore(currentScore.EcoPoints + amount);
+    }
+
+    private void SetPointScore(int newScore)
+    {
+        currentScore.EcoPoints = newScore;
         EventManager.Game.Level.OnScoreChanged?.Invoke(new EventManager.GameEvents.LevelEvents.ScoreChangedArgs()
         {
             sender = this,
-            newScore = currentScore
+            newScore = currentScore,
+            currentLevel = currentLevel
         });
     }
 
@@ -487,7 +485,7 @@ public class GameManager : MonoBehaviour
         }
 
         currentStage++;
-        SwitchState(GameState.Init);
+        BuildLevel();
     }
 
     private void WinGame()

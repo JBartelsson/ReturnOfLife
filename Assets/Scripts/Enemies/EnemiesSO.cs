@@ -25,7 +25,7 @@ public class EnemiesSO : ScriptableObject
 
     [SerializeField] private List<MissionGoal> missions;
     [FormerlySerializedAs("specialFieldsPositions")] [FormerlySerializedAs("specialFieldsLayout")] [SerializeField] private LevelLayoutSO levelLayout;
-    [FormerlySerializedAs("allowedSpecialFields")] [SerializeField] private List<SpecialFieldsLayoutSO> allowedSpecialFieldLayouts;
+    [FormerlySerializedAs("allowedSpecialFields")] [SerializeField] private List<LevelSO> allowedSpecialFieldLayouts;
     [SerializeField] private List<SpecialFieldType> allowedSpecialFields;
 
     public SpecialFieldPrioritySO SpecialFieldPriority => specialFieldPriority;
@@ -44,7 +44,7 @@ public class EnemiesSO : ScriptableObject
         get => levelLayout;
         set => levelLayout = value;
     }
-    public List<SpecialFieldsLayoutSO> AllowedSpecialFieldLayouts
+    public List<LevelSO> AllowedSpecialFieldLayouts
     {
         get => allowedSpecialFieldLayouts;
         set => allowedSpecialFieldLayouts = value;

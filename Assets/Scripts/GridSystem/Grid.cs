@@ -4,11 +4,14 @@ using UnityEngine;
 using CodeMonkey.Utils;
 using System;
 using System.Linq;
+using System.Net;
+using log4net.Core;
 
 public class Grid
 {
     private int width;
     private int height;
+    private LevelSO currentLevelSO;
     private float cellSize;
     private GridTile[,] gridArray;
     private Vector3 originPosition;
@@ -33,6 +36,11 @@ public class Grid
         public SpecialFieldType FieldType;
         public List<GridTile> SpecialFieldGridTiles = new();
 
+        public SpecialField(SpecialFieldType fieldType)
+        {
+            FieldType = fieldType;
+        }
+
         public bool IsFulfilled()
         {
             bool fulfilled = true;
@@ -49,11 +57,26 @@ public class Grid
         }
     }
 
-    public float CellSize { get => cellSize; set => cellSize = value; }
-    public int Width { get => width; set => width = value; }
-    public int Height { get => height; set => height = value; }
+    public float CellSize
+    {
+        get => cellSize;
+        set => cellSize = value;
+    }
+
+    public int Width
+    {
+        get => width;
+        set => width = value;
+    }
+
+    public int Height
+    {
+        get => height;
+        set => height = value;
+    }
 
     public event EventHandler<OnGridChangedEventArgs> OnGridTileChanged;
+
     public class OnGridChangedEventArgs : EventArgs
     {
         public int x;
@@ -62,10 +85,12 @@ public class Grid
     }
 
 
-    public Grid (int width, int height, float cellSize, Vector3 originPosition, Func<Grid, int, int, GridTile> createGridObject = null)
+    public Grid(LevelSO levelSO, float cellSize, Vector3 originPosition,
+        Func<Grid, int, int, GridTile> createGridObject = null)
     {
-        this.width = width;
-        this.height = height;
+        this.currentLevelSO = levelSO;
+        this.width = levelSO.GridSize;
+        this.height = levelSO.GridSize;
         this.cellSize = cellSize;
         this.originPosition = originPosition - new Vector3(width * cellSize * .5f, 0, height * cellSize * .5f);
         gridArray = new GridTile[width, height];
@@ -73,7 +98,6 @@ public class Grid
         {
             InitGrid(createGridObject);
         }
-       
     }
 
     public void InitGrid(Func<Grid, int, int, GridTile> createGridObject)
@@ -83,7 +107,18 @@ public class Grid
             for (int y = 0; y < gridArray.GetLength(1); y++)
             {
                 gridArray[x, y] = createGridObject(this, x, y);
-                UpdateGridContent(x, y, gridArray[x, y]);
+                gridArray[x, y].ChangeFieldType(currentLevelSO.Data[x, y].specialFieldType, true);
+            }
+        }
+
+        ApplyNeighbors();
+        specialFields = FindConnectedFields();
+        foreach (var f in specialFields)
+        {
+            Debug.Log($"SPECIAL FIELD {f.FieldType}");
+            foreach (var grid in f.SpecialFieldGridTiles)
+            {
+                Debug.Log($"TILE: {grid}");
             }
         }
     }
@@ -96,7 +131,7 @@ public class Grid
         gridPlane.Raycast(clickRay, out float enter);
         Vector3 intersectionPoint = clickRay.origin + clickRay.direction.normalized * enter;
         Debug.DrawRay(clickRay.origin, clickRay.direction * 100f, Color.yellow, 100f);
-        Debug.DrawLine(intersectionPoint, originPosition , Color.red, 100f);
+        Debug.DrawLine(intersectionPoint, originPosition, Color.red, 100f);
         x = Mathf.FloorToInt((intersectionPoint - originPosition).x / cellSize);
         y = Mathf.FloorToInt((intersectionPoint - originPosition).z / cellSize);
     }
@@ -112,9 +147,42 @@ public class Grid
         }
     }
 
+    public void ApplyNeighbors()
+    {
+        for (int x = 0; x < Width; x++)
+        {
+            for (int y = 0; y < Height; y++)
+            {
+                //If not on right edge, set right Neighbor
+                if (x >= 0 && x < Width - 1)
+                {
+                    GetGridObject(x, y).RightNeighbor = GetGridObject(x + 1, y);
+                }
+                //If not on left edge, set left Neighbor
+
+                if (x > 0 && x < Width)
+                {
+                    GetGridObject(x, y).LeftNeighbor = GetGridObject(x - 1, y);
+                }
+                //If not on top edge, set top Neighbor
+
+                if (y >= 0 && y < Height - 1)
+                {
+                    GetGridObject(x, y).TopNeighbor = GetGridObject(x, y + 1);
+                }
+                //If not on bottom edge, set top Neighbor
+
+                if (y > 0 && y < Height)
+                {
+                    GetGridObject(x, y).BottomNeighbor = GetGridObject(x, y - 1);
+                }
+            }
+        }
+    }
+
     public void SetGridObject(int x, int y, GridTile value)
     {
-        if (x >= 0 && y >= 0 && x<= width && y <= height)
+        if (x >= 0 && y >= 0 && x <= width && y <= height)
         {
             gridArray[x, y] = value;
             UpdateGridContent(x, y, gridArray[x, y]);
@@ -127,7 +195,7 @@ public class Grid
         GetXY(worldPosition, out x, out y);
         SetGridObject(x, y, value);
     }
-    
+
     public Vector3 GetWorldPosition(int x, int y)
     {
         return new Vector3(x, 0, y) * cellSize + originPosition;
@@ -138,7 +206,8 @@ public class Grid
         if (x >= 0 && y >= 0 && x < width && y < height)
         {
             return gridArray[x, y];
-        } else
+        }
+        else
         {
             return default(GridTile);
         }
@@ -161,7 +230,96 @@ public class Grid
         });
     }
 
-    public void AddSpecialField(SpecialFieldsLayoutSO.Index index, SpecialFieldsLayoutSO.Index offset, SpecialFieldType fieldType, EnemiesSO currentEnemy)
+    public void UpdateWholeGrid()
+    {
+        ForEachGridTile((gridTile) => { UpdateGridContent(gridTile.X, gridTile.Y, gridTile); });
+    }
+
+    private List<SpecialField> FindConnectedFields()
+    {
+        List<SpecialField> specialFieldsList = new();
+        List<GridTile> visitedTiles = new();
+        ForEachGridTile((gridTile) =>
+        {
+            if (visitedTiles.Contains(gridTile))
+            {
+                return;
+            }
+
+            if (gridTile.FieldType == SpecialFieldType.NONE || gridTile.FieldType == SpecialFieldType.NORMAL_FIELD)
+            {
+                visitedTiles.Add(gridTile);
+                return;
+            }
+            if (gridTile.RightNeighbor != null)
+            {
+                if (gridTile.RightNeighbor.FieldType == gridTile.FieldType)
+                {
+                    {
+                        SpecialField newField = new(gridTile.FieldType);
+                        PopulateFieldGroup(ref newField, ref visitedTiles, gridTile);
+                        specialFieldsList.Add(newField);
+                        return;
+                    }
+                }
+            }
+
+            if (gridTile.BottomNeighbor != null)
+            {
+                if (gridTile.BottomNeighbor.FieldType == gridTile.FieldType)
+                {
+                    {
+                        SpecialField newField = new(gridTile.FieldType);
+                        PopulateFieldGroup(ref newField, ref visitedTiles, gridTile);
+                        specialFieldsList.Add(newField);
+                        return;
+                    }
+                }
+            }
+        });
+        return specialFieldsList;
+    }
+
+    private void PopulateFieldGroup(ref SpecialField newSpecialField, ref List<GridTile> visitedTiles,
+        GridTile gridTile)
+    {
+        newSpecialField.SpecialFieldGridTiles.Add(gridTile);
+        visitedTiles.Add(gridTile);
+
+        if (gridTile.RightNeighbor != null)
+        {
+            if (gridTile.RightNeighbor.FieldType == gridTile.FieldType && !visitedTiles.Contains(gridTile.RightNeighbor))
+            {
+                PopulateFieldGroup(ref newSpecialField, ref visitedTiles, gridTile.RightNeighbor);
+            }
+        }
+
+        if (gridTile.TopNeighbor != null)
+        {
+            if (gridTile.TopNeighbor.FieldType == gridTile.FieldType && !visitedTiles.Contains(gridTile.TopNeighbor))
+            {
+                PopulateFieldGroup(ref newSpecialField, ref visitedTiles, gridTile.TopNeighbor);
+            }
+        }
+        
+        if (gridTile.LeftNeighbor != null)
+        {
+            if (gridTile.LeftNeighbor.FieldType == gridTile.FieldType && !visitedTiles.Contains(gridTile.LeftNeighbor))
+            {
+                PopulateFieldGroup(ref newSpecialField, ref visitedTiles, gridTile.LeftNeighbor);
+            }
+        }
+        if (gridTile.BottomNeighbor != null)
+        {
+            if (gridTile.BottomNeighbor.FieldType == gridTile.FieldType && !visitedTiles.Contains(gridTile.BottomNeighbor))
+            {
+                PopulateFieldGroup(ref newSpecialField, ref visitedTiles, gridTile.BottomNeighbor);
+            }
+        }
+    }
+
+    public void AddSpecialField(LevelSO.Index index, LevelSO.Index offset, SpecialFieldType fieldType,
+        EnemiesSO currentEnemy)
     {
         int x = index.X - offset.X;
         int y = index.Y - offset.Y;
@@ -174,15 +332,16 @@ public class Grid
         }
         else
         {
-
             //If there are two Special Fields overlapping, check for the priority
             if (currentEnemy.SpecialFieldPriority.Priority.IndexOf(gridTile.FieldType) >
                 currentEnemy.SpecialFieldPriority.Priority.IndexOf(fieldType))
             {
-                specialFields.First((x) => x.FieldType == gridTile.FieldType).SpecialFieldGridTiles.Remove(gridTile);
+                specialFields.First((x) => x.FieldType == gridTile.FieldType).SpecialFieldGridTiles
+                    .Remove(gridTile);
                 gridTile.ChangeFieldType(fieldType);
             }
         }
+
         //In the end, still add the new field to the List of SpecialFields
         if (specialFields.Any((x) => x.FieldType == fieldType))
         {
@@ -190,13 +349,11 @@ public class Grid
         }
         else
         {
-            specialFields.Add(new SpecialField()
+            specialFields.Add(new SpecialField(fieldType)
             {
-                FieldType = fieldType,
-                SpecialFieldGridTiles = new ()
+                SpecialFieldGridTiles = new()
             });
         }
-        
     }
 
     public void ResetGrid()
@@ -206,4 +363,14 @@ public class Grid
         plantInstances.Clear();
     }
 
+    public void BuildGrid(LevelSO levelSO)
+    {
+    }
+
+//Reset all events so no memory leaks are existing
+    public void ResetSubscriptions()
+    {
+        OnGridTileChanged = null;
+        ForEachGridTile((gridTile) => { gridTile.ResetSubscriptions(); });
+    }
 }

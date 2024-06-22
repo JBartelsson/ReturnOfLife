@@ -10,8 +10,6 @@ public class GridManager : MonoBehaviour
     // Start is called before the first frame update
     private Grid _grid;
     private GridVisualization[,] gridVisualization;
-    [SerializeField] private int width = 5;
-    [SerializeField] private int height = 5;
     [SerializeField] private float cellSize = 1f;
     [SerializeField] private GameObject gridSpritePrefab;
 
@@ -37,10 +35,31 @@ public class GridManager : MonoBehaviour
         }
     }
 
-    void Start()
+    public void BuildGrid(LevelSO levelSO)
     {
-        _grid = new Grid(width, height, cellSize, transform.position);
-        gridVisualization = new GridVisualization[width, height];
+        Debug.Log($"Trying to build grid with {levelSO?.name}");
+        InitGrid(levelSO);
+    }
+
+    private void InitGrid(LevelSO levelSO)
+    {
+        //Create a new Grid, unsubscribing to previous events must happen at some time
+        if (_grid != null) _grid.ResetSubscriptions();
+        Debug.Log($"GRID{levelSO == null}");
+        _grid = new Grid(levelSO, cellSize, transform.position);
+        
+        //Delete all previous GridVisualizations
+        if (gridVisualization != null)
+        {
+            for (int x = 0; x < gridVisualization.GetLength(0); x++)
+            {
+                for (int y = 0; y < gridVisualization.GetLength(0); y++)
+                {
+                    Destroy(gridVisualization[x, y].gameObject);
+                }
+            }
+        }
+        gridVisualization = new GridVisualization[levelSO.GridSize, levelSO.GridSize];
         _grid.OnGridTileChanged += GridTileOnGridTileChanged;
         _grid.InitGrid((Grid g, int x, int y) => new GridTile(g, x, y));
         _grid.ForEachGridTile((gridTile) =>
@@ -52,47 +71,11 @@ public class GridManager : MonoBehaviour
             spawnedObject.name = $"GridTile: {gridTile.X}, {gridTile.Y}";
             gridVisualization[gridTile.X, gridTile.Y] = spawnedObject.GetComponent<GridVisualization>();
         });
-        ApplyNeighbors();
+        _grid.UpdateWholeGrid();
         OnGridReady?.Invoke(this, EventArgs.Empty);
     }
 
-    public void InitGrid()
-    {
-        
-    }
-
-    public void ApplyNeighbors()
-    {
-        for (int x = 0; x < _grid.Width; x++)
-        {
-            for (int y = 0; y < _grid.Height; y++)
-            {
-                //If not on right edge, set right Neighbor
-                if (x >= 0 && x < _grid.Width - 1)
-                {
-                    _grid.GetGridObject(x, y).RightNeighbor = _grid.GetGridObject(x + 1, y);
-                }
-                //If not on left edge, set left Neighbor
-
-                if (x > 0 && x < _grid.Width)
-                {
-                    _grid.GetGridObject(x, y).LeftNeighbor = _grid.GetGridObject(x - 1, y);
-                }
-                //If not on top edge, set top Neighbor
-
-                if (y >= 0 && y < _grid.Height - 1)
-                {
-                    _grid.GetGridObject(x, y).TopNeighbor = _grid.GetGridObject(x, y + 1);
-                }
-                //If not on bottom edge, set top Neighbor
-
-                if (y > 0 && y < _grid.Height)
-                {
-                    _grid.GetGridObject(x, y).BottomNeighbor = _grid.GetGridObject(x, y - 1);
-                }
-            }
-        }
-    }
+    
 
     private void GridTileOnGridTileChanged(object sender, Grid.OnGridChangedEventArgs e)
     {

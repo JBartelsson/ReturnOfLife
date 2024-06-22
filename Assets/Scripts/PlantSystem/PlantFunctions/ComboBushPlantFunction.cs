@@ -27,6 +27,8 @@ public class ComboBushPlantFunction : PlantFunctionBase
         }
         else
         {
+            Debug.Log(callerArgs.gameManager);
+            Debug.Log(callerArgs.playedTile);
             callerArgs.gameManager.AddPointScore(bushInstance.Plantable.regularPoints);
 
         }
@@ -54,6 +56,7 @@ public class ComboBushPlantFunction : PlantFunctionBase
         // if (alreadyTriggered) return;
         alreadyTriggered = true;
         CallerArgs bushCallerArgs = new CallerArgs(new PlantInstance(bushInstance), null, false, CALLER_TYPE.EFFECT);
+        bushCallerArgs.gameManager = GameManager.Instance;
         if (!bushInstance.IsBasicFertilized())
         {
             callingGridTile.ForEachNeighbor((gridTile) =>

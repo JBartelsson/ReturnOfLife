@@ -6,7 +6,7 @@ using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 [CreateAssetMenu(fileName = "SpecialFieldsLayout", menuName = "ScriptableObjects/Enemies/SpecialFieldLayout")]
-public class SpecialFieldsLayoutSO : ScriptableObject
+public class LevelSO : ScriptableObject
 {
     [Serializable]
     public class Field
@@ -29,6 +29,9 @@ public class SpecialFieldsLayoutSO : ScriptableObject
     [SerializeField] private string dataString = "";
 
     [SerializeField] private int gridSize = 7;
+    [SerializeField] private int neededECOPoints;
+
+    public int NeededEcoPoints => neededECOPoints;
 
     public string DataString
     {
@@ -95,7 +98,7 @@ public class SpecialFieldsLayoutSO : ScriptableObject
         int localX = 0;
         int localY = 0;
         int oldGridSize = Mathf.FloorToInt(Mathf.Sqrt(dataString.Length));
-        if (oldGridSize != gridSize) SpecialFieldsEditor.ChangeGridSize(this, true);
+        if (oldGridSize != gridSize) LevelSOEditor.ChangeGridSize(this, true);
         foreach (char c in dataString)
         {
             data[localX, localY] = new Field(new Index(localX, localY), (SpecialFieldType)Convert.ToInt32(c.ToString(), 16));
@@ -110,7 +113,7 @@ public class SpecialFieldsLayoutSO : ScriptableObject
 
     private void Awake()
     {
-        SpecialFieldsEditor.ChangeGridSize(this);
+        LevelSOEditor.ChangeGridSize(this);
         LoadDataString();
     }
 
@@ -122,7 +125,7 @@ public class SpecialFieldsLayoutSO : ScriptableObject
             for (int x = 0; x < data.GetLength(1); x++)
             {
                 
-                localDataString += SpecialFieldsEditor.ConvertFieldToSingleString(data[x, y].specialFieldType).ToString();
+                localDataString += LevelSOEditor.ConvertFieldToSingleString(data[x, y].specialFieldType).ToString();
             }
         }
 
@@ -202,5 +205,11 @@ public class SpecialFieldsLayoutSO : ScriptableObject
 #if UNITY_EDITOR
         EditorUtility.SetDirty(this);
 #endif
+    }
+
+    public bool RequirementsMet(GameManager gameManager)
+    {
+        //Is the needed Eco points smaller than the current points?
+        return gameManager.CurrentScore.EcoPoints > neededECOPoints;
     }
 }

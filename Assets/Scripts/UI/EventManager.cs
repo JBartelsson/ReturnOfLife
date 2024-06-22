@@ -41,6 +41,7 @@ public static class EventManager
             public class ScoreChangedArgs : Args
             {
                 public GameManager.Score newScore;
+                public LevelSO currentLevel;
             }
 
             public class MissionCompletedArgs : Args
