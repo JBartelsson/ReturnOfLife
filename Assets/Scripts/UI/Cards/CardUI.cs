@@ -5,13 +5,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
-using static Plantable;
+using static CardData;
 
 public class CardUI : MonoBehaviour, IPointerClickHandler
 {
     #region Fields and Properties
 
-    [SerializeField] private Plantable _card;
+    [SerializeField] private CardData _card;
     private int _cardIndex = 0;
 
     public int CardIndex
@@ -74,11 +74,11 @@ public class CardUI : MonoBehaviour, IPointerClickHandler
         _turnDelay = _card.TurnDelay;
     }
 
-    public void SetCardUI(PlantInstance plantInstance)
+    public void SetCardUI(CardInstance cardInstance)
     {
-        SetCardUI(plantInstance.Plantable);
+        SetCardUI(cardInstance.CardData);
     }
-    public void SetCardUI(Plantable card)
+    public void SetCardUI(CardData card)
     {
         _card = card;
         if (_card != null)
@@ -114,10 +114,10 @@ public class CardUI : MonoBehaviour, IPointerClickHandler
     {
         switch (_card.EffectType)
         {
-            case Plantable.CardEffectType.Plant:
+            case CardData.CardEffectType.Plant:
                 _typeIcon.sprite = _plantTypeIcon;
                 break;
-            case Plantable.CardEffectType.Wisdom:
+            case CardData.CardEffectType.Wisdom:
                 _typeIcon.sprite = _wisdomTypeIcon;
                 break;
         }
@@ -127,10 +127,10 @@ public class CardUI : MonoBehaviour, IPointerClickHandler
     {
         switch(_card.EffectType)
         {
-            case Plantable.CardEffectType.Plant:
+            case CardData.CardEffectType.Plant:
                 // _cardType.text = EFFECTTYPE_PLANT;
                 break;
-            case Plantable.CardEffectType.Wisdom:
+            case CardData.CardEffectType.Wisdom:
                 // _cardType.text = EFFECTTYPE_WISDOM;
                 break;
 
@@ -141,13 +141,13 @@ public class CardUI : MonoBehaviour, IPointerClickHandler
     {
         switch( _card.Rarity)
         {
-            case Plantable.CardRarity.Common:
+            case CardData.CardRarity.Common:
                 _cardRarity.sprite = _commonRarityIcon;
                 break;
-            case Plantable.CardRarity.Rare:
+            case CardData.CardRarity.Rare:
                 _cardRarity.sprite = _rareRarityIcon;
                 break;
-            case Plantable.CardRarity.Epic:
+            case CardData.CardRarity.Epic:
                 _cardRarity.sprite = _epicRarityIcon;
                 break;
         }
@@ -157,19 +157,19 @@ public class CardUI : MonoBehaviour, IPointerClickHandler
     {
         switch (_card.Element)
         {
-            case Plantable.CardElement.Basic:
+            case CardData.CardElement.Basic:
                 _elementIcon.sprite = _basicElementIcon;
                 break;
-            case Plantable.CardElement.Snow:
+            case CardData.CardElement.Snow:
                 _elementIcon.sprite = _snowElementIcon;
                 break;
-            case Plantable.CardElement.Sun:
+            case CardData.CardElement.Sun:
                 _elementIcon.sprite = _sunElementIcon;
                 break;
-            case Plantable.CardElement.Wind:
+            case CardData.CardElement.Wind:
                 _elementIcon.sprite = _windElementIcon;
                 break;
-            case Plantable.CardElement.Water:
+            case CardData.CardElement.Water:
                 _elementIcon.sprite = _waterElementIcon;
                 break;
         }

@@ -46,11 +46,11 @@ public class CardsUIController : MonoBehaviour
         {
             if (i < GameManager.Instance.CurrentHand.Count)
             {
-                currentCards[i].SetCardUI(GameManager.Instance.CurrentHand[i].PlantBlueprint);
+                currentCards[i].SetCardUI(GameManager.Instance.CurrentHand[i].CardBlueprint);
             }
             else
             {
-                currentCards[i].SetCardUI((Plantable)null);
+                currentCards[i].SetCardUI((CardData)null);
             }
         }
     }

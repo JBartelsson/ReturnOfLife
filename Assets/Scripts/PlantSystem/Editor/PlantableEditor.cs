@@ -6,7 +6,7 @@ using UnityEditor;
 using UnityEditor.Compilation;
 using UnityEditor.Search;
 using UnityEngine;
-[CustomEditor(typeof(Plantable), true)]
+[CustomEditor(typeof(CardData), true)]
 public class PlantableEditor : Editor
 {
     private const string ASSEMBLY_NAME = "PlantFunctionAssembly";
@@ -31,27 +31,27 @@ public class PlantableEditor : Editor
         reflectionDropDownList.Clear();
         reflectionDropDownList.Add(new ReflectionDropDown()
         {
-            scriptType = typeof(PlantFunctionBase),
-            allScripts = GetAll<PlantFunctionBase>(),
+            scriptType = typeof(CardFunctionBase),
+            allScripts = GetAll<CardFunctionBase>(),
             fieldName = "Plant Function"
         });
         reflectionDropDownList.Add(new ReflectionDropDown()
         {
-            scriptType = typeof(PlantAccessCheckBase),
-            allScripts = GetAll<PlantAccessCheckBase>(),
+            scriptType = typeof(CardAccessCheckBase),
+            allScripts = GetAll<CardAccessCheckBase>(),
             fieldName = "Plant Access Check"
         });
         reflectionDropDownList.Add(new ReflectionDropDown()
         {
-            scriptType = typeof(PlantEditorBase),
-            allScripts = GetAll<PlantEditorBase>(),
+            scriptType = typeof(CardEditorBase),
+            allScripts = GetAll<CardEditorBase>(),
             fieldName = "Plant Editor"
         });
 
     }
     public override void OnInspectorGUI()
     {
-        Plantable targetPlantable = target as Plantable;
+        CardData targetCardData = target as CardData;
         base.OnInspectorGUI();
 
 
@@ -173,15 +173,15 @@ public class PlantableEditor : Editor
 
         if (GUILayout.Button("Show Debug Information"))
         {
-            ShowDebug(targetPlantable);
+            ShowDebug(targetCardData);
         }
     }
 
-    public void ShowDebug(Plantable targetPlantable)
+    public void ShowDebug(CardData targetCardData)
     {
-        Debug.Log($"{targetPlantable} Plant Function: {targetPlantable.PlantFunction.ScriptType}, {targetPlantable.PlantFunction.ExecutionType}");
-        Debug.Log($"{targetPlantable} Plant Editor: {targetPlantable.PlantEditor.ScriptType}, {targetPlantable.PlantEditor.ExecutionType}");
-        Debug.Log($"{targetPlantable} Plant Access Check: {targetPlantable.PlantAccessCheck.ScriptType}, {targetPlantable.PlantAccessCheck.ExecutionType}");
+        Debug.Log($"{targetCardData} Plant Function: {targetCardData.CardFunction.ScriptType}, {targetCardData.CardFunction.ExecutionType}");
+        Debug.Log($"{targetCardData} Plant Editor: {targetCardData.CardEditor.ScriptType}, {targetCardData.CardEditor.ExecutionType}");
+        Debug.Log($"{targetCardData} Plant Access Check: {targetCardData.CardAccessCheck.ScriptType}, {targetCardData.CardAccessCheck.ExecutionType}");
     }
 
     public void OnValidate()

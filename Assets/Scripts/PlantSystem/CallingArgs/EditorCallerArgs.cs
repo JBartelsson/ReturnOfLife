@@ -6,7 +6,7 @@ public class EditorCallerArgs : CallerArgs
 {
     //Used for editor access checks, so playedTile and selectedTile is different
     public GridTile selectedGridTile;
-    public PlantInstance EditorCallingPlantInstance;
+    public CardInstance EditorCallingCardInstance;
 
     public EditorCallerArgs()
     {
@@ -16,10 +16,10 @@ public class EditorCallerArgs : CallerArgs
         }
     }
 
-    public void SetValues(PlantInstance newCallingPlantable, PlantInstance newEditorCallingPlantInstance, GridTile newPlayedTile, GridTile newSelectedTile, bool newNeedNeighbor, CALLER_TYPE newCallerType)
+    public void SetValues(CardInstance newCallingPlantable, CardInstance newEditorCallingCardInstance, GridTile newPlayedTile, GridTile newSelectedTile, bool newNeedNeighbor, CALLER_TYPE newCallerType)
     {
         SetValues(newCallingPlantable, newPlayedTile, newNeedNeighbor, newCallerType);
         selectedGridTile = newSelectedTile;
-        EditorCallingPlantInstance = newEditorCallingPlantInstance;
+        EditorCallingCardInstance = newEditorCallingCardInstance;
     }
 } 

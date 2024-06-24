@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public class NoOtherPlantsPlacable : PlantAccessCheckBase
+public class NoOtherCardsPlacable : CardAccessCheckBase
 {
     public override bool IsAccessible(CallerArgs callerArgs)
     {

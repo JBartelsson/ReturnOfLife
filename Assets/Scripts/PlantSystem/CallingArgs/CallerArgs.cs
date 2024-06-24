@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CallerArgs
 {
-    public PlantInstance callingPlantInstance;
+    public CardInstance CallingCardInstance;
     public GridTile playedTile;
     public bool needNeighbor = false;
     public CALLER_TYPE callerType = CALLER_TYPE.NONE;
@@ -14,13 +14,13 @@ public class CallerArgs
     {
 
     }
-    public CallerArgs(PlantInstance newCallingPlantable, GridTile newPlayedTile, bool newNeedNeighbor, CALLER_TYPE newCallerType)
+    public CallerArgs(CardInstance newCallingPlantable, GridTile newPlayedTile, bool newNeedNeighbor, CALLER_TYPE newCallerType)
     {
         SetValues(newCallingPlantable, newPlayedTile, newNeedNeighbor, newCallerType);
     }
-    public void SetValues(PlantInstance newCallingPlantable, GridTile newPlayedTile, bool newNeedNeighbor, CALLER_TYPE newCallerType)
+    public void SetValues(CardInstance newCallingPlantable, GridTile newPlayedTile, bool newNeedNeighbor, CALLER_TYPE newCallerType)
     {
-        callingPlantInstance = newCallingPlantable;
+        CallingCardInstance = newCallingPlantable;
         playedTile = newPlayedTile;
         needNeighbor = newNeedNeighbor;
         callerType = newCallerType;

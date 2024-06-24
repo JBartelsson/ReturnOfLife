@@ -3,10 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 [Serializable]
-public abstract class PlantEditorBase : PlantScriptBase
+public abstract class CardEditorBase : PlantScriptBase
 {
 
-    public PlantEditorBase()
+    public CardEditorBase()
     {
         if (ExecutionType == EXECUTION_TYPE.AFTER_PLACEMENT)
         {

@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.Serialization;
 
 [CreateAssetMenu(menuName = "ScriptableObjects/Plantable")]
-public class Plantable : ScriptableObject
+public class CardData : ScriptableObject
 {
     private void Awake()
     {
@@ -27,10 +27,10 @@ public class Plantable : ScriptableObject
     }
 
     [Serializable]
-    public class PlantFunctionCall : Executable
+    public class CardFunctionCall : Executable
     {
-        [ClassExtends(typeof(PlantFunctionBase))]
-        public ClassTypeReference scriptType = typeof(PlantFunctionBase);
+        [ClassExtends(typeof(CardFunctionBase))]
+        public ClassTypeReference scriptType = typeof(CardFunctionBase);
 
         public ClassTypeReference ScriptType
         {
@@ -38,7 +38,7 @@ public class Plantable : ScriptableObject
             set => scriptType = value;
         }
 
-        public PlantFunctionCall(Type plantScriptType, EXECUTION_TYPE exectutionType)
+        public CardFunctionCall(Type plantScriptType, EXECUTION_TYPE exectutionType)
         {
             this.scriptType = plantScriptType;
             this.executionType = exectutionType;
@@ -46,10 +46,10 @@ public class Plantable : ScriptableObject
     }
 
     [Serializable]
-    public class PlantEditorCall : Executable
+    public class CardEditorCall : Executable
     {
-        [ClassExtends(typeof(PlantEditorBase))]
-        public ClassTypeReference scriptType = typeof(PlantFunctionBase);
+        [ClassExtends(typeof(CardEditorBase))]
+        public ClassTypeReference scriptType = typeof(CardFunctionBase);
 
         public ClassTypeReference ScriptType
         {
@@ -57,7 +57,7 @@ public class Plantable : ScriptableObject
             set => scriptType = value;
         }
 
-        public PlantEditorCall(Type plantScriptType, EXECUTION_TYPE exectutionType)
+        public CardEditorCall(Type plantScriptType, EXECUTION_TYPE exectutionType)
         {
             this.scriptType = plantScriptType;
             this.executionType = exectutionType;
@@ -65,10 +65,10 @@ public class Plantable : ScriptableObject
     }
 
     [Serializable]
-    public class PlantAccessCheckCall : Executable
+    public class CardAccessCheckCall : Executable
     {
-        [ClassExtends(typeof(PlantAccessCheckBase))]
-        public ClassTypeReference scriptType = typeof(PlantFunctionBase);
+        [ClassExtends(typeof(CardAccessCheckBase))]
+        public ClassTypeReference scriptType = typeof(CardFunctionBase);
 
         public ClassTypeReference ScriptType
         {
@@ -76,7 +76,7 @@ public class Plantable : ScriptableObject
             set => scriptType = value;
         }
 
-        public PlantAccessCheckCall(Type plantScriptType, EXECUTION_TYPE exectutionType)
+        public CardAccessCheckCall(Type plantScriptType, EXECUTION_TYPE exectutionType)
         {
             this.scriptType = plantScriptType;
             this.executionType = exectutionType;
@@ -84,10 +84,10 @@ public class Plantable : ScriptableObject
     }
 
     [Serializable]
-    public class PlantPassiveCall : Executable
+    public class CardPassiveCall : Executable
     {
-        [ClassExtends(typeof(PlantPassiveBase))]
-        public ClassTypeReference scriptType = typeof(PlantPassiveBase);
+        [ClassExtends(typeof(CardPassiveBase))]
+        public ClassTypeReference scriptType = typeof(CardPassiveBase);
 
         public ClassTypeReference ScriptType
         {
@@ -95,7 +95,7 @@ public class Plantable : ScriptableObject
             set => scriptType = value;
         }
 
-        public PlantPassiveCall(Type plantScriptType, EXECUTION_TYPE executionType)
+        public CardPassiveCall(Type plantScriptType, EXECUTION_TYPE executionType)
         {
             this.scriptType = plantScriptType;
             this.executionType = executionType;
@@ -124,27 +124,27 @@ public class Plantable : ScriptableObject
         Wisdom
     }
 
-    public Plantable(Plantable plantableToCopy)
+    public CardData(CardData cardDataToCopy)
     {
-        plantSprite = plantableToCopy.plantSprite;
-        CardName = plantableToCopy.CardName;
-        CardText = plantableToCopy.CardText;
-        PlayCost = plantableToCopy.PlayCost;
-        Element = plantableToCopy.Element;
-        EffectType = plantableToCopy.EffectType;
-        Rarity = plantableToCopy.Rarity;
-        TurnDelay = plantableToCopy.TurnDelay;
-        manaCost = plantableToCopy.manaCost;
-        fertilizedPoints = plantableToCopy.fertilizedPoints;
-        regularPoints = plantableToCopy.regularPoints;
-        overridePointFunction = plantableToCopy.overridePointFunction;
-        plantFunction = plantableToCopy.plantFunction;
-        plantEditor = plantableToCopy.plantEditor;
-        plantAccessCheck = plantableToCopy.plantAccessCheck;
-        plantPassiveCall = plantableToCopy.plantPassiveCall;
+        plantSprite = cardDataToCopy.plantSprite;
+        CardName = cardDataToCopy.CardName;
+        CardText = cardDataToCopy.CardText;
+        PlayCost = cardDataToCopy.PlayCost;
+        Element = cardDataToCopy.Element;
+        EffectType = cardDataToCopy.EffectType;
+        Rarity = cardDataToCopy.Rarity;
+        TurnDelay = cardDataToCopy.TurnDelay;
+        manaCost = cardDataToCopy.manaCost;
+        fertilizedPoints = cardDataToCopy.fertilizedPoints;
+        regularPoints = cardDataToCopy.regularPoints;
+        overridePointFunction = cardDataToCopy.overridePointFunction;
+        cardFunction = cardDataToCopy.cardFunction;
+        cardEditor = cardDataToCopy.cardEditor;
+        cardAccessCheck = cardDataToCopy.cardAccessCheck;
+        cardPassiveCall = cardDataToCopy.cardPassiveCall;
     }
 
-    public Plantable Copy()
+    public CardData Copy()
     {
         return Instantiate(this);
     }
@@ -174,12 +174,12 @@ public class Plantable : ScriptableObject
     [SerializeField] private bool overridePointFunction = false;
 
 
-    [SerializeField] private PlantFunctionCall plantFunction;
-    [SerializeField] private PlantEditorCall plantEditor = null;
-    [SerializeField] private PlantAccessCheckCall plantAccessCheck = null;
+    [FormerlySerializedAs("plantFunction")] [SerializeField] private CardFunctionCall cardFunction;
+    [FormerlySerializedAs("plantEditor")] [SerializeField] private CardEditorCall cardEditor = null;
+    [FormerlySerializedAs("plantAccessCheck")] [SerializeField] private CardAccessCheckCall cardAccessCheck = null;
 
-    [FormerlySerializedAs("plantPassive")] [SerializeField]
-    private PlantPassiveCall plantPassiveCall = null;
+    [FormerlySerializedAs("plantPassiveCall")] [FormerlySerializedAs("plantPassive")] [SerializeField]
+    private CardPassiveCall cardPassiveCall = null;
 
     public bool OverridePointFunction
     {
@@ -192,28 +192,28 @@ public class Plantable : ScriptableObject
         get => runtimePoints;
         set => runtimePoints = value;
     }
-    public PlantFunctionCall PlantFunction
+    public CardFunctionCall CardFunction
     {
-        get => plantFunction;
-        set => plantFunction = value;
+        get => cardFunction;
+        set => cardFunction = value;
     }
 
-    public PlantEditorCall PlantEditor
+    public CardEditorCall CardEditor
     {
-        get => plantEditor;
-        set => plantEditor = value;
+        get => cardEditor;
+        set => cardEditor = value;
     }
 
-    public PlantAccessCheckCall PlantAccessCheck
+    public CardAccessCheckCall CardAccessCheck
     {
-        get => plantAccessCheck;
-        set => plantAccessCheck = value;
+        get => cardAccessCheck;
+        set => cardAccessCheck = value;
     }
 
-    public PlantPassiveCall PlantPassive
+    public CardPassiveCall CardPassive
     {
-        get => plantPassiveCall;
-        set => plantPassiveCall = value;
+        get => cardPassiveCall;
+        set => cardPassiveCall = value;
     }
 
     public Sprite PlantSprite

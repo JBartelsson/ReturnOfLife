@@ -2,18 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AddEcoPoints : PlantPassiveBase
+public class AddEcoPoints : CardPassiveBase
 {
     public override bool ExecutePassive(CallerArgs callerArgs)
     {
         if (callerArgs.callerType != CALLER_TYPE.PASSIVE) return false;
-        if (!callerArgs.callingPlantInstance.IsBasicFertilized())
+        if (!callerArgs.CallingCardInstance.IsBasicFertilized())
         {
-            callerArgs.gameManager.AddPointScore(callerArgs.callingPlantInstance.Plantable.regularPoints);
+            callerArgs.gameManager.AddPointScore(callerArgs.CallingCardInstance.CardData.regularPoints);
         }
         else
         {
-            callerArgs.gameManager.AddPointScore(callerArgs.callingPlantInstance.Plantable.fertilizedPoints);
+            callerArgs.gameManager.AddPointScore(callerArgs.CallingCardInstance.CardData.fertilizedPoints);
         }
 
         return true;

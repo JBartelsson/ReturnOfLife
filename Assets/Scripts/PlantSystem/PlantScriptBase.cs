@@ -11,8 +11,8 @@ public enum EXECUTION_TYPE
 }
 public class PlantScriptBase
 {
-    private PlantInstance plantInstance;
+    private CardInstance cardInstance;
     private EXECUTION_TYPE executionType = EXECUTION_TYPE.AFTER_PLACEMENT;
-    public PlantInstance PlantInstance { get => plantInstance; set => plantInstance = value; }
+    public CardInstance CardInstance { get => cardInstance; set => cardInstance = value; }
     public EXECUTION_TYPE ExecutionType { get => executionType; set => executionType = value; }
 }

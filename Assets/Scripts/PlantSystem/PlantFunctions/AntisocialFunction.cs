@@ -3,22 +3,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AntisocialFunction : PlantFunctionBase
+public class AntisocialFunction : CardFunctionBase
 {
     private static int MAX_DISTANCE = 3;
 
     public override void ExecuteCard(CallerArgs callerArgs)
     {
         GridTile gridTile = callerArgs.playedTile;
-        gridTile.AddPlantable(callerArgs);
+        gridTile.AddObject(callerArgs);
         bool hasPlantInRange = false;
         Debug.Log($"====================================");
         GridManager.Instance.Grid.ForEachGridTile((tile) =>
         {
-            Debug.Log($"CHECKING INSTANCE: {tile.PlantInstance}, CALLING INSTANCE: {callerArgs.callingPlantInstance}");
+            Debug.Log($"CHECKING INSTANCE: {tile.CardInstance}, CALLING INSTANCE: {callerArgs.CallingCardInstance}");
             if (tile == gridTile) return;
-            if (tile.PlantInstance == null) return;
-            if (tile.PlantInstance.Plantable.GetType() == callerArgs.callingPlantInstance.Plantable.GetType())
+            if (tile.CardInstance == null) return;
+            if (tile.CardInstance.CardData.GetType() == callerArgs.CallingCardInstance.CardData.GetType())
             {
                 Debug.Log($"PLANT INSTANCES ARE SAME");
                 if (gridTile.DistanceTo(tile) <= MAX_DISTANCE)
@@ -30,12 +30,12 @@ public class AntisocialFunction : PlantFunctionBase
             }
         });
         Debug.Log($"Checking if return is working");
-        Plantable callingPlantable = callerArgs.callingPlantInstance.Plantable;
+        CardData callingCardData = callerArgs.CallingCardInstance.CardData;
         if (hasPlantInRange)
         {
             Debug.Log($"OVERRIDING PLANT FUNCTION!");
-            callingPlantable.RuntimePoints = 0;
-            callingPlantable.OverridePointFunction = true;
+            callingCardData.RuntimePoints = 0;
+            callingCardData.OverridePointFunction = true;
         }
     }
 

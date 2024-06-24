@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public abstract class PlantFunctionBase : PlantScriptBase
+public abstract class CardFunctionBase : PlantScriptBase
 {
     public abstract void ExecuteCard(CallerArgs callerArgs);
     public abstract bool CanExecute(CallerArgs callerArgs);
@@ -13,20 +13,20 @@ public abstract class PlantFunctionBase : PlantScriptBase
     {
         ExecuteCard(callerArgs);
         //Reward points if no override is defined
-        PlantInstance plantInstance = callerArgs.callingPlantInstance;
-        if (!callerArgs.callingPlantInstance.Plantable.OverridePointFunction)
+        CardInstance cardInstance = callerArgs.CallingCardInstance;
+        if (!callerArgs.CallingCardInstance.CardData.OverridePointFunction)
         {
-            if (callerArgs.callingPlantInstance.IsBasicFertilized())
+            if (callerArgs.CallingCardInstance.IsBasicFertilized())
             {
-                plantInstance.Plantable.RuntimePoints = plantInstance.Plantable.fertilizedPoints;
+                cardInstance.CardData.RuntimePoints = cardInstance.CardData.fertilizedPoints;
             }
             else
             {
-                plantInstance.Plantable.RuntimePoints = plantInstance.Plantable.regularPoints;
+                cardInstance.CardData.RuntimePoints = cardInstance.CardData.regularPoints;
             }
         }
 
-        RewardPoints(callerArgs, plantInstance.Plantable.RuntimePoints);
+        RewardPoints(callerArgs, cardInstance.CardData.RuntimePoints);
     }
 
     public static void RewardPoints(CallerArgs callerArgs, int rewardedPoints)

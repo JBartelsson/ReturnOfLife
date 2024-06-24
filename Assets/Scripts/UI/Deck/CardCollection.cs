@@ -8,5 +8,5 @@ using UnityEngine;
 
 public class CardCollection : ScriptableObject
 {
-    [field: SerializeField] public List<Plantable> CardsInCollection {  get; private set; }
+    [field: SerializeField] public List<CardData> CardsInCollection {  get; private set; }
 }

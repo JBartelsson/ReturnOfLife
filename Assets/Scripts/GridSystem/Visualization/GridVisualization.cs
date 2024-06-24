@@ -47,11 +47,11 @@ public class GridVisualization : MonoBehaviour
         spriteRenderer.sprite = newSprite;
     }
 
-    public void SetNewSprite(PlantInstance plantInstance)
+    public void SetNewSprite(CardInstance cardInstance)
     {
-        Sprite newSprite = plantInstance.Plantable.PlantSprite;
+        Sprite newSprite = cardInstance.CardData.PlantSprite;
         SetNewSprite(newSprite);
-        if (plantInstance.IsBasicFertilized())
+        if (cardInstance.IsBasicFertilized())
         {
             spriteRenderer.material = plantFertilizedMaterial;
             var croppedTexture = new Texture2D((int)newSprite.rect.width,

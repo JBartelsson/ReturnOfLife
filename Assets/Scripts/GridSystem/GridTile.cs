@@ -3,12 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using static Plantable;
+using static CardData;
 
 public class GridTile
 {
     private GridTile topNeighbor, bottomNeighbor, leftNeighbor, rightNeighbor = null;
-    private List<PlantInstance> content = new();
+    private List<CardInstance> objects = new();
     private int x;
     private int y;
     private Grid grid;
@@ -19,7 +19,7 @@ public class GridTile
     public SpecialFieldType FieldType => fieldType;
 
 
-    public event EventHandler<PlantInstance> OnContentUpdated;
+    public event EventHandler<CardInstance> OnContentUpdated;
 
     public GridTile(Grid grid, int x, int y)
     {
@@ -52,18 +52,18 @@ public class GridTile
         set => rightNeighbor = value;
     }
 
-    public List<PlantInstance> Content
+    public List<CardInstance> Content
     {
-        get => content;
-        set => content = value;
+        get => objects;
+        set => objects = value;
     }
 
-    public PlantInstance PlantInstance
+    public CardInstance CardInstance
     {
         get
         {
-            if (content.Count == 0) return null;
-            return content[0];
+            if (objects.Count == 0) return null;
+            return objects[0];
         }
     }
 
@@ -91,14 +91,14 @@ public class GridTile
         set => fieldModifiers = value;
     }
 
-    public void AddPlantable(CallerArgs callerArgs)
+    public void AddObject(CallerArgs callerArgs)
     {
         if (!IsAccessible(callerArgs)) return;
         if (!ContainsPlant())
         {
         }
-        content.Add(callerArgs.callingPlantInstance);
-        OnContentUpdated?.Invoke(this, callerArgs.callingPlantInstance);
+        objects.Add(callerArgs.CallingCardInstance);
+        OnContentUpdated?.Invoke(this, callerArgs.CallingCardInstance);
         grid.UpdateGridContent(x, y, this);
     }
 
@@ -151,10 +151,10 @@ public class GridTile
 
     public override string ToString()
     {
-        PlantInstance plant = content.FirstOrDefault();
-        if (plant != null)
+        CardInstance card = objects.FirstOrDefault();
+        if (card != null)
         {
-            return $"{x}, {y}: {plant.Plantable.name}, {fieldType}";
+            return $"{x}, {y}: {card.CardData.name}, {fieldType}";
         }
         else
         {
@@ -220,9 +220,9 @@ public class GridTile
 
     public bool IsAccessible(CallerArgs callerArgs)
     {
-        if (content.Count == 0) return true;
+        if (objects.Count == 0) return true;
         //The first plant determines if the field is accessible, this needs to be a bit more structured as it can cause problems later on maybe
-        return content[0].IsAccessible(callerArgs);
+        return objects[0].IsAccessible(callerArgs);
 
     }
 
@@ -241,7 +241,7 @@ public class GridTile
 
     public void Reset()
     {
-        content.Clear();
+        objects.Clear();
         fieldType = SpecialFieldType.NONE;
         //empty the event
         OnContentUpdated = delegate { };

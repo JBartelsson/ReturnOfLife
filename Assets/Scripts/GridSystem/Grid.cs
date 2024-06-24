@@ -15,9 +15,9 @@ public class Grid
     private float cellSize;
     private GridTile[,] gridArray;
     private Vector3 originPosition;
-    private List<PlantInstance> plantInstances = new();
+    private List<CardInstance> plantInstances = new();
 
-    public List<PlantInstance> PlantInstances
+    public List<CardInstance> PlantInstances
     {
         get => plantInstances;
         set => plantInstances = value;

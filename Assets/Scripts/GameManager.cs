@@ -14,16 +14,16 @@ public class GameManager : MonoBehaviour
     [Serializable]
     public class PlantableCard
     {
-        public PlantInstance PlantBlueprint;
+        public CardInstance CardBlueprint;
 
-        public PlantableCard(PlantInstance plantBlueprint)
+        public PlantableCard(CardInstance cardBlueprint)
         {
-            this.PlantBlueprint = plantBlueprint;
+            this.CardBlueprint = cardBlueprint;
         }
 
-        public PlantableCard(Plantable plantable)
+        public PlantableCard(CardData cardData)
         {
-            this.PlantBlueprint = new PlantInstance(plantable);
+            this.CardBlueprint = new CardInstance(cardData);
         }
     }
 
@@ -89,7 +89,7 @@ public class GameManager : MonoBehaviour
     private PlantableCard selectedCard;
     private GridTile playedTile;
 
-    private PlantInstance selectedPlantBlueprint = null;
+    private CardInstance selectedCardBlueprint = null;
 
     //Score Related
     private Score currentScore;
@@ -195,7 +195,7 @@ public class GameManager : MonoBehaviour
         {
             for (int i = 0; i < deckEntry.amount; i++)
             {
-                deck.Add(new PlantableCard(deckEntry.plantableReference));
+                deck.Add(new PlantableCard(deckEntry.cardDataReference));
             }
         }
 
@@ -205,16 +205,16 @@ public class GameManager : MonoBehaviour
 
     private void InitEditor()
     {
-        editorArgs.SetValues(selectedPlantBlueprint, playedTile, selectedPlantNeedNeighbor, CALLER_TYPE.EDITOR);
-        editorArgs.EditorCallingPlantInstance = selectedPlantBlueprint;
+        editorArgs.SetValues(selectedCardBlueprint, playedTile, selectedPlantNeedNeighbor, CALLER_TYPE.EDITOR);
+        editorArgs.EditorCallingCardInstance = selectedCardBlueprint;
         editorArgs.gameManager = this;
         GridManager.Instance.Grid.ForEachGridTile((x) =>
         {
-            if (selectedPlantBlueprint.CheckField(new EditorCallerArgs()
+            if (selectedCardBlueprint.CheckField(new EditorCallerArgs()
                 {
                     playedTile = playedTile,
                     selectedGridTile = x,
-                    EditorCallingPlantInstance = selectedPlantBlueprint,
+                    EditorCallingCardInstance = selectedCardBlueprint,
                     callerType = CALLER_TYPE.EDITOR
                 }))
             {
@@ -234,9 +234,9 @@ public class GameManager : MonoBehaviour
                 GridTile gridTile = GridManager.Instance.Grid.GetGridObject(Input.mousePosition);
                 callerArgs.playedTile = gridTile;
                 if (gridTile == null) return;
-                if (selectedPlantBlueprint.CanExecute(callerArgs))
+                if (selectedCardBlueprint.CanExecute(callerArgs))
                 {
-                    selectedPlantBlueprint.Execute(callerArgs);
+                    selectedCardBlueprint.Execute(callerArgs);
                     PlantCard(gridTile);
                     CheckSpecialFields();
                 }
@@ -256,9 +256,9 @@ public class GameManager : MonoBehaviour
                 GridTile selectedGridTile = GridManager.Instance.Grid.GetGridObject(Input.mousePosition);
                 if (selectedGridTile == null) return;
                 editorArgs.selectedGridTile = selectedGridTile;
-                if (selectedPlantBlueprint.CheckField(editorArgs))
+                if (selectedCardBlueprint.CheckField(editorArgs))
                 {
-                    selectedPlantBlueprint.ExecuteEditor(editorArgs);
+                    selectedCardBlueprint.ExecuteEditor(editorArgs);
                     CheckSpecialFields();
                     EndCardPlaying();
                 }
@@ -299,22 +299,22 @@ public class GameManager : MonoBehaviour
 
     private void TryPlayCard(PlantableCard plantableCard)
     {
-        if (currentMana - plantableCard.PlantBlueprint.Plantable.manaCost < 0)
+        if (currentMana - plantableCard.CardBlueprint.CardData.manaCost < 0)
         {
             Debug.Log($"CANT PLAY CARD BECAUSE OF MANA");
             return;
         }
 
         selectedCard = plantableCard;
-        selectedPlantBlueprint = new PlantInstance(selectedCard.PlantBlueprint, currentFertilizers);
+        selectedCardBlueprint = new CardInstance(selectedCard.CardBlueprint, currentFertilizers);
         callerArgs = new CallerArgs()
         {
             needNeighbor = selectedPlantNeedNeighbor,
-            callingPlantInstance = selectedPlantBlueprint,
+            CallingCardInstance = selectedCardBlueprint,
             gameManager = this
         };
         //Update Mana and Card Piles
-        currentMana -= selectedPlantBlueprint.Plantable.manaCost;
+        currentMana -= selectedCardBlueprint.CardData.manaCost;
         EventManager.Game.Level.OnManaChanged?.Invoke(new EventManager.GameEvents.LevelEvents.ManaChangedArgs()
         {
             newMana = currentMana
@@ -327,13 +327,13 @@ public class GameManager : MonoBehaviour
             sender = this
         });
         currentPlayedCards++;
-        if (selectedPlantBlueprint.GetPlantFunctionExecuteType() == EXECUTION_TYPE.IMMEDIATE)
+        if (selectedCardBlueprint.GetPlantFunctionExecuteType() == EXECUTION_TYPE.IMMEDIATE)
         {
-            selectedPlantBlueprint.Execute(callerArgs);
+            selectedCardBlueprint.Execute(callerArgs);
             EndCardPlaying();
         }
 
-        if (selectedPlantBlueprint.GetPlantFunctionExecuteType() == EXECUTION_TYPE.AFTER_PLACEMENT)
+        if (selectedCardBlueprint.GetPlantFunctionExecuteType() == EXECUTION_TYPE.AFTER_PLACEMENT)
         {
             SwitchState(GameState.SetPlant);
         }
@@ -346,7 +346,7 @@ public class GameManager : MonoBehaviour
         selectedPlantNeedNeighbor = true;
 
         Debug.Log($"PLANTED: {selectedCard}");
-        if (selectedPlantBlueprint.PlantEditor != null)
+        if (selectedCardBlueprint.CardEditor != null)
         {
             SwitchState(GameState.PlantEditor);
             return;
@@ -358,7 +358,7 @@ public class GameManager : MonoBehaviour
     private void EndCardPlaying()
     {
         GridManager.Instance.Grid.ForEachGridTile((x) => x.ChangeMarkedStatus(false));
-        if (selectedPlantBlueprint.Plantable.EffectType != Plantable.CardEffectType.Wisdom)
+        if (selectedCardBlueprint.CardData.EffectType != CardData.CardEffectType.Wisdom)
         {
             currentFertilizers.Clear();
         }

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public class CanBeTargetedByEditorAndEffects : PlantAccessCheckBase
+public class CanBeTargetedByEditorAndEffects : CardAccessCheckBase
 {
     public override bool IsAccessible(CallerArgs callerArgs)
     {

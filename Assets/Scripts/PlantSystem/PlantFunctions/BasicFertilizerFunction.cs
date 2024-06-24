@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BasicFertilizerFunction : PlantFunctionBase
+public class BasicFertilizerFunction : CardFunctionBase
 {
     public override void ExecuteCard(CallerArgs callerArgs)
     {

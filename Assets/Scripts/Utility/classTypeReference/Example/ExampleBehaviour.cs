@@ -9,15 +9,15 @@ namespace Example {
 
 	public class ExampleBehaviour : MonoBehaviour {
 
-		[ClassExtends(typeof(PlantFunctionBase))]
-		public ClassTypeReference greetingLoggerType = typeof(PlantFunctionBase);
+		[ClassExtends(typeof(CardFunctionBase))]
+		public ClassTypeReference greetingLoggerType = typeof(CardFunctionBase);
 
 		private void Start() {
 			if (greetingLoggerType.Type == null) {
 				Debug.LogWarning("No greeting logger was specified.");
 			}
 			else {
-				var greetingLogger = Activator.CreateInstance(greetingLoggerType) as PlantFunctionBase;
+				var greetingLogger = Activator.CreateInstance(greetingLoggerType) as CardFunctionBase;
 				Debug.Log(greetingLogger.GetType());
 			}
 		}
