@@ -134,7 +134,7 @@ public class CardData : ScriptableObject
         EffectType = cardDataToCopy.EffectType;
         Rarity = cardDataToCopy.Rarity;
         TurnDelay = cardDataToCopy.TurnDelay;
-        manaCost = cardDataToCopy.manaCost;
+        PlayCost = cardDataToCopy.PlayCost;
         fertilizedPoints = cardDataToCopy.fertilizedPoints;
         regularPoints = cardDataToCopy.regularPoints;
         overridePointFunction = cardDataToCopy.overridePointFunction;
@@ -151,22 +151,20 @@ public class CardData : ScriptableObject
 
     [Header("Card Stats")] [SerializeField]
     private Sprite plantSprite;
-
+    [field: Header("Text Information")]
     [field: SerializeField] public string CardName { get; private set; }
     [field: SerializeField, TextArea] public string CardText { get; private set; }
+    [field: Header("Card Runtime Information")]
     [field: SerializeField] public int PlayCost { get; private set; }
-    [field: SerializeField] public CardElement Element { get; private set; }
-    [field: SerializeField] public CardEffectType EffectType { get; private set; }
-    [field: SerializeField] public CardRarity Rarity { get; private set; }
     [field: SerializeField] public int TurnDelay { get; private set; }
-    public int manaCost = 1;
-    public int turnDelay = 0;
-    public int triggerAmount = 1;
 
 
 
     [field: SerializeField] public int regularPoints;
     [field: SerializeField] public int fertilizedPoints;
+    [field: SerializeField] public CardElement Element { get; private set; }
+    [field: SerializeField] public CardEffectType EffectType { get; private set; }
+    [field: SerializeField] public CardRarity Rarity { get; private set; }
     private int runtimePoints = 0;
 
 

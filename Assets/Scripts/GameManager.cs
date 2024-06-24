@@ -283,7 +283,7 @@ public class GameManager : MonoBehaviour
 
     private void TryPlayCard(CardInstance plantableCard)
     {
-        if (currentMana - plantableCard.CardData.manaCost < 0)
+        if (currentMana - plantableCard.CardData.PlayCost < 0)
         {
             Debug.Log($"CANT PLAY CARD BECAUSE OF MANA");
             return;
@@ -298,7 +298,7 @@ public class GameManager : MonoBehaviour
             gameManager = this
         };
         //Update Mana and Card Piles
-        currentMana -= selectedCardBlueprint.CardData.manaCost;
+        currentMana -= selectedCardBlueprint.CardData.PlayCost;
         EventManager.Game.Level.OnManaChanged?.Invoke(new EventManager.GameEvents.LevelEvents.ManaChangedArgs()
         {
             newMana = currentMana

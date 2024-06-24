@@ -97,7 +97,7 @@ public class CardInstance
     }
     public int ReturnTriggerAmount()
     {
-        return fertilizers.Where((x) => x == Fertilizer.Retrigger).Count() + cardData.triggerAmount;
+        return fertilizers.Where((x) => x == Fertilizer.Retrigger).Count();
     }
 
     public void Execute(CallerArgs callerArgs)
