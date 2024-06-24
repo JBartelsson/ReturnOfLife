@@ -46,7 +46,7 @@ public class CardsUIController : MonoBehaviour
         {
             if (i < GameManager.Instance.CurrentHand.Count)
             {
-                currentCards[i].SetCardUI(GameManager.Instance.CurrentHand[i].CardBlueprint);
+                currentCards[i].SetCardUI(GameManager.Instance.CurrentHand[i]);
             }
             else
             {

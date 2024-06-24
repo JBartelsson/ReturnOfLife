@@ -12,22 +12,6 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
 
     [Serializable]
-    public class PlantableCard
-    {
-        public CardInstance CardBlueprint;
-
-        public PlantableCard(CardInstance cardBlueprint)
-        {
-            this.CardBlueprint = cardBlueprint;
-        }
-
-        public PlantableCard(CardData cardData)
-        {
-            this.CardBlueprint = new CardInstance(cardData);
-        }
-    }
-
-    [Serializable]
     public struct Score
     {
         public int EcoPoints
@@ -77,16 +61,16 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int standardTurns = 3;
     [SerializeField] private PlanetProgressionSO planetProgression;
     private GameState currentGameState = GameState.None;
-    private List<PlantableCard> deck = new();
-    private List<PlantableCard> currentHand = new();
-    private List<PlantableCard> drawPile = new();
-    private List<PlantableCard> discardPile = new();
+    private List<CardInstance> deck = new();
+    private List<CardInstance> currentHand = new();
+    private List<CardInstance> drawPile = new();
+    private List<CardInstance> discardPile = new();
     private List<Fertilizer> currentFertilizers = new();
     private int currentMana = 0;
     private int currentTurns = 0;
     private int currentPlayedCards = 0;
     private bool selectedPlantNeedNeighbor = false;
-    private PlantableCard selectedCard;
+    private CardInstance selectedCard;
     private GridTile playedTile;
 
     private CardInstance selectedCardBlueprint = null;
@@ -106,7 +90,7 @@ public class GameManager : MonoBehaviour
 
     public int HandSize => handSize;
 
-    public List<PlantableCard> CurrentHand => currentHand;
+    public List<CardInstance> CurrentHand => currentHand;
 
     //Args
     private CallerArgs callerArgs = new CallerArgs();
@@ -195,7 +179,7 @@ public class GameManager : MonoBehaviour
         {
             for (int i = 0; i < deckEntry.amount; i++)
             {
-                deck.Add(new PlantableCard(deckEntry.cardDataReference));
+                deck.Add(new CardInstance(deckEntry.cardDataReference));
             }
         }
 
@@ -297,16 +281,16 @@ public class GameManager : MonoBehaviour
         TryPlayCard(currentHand[index]);
     }
 
-    private void TryPlayCard(PlantableCard plantableCard)
+    private void TryPlayCard(CardInstance plantableCard)
     {
-        if (currentMana - plantableCard.CardBlueprint.CardData.manaCost < 0)
+        if (currentMana - plantableCard.CardData.manaCost < 0)
         {
             Debug.Log($"CANT PLAY CARD BECAUSE OF MANA");
             return;
         }
 
         selectedCard = plantableCard;
-        selectedCardBlueprint = new CardInstance(selectedCard.CardBlueprint, currentFertilizers);
+        selectedCardBlueprint = new CardInstance(selectedCard, currentFertilizers);
         callerArgs = new CallerArgs()
         {
             needNeighbor = selectedPlantNeedNeighbor,
@@ -432,7 +416,7 @@ public class GameManager : MonoBehaviour
 
         int randomIndex = UnityEngine.Random.Range(0, drawPile.Count);
 
-        PlantableCard drawCard = drawPile[randomIndex];
+        CardInstance drawCard = drawPile[randomIndex];
         currentHand.Add(drawCard);
         drawPile.Remove(drawCard);
     }
