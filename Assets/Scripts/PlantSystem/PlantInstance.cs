@@ -15,13 +15,13 @@ public class PlantInstance
 
     public PlantInstance(Plantable newPlantable, List<Fertilizer> newFertilizers = null)
     {
-        plantable = newPlantable;
+        plantable = newPlantable.Copy();
         TryAddFertilizer(newFertilizers);
         InitScripts();
     }
     public PlantInstance(PlantInstance other, List<Fertilizer> newFertilizers = null)
     {
-        plantable = other.plantable;
+        plantable = other.plantable.Copy();
         TryAddFertilizer(newFertilizers);
         InitScripts();
 
@@ -29,7 +29,7 @@ public class PlantInstance
 
     public PlantInstance(PlantInstance other)
     {
-        plantable = other.plantable;
+        plantable = other.plantable.Copy();
         fertilizers.AddRange(other.fertilizers);
         InitScripts();
     }
@@ -75,11 +75,6 @@ public class PlantInstance
         return $"{plantable} played with fertilizers: {fertilizerString}";
     }
 
-    public string DebugVisualization()
-    {
-        string fertilized = IsBasicFertilized() ? "*" : "";
-        return plantable.visualization + fertilized;
-    }
 
 
 

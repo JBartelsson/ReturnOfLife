@@ -7,11 +7,11 @@ public class SinglePlacementFunction : PlantFunctionBase
 {
 
 
-    public override void Execute(CallerArgs callerArgs)
+    public override void ExecuteCard(CallerArgs callerArgs)
     {
         GridTile gridTile = callerArgs.playedTile;
+        Debug.Log($"GETTIJNG CALLED FOR TILE {callerArgs.playedTile} AND SETTING {callerArgs.callingPlantInstance}");
         gridTile.AddPlantable(callerArgs);
-        callerArgs.gameManager.AddPointScore(callerArgs.callingPlantInstance.Plantable.regularPoints);
 
     }
 

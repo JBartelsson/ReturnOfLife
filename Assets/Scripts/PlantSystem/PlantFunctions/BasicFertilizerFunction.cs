@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class BasicFertilizerFunction : PlantFunctionBase
 {
-    public override void Execute(CallerArgs callerArgs)
+    public override void ExecuteCard(CallerArgs callerArgs)
     {
         callerArgs.gameManager.AddFertilizer(Fertilizer.Basic);
     }

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EditorCallerArgs : CallerArgs
 {
+    //Used for editor access checks, so playedTile and selectedTile is different
     public GridTile selectedGridTile;
     public PlantInstance EditorCallingPlantInstance;
 

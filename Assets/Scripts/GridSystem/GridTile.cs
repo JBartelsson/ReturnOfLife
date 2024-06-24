@@ -14,6 +14,7 @@ public class GridTile
     private Grid grid;
     private bool marked = false;
     private SpecialFieldType fieldType = SpecialFieldType.NONE;
+    private List<FieldModifier> fieldModifiers = new();
 
     public SpecialFieldType FieldType => fieldType;
 
@@ -83,6 +84,12 @@ public class GridTile
         get => marked;
         set => marked = value;
     }
+    
+    public List<FieldModifier> FieldModifiers
+    {
+        get => fieldModifiers;
+        set => fieldModifiers = value;
+    }
 
     public void AddPlantable(CallerArgs callerArgs)
     {
@@ -98,9 +105,43 @@ public class GridTile
     public void ChangeFieldType(SpecialFieldType newFieldType, bool invokeEvent = true)
     {
         fieldType = newFieldType;
+        switch (newFieldType)
+        {
+            case SpecialFieldType.SHOP:
+                break;
+            case SpecialFieldType.CARD_REMOVE:
+                break;
+            case SpecialFieldType.CARD_ADD:
+                break;
+            case SpecialFieldType.RETRIGGER:
+                break;
+            case SpecialFieldType.DUPLICATE:
+                break;
+            case SpecialFieldType.MANA:
+                break;
+            case SpecialFieldType.ESSENCE:
+                break;
+            case SpecialFieldType.UNLOCK_PLANT:
+                break;
+            case SpecialFieldType.HALF_ECO:
+                break;
+            case SpecialFieldType.TIME_PLAY:
+                break;
+            case SpecialFieldType.MULTIPLY:
+                fieldModifiers.Add(new FieldModifier(FieldModifier.ModifierType.Multiplier, Constants.MULTIPLICATION_FIELD_MULTIPLIER));
+                break;
+            case SpecialFieldType.NORMAL_FIELD:
+                break;
+            case SpecialFieldType.NONE:
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(newFieldType), newFieldType, null);
+        }
         if (invokeEvent)
         grid.UpdateGridContent(x,y, this);
     }
+    
+    
 
     public void ChangeMarkedStatus(bool status)
     {
@@ -205,6 +246,7 @@ public class GridTile
         //empty the event
         OnContentUpdated = delegate { };
         marked = false;
+        fieldModifiers = new();
         grid.UpdateGridContent(x,y, this);
     }
 

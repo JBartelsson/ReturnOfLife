@@ -207,6 +207,7 @@ public class GameManager : MonoBehaviour
     {
         editorArgs.SetValues(selectedPlantBlueprint, playedTile, selectedPlantNeedNeighbor, CALLER_TYPE.EDITOR);
         editorArgs.EditorCallingPlantInstance = selectedPlantBlueprint;
+        editorArgs.gameManager = this;
         GridManager.Instance.Grid.ForEachGridTile((x) =>
         {
             if (selectedPlantBlueprint.CheckField(new EditorCallerArgs()
@@ -381,6 +382,7 @@ public class GameManager : MonoBehaviour
         {
             newMana = currentMana
         });
+        currentFertilizers.Clear();
         discardPile.AddRange(currentHand);
         currentHand.Clear();
         EventManager.Game.Level.OnTurnChanged?.Invoke(new EventManager.GameEvents.LevelEvents.TurnChangedArgs()

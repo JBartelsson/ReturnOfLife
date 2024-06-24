@@ -112,15 +112,6 @@ public class Grid
         }
 
         ApplyNeighbors();
-        specialFields = FindConnectedFields();
-        foreach (var f in specialFields)
-        {
-            Debug.Log($"SPECIAL FIELD {f.FieldType}");
-            foreach (var grid in f.SpecialFieldGridTiles)
-            {
-                Debug.Log($"TILE: {grid}");
-            }
-        }
     }
 
     private void GetXY(Vector3 worldPosition, out int x, out int y)

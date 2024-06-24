@@ -17,21 +17,10 @@ public class ComboBushPlantFunction : PlantFunctionBase
 
     public bool AlreadyTriggered { get => alreadyTriggered; set => alreadyTriggered = value; }
 
-    public override void Execute(CallerArgs callerArgs)
+    public override void ExecuteCard(CallerArgs callerArgs)
     {
         bushInstance = callerArgs.callingPlantInstance;
         callerArgs.playedTile.AddPlantable(callerArgs);
-        if (bushInstance.IsBasicFertilized())
-        {
-            callerArgs.gameManager.AddPointScore(bushInstance.Plantable.fertilizedPoints);
-        }
-        else
-        {
-            Debug.Log(callerArgs.gameManager);
-            Debug.Log(callerArgs.playedTile);
-            callerArgs.gameManager.AddPointScore(bushInstance.Plantable.regularPoints);
-
-        }
         callerArgs.playedTile.OnContentUpdated += PlayedTile_OnContentUpdated;
         EventManager.Game.Level.OnInCardSelection += OnCardPlayingEnded;
     }

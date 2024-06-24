@@ -7,7 +7,7 @@ public class AntisocialFunction : PlantFunctionBase
 {
     private static int MAX_DISTANCE = 3;
 
-    public override void Execute(CallerArgs callerArgs)
+    public override void ExecuteCard(CallerArgs callerArgs)
     {
         GridTile gridTile = callerArgs.playedTile;
         gridTile.AddPlantable(callerArgs);
@@ -15,10 +15,10 @@ public class AntisocialFunction : PlantFunctionBase
         Debug.Log($"====================================");
         GridManager.Instance.Grid.ForEachGridTile((tile) =>
         {
-            Debug.Log($"CHECKING INSTANCE: {tile.PlantInstance }, CALLING INSTANCE: {callerArgs.callingPlantInstance}");
+            Debug.Log($"CHECKING INSTANCE: {tile.PlantInstance}, CALLING INSTANCE: {callerArgs.callingPlantInstance}");
             if (tile == gridTile) return;
             if (tile.PlantInstance == null) return;
-            if (tile.PlantInstance.Plantable == callerArgs.callingPlantInstance.Plantable)
+            if (tile.PlantInstance.Plantable.GetType() == callerArgs.callingPlantInstance.Plantable.GetType())
             {
                 Debug.Log($"PLANT INSTANCES ARE SAME");
                 if (gridTile.DistanceTo(tile) <= MAX_DISTANCE)
@@ -30,15 +30,13 @@ public class AntisocialFunction : PlantFunctionBase
             }
         });
         Debug.Log($"Checking if return is working");
-        if (!hasPlantInRange)
-            if (callerArgs.callingPlantInstance.IsBasicFertilized())
-            {
-                callerArgs.gameManager.AddPointScore(callerArgs.callingPlantInstance.Plantable.fertilizedPoints);
-            }
-            else
-            {
-                callerArgs.gameManager.AddPointScore(callerArgs.callingPlantInstance.Plantable.regularPoints);
-            }
+        Plantable callingPlantable = callerArgs.callingPlantInstance.Plantable;
+        if (hasPlantInRange)
+        {
+            Debug.Log($"OVERRIDING PLANT FUNCTION!");
+            callingPlantable.RuntimePoints = 0;
+            callingPlantable.OverridePointFunction = true;
+        }
     }
 
     public override bool CanExecute(CallerArgs callerArgs)
