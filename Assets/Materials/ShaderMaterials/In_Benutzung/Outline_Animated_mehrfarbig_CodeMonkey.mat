@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Outline_Animated_CodeMonkey 1
+  m_Name: Outline_Animated_mehrfarbig_CodeMonkey
   m_Shader: {fileID: -6465566751694194690, guid: 73464ae0b6ba24b41ad9af09ee260a76, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -61,7 +61,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 48eb4cb3309aef347bf655b250766a52, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -113,7 +113,7 @@ Material:
     - _GlossyReflections: 0
     - _Metallic: 0
     - _OcclusionStrength: 1
-    - _OutlineThickness: 0.5
+    - _OutlineThickness: 0.8
     - _Parallax: 0.005
     - _QueueControl: 0
     - _QueueOffset: 0
@@ -132,7 +132,7 @@ Material:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _OutlineColor: {r: 0.2783576, g: 1.245283, b: 0, a: 1}
-    - _OutlineColor2: {r: 1.5723269, g: 0, b: 1.0759679, a: 0}
+    - _OutlineColor: {r: 0.27393627, g: 1.2167859, b: 0, a: 1}
+    - _OutlineColor2: {r: 0, g: 0.395335, b: 1.9766744, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
