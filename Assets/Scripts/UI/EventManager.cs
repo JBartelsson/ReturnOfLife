@@ -18,37 +18,36 @@ public static class EventManager
         public class LevelEvents
         {
             public UnityAction<TurnChangedArgs> OnTurnChanged;
-
-            public UnityAction<MissionCompletedArgs> OnMissionCompleted;
-
             public UnityAction<ScoreChangedArgs> OnScoreChanged;
             public UnityAction<ManaChangedArgs> OnManaChanged;
             public UnityAction<Args> OnDrawCards;
             public UnityAction<Args> OnUpdateCards;
             public UnityAction<Args> OnInCardSelection;
+            public UnityAction<LevelEndedArgs> OnEndLevel;
 
         
+            public class LevelEndedArgs : Args
+            {
+                public bool WonLevel;
+                public int CurrentScore;
+                public int NeededScore;
+            }
             public class TurnChangedArgs : Args
             {
-                public int turnNumber = 0;
+                public int TurnNumber = 0;
             }
             
             public class ManaChangedArgs : Args
             {
-                public int newMana = 0;
+                public int NewMana = 0;
             }
             
             public class ScoreChangedArgs : Args
             {
-                public GameManager.Score newScore;
-                public LevelSO currentLevel;
+                public GameManager.Score NewScore;
+                public LevelSO CurrentLevel;
             }
 
-            public class MissionCompletedArgs : Args
-            {
-                public int missionNumber = 0;
-                public String missionText = "Blub";
-            }
 
         }
         

@@ -39,7 +39,7 @@ public class ComboBushCardFunction : CardFunctionBase
     {
         GridTile callingGridTile = sender as GridTile;
         if (callingGridTile == null) return;
-        if (cardInstance.CardData == bushInstance.CardData) return;
+        if (cardInstance.CardData.GetType() == bushInstance.CardData.GetType()) return;
         Debug.Log($"TILE {callingGridTile.X}, {callingGridTile.Y} UPDATED, Executing Lycoperdon Function alreadyTriggered: {alreadyTriggered}");
         Debug.Log(this.GetHashCode());
         // if (alreadyTriggered) return;

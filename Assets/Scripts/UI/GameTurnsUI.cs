@@ -24,6 +24,6 @@ public class GameTurnsUI : MonoBehaviour
 
     private void UpdateTurn(LevelEvents.TurnChangedArgs args)
     {
-        label.SetText("Turn: \n" + args.turnNumber.ToString() + "/3");
+        label.SetText("Turn: \n" + args.TurnNumber.ToString() + "/3");
     }
 }

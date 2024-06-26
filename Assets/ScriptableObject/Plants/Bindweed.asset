@@ -16,29 +16,26 @@ MonoBehaviour:
   <CardName>k__BackingField: Bindweed
   <CardText>k__BackingField: Place another Bindweed 3 tiles away after planting.
   <PlayCost>k__BackingField: 1
+  <TurnDelay>k__BackingField: 0
+  regularPoints: 20
+  fertilizedPoints: 20
   <Element>k__BackingField: 0
   <EffectType>k__BackingField: 0
   <Rarity>k__BackingField: 0
-  <TurnDelay>k__BackingField: 0
-  manaCost: 1
-  turnDelay: 0
-  triggerAmount: 1
-  visualization: B
-  regularPoints: 20
-  fertilizedPoints: 20
-  plantFunction:
+  overridePointFunction: 0
+  cardFunction:
     executionType: 2
     scriptType:
       _classRef: SinglePlacementFunction, ReturnOfLifeAssembly
-  plantEditor:
+  cardEditor:
     executionType: 0
     scriptType:
       _classRef: BindweedEditor, ReturnOfLifeAssembly
-  plantAccessCheck:
+  cardAccessCheck:
     executionType: 3
     scriptType:
-      _classRef: NoOtherPlantsPlacable, ReturnOfLifeAssembly
-  plantPassiveCall:
+      _classRef: NoOtherCardsPlacable, ReturnOfLifeAssembly
+  cardPassiveCall:
     executionType: 3
     scriptType:
       _classRef: 

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using static GameManager;
 
 public class GameManager : MonoBehaviour
@@ -301,7 +302,7 @@ public class GameManager : MonoBehaviour
         currentMana -= selectedCardBlueprint.CardData.PlayCost;
         EventManager.Game.Level.OnManaChanged?.Invoke(new EventManager.GameEvents.LevelEvents.ManaChangedArgs()
         {
-            newMana = currentMana
+            NewMana = currentMana
         });
         currentHand.Remove(selectedCard);
         discardPile.Add(selectedCard);
@@ -364,7 +365,7 @@ public class GameManager : MonoBehaviour
         currentMana = standardMana;
         EventManager.Game.Level.OnManaChanged?.Invoke(new EventManager.GameEvents.LevelEvents.ManaChangedArgs()
         {
-            newMana = currentMana
+            NewMana = currentMana
         });
         currentFertilizers.Clear();
         discardPile.AddRange(currentHand);
@@ -372,7 +373,7 @@ public class GameManager : MonoBehaviour
         EventManager.Game.Level.OnTurnChanged?.Invoke(new EventManager.GameEvents.LevelEvents.TurnChangedArgs()
         {
             sender = this,
-            turnNumber = currentTurns
+            TurnNumber = currentTurns
         });
         SwitchState(GameState.DrawCards);
     }
@@ -383,14 +384,12 @@ public class GameManager : MonoBehaviour
 
     private void EndLevel()
     {
-        if (currentLevel.RequirementsMet(this))
+        EventManager.Game.Level.OnEndLevel?.Invoke(new EventManager.GameEvents.LevelEvents.LevelEndedArgs()
         {
-            NextLevel();
-        }
-        else
-        {
-            GameOver();
-        }
+            WonLevel = currentLevel.RequirementsMet(this),
+            CurrentScore = currentScore.EcoPoints,
+            NeededScore = currentLevel.NeededEcoPoints
+        });
     }
 
     private void DrawCards()
@@ -445,8 +444,8 @@ public class GameManager : MonoBehaviour
         EventManager.Game.Level.OnScoreChanged?.Invoke(new EventManager.GameEvents.LevelEvents.ScoreChangedArgs()
         {
             sender = this,
-            newScore = currentScore,
-            currentLevel = currentLevel
+            NewScore = currentScore,
+            CurrentLevel = currentLevel
         });
     }
 
@@ -455,12 +454,12 @@ public class GameManager : MonoBehaviour
         currentScore.SpecialFields += amount;
     }
 
-    private void GameOver()
+    public void GameOver()
     {
-        Debug.Log($"GAME OVER!");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-    private void NextLevel()
+    public void NextLevel()
     {
         Debug.Log($"WON LEVEL");
 

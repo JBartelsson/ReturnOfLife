@@ -25,12 +25,7 @@ public class Game : MonoBehaviour
     {
         int tempMissionNumber = GameObject.Find("Mission Number").GetComponent<TMP_Dropdown>().value;
 
-        EventManager.Game.Level.OnMissionCompleted?.Invoke(new EventManager.GameEvents.LevelEvents.MissionCompletedArgs()
-        {
-            sender = this,
-            missionNumber = tempMissionNumber,
-            missionText = "Blub"
-        });
+        
     }
 
 }

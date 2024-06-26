@@ -16,29 +16,26 @@ MonoBehaviour:
   <CardName>k__BackingField: Lycoperdon
   <CardText>k__BackingField: Colonizes adjecent spots if hit by another plant effect.
   <PlayCost>k__BackingField: 1
+  <TurnDelay>k__BackingField: 0
+  regularPoints: 20
+  fertilizedPoints: 20
   <Element>k__BackingField: 0
   <EffectType>k__BackingField: 0
   <Rarity>k__BackingField: 0
-  <TurnDelay>k__BackingField: 0
-  manaCost: 1
-  turnDelay: 0
-  triggerAmount: 1
-  visualization: C
-  regularPoints: 20
-  fertilizedPoints: 20
-  plantFunction:
+  overridePointFunction: 0
+  cardFunction:
     executionType: 2
     scriptType:
-      _classRef: ComboBushPlantFunction, ReturnOfLifeAssembly
-  plantEditor:
+      _classRef: ComboBushCardFunction, ReturnOfLifeAssembly
+  cardEditor:
     executionType: 3
     scriptType:
       _classRef: 
-  plantAccessCheck:
+  cardAccessCheck:
     executionType: 3
     scriptType:
       _classRef: CanBeTargetedByEditorAndEffects, ReturnOfLifeAssembly
-  plantPassiveCall:
+  cardPassiveCall:
     executionType: 0
     scriptType:
       _classRef: 

@@ -20,12 +20,12 @@ public class GameUIController : MonoBehaviour
 
     private void OnScoreChanged(EventManager.GameEvents.LevelEvents.ScoreChangedArgs args)
     {
-        ecoText.SetText($"{args.newScore.EcoPoints.ToString()}/{args.currentLevel.NeededEcoPoints}");
+        ecoText.SetText($"{args.NewScore.EcoPoints.ToString()}/{args.CurrentLevel.NeededEcoPoints}");
     }
 
     private void OnManaChanged(EventManager.GameEvents.LevelEvents.ManaChangedArgs args)
     {
-        manaText.SetText(args.newMana.ToString());
+        manaText.SetText(args.NewMana.ToString());
     }
 
 
@@ -40,6 +40,6 @@ public class GameUIController : MonoBehaviour
 
     private void UpdateTurn(EventManager.GameEvents.LevelEvents.TurnChangedArgs args)
     {
-        turnsText.SetText("Turn: \n" + args.turnNumber.ToString() + "/3");
+        turnsText.SetText("Turn: \n" + args.TurnNumber.ToString() + "/3");
     }
 }

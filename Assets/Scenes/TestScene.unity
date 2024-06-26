@@ -279,6 +279,38 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 206
       objectReference: {fileID: 0}
+    - target: {fileID: 3202823817165197421, guid: d0df6d8f51d3cdf4383671d2f6b8176f, type: 3}
+      propertyPath: winColor.a
+      value: 0.95686275
+      objectReference: {fileID: 0}
+    - target: {fileID: 3202823817165197421, guid: d0df6d8f51d3cdf4383671d2f6b8176f, type: 3}
+      propertyPath: winColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3202823817165197421, guid: d0df6d8f51d3cdf4383671d2f6b8176f, type: 3}
+      propertyPath: winColor.g
+      value: 0.21698111
+      objectReference: {fileID: 0}
+    - target: {fileID: 3202823817165197421, guid: d0df6d8f51d3cdf4383671d2f6b8176f, type: 3}
+      propertyPath: winColor.r
+      value: 0.009483157
+      objectReference: {fileID: 0}
+    - target: {fileID: 3202823817165197421, guid: d0df6d8f51d3cdf4383671d2f6b8176f, type: 3}
+      propertyPath: gameOverColor.a
+      value: 0.95686275
+      objectReference: {fileID: 0}
+    - target: {fileID: 3202823817165197421, guid: d0df6d8f51d3cdf4383671d2f6b8176f, type: 3}
+      propertyPath: gameOverColor.b
+      value: 0.028206743
+      objectReference: {fileID: 0}
+    - target: {fileID: 3202823817165197421, guid: d0df6d8f51d3cdf4383671d2f6b8176f, type: 3}
+      propertyPath: gameOverColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3202823817165197421, guid: d0df6d8f51d3cdf4383671d2f6b8176f, type: 3}
+      propertyPath: gameOverColor.r
+      value: 0.25490198
+      objectReference: {fileID: 0}
     - target: {fileID: 4167737057990503810, guid: d0df6d8f51d3cdf4383671d2f6b8176f, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -865,8 +897,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ddb9f60cc1b5e244b04c87b09c33436, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 7
-  height: 7
   cellSize: 1
   gridSpritePrefab: {fileID: 8457298010069779333, guid: 7690973ea5b58aa428e12bb2efc55f9b, type: 3}
 --- !u!1 &1383556014
