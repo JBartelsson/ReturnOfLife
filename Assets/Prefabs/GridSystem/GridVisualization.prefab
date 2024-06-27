@@ -5342,5 +5342,7 @@ MonoBehaviour:
     Material: {fileID: 2100000, guid: c9fe702bfa595d048b1f851ca8898593, type: 2}
   - FieldType: 10
     Material: {fileID: 2100000, guid: 02799faf30344d14bb2393952e498aeb, type: 2}
+  - FieldType: 11
+    Material: {fileID: 2100000, guid: bbd481e4ce7cd51418bf45589bf53baa, type: 2}
   plantFertilizedMaterial: {fileID: -876546973899608171, guid: ba1e87f12de7514489e255d5136721a6, type: 3}
   plantNonFertilizedMaterial: {fileID: 2100000, guid: 7cfb0b9714109b645a51f70f69a9314f, type: 2}

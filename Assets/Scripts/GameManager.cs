@@ -193,17 +193,18 @@ public class GameManager : MonoBehaviour
         editorArgs.SetValues(selectedCardBlueprint, playedTile, selectedPlantNeedNeighbor, CALLER_TYPE.EDITOR);
         editorArgs.EditorCallingCardInstance = selectedCardBlueprint;
         editorArgs.gameManager = this;
-        GridManager.Instance.Grid.ForEachGridTile((x) =>
+        GridManager.Instance.Grid.ForEachGridTile((gridTile) =>
         {
             if (selectedCardBlueprint.CheckField(new EditorCallerArgs()
                 {
-                    playedTile = playedTile,
-                    selectedGridTile = x,
+                    playedTile = this.playedTile,
+                    selectedGridTile = gridTile,
+                    CallingCardInstance = selectedCardBlueprint,
                     EditorCallingCardInstance = selectedCardBlueprint,
                     callerType = CALLER_TYPE.EDITOR
                 }))
             {
-                x.ChangeMarkedStatus(true);
+                gridTile.ChangeMarkedStatus(true);
             }
         });
     }

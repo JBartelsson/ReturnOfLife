@@ -20,6 +20,7 @@ public class BindweedEditor : CardEditorBase
         if (selectedGridTile.DistanceTo(caller) > BINDWEED_RANGE) return false;
         if (selectedGridTile == caller) return false;
         //If tile is accessible
+        callerArgs.playedTile = callerArgs.selectedGridTile;
         if (!selectedGridTile.IsAccessible(callerArgs)) return false;
         return true;
     }

@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   centerCellX: 3
   centerCellY: 5
-  dataString: CCCCCCCCCCCAAACCCCACCCCCC
+  dataString: BBBBBBBBBBBAAABBBBABBBBBB
   gridSize: 5
   neededECOPoints: 350

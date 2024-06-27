@@ -6,5 +6,5 @@ using UnityEngine;
 [Serializable]
 public abstract class CardAccessCheckBase : PlantScriptBase
 {
-    public abstract bool IsAccessible(CallerArgs callerArgs);
+    public abstract bool CanBePlayedWith(CallerArgs callerArgs);
 }

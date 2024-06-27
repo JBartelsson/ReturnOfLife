@@ -24,6 +24,14 @@ public class LevelEndUIController : MonoBehaviour
         gameOverButton.onClick.AddListener(GameOver);
     }
 
+    private void OnDestroy()
+    {
+        nextButton.onClick.RemoveListener(NextLevel);
+        nextButton.onClick.RemoveListener(GameOver);
+        EventManager.Game.Level.OnEndLevel -= OnEndLevel;
+
+    }
+
     private void OnEndLevel(EventManager.GameEvents.LevelEvents.LevelEndedArgs args)
     {
         gameOverButton.gameObject.SetActive(!args.WonLevel);

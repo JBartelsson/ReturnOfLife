@@ -281,7 +281,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3202823817165197421, guid: d0df6d8f51d3cdf4383671d2f6b8176f, type: 3}
       propertyPath: winColor.a
-      value: 0.95686275
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3202823817165197421, guid: d0df6d8f51d3cdf4383671d2f6b8176f, type: 3}
       propertyPath: winColor.b
@@ -297,7 +297,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3202823817165197421, guid: d0df6d8f51d3cdf4383671d2f6b8176f, type: 3}
       propertyPath: gameOverColor.a
-      value: 0.95686275
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3202823817165197421, guid: d0df6d8f51d3cdf4383671d2f6b8176f, type: 3}
       propertyPath: gameOverColor.b

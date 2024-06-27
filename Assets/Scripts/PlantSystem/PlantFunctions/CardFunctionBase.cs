@@ -26,7 +26,9 @@ public abstract class CardFunctionBase : PlantScriptBase
             }
         }
 
-        RewardPoints(callerArgs, cardInstance.CardData.RuntimePoints);
+        //Only give points for planting a plant, when it is the first on its tile
+        if (callerArgs.playedTile.Content.Count == 1)
+            RewardPoints(callerArgs, cardInstance.CardData.RuntimePoints);
     }
 
     public static void RewardPoints(CallerArgs callerArgs, int rewardedPoints)
@@ -37,6 +39,7 @@ public abstract class CardFunctionBase : PlantScriptBase
             Debug.Log("PLAYED TILE IS NULL!!!");
             return;
         }
+
         foreach (var modifier in callerArgs.playedTile.FieldModifiers)
         {
             switch (modifier.modifierType)

@@ -222,7 +222,7 @@ public class GridTile
     {
         if (objects.Count == 0) return true;
         //The first plant determines if the field is accessible, this needs to be a bit more structured as it can cause problems later on maybe
-        return objects[0].IsAccessible(callerArgs);
+        return objects[0].CanBePlayedWith(callerArgs);
 
     }
 

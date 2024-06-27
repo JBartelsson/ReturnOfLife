@@ -117,9 +117,9 @@ public class CardInstance
         return cardFunction.CanExecute(callerArgs);
     }
 
-    public bool IsAccessible(CallerArgs callerArgs)
+    public bool CanBePlayedWith(CallerArgs callerArgs)
     {
-        return cardAccessCheck.IsAccessible(callerArgs);
+        return cardAccessCheck.CanBePlayedWith(callerArgs);
     }
 
     public bool CheckField(EditorCallerArgs editorCallerArgs)
