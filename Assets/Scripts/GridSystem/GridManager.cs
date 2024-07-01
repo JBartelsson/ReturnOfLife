@@ -59,7 +59,7 @@ public class GridManager : MonoBehaviour
                 }
             }
         }
-        gridVisualization = new GridVisualization[levelSO.GridSize, levelSO.GridSize];
+        gridVisualization = new GridVisualization[levelSO.Pattern.GridSize, levelSO.Pattern.GridSize];
         _grid.OnGridTileChanged += GridTileOnGridTileChanged;
         _grid.InitGrid((Grid g, int x, int y) => new GridTile(g, x, y));
         _grid.ForEachGridTile((gridTile) =>

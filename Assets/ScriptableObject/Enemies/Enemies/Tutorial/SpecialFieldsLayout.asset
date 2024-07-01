@@ -7,12 +7,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 15e73d1213f6ecc41ad002f5f49479f5, type: 3}
-  m_Name: WholeLottaSpecialFields
+  m_Name: SpecialFieldsLayout
   m_EditorClassIdentifier: 
   pattern:
     dataString: 
     gridSize: 7
-  neededECOPoints: 350
+  neededECOPoints: 0

@@ -89,8 +89,8 @@ public class Grid
         Func<Grid, int, int, GridTile> createGridObject = null)
     {
         this.currentLevelSO = levelSO;
-        this.width = levelSO.GridSize;
-        this.height = levelSO.GridSize;
+        this.width = levelSO.Pattern.GridSize;
+        this.height = levelSO.Pattern.GridSize;
         this.cellSize = cellSize;
         this.originPosition = originPosition - new Vector3(width * cellSize * .5f, 0, height * cellSize * .5f);
         gridArray = new GridTile[width, height];
@@ -107,7 +107,7 @@ public class Grid
             for (int y = 0; y < gridArray.GetLength(1); y++)
             {
                 gridArray[x, y] = createGridObject(this, x, y);
-                gridArray[x, y].ChangeFieldType(currentLevelSO.Data[x, y].specialFieldType, true);
+                gridArray[x, y].ChangeFieldType(currentLevelSO.Pattern.Data[x, y].specialFieldType, true);
             }
         }
 
@@ -309,7 +309,7 @@ public class Grid
         }
     }
 
-    public void AddSpecialField(LevelSO.Index index, LevelSO.Index offset, SpecialFieldType fieldType,
+    public void AddSpecialField(Pattern.Index index, Pattern.Index offset, SpecialFieldType fieldType,
         EnemiesSO currentEnemy)
     {
         int x = index.X - offset.X;
