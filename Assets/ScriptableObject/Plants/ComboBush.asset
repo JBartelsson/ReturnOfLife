@@ -14,11 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   plantSprite: {fileID: 21300000, guid: a588770723659aa448f506270b644ad1, type: 3}
   <CardName>k__BackingField: Lycoperdon
-  <CardText>k__BackingField: Colonizes adjecent spots if hit by another plant effect.
-  <PlayCost>k__BackingField: 2
-  <TurnDelay>k__BackingField: 0
-  regularPoints: 20
-  fertilizedPoints: 20
+  regularCardStats:
+    Points: 0
+    EffectPattern: {fileID: 11400000, guid: a66e24e2058a24543bbfc0274f6f0133, type: 2}
+    CardText: 
+    PlayCost: 2
+  upgradedCardStats:
+    Points: 0
+    EffectPattern: {fileID: 11400000, guid: b83dc6f660126f24c89ca6f7dd25b3e7, type: 2}
+    CardText: 
+    PlayCost: 2
   <Element>k__BackingField: 0
   <EffectType>k__BackingField: 0
   <Rarity>k__BackingField: 0

@@ -7,14 +7,7 @@ public class AddEcoPoints : CardPassiveBase
     public override bool ExecutePassive(CallerArgs callerArgs)
     {
         if (callerArgs.callerType != CALLER_TYPE.PASSIVE) return false;
-        if (!callerArgs.CallingCardInstance.IsBasicFertilized())
-        {
-            callerArgs.gameManager.AddPointScore(callerArgs.CallingCardInstance.CardData.regularPoints);
-        }
-        else
-        {
-            callerArgs.gameManager.AddPointScore(callerArgs.CallingCardInstance.CardData.fertilizedPoints);
-        }
+            callerArgs.gameManager.AddPointScore(callerArgs.CallingCardInstance.GetCardStats().Points);
 
         return true;
     }

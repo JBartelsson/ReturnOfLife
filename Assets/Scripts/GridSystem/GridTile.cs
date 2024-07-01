@@ -254,4 +254,16 @@ public class GridTile
     {
         OnContentUpdated = delegate { };
     }
+
+    public void ForPattern(PatternSO pattern, Action<GridTile> action)
+    {
+        pattern.ForEachNormalFieldRelative((field, relativeX, relativeY) =>
+        {
+            GridTile affectedTile = grid.GetGridObject(x + relativeX, y + relativeY);
+            if (affectedTile != null)
+            {
+                action(affectedTile);
+            }
+        });
+    }
 }

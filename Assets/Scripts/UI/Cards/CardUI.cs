@@ -61,18 +61,6 @@ public class CardUI : MonoBehaviour, IPointerClickHandler
         SetCardUI(_card);
     }
 
-    private void SetHiddenProperties()
-    {
-        if (_card != null)
-        {
-            SetTurnDelay();
-        }
-    }
-
-    private void SetTurnDelay()
-    {
-        _turnDelay = _card.TurnDelay;
-    }
 
     public void SetCardUI(CardInstance cardInstance)
     {
@@ -106,8 +94,8 @@ public class CardUI : MonoBehaviour, IPointerClickHandler
         SetCardEffectTypeText();
 
         _cardName.text = _card.CardName;
-        _playCost.text = _card.PlayCost.ToString();
-        _cardText.text = _card.CardText;
+        _playCost.text = _card.RegularCardStats.PlayCost.ToString();
+        _cardText.text = _card.RegularCardStats.CardText;
     }
 
     private void SetTypeIcon()

@@ -16,17 +16,19 @@ public abstract class CardFunctionBase : PlantScriptBase
         CardInstance cardInstance = callerArgs.CallingCardInstance;
         if (!callerArgs.CallingCardInstance.CardData.OverridePointFunction)
         {
-            if (callerArgs.CallingCardInstance.IsBasicFertilized())
-            {
-                cardInstance.CardData.RuntimePoints = cardInstance.CardData.fertilizedPoints;
-            }
-            else
-            {
-                cardInstance.CardData.RuntimePoints = cardInstance.CardData.regularPoints;
-            }
+                if (cardInstance.GetCardStats().Points == 0)
+                {
+                    cardInstance.CardData.RuntimePoints = Constants.STANDARD_PLANT_POINTS;
+                }
+                else
+                {
+                    cardInstance.CardData.RuntimePoints = cardInstance.GetCardStats().Points;
+                }
         }
 
         //Only give points for planting a plant, when it is the first on its tile
+        Debug.Log(callerArgs);
+        if (callerArgs.playedTile == null) return;
         if (callerArgs.playedTile.Content.Count == 1)
             RewardPoints(callerArgs, cardInstance.CardData.RuntimePoints);
     }

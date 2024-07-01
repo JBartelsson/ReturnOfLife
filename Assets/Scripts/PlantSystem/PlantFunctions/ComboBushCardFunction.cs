@@ -46,22 +46,15 @@ public class ComboBushCardFunction : CardFunctionBase
         alreadyTriggered = true;
         CallerArgs bushCallerArgs = new CallerArgs(new CardInstance(bushInstance), null, false, CALLER_TYPE.EFFECT);
         bushCallerArgs.gameManager = GameManager.Instance;
-        if (!bushInstance.IsBasicFertilized())
+        //Select Effect Pattern depending on Upgrade
+        PatternSO effectPattern = null;
+       
+        callingGridTile.ForPattern(bushInstance.GetCardStats().EffectPattern, gridTile =>
         {
-            callingGridTile.ForEachNeighbor((gridTile) =>
-            {
-                bushCallerArgs.playedTile = gridTile;
-                Debug.Log($"Trying to Execute Bush on {gridTile.X}, {gridTile.Y}");
-                bushInstance.Execute(bushCallerArgs);
-            });
-        } else
-        {
-            callingGridTile.ForEachAdjacentTile((gridTile) =>
-            {
-                bushCallerArgs.playedTile = gridTile;
-                bushInstance.Execute(bushCallerArgs);
-            });
-        }
+            bushCallerArgs.playedTile = gridTile;
+            Debug.Log($"Trying to Execute Bush on {gridTile.X}, {gridTile.Y}");
+            bushInstance.Execute(bushCallerArgs);
+        } );
         
     }
 }
