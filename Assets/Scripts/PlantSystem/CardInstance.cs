@@ -12,6 +12,11 @@ public class CardInstance
     private CardFunctionBase cardFunction;
     private CardEditorBase cardEditor;
     private CardAccessCheckBase cardAccessCheck;
+    private int cardID = 0;
+
+    public int CardID => cardID;
+
+    private static int cardInstanceID = 0;
 
     public CardInstance(CardData newCardData, List<Fertilizer> newFertilizers = null)
     {
@@ -36,6 +41,8 @@ public class CardInstance
 
     private void InitScripts()
     {
+        cardID = cardInstanceID;
+        cardInstanceID++;
         if (cardData.CardFunction.ScriptType.Type != null)
         {
             cardFunction = (CardFunctionBase)Activator.CreateInstance(cardData.CardFunction.ScriptType);
@@ -91,13 +98,25 @@ public class CardInstance
     public CardEditorBase CardEditor { get => cardEditor; set => cardEditor = value; }
     public CardAccessCheckBase CardAccessCheck { get => cardAccessCheck; set => cardAccessCheck = value; }
 
-    public bool IsBasicFertilized()
+    public bool IsUpgraded()
     {
         return fertilizers.Contains(Fertilizer.Basic);
     }
     public int ReturnTriggerAmount()
     {
         return fertilizers.Where((x) => x == Fertilizer.Retrigger).Count();
+    }
+
+    public CardData.CardStats GetCardStats()
+    {
+        if (!IsUpgraded())
+        {
+            return cardData.RegularCardStats;
+        }
+        else
+        {
+            return cardData.UpgradedCardStats;
+        }
     }
 
     public void Execute(CallerArgs callerArgs)

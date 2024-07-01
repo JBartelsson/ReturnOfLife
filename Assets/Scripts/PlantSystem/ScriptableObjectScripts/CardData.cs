@@ -6,12 +6,14 @@ using TypeReferences;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-[CreateAssetMenu(menuName = "ScriptableObjects/Plantable")]
+[CreateAssetMenu(menuName = "ScriptableObjects/Card")]
 public class CardData : ScriptableObject
 {
+    
+
     private void Awake()
     {
-        runtimePoints = regularPoints;
+        runtimePoints = regularCardStats.Points;
     }
 
     [Serializable]
@@ -124,26 +126,6 @@ public class CardData : ScriptableObject
         Wisdom
     }
 
-    public CardData(CardData cardDataToCopy)
-    {
-        plantSprite = cardDataToCopy.plantSprite;
-        CardName = cardDataToCopy.CardName;
-        CardText = cardDataToCopy.CardText;
-        PlayCost = cardDataToCopy.PlayCost;
-        Element = cardDataToCopy.Element;
-        EffectType = cardDataToCopy.EffectType;
-        Rarity = cardDataToCopy.Rarity;
-        TurnDelay = cardDataToCopy.TurnDelay;
-        PlayCost = cardDataToCopy.PlayCost;
-        fertilizedPoints = cardDataToCopy.fertilizedPoints;
-        regularPoints = cardDataToCopy.regularPoints;
-        overridePointFunction = cardDataToCopy.overridePointFunction;
-        cardFunction = cardDataToCopy.cardFunction;
-        cardEditor = cardDataToCopy.cardEditor;
-        cardAccessCheck = cardDataToCopy.cardAccessCheck;
-        cardPassiveCall = cardDataToCopy.cardPassiveCall;
-    }
-
     public CardData Copy()
     {
         return Instantiate(this);
@@ -153,19 +135,22 @@ public class CardData : ScriptableObject
     private Sprite plantSprite;
     [field: Header("Text Information")]
     [field: SerializeField] public string CardName { get; private set; }
-    [field: SerializeField, TextArea] public string CardText { get; private set; }
-    [field: Header("Card Runtime Information")]
-    [field: SerializeField] public int PlayCost { get; private set; }
-    [field: SerializeField] public int TurnDelay { get; private set; }
 
-
-
-    [field: SerializeField] public int regularPoints;
-    [field: SerializeField] public int fertilizedPoints;
+    [SerializeField] private CardStats regularCardStats;
+    [SerializeField] private CardStats upgradedCardStats;
     [field: SerializeField] public CardElement Element { get; private set; }
     [field: SerializeField] public CardEffectType EffectType { get; private set; }
     [field: SerializeField] public CardRarity Rarity { get; private set; }
     private int runtimePoints = 0;
+
+    [Serializable]
+    public class CardStats
+    {
+        public int Points;
+        [FormerlySerializedAs("effectPattern")] public PatternSO EffectPattern;
+        public string CardText;
+        public int PlayCost;
+    }
 
 
     [Header("Card Functions")] 
@@ -218,5 +203,17 @@ public class CardData : ScriptableObject
     {
         get => plantSprite;
         set => plantSprite = value;
+    }
+    
+    public CardStats RegularCardStats
+    {
+        get => regularCardStats;
+        set => regularCardStats = value;
+    }
+
+    public CardStats UpgradedCardStats
+    {
+        get => upgradedCardStats;
+        set => upgradedCardStats = value;
     }
 }

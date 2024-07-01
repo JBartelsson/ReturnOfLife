@@ -14,11 +14,13 @@ public class BindweedEditor : CardEditorBase
         GridTile selectedGridTile = callerArgs.selectedGridTile;
         GridTile caller = callerArgs.playedTile;
         //If not on same axis, return
-        if (!selectedGridTile.OnSameAxisAs(caller) &&
-            !callerArgs.EditorCallingCardInstance.IsBasicFertilized()) return false;
+        if (!callerArgs.EditorCallingCardInstance.GetCardStats().EffectPattern.IsTileInPattern(
+                selectedGridTile, caller))
+        {
+            return false;
+        }
+         
         //if Distance is greater than 3 return
-        if (selectedGridTile.DistanceTo(caller) > BINDWEED_RANGE) return false;
-        if (selectedGridTile == caller) return false;
         //If tile is accessible
         callerArgs.playedTile = callerArgs.selectedGridTile;
         if (!selectedGridTile.IsAccessible(callerArgs)) return false;

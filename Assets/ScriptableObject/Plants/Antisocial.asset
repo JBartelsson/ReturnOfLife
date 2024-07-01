@@ -14,11 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   plantSprite: {fileID: 21300000, guid: 4ce3cef2c1476d04da69bfeb8c09c97d, type: 3}
   <CardName>k__BackingField: Antisocial
-  <CardText>k__BackingField: 
-  <PlayCost>k__BackingField: 1
-  <TurnDelay>k__BackingField: 0
-  regularPoints: 60
-  fertilizedPoints: 150
+  regularCardStats:
+    Points: 0
+    effectPattern: {fileID: 11400000, guid: 8bac51e694c8d7241acbde8ad66e50fd, type: 2}
+    CardText: 
+    PlayCost: 0
+  upgradedCardStats:
+    Points: 0
+    effectPattern: {fileID: 0}
+    CardText: 
+    PlayCost: 0
   <Element>k__BackingField: 0
   <EffectType>k__BackingField: 0
   <Rarity>k__BackingField: 0

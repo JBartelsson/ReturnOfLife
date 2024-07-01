@@ -28,13 +28,13 @@ public class PatternSOEditor : Editor
             { SpecialFieldType.CENTER, Color.green },
         };
 
-
+#if UNITY_EDITOR
     private void OnEnable()
     {
         PatternSO patternSO = target as PatternSO;
         patternSO.Pattern.PaletteDictionary = patternPaletteDictionary;
     }
-
+#endif
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();

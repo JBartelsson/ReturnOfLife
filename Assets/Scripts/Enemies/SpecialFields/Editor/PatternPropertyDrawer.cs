@@ -45,7 +45,6 @@ public class PatternPropertyDrawer : PropertyDrawer
         EditorGUI.BeginProperty(position, label, property);
         position = EditorGUI.PrefixLabel(position, GUIUtility.GetControlID(FocusType.Passive), label);
         var patternSO = property.serializedObject.targetObject as PatternSO;
-        Debug.Log($"FOUND {patternSO.name}");
        
         GUILayout.BeginHorizontal();
         GUILayout.Label("Grid Size");
@@ -86,7 +85,6 @@ public class PatternPropertyDrawer : PropertyDrawer
         
         
         if (patternSO.Pattern.Data == null) return;
-        Debug.Log("PROPERTY DRAWER");
         foreach (var item in patternSO.Pattern.PaletteDictionary)
         {
             GUI.color = Color.clear;
