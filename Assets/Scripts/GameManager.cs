@@ -93,6 +93,8 @@ public class GameManager : MonoBehaviour
 
     public List<CardInstance> CurrentHand => currentHand;
 
+    public StartDeckSO StartDeck { get => startDeck; set => startDeck = value; }
+
     //Args
     private CallerArgs callerArgs = new CallerArgs();
     private EditorCallerArgs editorArgs = new EditorCallerArgs();

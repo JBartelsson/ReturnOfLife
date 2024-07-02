@@ -1,22 +1,22 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using static StartDeckSO;
+using Random = UnityEngine.Random;
 
-public class Deck : MonoBehaviour
+public class Deck
 {
     #region Fields and Properties
 
-    public static Deck Instance { get; private set; } //Singleton
-
     [SerializeField] private CardCollection _playerDeck;
-    //[SerializeField] private CardInstance _cardPrefab; ??? //the Card Prefab, that will be copied and filled with the CardData
-
-    //[SerializeField] private Canvas _cardCanvas;???
 
     private List<CardInstance> _deckPile;
     private List<CardInstance> _discardPile;
+
+    private StartDeckSO _startDeck;
+
 
     public List<CardInstance> HandCards { get; private set; }
 
@@ -27,58 +27,87 @@ public class Deck : MonoBehaviour
 
     #region Methods
 
-    private void Awake()
+    public void InitializeDeck(StartDeckSO startDeck)
     {
-        if (Instance == null)
+        _deckPile.Clear();
+        _discardPile.Clear();
+        HandCards.Clear();
+
+        foreach (StartDeckSO.DeckEntry deckEntry in startDeck.Deck)
         {
-            Instance = this;
+            for (int i = 0; i < deckEntry.amount; i++)
+            {
+                _playerDeck.AddCardToCollection(new CardInstance(deckEntry.cardDataReference));
+            }
+            
         }
-        else
-        {
-            Destroy(gameObject);
-        }
+        _deckPile.AddRange(_playerDeck.CardsInCollection);
+
+        /*
+         * Debug.Log("RESETTING LEVEL");
+         * SetPointScore(0);
+         * deck.Clear();
+         * currentHand.Clear();
+         * drawPile.Clear();
+         * discardPile.Clear();
+         * currentTurns = 0;
+         * currentPlayedCards = 0;
+         * selectedPlantNeedNeighbor = false;
+         * 
+         * foreach (StartDeckSO.DeckEntry deckEntry in startDeck.Deck)
+         * {
+         *     for (int i = 0; i < deckEntry.amount; i++)
+         *     {
+         *         deck.Add(new CardInstance(deckEntry.cardDataReference));
+         *     }
+         * }
+         * 
+         * drawPile.AddRange(deck);
+         * SwitchState(GameState.EndTurn);
+         */
     }
 
-    private void Start()
-    {
-        //Instantiate the Deck once, at the Start of a Level
-        
-    }
-
-    private void DrawCards(int amount = 1)
+    public void DrawCards(int amount = 1)
     {
         for (; amount > 0; amount--)
         {
             if (HandCards.Count <= _maxHandSize)
             {
-                print("Hand is full");
+                Debug.Log("Hand is full");
                 return;
             }
-            if (_deckPile.Count <= 0)
-            {
-                // Should not happen by design, but its better to be on the safe side
-                if (_discardPile.Count <= 0)
-                { return; }
-                ShuffleDiscardPileIntoDeck();
-            }
-            CardInstance drawCard = _deckPile.First();
-            HandCards.Add(drawCard);
-            _deckPile.Remove(drawCard);
+            if (!DrawSingleCard()) // If no card can be drawn, just return. To minimize unnecessary calls
+                return;
         }
     }
 
-    private void DrawForTurn()
+    private bool DrawSingleCard()
+    {
+        if (_deckPile.Count <= 0)
+        {
+            // Should not happen by design, but its better to be on the safe side
+            if (_discardPile.Count <= 0)
+            { return false; }
+            ShuffleDiscardPileIntoDeck();
+        }
+        CardInstance drawCard = _deckPile.First();
+        HandCards.Add(drawCard);
+        _deckPile.Remove(drawCard);
+        return true;
+    }
+
+    public void DrawForTurn()
     {
         DrawCards(_turnDrawCount);
     }
 
-    private void DiscardCard(CardInstance card)
+    public void DiscardCard(CardInstance card)
     {
         _discardPile.Add(card);
         HandCards.Remove(card);
     }
 
-    private void DiscardRandomCard()
+    public void DiscardRandomCard()
     {
         int randomIndex = Random.Range(0, HandCards.Count);
         CardInstance randomCard = HandCards[randomIndex];
@@ -86,7 +115,7 @@ public class Deck : MonoBehaviour
         _discardPile.Add(randomCard);
     }
 
-    private void DiscardHand()
+    public void DiscardHand()
     {
         foreach(CardInstance card in HandCards)
         {
@@ -94,7 +123,7 @@ public class Deck : MonoBehaviour
         }
     }
 
-    private void ShuffleDiscardPileIntoDeck()
+    public void ShuffleDiscardPileIntoDeck()
     {
         foreach(CardInstance card in _discardPile)
         {
@@ -106,29 +135,19 @@ public class Deck : MonoBehaviour
 
     // Fisher-Yates Algorithm for shuffeling
     // For each Position from the last one on, swap positions with a random position
-    private void ShuffleDeck()
+    public void ShuffleDeck()
     {
         for(int i = _deckPile.Count - 1; i < 0; i--)
         {
-            int j = Random.Range(0, i + 1);
+            int j = UnityEngine.Random.Range(0, i + 1);
             var temp = _deckPile[i];
             _deckPile[i] = _deckPile[j];
             _deckPile[j] = temp;
         }
     }
 
-    //private void InstantiateDeck()???
-    //{
-    //    //CardInstance card = new CardInstance(deckEntry.cardDataReference);
-    //}
-
     #endregion
 
-    /* GameManager
-     * private List<CardInstance> deck = new();
-     * private List<CardInstance> currentHand = new();
-     * private List<CardInstance> drawPile = new();
-     * private List<CardInstance> discardPile = new();
-     */
+    // GameManager
 }
 

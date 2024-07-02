@@ -28,4 +28,5 @@ public class CardCollection : ScriptableObject
     {
         CardsInCollection.Add(card);
     }
+
 }
