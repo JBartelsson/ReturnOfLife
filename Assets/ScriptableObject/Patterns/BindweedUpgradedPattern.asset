@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: BindweedUpgradedPattern
   m_EditorClassIdentifier: 
   pattern:
-    dataString: CCCBCCCCCCBCCCCCCBCCCBBBDBBBCCCBCCCCCCBCCCCCCBCCC
+    dataString: BBBBBBBBBBBBBBBBBBBBBBBBDBBBBBBBBBBBBBBBBBBBBBBBB
     gridSize: 7

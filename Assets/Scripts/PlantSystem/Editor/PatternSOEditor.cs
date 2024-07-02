@@ -31,6 +31,7 @@ public class PatternSOEditor : Editor
 #if UNITY_EDITOR
     private void OnEnable()
     {
+        if (target == null) return;
         PatternSO patternSO = target as PatternSO;
         patternSO.Pattern.PaletteDictionary = patternPaletteDictionary;
     }

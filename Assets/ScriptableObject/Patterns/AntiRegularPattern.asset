@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: AntiRegularPattern
   m_EditorClassIdentifier: 
   pattern:
-    dataString: CCCCCCCCBBBBBCCBBBBBCCBBDBBCCBBBBBCCBBBBBCCCCCCCC
+    dataString: BBBBBBBBBBBBBBBBBBBBBBBBDBBBBBBBBBBBBBBBBBBBBBBBB
     gridSize: 7

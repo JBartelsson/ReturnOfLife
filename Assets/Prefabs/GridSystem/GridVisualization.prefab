@@ -5315,8 +5315,8 @@ MonoBehaviour:
   spriteRenderer: {fileID: 6082051803512918550}
   standardVisualizationMaterial: {fileID: 2100000, guid: 0146cb183848a1f48b1af9a844c2d399, type: 2}
   markedMaterial: {fileID: 2100000, guid: 4cd61e6d0c6fb7b45b2282ee8c224ee6, type: 2}
+  previewMaterial: {fileID: 2100000, guid: 8b8d19f09f2b5b24fb970ce5175bc067, type: 2}
   visualizer: {fileID: 421605569967163468}
-  fertilizedParticles: {fileID: 340961616963226282}
   fieldMarker: {fileID: 2140894653925894352}
   fieldMarkerMeshRenderer: {fileID: 3294752264081071358}
   fieldMaterials:

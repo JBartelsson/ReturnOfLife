@@ -9,11 +9,25 @@ public static class EventManager
     public class GameEvents
     {
         public LevelEvents Level = new LevelEvents();
+        public UIEvents UI = new UIEvents();
         public class Args
         {
             public Component sender;
         }
-       
+
+        public class UIEvents
+        {
+            public class OnHoverChangedArgs : Args
+            {
+                public CardInstance hoveredCardInstance;
+                public GridTile hoveredGridTile;
+            }
+            
+
+            public UnityAction<OnHoverChangedArgs> OnPlantHoverChanged;
+            public UnityAction OnPlantHoverCanceled;
+
+        }
         
         public class LevelEvents
         {
