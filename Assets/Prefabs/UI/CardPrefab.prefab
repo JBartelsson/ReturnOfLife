@@ -415,6 +415,8 @@ MonoBehaviour:
   _epicRarityIcon: {fileID: 0}
   _plantTypeIcon: {fileID: 21300000, guid: 4d3385f39c0abb548aca46996435c5b3, type: 3}
   _wisdomTypeIcon: {fileID: 21300000, guid: b1b7a52a03dc13f42aeaf6acb3bc241a, type: 3}
+  backgroundSprite: {fileID: 6626060879351948569}
+  hoverMaterial: {fileID: 2100000, guid: d0ccc4d27d1542443840c84533abed40, type: 2}
 --- !u!1 &3516780636125883384
 GameObject:
   m_ObjectHideFlags: 0
@@ -1049,7 +1051,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Upgrades the next card you play.
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

@@ -1,0 +1,54 @@
+{
+    "name": "PlayerInputActions",
+    "maps": [
+        {
+            "name": "GameInputs",
+            "id": "2b08f2af-da56-4b0d-8720-8ee48872946e",
+            "actions": [
+                {
+                    "name": "Interact",
+                    "type": "Button",
+                    "id": "4f06cb02-258d-4622-9a49-f5adb32cce32",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Cancel",
+                    "type": "Button",
+                    "id": "62ec38da-0872-4b25-992d-c760bc1dfc49",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "3e401aac-0be6-4b78-a89f-f18febd79108",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "da950207-33bb-40be-a79c-0568905d2f38",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Cancel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

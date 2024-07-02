@@ -21,7 +21,9 @@ public class CardUI : MonoBehaviour, IPointerClickHandler
     }
 
     [Header("Prefab Elements")] //references objects in the card prefab
-    [SerializeField] private Image _cardImage;
+    [SerializeField]
+    private Image _cardImage;
+
     [SerializeField] private Image _costDrop;
     [SerializeField] private Image _cardRarity;
     [SerializeField] private Image _elementIcon;
@@ -33,10 +35,13 @@ public class CardUI : MonoBehaviour, IPointerClickHandler
     [SerializeField] private TextMeshProUGUI _cardText;
 
     [Header("Hidden Properties ")] //references properties of the cards, that arent shown directly on the card, but in mechanics
-    [SerializeField] private int _turnDelay;
+    [SerializeField]
+    private int _turnDelay;
 
     [Header("Sprite Assets")] //references to the art folder in assets
-    [SerializeField] private Sprite _basicElementIcon;
+    [SerializeField]
+    private Sprite _basicElementIcon;
+
     [SerializeField] private Sprite _snowElementIcon;
     [SerializeField] private Sprite _sunElementIcon;
     [SerializeField] private Sprite _windElementIcon;
@@ -49,6 +54,10 @@ public class CardUI : MonoBehaviour, IPointerClickHandler
     [SerializeField] private Sprite _plantTypeIcon;
     [SerializeField] private Sprite _wisdomTypeIcon;
 
+    [Header("Hover Effect")] [SerializeField]
+    private Image backgroundSprite;
+
+    [SerializeField] private Material hoverMaterial;
     private readonly string EFFECTTYPE_PLANT = "Plant";
     private readonly string EFFECTTYPE_WISDOM = "Wisdom";
 
@@ -66,6 +75,7 @@ public class CardUI : MonoBehaviour, IPointerClickHandler
     {
         SetCardUI(cardInstance.CardData);
     }
+
     public void SetCardUI(CardData card)
     {
         _card = card;
@@ -113,7 +123,7 @@ public class CardUI : MonoBehaviour, IPointerClickHandler
 
     private void SetCardEffectTypeText()
     {
-        switch(_card.EffectType)
+        switch (_card.EffectType)
         {
             case CardData.CardEffectType.Plant:
                 // _cardType.text = EFFECTTYPE_PLANT;
@@ -121,13 +131,12 @@ public class CardUI : MonoBehaviour, IPointerClickHandler
             case CardData.CardEffectType.Wisdom:
                 // _cardType.text = EFFECTTYPE_WISDOM;
                 break;
-
         }
     }
 
     private void SetRarityIcon()
     {
-        switch( _card.Rarity)
+        switch (_card.Rarity)
         {
             case CardData.CardRarity.Common:
                 _cardRarity.sprite = _commonRarityIcon;
@@ -172,6 +181,19 @@ public class CardUI : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        GameManager.Instance.TryPlayCard(_cardIndex);
+        CardsUIController.Instance.SelectCard(_cardIndex);
+        SetHoverState();
+    }
+
+    public void SetHoverState(bool state = true)
+    {
+        if (state)
+        {
+            backgroundSprite.material = hoverMaterial;
+        }
+        else
+        {
+            backgroundSprite.material = null;
+        }
     }
 }

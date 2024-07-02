@@ -213,26 +213,6 @@ public class GameManager : MonoBehaviour
     {
         if (currentGameState == GameState.SetPlant)
         {
-            if (Input.GetMouseButtonDown(0))
-            {
-                Debug.Log("SET PLANT CLICK");
-
-                GridTile gridTile = GridManager.Instance.Grid.GetGridObject(Input.mousePosition);
-                callerArgs.playedTile = gridTile;
-                if (gridTile == null) return;
-                if (selectedCardBlueprint.CanExecute(callerArgs))
-                {
-                    selectedCardBlueprint.Execute(callerArgs);
-                    PlantCard(gridTile);
-                    CheckSpecialFields();
-                }
-                else
-                {
-                    Debug.Log("CANT EXECUTE FUNCTION THERE");
-                }
-            }
-
-            return;
         }
 
         if (currentGameState == GameState.PlantEditor)
@@ -258,6 +238,21 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void PlantCard(int cardIndex, GridTile selectedGridTile)
+    {
+        TryPlayCard(cardIndex);
+        callerArgs.playedTile = selectedGridTile;
+        if (selectedCardBlueprint.CanExecute(callerArgs))
+        {
+            selectedCardBlueprint.Execute(callerArgs);
+            PlantCard(selectedGridTile);
+            CheckSpecialFields();
+        }
+        else
+        {
+            Debug.Log("CANT EXECUTE FUNCTION THERE");
+        }
+    }
 
     private void CheckSpecialFields()
     {
