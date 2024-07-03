@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -66,7 +67,7 @@ public class GameManager : MonoBehaviour
     private List<CardInstance> currentHand = new();
     private List<CardInstance> drawPile = new();
     private List<CardInstance> discardPile = new();
-    private List<Fertilizer> currentFertilizers = new();
+    private List<Fertilizer> currentWisdoms = new();
     private int currentMana = 0;
     private int currentTurns = 0;
     private int currentPlayedCards = 0;
@@ -93,14 +94,18 @@ public class GameManager : MonoBehaviour
 
     public List<CardInstance> CurrentHand => currentHand;
 
-    public StartDeckSO StartDeck { get => startDeck; set => startDeck = value; }
+    public StartDeckSO StartDeck
+    {
+        get => startDeck;
+        set => startDeck = value;
+    }
 
     //Args
     private CallerArgs callerArgs = new CallerArgs();
     private EditorCallerArgs editorArgs = new EditorCallerArgs();
 
 
-      private void Awake()
+    private void Awake()
     {
         if (Instance == null)
         {
@@ -195,19 +200,10 @@ public class GameManager : MonoBehaviour
         editorArgs.SetValues(selectedCardBlueprint, playedTile, selectedPlantNeedNeighbor, CALLER_TYPE.EDITOR);
         editorArgs.EditorCallingCardInstance = selectedCardBlueprint;
         editorArgs.gameManager = this;
-        GridManager.Instance.Grid.ForEachGridTile((gridTile) =>
+        EventManager.Game.UI.OnEditorNeeded?.Invoke(new EventManager.GameEvents.UIEvents.OnEditorNeededArgs()
         {
-            if (selectedCardBlueprint.CheckField(new EditorCallerArgs()
-                {
-                    playedTile = this.playedTile,
-                    selectedGridTile = gridTile,
-                    CallingCardInstance = selectedCardBlueprint,
-                    EditorCallingCardInstance = selectedCardBlueprint,
-                    callerType = CALLER_TYPE.EDITOR
-                }))
-            {
-                gridTile.ChangeMarkedStatus(true);
-            }
+            editorCardInstance = selectedCardBlueprint,
+            editorOriginGridTile = playedTile
         });
     }
 
@@ -219,40 +215,18 @@ public class GameManager : MonoBehaviour
 
         if (currentGameState == GameState.PlantEditor)
         {
-            if (Input.GetMouseButtonDown(0))
-            {
-                GridTile selectedGridTile = GridManager.Instance.Grid.GetGridObject(Input.mousePosition);
-                if (selectedGridTile == null) return;
-                editorArgs.selectedGridTile = selectedGridTile;
-                if (selectedCardBlueprint.CheckField(editorArgs))
-                {
-                    selectedCardBlueprint.ExecuteEditor(editorArgs);
-                    CheckSpecialFields();
-                    EndCardPlaying();
-                }
-                else
-                {
-                    Debug.Log("CANT EXECUTE EDITOR FUNCTION THERE");
-                }
-            }
-
-            return;
         }
     }
 
-    public void PlantCard(int cardIndex, GridTile selectedGridTile)
+    public void ExecuteEditor(GridTile selectedGridTile)
     {
-        TryPlayCard(cardIndex);
-        callerArgs.playedTile = selectedGridTile;
-        if (selectedCardBlueprint.CanExecute(callerArgs))
+        if (selectedGridTile == null) return;
+        editorArgs.selectedGridTile = selectedGridTile;
+        if (selectedCardBlueprint.CheckField(editorArgs))
         {
-            selectedCardBlueprint.Execute(callerArgs);
-            PlantCard(selectedGridTile);
+            selectedCardBlueprint.ExecuteEditor(editorArgs);
             CheckSpecialFields();
-        }
-        else
-        {
-            Debug.Log("CANT EXECUTE FUNCTION THERE");
+            EndCardPlaying();
         }
     }
 
@@ -268,57 +242,19 @@ public class GameManager : MonoBehaviour
         currentScore.SpecialFields = specialFieldAmount;
     }
 
-    public void TryPlayCard(int index)
+    public void TryPlantCard(int cardIndex, GridTile selectedGridTile)
     {
-        if (currentGameState != GameState.SelectCards) return;
-        if (index < 0 || index >= currentHand.Count)
-        {
-            Debug.LogError($"Card Index {index} out of Bounds!");
-            return;
-        }
-
-        TryPlayCard(currentHand[index]);
-    }
-
-    private void TryPlayCard(CardInstance plantableCard)
-    {
-        if (currentMana - plantableCard.GetCardStats().PlayCost < 0)
-        {
-            Debug.Log($"CANT PLAY CARD BECAUSE OF MANA");
-            return;
-        }
-
-        selectedCard = plantableCard;
-        selectedCardBlueprint = new CardInstance(selectedCard, currentFertilizers);
-        callerArgs = new CallerArgs()
-        {
-            needNeighbor = selectedPlantNeedNeighbor,
-            CallingCardInstance = selectedCardBlueprint,
-            gameManager = this
-        };
-        //Update Mana and Card Piles
-        currentMana -= selectedCardBlueprint.CardData.RegularCardStats.PlayCost;
-        EventManager.Game.Level.OnManaChanged?.Invoke(new EventManager.GameEvents.LevelEvents.ManaChangedArgs()
-        {
-            NewMana = currentMana
-        });
-        currentHand.Remove(selectedCard);
-        discardPile.Add(selectedCard);
-        //Event calling
-        EventManager.Game.Level.OnUpdateCards?.Invoke(new EventManager.GameEvents.Args()
-        {
-            sender = this
-        });
-        currentPlayedCards++;
-        if (selectedCardBlueprint.GetPlantFunctionExecuteType() == EXECUTION_TYPE.IMMEDIATE)
+        if (!InitCallerArgsForCard(cardIndex)) return;
+        callerArgs.playedTile = selectedGridTile;
+        if (selectedCardBlueprint.CanExecute(callerArgs))
         {
             selectedCardBlueprint.Execute(callerArgs);
-            EndCardPlaying();
+            PlantCard(selectedGridTile);
+            CheckSpecialFields();
         }
-
-        if (selectedCardBlueprint.GetPlantFunctionExecuteType() == EXECUTION_TYPE.AFTER_PLACEMENT)
+        else
         {
-            SwitchState(GameState.SetPlant);
+            Debug.Log("CANT EXECUTE FUNCTION THERE");
         }
     }
 
@@ -328,22 +264,76 @@ public class GameManager : MonoBehaviour
 
         selectedPlantNeedNeighbor = true;
 
-        Debug.Log($"PLANTED: {selectedCard}");
         if (selectedCardBlueprint.CardEditor != null)
         {
             SwitchState(GameState.PlantEditor);
+
             return;
         }
 
         EndCardPlaying();
     }
 
+
+    public bool InitCallerArgsForCard(int index)
+    {
+        if (currentGameState != GameState.SelectCards) return false;
+        if (index < 0 || index >= currentHand.Count)
+        {
+            Debug.LogError($"Card Index {index} out of Bounds!");
+            return false;
+        }
+
+        Debug.Log($"Trying to play {currentHand[index]}");
+        return InitCallerArgsForCard(currentHand[index]);
+    }
+
+    private bool InitCallerArgsForCard(CardInstance plantableCard)
+    {
+        selectedCard = plantableCard;
+        selectedCardBlueprint = new CardInstance(selectedCard, currentWisdoms);
+        if (selectedCardBlueprint.GetPlantFunctionExecuteType() == EXECUTION_TYPE.IMMEDIATE)
+        {
+            Debug.Log("CANT PLACE WISDOM ON GRID");
+            return false;
+        }
+
+        callerArgs = new CallerArgs()
+        {
+            needNeighbor = selectedPlantNeedNeighbor,
+            CallingCardInstance = selectedCardBlueprint,
+            gameManager = this
+        };
+        //Update Mana and Card Piles
+
+
+        return true;
+    }
+
+
     private void EndCardPlaying()
     {
-        GridManager.Instance.Grid.ForEachGridTile((x) => x.ChangeMarkedStatus(false));
+        //Deck manipulation, in the future in the Deck class
+        ReduceMana(selectedCardBlueprint.GetCardStats().PlayCost);
+        currentHand.Remove(selectedCard);
+        discardPile.Add(selectedCard);
+        //Event calling
+        EventManager.Game.Level.OnUpdateCards?.Invoke(new EventManager.GameEvents.Args()
+        {
+            sender = this
+        });
+        currentPlayedCards++;
+
+
+        Debug.Log("PLANT PLANTED!");
+        EventManager.Game.UI.OnPlantPlanted?.Invoke(new EventManager.GameEvents.UIEvents.OnPlantPlantedArgs()
+        {
+            plantedCardInstance = selectedCardBlueprint,
+            plantedGridTile = playedTile
+        });
         if (selectedCardBlueprint.CardData.EffectType != CardData.CardEffectType.Wisdom)
         {
-            currentFertilizers.Clear();
+            currentWisdoms.Clear();
         }
 
         SwitchState(GameState.SelectCards);
@@ -360,12 +350,8 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        currentMana = standardMana;
-        EventManager.Game.Level.OnManaChanged?.Invoke(new EventManager.GameEvents.LevelEvents.ManaChangedArgs()
-        {
-            NewMana = currentMana
-        });
-        currentFertilizers.Clear();
+        ChangeMana(standardMana);
+        currentWisdoms.Clear();
         discardPile.AddRange(currentHand);
         currentHand.Clear();
         EventManager.Game.Level.OnTurnChanged?.Invoke(new EventManager.GameEvents.LevelEvents.TurnChangedArgs()
@@ -424,9 +410,9 @@ public class GameManager : MonoBehaviour
         discardPile.Clear();
     }
 
-    public void AddFertilizer(Fertilizer fertilizer)
+    public void AddWisdom(Fertilizer fertilizer)
     {
-        currentFertilizers.Add(fertilizer);
+        currentWisdoms.Add(fertilizer);
     }
 
     //Score related
@@ -445,6 +431,39 @@ public class GameManager : MonoBehaviour
             NewScore = currentScore,
             CurrentLevel = currentLevel
         });
+    }
+
+    private bool ChangeMana(int amount, bool overrideMana = false)
+    {
+        if (!overrideMana)
+        {
+            if (currentMana + amount < 0)
+            {
+                return false;
+            }
+
+            currentMana += amount;
+        }
+        else
+        {
+            currentMana = amount;
+        }
+
+        EventManager.Game.Level.OnManaChanged?.Invoke(new EventManager.GameEvents.LevelEvents.ManaChangedArgs()
+        {
+            NewMana = currentMana
+        });
+        return true;
+    }
+
+    public bool AddMana(int amount)
+    {
+        return ChangeMana(amount);
+    }
+
+    public bool ReduceMana(int amount)
+    {
+        return ChangeMana(-amount);
     }
 
     private void AddSpecialFieldScore(int amount)
@@ -475,5 +494,4 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log($"GAME WON!");
     }
-
 }

@@ -17,10 +17,6 @@ public class GameTurnsUI : MonoBehaviour
     }
     
 
-    private void OnDisable()
-    {
-        EventManager.Game.Level.OnTurnChanged -= UpdateTurn;
-    }
 
     private void UpdateTurn(LevelEvents.TurnChangedArgs args)
     {

@@ -7,7 +7,7 @@ public class BasicFertilizerFunction : CardFunctionBase
 {
     public override void ExecuteCard(CallerArgs callerArgs)
     {
-        callerArgs.gameManager.AddFertilizer(Fertilizer.Basic);
+        callerArgs.gameManager.AddWisdom(Fertilizer.Basic);
     }
 
     public override bool CanExecute(CallerArgs callerArgs)

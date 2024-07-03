@@ -10,8 +10,6 @@ public class GameInput : MonoBehaviour
 {
 
     private const string PLAYER_PREFS_BINDINGS = "InputBindings";
-    public event EventHandler OnInteractAction;
-    public event EventHandler OnCancelAction;
     private PlayerInputActions playerInputActions;
     
 
@@ -45,12 +43,13 @@ public class GameInput : MonoBehaviour
     }
     private void Cancel_performed(InputAction.CallbackContext obj)
     {
-        OnCancelAction?.Invoke(this, EventArgs.Empty);
+        EventManager.Game.Input.OnCancel();
     }
 
     private void Interact_Performed(InputAction.CallbackContext obj)
     {
-        OnInteractAction?.Invoke(this, EventArgs.Empty);
+        EventManager.Game.Input.OnInteract();
+
     }
 
     public string GetBindingText(Binding binding)

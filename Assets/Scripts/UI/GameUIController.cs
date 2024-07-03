@@ -29,14 +29,6 @@ public class GameUIController : MonoBehaviour
     }
 
 
-    private void OnDisable()
-    {
-        EventManager.Game.Level.OnTurnChanged -= UpdateTurn;
-        EventManager.Game.Level.OnManaChanged -= OnManaChanged;
-        EventManager.Game.Level.OnScoreChanged -= OnScoreChanged;
-
-
-    }
 
     private void UpdateTurn(EventManager.GameEvents.LevelEvents.TurnChangedArgs args)
     {

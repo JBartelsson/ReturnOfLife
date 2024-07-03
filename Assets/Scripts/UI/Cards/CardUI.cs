@@ -61,6 +61,10 @@ public class CardUI : MonoBehaviour, IPointerClickHandler
     private readonly string EFFECTTYPE_PLANT = "Plant";
     private readonly string EFFECTTYPE_WISDOM = "Wisdom";
 
+    private bool cardClickEnabled = true;
+
+    
+
     #endregion
 
     #region Methods
@@ -70,6 +74,10 @@ public class CardUI : MonoBehaviour, IPointerClickHandler
         SetCardUI(_card);
     }
 
+    public void SetActiveState(bool state)
+    {
+        cardClickEnabled = state;
+    }
 
     public void SetCardUI(CardInstance cardInstance)
     {
@@ -181,8 +189,8 @@ public class CardUI : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        if (!cardClickEnabled) return;
         CardsUIController.Instance.SelectCard(_cardIndex);
-        SetHoverState();
     }
 
     public void SetHoverState(bool state = true)

@@ -6,15 +6,41 @@ public static class EventManager
 {
     public static readonly GameEvents Game = new GameEvents();
 
+    public static void ClearInvocationLists()
+    {
+        Game.Level.OnEndLevel = delegate {};
+        Game.Level.OnManaChanged = delegate {};
+        Game.Level.OnDrawCards = delegate {};
+        Game.Level.OnUpdateCards = delegate {};
+        Game.Level.OnScoreChanged = delegate {};
+        Game.Level.OnTurnChanged = delegate {};
+        Game.Level.OnInCardSelection = delegate {};
+        
+        Game.UI.OnEditorNeeded = delegate {};
+        Game.UI.OnHoverForEditor = delegate {};
+        Game.UI.OnPlantHoverCanceled = delegate {};
+        Game.UI.OnPlantHoverChanged = delegate {};
+        Game.UI.OnHoverForEditor = delegate {};
+        Game.UI.OnPlantPlanted = delegate {};
+
+    }
+
+    
     public class GameEvents
     {
         public LevelEvents Level = new LevelEvents();
         public UIEvents UI = new UIEvents();
+        public InputEvents Input = new InputEvents();
         public class Args
         {
             public Component sender;
         }
 
+        public class InputEvents
+        {
+            public UnityAction OnInteract;
+            public UnityAction OnCancel;
+        }
         public class UIEvents
         {
             public class OnHoverChangedArgs : Args
@@ -22,10 +48,29 @@ public static class EventManager
                 public CardInstance hoveredCardInstance;
                 public GridTile hoveredGridTile;
             }
+            public class OnHoverForEditorArgs : Args
+            {
+                public GridTile hoveredGridTile;
+            }
+            public class OnPlantPlantedArgs : Args
+            {
+                public CardInstance plantedCardInstance;
+                public GridTile plantedGridTile;
+            }
+            
+            public class OnEditorNeededArgs : Args
+            {
+                public CardInstance editorCardInstance;
+                public GridTile editorOriginGridTile;
+                public EditorCallerArgs EditorCallerArgs;
+            }
             
 
             public UnityAction<OnHoverChangedArgs> OnPlantHoverChanged;
-            public UnityAction OnPlantHoverCanceled;
+            public UnityAction OnPlantHoverCanceled; 
+            public UnityAction<OnPlantPlantedArgs> OnPlantPlanted;
+            public UnityAction<OnEditorNeededArgs> OnEditorNeeded;
+            public UnityAction<OnHoverForEditorArgs> OnHoverForEditor;
 
         }
         
@@ -64,8 +109,5 @@ public static class EventManager
 
 
         }
-        
-
-        public event EventHandler OnTest;
     }
 }

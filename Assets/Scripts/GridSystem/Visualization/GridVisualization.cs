@@ -53,17 +53,20 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
     {
         EventManager.Game.UI.OnPlantHoverChanged += OnPlantHoverChanged;
         EventManager.Game.UI.OnPlantHoverCanceled += OnPlantHoverCanceled;
+        EventManager.Game.UI.OnHoverForEditor += OnHoverForEditor;
+    }
+
+    private void OnHoverForEditor(EventManager.GameEvents.UIEvents.OnHoverForEditorArgs args)
+    {
+        if (args.hoveredGridTile != ownGridTile) return;
+        visualizationState = VisualizationState.MARKED_FOR_EDITOR;
+        UpdateContent();
     }
 
     private void OnPlantHoverCanceled()
     {
         visualizationState = VisualizationState.NONE;
         UpdateContent();
-    }
-
-    private void OnDisable()
-    {
-        EventManager.Game.UI.OnPlantHoverChanged -= OnPlantHoverChanged;
     }
 
 

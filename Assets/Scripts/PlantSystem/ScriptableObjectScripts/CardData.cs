@@ -9,11 +9,12 @@ using UnityEngine.Serialization;
 [CreateAssetMenu(menuName = "ScriptableObjects/Card")]
 public class CardData : ScriptableObject
 {
-    
-
+  
     private void Awake()
     {
         runtimePoints = regularCardStats.Points;
+        plantTypeID = cardDataIDCounter;
+        cardDataIDCounter++;
     }
 
     [Serializable]
@@ -142,6 +143,12 @@ public class CardData : ScriptableObject
     [field: SerializeField] public CardEffectType EffectType { get; private set; }
     [field: SerializeField] public CardRarity Rarity { get; private set; }
     private int runtimePoints = 0;
+    
+    private static int cardDataIDCounter = 0;
+    private int plantTypeID;
+
+    public int PlantTypeID => plantTypeID;
+
 
     [Serializable]
     public class CardStats

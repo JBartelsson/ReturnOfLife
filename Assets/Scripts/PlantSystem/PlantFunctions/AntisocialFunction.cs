@@ -16,8 +16,13 @@ public class AntisocialFunction : CardFunctionBase
         gridTile.ForPattern(callerArgs.CallingCardInstance.GetCardStats().EffectPattern, tile =>
         {
             if (tile.CardInstance == null) return;
-            if (tile.CardInstance.CardID == callerArgs.CallingCardInstance.CardID)
+            Debug.Log(tile.CardInstance.CardData.CardName);
+            Debug.Log(callerArgs.CallingCardInstance.CardData.CardName);
+
+            
+            if (tile.CardInstance.CardData.CardName == callerArgs.CallingCardInstance.CardData.CardName)
             {
+                Debug.Log($"HAS PLANT IN PATTERN!!!");
                 hasPlantInPattern = true;
             }
         } );

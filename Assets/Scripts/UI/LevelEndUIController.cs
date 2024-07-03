@@ -28,8 +28,6 @@ public class LevelEndUIController : MonoBehaviour
     {
         nextButton.onClick.RemoveListener(NextLevel);
         nextButton.onClick.RemoveListener(GameOver);
-        EventManager.Game.Level.OnEndLevel -= OnEndLevel;
-
     }
 
     private void OnEndLevel(EventManager.GameEvents.LevelEvents.LevelEndedArgs args)

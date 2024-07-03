@@ -43,7 +43,7 @@ Material:
     m_Floats:
     - _OutlineThickness: 0
     - _Scale: -0.02
-    - _Scale_2: 1.05
+    - _Scale_2: 1.04
     m_Colors:
     - _OutlineColor: {r: 0.023789985, g: 0.5647059, b: 0, a: 1}
     - _OutlineColor2: {r: 0, g: 0.5647059, b: 0, a: 1}

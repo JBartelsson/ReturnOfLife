@@ -12,7 +12,6 @@ public class GridTile
     private int x;
     private int y;
     private Grid grid;
-    private bool marked = false;
     private SpecialFieldType fieldType = SpecialFieldType.NONE;
     private List<FieldModifier> fieldModifiers = new();
 
@@ -79,11 +78,7 @@ public class GridTile
         set => y = value;
     }
 
-    public bool Marked
-    {
-        get => marked;
-        set => marked = value;
-    }
+   
     
     public List<FieldModifier> FieldModifiers
     {
@@ -143,11 +138,6 @@ public class GridTile
     
     
 
-    public void ChangeMarkedStatus(bool status)
-    {
-        marked = status;
-        grid.UpdateGridContent(x, y, this);
-    }
 
     public override string ToString()
     {
@@ -245,7 +235,6 @@ public class GridTile
         fieldType = SpecialFieldType.NONE;
         //empty the event
         OnContentUpdated = delegate { };
-        marked = false;
         fieldModifiers = new();
         grid.UpdateGridContent(x,y, this);
     }
