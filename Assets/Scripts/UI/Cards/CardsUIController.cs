@@ -167,7 +167,11 @@ public class CardsUIController : MonoBehaviour
 
     public void SelectCard(int cardIndex)
     {
-        
+        if (GameManager.Instance.CurrentHand[cardIndex].CardData.EffectType == CardData.CardEffectType.Wisdom)
+        {
+            activeCardStack.Add(cardIndex);
+            DisableAllOtherWisdomOfSameType(cardIndex);
+        }
         foreach (CardUI cardUI in currentCards)
         {
             cardUI.SetHoverState(false);
@@ -178,9 +182,23 @@ public class CardsUIController : MonoBehaviour
         EventManager.Game.UI.OnPlantHoverCanceled?.Invoke();
         activeCardIndex = cardIndex;
         SwitchState(State.PlacePlant);
-
     }
 
+    public void DeselectCard(int cardIndex)
+    {
+        GameInputOnCancel();
+    }
+
+    private void DisableAllOtherWisdomOfSameType(int cardIndex)
+    {
+        foreach (var cardUI in currentCards)
+        {
+            if (SameWisdomAlreadyInStack(cardIndex))
+            {
+                cardUI.SetActiveState(false);
+            }
+        }
+    }
     private bool WisdomInCardStack()
     {
         foreach (var index in activeCardStack)
@@ -194,15 +212,48 @@ public class CardsUIController : MonoBehaviour
         return false;
     }
 
-    private void DehoverNonWisdomCards()
+    private bool WisdomAlreadyPlayed()
     {
         foreach (var index in activeCardStack)
         {
-            if (GameManager.Instance.CurrentHand[index].CardData.EffectType != CardData.CardEffectType.Wisdom)
+            if (GameManager.Instance.CurrentHand[index].CardData.EffectType == CardData.CardEffectType.Wisdom)
             {
-                currentCards[index].SetHoverState(false);
+                return true;
             }
         }
+
+        return false;
+    }
+
+    private bool PlantInCardStack()
+    {
+        foreach (var index in activeCardStack)
+        {
+            if (GameManager.Instance.CurrentHand[index].CardData.EffectType == CardData.CardEffectType.Plant)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private bool SameWisdomAlreadyInStack(int cardIndex)
+    {
+        if (GameManager.Instance.CurrentHand[cardIndex].CardData.EffectType != CardData.CardEffectType.Wisdom)
+        {
+            Debug.LogWarning("TRYING TO CHECK FOR A NON WISDOM CARD IN WISDOM LOOP");
+            return false;
+        }
+        foreach (var index in activeCardStack)
+        {
+            if (GameManager.Instance.CurrentHand[index].CardData.CardName == GameManager.Instance.CurrentHand[cardIndex].CardData.CardName)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private void Update()
@@ -211,6 +262,7 @@ public class CardsUIController : MonoBehaviour
         {
             currentGridTile = GridManager.Instance.Grid.GetGridObject(Input.mousePosition);
             if (currentGridTile == null) return;
+            if (!PlantInCardStack()) return;
             if (currentGridTile != oldGridTile)
             {
                 EventManager.Game.UI.OnPlantHoverChanged?.Invoke(new EventManager.GameEvents.UIEvents.OnHoverChangedArgs()

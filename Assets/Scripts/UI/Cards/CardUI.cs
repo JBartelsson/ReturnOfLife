@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
+using UnityEngine.Experimental.GlobalIllumination;
 using static CardData;
 
 public class CardUI : MonoBehaviour, IPointerClickHandler
@@ -62,8 +63,7 @@ public class CardUI : MonoBehaviour, IPointerClickHandler
     private readonly string EFFECTTYPE_WISDOM = "Wisdom";
 
     private bool cardClickEnabled = true;
-
-    
+    private bool cardSelected = false;
 
     #endregion
 
@@ -190,18 +190,32 @@ public class CardUI : MonoBehaviour, IPointerClickHandler
     public void OnPointerClick(PointerEventData eventData)
     {
         if (!cardClickEnabled) return;
-        CardsUIController.Instance.SelectCard(_cardIndex);
+        //IF not left click
+        if (eventData.pointerId != -1) return;
+        if (!cardSelected)
+        {
+            cardSelected = true;
+            CardsUIController.Instance.SelectCard(_cardIndex);
+        }
+        else
+        {
+            cardSelected = false;
+            CardsUIController.Instance.DeselectCard(_cardIndex);
+        }
     }
 
     public void SetHoverState(bool state = true)
     {
         if (state)
         {
+            
             backgroundSprite.material = hoverMaterial;
         }
         else
         {
             backgroundSprite.material = null;
         }
+        cardSelected = state;
+
     }
 }
