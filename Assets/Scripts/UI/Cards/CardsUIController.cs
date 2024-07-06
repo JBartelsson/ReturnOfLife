@@ -133,6 +133,7 @@ public class CardsUIController : MonoBehaviour
     private void InitCards(int handSize)
     {
         int currentCardSize = currentCards.Count;
+        Debug.Log("NEW CARD UI PREFABS ARE BEING GENERATED");
         for (int i = 0; i < handSize - currentCardSize; i++)
         {
             GameObject newCard = Instantiate(cardPrefab, cardsParent);
@@ -237,7 +238,7 @@ public class CardsUIController : MonoBehaviour
 
     private void DeselectAllOtherWisdomOfSameType(int cardIndex)
     {
-        for (int i = 0; i < currentCards.Count; i++)
+        for (int i = 0; i < GameManager.Instance.CurrentHand.Count; i++)
         {
             if (SameWisdomAlreadyInStack(i) && i != cardIndex)
             {

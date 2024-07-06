@@ -25,7 +25,8 @@ MonoBehaviour:
     CardText: 
     PlayCost: 1
   <Element>k__BackingField: 0
-  <EffectType>k__BackingField: 0
+  effectType: 0
+  wisdomType: 0
   <Rarity>k__BackingField: 0
   overridePointFunction: 0
   cardFunction:

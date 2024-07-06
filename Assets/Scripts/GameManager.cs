@@ -322,7 +322,6 @@ public class GameManager : MonoBehaviour
 
     public void EndTurn()
     {
-        Debug.Log($"=====END TURN {currentTurns}=====");
         currentTurns++;
         if (currentTurns > standardTurns)
         {

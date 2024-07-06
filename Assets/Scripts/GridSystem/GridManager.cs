@@ -10,7 +10,7 @@ public class GridManager : MonoBehaviour
     // Start is called before the first frame update
     private Grid _grid;
     private GridVisualization[,] gridVisualization;
-    [SerializeField] private float cellSize = 1f;
+    private float cellSize = 1f;
     [SerializeField] private GameObject gridSpritePrefab;
 
     public static GridManager Instance { get; private set; }

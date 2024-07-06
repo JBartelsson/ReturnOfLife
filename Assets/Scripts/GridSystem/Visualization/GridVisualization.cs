@@ -65,6 +65,12 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
         EventManager.Game.UI.OnPlantHoverCanceled += OnPlantHoverCanceled;
         EventManager.Game.UI.OnHoverForEditor += OnHoverForEditor;
     }
+    private void OnDisable()
+    {
+        EventManager.Game.UI.OnPlantHoverChanged -= OnPlantHoverChanged;
+        EventManager.Game.UI.OnPlantHoverCanceled -= OnPlantHoverCanceled;
+        EventManager.Game.UI.OnHoverForEditor -= OnHoverForEditor;
+    }
 
     private void OnHoverForEditor(EventManager.GameEvents.UIEvents.OnHoverForEditorArgs args)
     {

@@ -81,13 +81,17 @@ public class CardUI : MonoBehaviour, IPointerClickHandler
 
     private void OnManaChanged(EventManager.GameEvents.LevelEvents.ManaChangedArgs arg0)
     {
-        Debug.Log("CHECKING FOR MANA CHANGE");
+        Debug.Log($"CHECKING FOR MANA CHANGE On CARD {_cardIndex}: {_cardInstance}");
         if (!GameManager.Instance.EnoughMana(_cardInstance.GetCardStats().PlayCost))
         {
+            Debug.Log($"{_cardInstance.GetCardStats().PlayCost} is not enough mana");
             _costDrop.sprite = _dropSpriteRed;
+            cardClickEnabled = false;
         }
         else
         {
+            Debug.Log($"{_cardInstance.GetCardStats().PlayCost} is enough mana");
+            cardClickEnabled = true;
             _costDrop.sprite = _dropSpriteBlue;
 
         }
@@ -106,6 +110,7 @@ public class CardUI : MonoBehaviour, IPointerClickHandler
     public void SetCardUI(CardInstance cardInstance)
     {
         _cardInstance = cardInstance;
+        OnManaChanged(new EventManager.GameEvents.LevelEvents.ManaChangedArgs());
         SetCardUI(cardInstance.CardData);
     }
 
