@@ -6,14 +6,17 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
 using UnityEngine.Experimental.GlobalIllumination;
+using UnityEngine.Serialization;
 using static CardData;
 
 public class CardUI : MonoBehaviour, IPointerClickHandler
 {
     #region Fields and Properties
 
-    [SerializeField] private CardData _card;
+    private CardData _cardData;
+    private CardInstance _cardInstance;
     private int _cardIndex = 0;
+    public CardInstance CardInstance => _cardInstance;
 
     public int CardIndex
     {
@@ -26,6 +29,8 @@ public class CardUI : MonoBehaviour, IPointerClickHandler
     private Image _cardImage;
 
     [SerializeField] private Image _costDrop;
+    [SerializeField] private Sprite _dropSpriteBlue;
+    [SerializeField] private Sprite _dropSpriteRed;
     [SerializeField] private Image _cardRarity;
     [SerializeField] private Image _elementIcon;
     [SerializeField] private Image _typeIcon;
@@ -69,9 +74,28 @@ public class CardUI : MonoBehaviour, IPointerClickHandler
 
     #region Methods
 
+    private void OnEnable()
+    {
+        EventManager.Game.Level.OnManaChanged += OnManaChanged;
+    }
+
+    private void OnManaChanged(EventManager.GameEvents.LevelEvents.ManaChangedArgs arg0)
+    {
+        Debug.Log("CHECKING FOR MANA CHANGE");
+        if (!GameManager.Instance.EnoughMana(_cardInstance.GetCardStats().PlayCost))
+        {
+            _costDrop.sprite = _dropSpriteRed;
+        }
+        else
+        {
+            _costDrop.sprite = _dropSpriteBlue;
+
+        }
+    }
+
     private void OnValidate()
     {
-        SetCardUI(_card);
+        SetCardUI(_cardData);
     }
 
     public void SetActiveState(bool state)
@@ -81,13 +105,14 @@ public class CardUI : MonoBehaviour, IPointerClickHandler
 
     public void SetCardUI(CardInstance cardInstance)
     {
+        _cardInstance = cardInstance;
         SetCardUI(cardInstance.CardData);
     }
 
-    public void SetCardUI(CardData card)
+    public void SetCardUI(CardData cardData)
     {
-        _card = card;
-        if (_card != null)
+        _cardData = cardData;
+        if (_cardData != null)
         {
             ToggleVisibility(true);
             SetCardTexts();
@@ -111,14 +136,14 @@ public class CardUI : MonoBehaviour, IPointerClickHandler
     {
         SetCardEffectTypeText();
 
-        _cardName.text = _card.CardName;
-        _playCost.text = _card.RegularCardStats.PlayCost.ToString();
-        _cardText.text = _card.RegularCardStats.CardText;
+        _cardName.text = _cardData.CardName;
+        _playCost.text = _cardData.RegularCardStats.PlayCost.ToString();
+        _cardText.text = _cardData.RegularCardStats.CardText;
     }
 
     private void SetTypeIcon()
     {
-        switch (_card.EffectType)
+        switch (_cardData.EffectType)
         {
             case CardData.CardEffectType.Plant:
                 _typeIcon.sprite = _plantTypeIcon;
@@ -131,7 +156,7 @@ public class CardUI : MonoBehaviour, IPointerClickHandler
 
     private void SetCardEffectTypeText()
     {
-        switch (_card.EffectType)
+        switch (_cardData.EffectType)
         {
             case CardData.CardEffectType.Plant:
                 // _cardType.text = EFFECTTYPE_PLANT;
@@ -144,7 +169,7 @@ public class CardUI : MonoBehaviour, IPointerClickHandler
 
     private void SetRarityIcon()
     {
-        switch (_card.Rarity)
+        switch (_cardData.Rarity)
         {
             case CardData.CardRarity.Common:
                 _cardRarity.sprite = _commonRarityIcon;
@@ -160,7 +185,7 @@ public class CardUI : MonoBehaviour, IPointerClickHandler
 
     private void SetElementIcon()
     {
-        switch (_card.Element)
+        switch (_cardData.Element)
         {
             case CardData.CardElement.Basic:
                 _elementIcon.sprite = _basicElementIcon;
@@ -182,13 +207,14 @@ public class CardUI : MonoBehaviour, IPointerClickHandler
 
     private void SetCardImage()
     {
-        _cardImage.sprite = _card.PlantSprite;
+        _cardImage.sprite = _cardData.PlantSprite;
     }
 
     #endregion
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        Debug.Log($"CARDCLICKENABLED IS {cardClickEnabled}");
         if (!cardClickEnabled) return;
         //IF not left click
         if (eventData.pointerId != -1) return;

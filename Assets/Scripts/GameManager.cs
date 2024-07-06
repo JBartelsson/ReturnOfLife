@@ -67,7 +67,7 @@ public class GameManager : MonoBehaviour
     private List<CardInstance> currentHand = new();
     private List<CardInstance> drawPile = new();
     private List<CardInstance> discardPile = new();
-    private List<Fertilizer> currentWisdoms = new();
+    private List<CardInstance> currentWisdoms = new();
     private int currentMana = 0;
     private int currentTurns = 0;
     private int currentPlayedCards = 0;
@@ -275,23 +275,23 @@ public class GameManager : MonoBehaviour
     }
 
 
-    public bool InitCallerArgsForCard(int index)
+    public bool InitCallerArgsForCard(int cardIndex)
     {
         if (currentGameState != GameState.SelectCards) return false;
-        if (index < 0 || index >= currentHand.Count)
+        if (cardIndex < 0 || cardIndex >= currentHand.Count)
         {
-            Debug.LogError($"Card Index {index} out of Bounds!");
+            Debug.LogError($"Card Index {cardIndex} out of Bounds!");
             return false;
         }
 
-        Debug.Log($"Trying to play {currentHand[index]}");
-        return InitCallerArgsForCard(currentHand[index]);
+        Debug.Log($"Trying to play {currentHand[cardIndex]}");
+        selectedCard = currentHand[cardIndex];
+        return InitCallerArgsForCard(GetTemporaryCardInstance(cardIndex));
     }
 
-    private bool InitCallerArgsForCard(CardInstance plantableCard)
+    private bool InitCallerArgsForCard(CardInstance cardInstance)
     {
-        selectedCard = plantableCard;
-        selectedCardBlueprint = new CardInstance(selectedCard, currentWisdoms);
+        selectedCardBlueprint = cardInstance;
         if (selectedCardBlueprint.GetPlantFunctionExecuteType() == EXECUTION_TYPE.IMMEDIATE)
         {
             Debug.Log("CANT PLACE WISDOM ON GRID");
@@ -315,6 +315,12 @@ public class GameManager : MonoBehaviour
     {
         //Deck manipulation, in the future in the Deck class
         ReduceMana(selectedCardBlueprint.GetCardStats().PlayCost);
+        foreach (var wisdom in currentWisdoms)
+        {
+            ReduceMana(wisdom.GetCardStats().PlayCost);
+            currentHand.Remove(wisdom);
+            discardPile.Add(wisdom);
+        }
         currentHand.Remove(selectedCard);
         discardPile.Add(selectedCard);
         //Event calling
@@ -323,18 +329,13 @@ public class GameManager : MonoBehaviour
             sender = this
         });
         currentPlayedCards++;
-
-
         Debug.Log("PLANT PLANTED!");
         EventManager.Game.UI.OnPlantPlanted?.Invoke(new EventManager.GameEvents.UIEvents.OnPlantPlantedArgs()
         {
             plantedCardInstance = selectedCardBlueprint,
             plantedGridTile = playedTile
         });
-        if (selectedCardBlueprint.CardData.EffectType != CardData.CardEffectType.Wisdom)
-        {
-            currentWisdoms.Clear();
-        }
+        currentWisdoms.Clear();
 
         SwitchState(GameState.SelectCards);
     }
@@ -342,7 +343,6 @@ public class GameManager : MonoBehaviour
     public void EndTurn()
     {
         Debug.Log($"=====END TURN {currentTurns}=====");
-        HandlePassives();
         currentTurns++;
         if (currentTurns > standardTurns)
         {
@@ -350,7 +350,7 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        ChangeMana(standardMana);
+        ChangeMana(standardMana, true);
         currentWisdoms.Clear();
         discardPile.AddRange(currentHand);
         currentHand.Clear();
@@ -360,10 +360,6 @@ public class GameManager : MonoBehaviour
             TurnNumber = currentTurns
         });
         SwitchState(GameState.DrawCards);
-    }
-
-    private void HandlePassives()
-    {
     }
 
     private void EndLevel()
@@ -410,9 +406,14 @@ public class GameManager : MonoBehaviour
         discardPile.Clear();
     }
 
-    public void AddWisdom(Fertilizer fertilizer)
+    public void AddWisdom(CardInstance wisdom)
     {
-        currentWisdoms.Add(fertilizer);
+        currentWisdoms.Add(wisdom);
+    }
+
+    public void RemoveWisdom(CardInstance wisdom)
+    {
+        currentWisdoms.Remove(wisdom);
     }
 
     //Score related
@@ -493,5 +494,28 @@ public class GameManager : MonoBehaviour
     private void WinGame()
     {
         Debug.Log($"GAME WON!");
+    }
+
+    public CardInstance GetTemporaryCardInstance(int cardIndex)
+    {
+        List<WisdomType> currentWisdomTypes = new();
+        foreach (var wisdom in currentWisdoms)
+        {
+            currentWisdomTypes.Add(wisdom.CardData.WisdomType);
+        }
+        CardInstance newCardInstance = new CardInstance(currentHand[cardIndex], currentWisdomTypes);
+        return newCardInstance;
+    }
+
+    public bool EnoughMana(int cardManaCost)
+    {
+        Debug.Log($"{currentMana}, incoming Mana: {cardManaCost}");
+        if (currentMana - cardManaCost < 0)
+        {
+            EventManager.Game.UI.OnNotEnoughMana?.Invoke();
+            return false;
+        }
+
+        return true;
     }
 }

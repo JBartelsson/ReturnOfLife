@@ -8,7 +8,7 @@ using UnityEngine;
 public class CardInstance
 {
     private CardData cardData;
-    private List<Fertilizer> fertilizers = new();
+    private List<WisdomType> fertilizers = new();
     private CardFunctionBase cardFunction;
     private CardEditorBase cardEditor;
     private CardAccessCheckBase cardAccessCheck;
@@ -18,13 +18,13 @@ public class CardInstance
 
     private static int cardInstanceID = 0;
 
-    public CardInstance(CardData newCardData, List<Fertilizer> newFertilizers = null)
+    public CardInstance(CardData newCardData, List<WisdomType> newFertilizers = null)
     {
         cardData = newCardData.Copy();
         TryAddFertilizer(newFertilizers);
         InitScripts();
     }
-    public CardInstance(CardInstance other, List<Fertilizer> newFertilizers = null)
+    public CardInstance(CardInstance other, List<WisdomType> newFertilizers = null)
     {
         cardData = other.cardData.Copy();
         TryAddFertilizer(newFertilizers);
@@ -85,7 +85,7 @@ public class CardInstance
 
 
 
-    private void TryAddFertilizer(List<Fertilizer> newFertilizers)
+    private void TryAddFertilizer(List<WisdomType> newFertilizers)
     {
         if (newFertilizers == null) return;
         fertilizers.AddRange(newFertilizers);
@@ -93,18 +93,18 @@ public class CardInstance
     }
 
     public CardData CardData { get => cardData; set => cardData = value; }
-    public List<Fertilizer> Fertilizers { get => fertilizers; set => fertilizers = value; }
+    public List<WisdomType> Fertilizers { get => fertilizers; set => fertilizers = value; }
     public CardFunctionBase CardFunction { get => cardFunction; set => cardFunction = value; }
     public CardEditorBase CardEditor { get => cardEditor; set => cardEditor = value; }
     public CardAccessCheckBase CardAccessCheck { get => cardAccessCheck; set => cardAccessCheck = value; }
 
     public bool IsUpgraded()
     {
-        return fertilizers.Contains(Fertilizer.Basic);
+        return fertilizers.Contains(WisdomType.Basic);
     }
     public int ReturnTriggerAmount()
     {
-        return fertilizers.Where((x) => x == Fertilizer.Retrigger).Count();
+        return fertilizers.Where((x) => x == WisdomType.Retrigger).Count();
     }
 
     public CardData.CardStats GetCardStats()

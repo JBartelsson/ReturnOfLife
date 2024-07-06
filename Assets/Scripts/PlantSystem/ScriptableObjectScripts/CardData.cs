@@ -124,7 +124,8 @@ public class CardData : ScriptableObject
     public enum CardEffectType
     {
         Plant,
-        Wisdom
+        Wisdom,
+        Instant
     }
 
     public CardData Copy()
@@ -140,7 +141,14 @@ public class CardData : ScriptableObject
     [SerializeField] private CardStats regularCardStats;
     [SerializeField] private CardStats upgradedCardStats;
     [field: SerializeField] public CardElement Element { get; private set; }
-    [field: SerializeField] public CardEffectType EffectType { get; private set; }
+    [FormerlySerializedAs("EffectType")] [SerializeField] private CardEffectType effectType;
+
+    
+
+    [FormerlySerializedAs("WisdomType")]
+    [ConditionalHide("effectType", CardEffectType.Wisdom)]
+    [SerializeField] private WisdomType wisdomType;
+
     [field: SerializeField] public CardRarity Rarity { get; private set; }
     private int runtimePoints = 0;
     
@@ -223,4 +231,8 @@ public class CardData : ScriptableObject
         get => upgradedCardStats;
         set => upgradedCardStats = value;
     }
+    
+    public CardEffectType EffectType => effectType;
+
+    public WisdomType WisdomType => wisdomType;
 }

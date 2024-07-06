@@ -361,7 +361,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1433592718613909924
 RectTransform:
   m_ObjectHideFlags: 0
@@ -394,9 +394,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 067d3a90c282a7346a3771cfc78b5ff3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _card: {fileID: 11400000, guid: a416360e50c533b498d0e17cb1bc9e51, type: 2}
   _cardImage: {fileID: 6612825900506483587}
   _costDrop: {fileID: 1215338025049925912}
+  _dropSpriteBlue: {fileID: 21300000, guid: f1e5a063fe2fb97409e1a8538f67475d, type: 3}
+  _dropSpriteRed: {fileID: 21300000, guid: 6408533200b8b3d499c1f7bcac888906, type: 3}
   _cardRarity: {fileID: 846844938053952974}
   _elementIcon: {fileID: 5797897880185730100}
   _typeIcon: {fileID: 0}

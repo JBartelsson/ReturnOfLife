@@ -71,6 +71,7 @@ public static class EventManager
             public UnityAction<OnPlantPlantedArgs> OnPlantPlanted;
             public UnityAction<OnEditorNeededArgs> OnEditorNeeded;
             public UnityAction<OnHoverForEditorArgs> OnHoverForEditor;
+            public UnityAction OnNotEnoughMana;
 
         }
         
