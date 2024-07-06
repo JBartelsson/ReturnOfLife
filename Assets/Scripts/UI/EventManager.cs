@@ -47,6 +47,7 @@ public static class EventManager
             {
                 public CardInstance hoveredCardInstance;
                 public GridTile hoveredGridTile;
+                public CallerArgs hoverCallerArgs;
             }
             public class OnHoverForEditorArgs : Args
             {

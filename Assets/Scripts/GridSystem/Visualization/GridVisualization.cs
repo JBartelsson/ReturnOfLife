@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 public class GridVisualization : MonoBehaviour, IPointerClickHandler
 {
@@ -13,7 +14,6 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
 
     [SerializeField] private Material markedMaterial;
 
-    [SerializeField] private Material previewMaterial;
 
     [SerializeField] private MeshRenderer visualizer;
 
@@ -22,6 +22,14 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
 
     [SerializeField] private MeshRenderer fieldMarkerMeshRenderer;
     [SerializeField] private List<FieldMaterial> fieldMaterials;
+
+    [FormerlySerializedAs("redCrossImage")] [Header("Preview Settings")] 
+    [SerializeField]
+    private SpriteRenderer redCrossSpriteRenderer;
+    [SerializeField] private Material previewMaterial;
+    [SerializeField]
+    private SpriteRenderer previewSpriteRenderer;
+
     private GridTile ownGridTile;
     private VisualizationState visualizationState = VisualizationState.NONE;
 
@@ -47,6 +55,8 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
         spriteRenderer.sprite = null;
         visualizer.sharedMaterial = standardVisualizationMaterial;
         fieldMarker.SetActive(false);
+        redCrossSpriteRenderer.gameObject.SetActive(false);
+
     }
 
     private void OnEnable()
@@ -79,25 +89,35 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
             visualizationState = VisualizationState.PLANTING_PREVIEW;
         }
 
+        redCrossSpriteRenderer.gameObject.SetActive(false);
         UpdateContent();
         if (args.hoveredGridTile == ownGridTile)
         {
-            SetNewSprite(args.hoveredCardInstance, true);
+            if (!args.hoveredCardInstance.CanExecute(args.hoverCallerArgs))
+            {
+                redCrossSpriteRenderer.gameObject.SetActive(true);
+            }
+            SetNewSprite(args.hoveredCardInstance, previewSpriteRenderer, true);
         }
     }
 
-    private void SetNewSprite(Sprite newSprite)
+    private void SetNewSprite(Sprite newSprite, SpriteRenderer target)
     {
-        spriteRenderer.sprite = newSprite;
+        target.sprite = newSprite;
     }
 
-    private void SetNewSprite(CardInstance cardInstance, bool ghostPreview = false)
+    private void SetPreviewSprite(Sprite newPreviewSprite)
+    {
+        previewSpriteRenderer.sprite = newPreviewSprite;
+    }
+
+    private void SetNewSprite(CardInstance cardInstance, SpriteRenderer target, bool ghost = false)
     {
         Sprite newSprite = cardInstance.CardData.PlantSprite;
-        SetNewSprite(newSprite);
+        SetNewSprite(newSprite, target);
         if (cardInstance.IsUpgraded())
         {
-            spriteRenderer.material = plantFertilizedMaterial;
+            target.material = plantFertilizedMaterial;
             var croppedTexture = new Texture2D((int)newSprite.rect.width,
                 (int)newSprite.rect.height);
             var pixels = newSprite.texture.GetPixels(0,
@@ -110,18 +130,20 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
         }
         else
         {
-            spriteRenderer.material = plantNonFertilizedMaterial;
+            target.material = plantNonFertilizedMaterial;
         }
 
-        if (ghostPreview)
+        if (ghost)
         {
-            spriteRenderer.material.SetFloat("_Alpha", Constants.HOVERED_ALPHA_VALUE);
+            target.material.SetFloat("_Alpha", Constants.HOVERED_ALPHA_VALUE);
         }
+
     }
 
     private void ClearGridTile()
     {
-        SetNewSprite((Sprite)null);
+        SetNewSprite((Sprite)null, spriteRenderer);
+        SetNewSprite((Sprite)null, previewSpriteRenderer);
     }
 
     private void SetMarkedState()
@@ -155,7 +177,7 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
 
         if (ownGridTile.Content.Count > 0)
         {
-            SetNewSprite(ownGridTile.Content[0]);
+            SetNewSprite(ownGridTile.Content[0], spriteRenderer);
         }
         else
         {

@@ -315,11 +315,11 @@ public class CardsUIController : MonoBehaviour
             {
                 CardInstance hoveredCardInstance =
                     GameManager.Instance.GetTemporaryCardInstance(activePlantIndex);
-                Debug.Log(hoveredCardInstance);
                 EventManager.Game.UI.OnPlantHoverChanged?.Invoke(new EventManager.GameEvents.UIEvents.OnHoverChangedArgs()
                 {
                     hoveredCardInstance = hoveredCardInstance,
-                    hoveredGridTile = currentGridTile
+                    hoveredGridTile = currentGridTile,
+                    hoverCallerArgs = GameManager.Instance.GetTemporaryCallerArgs(activePlantIndex, currentGridTile)
                 });
                 currentGridTile = oldGridTile;
             }

@@ -244,8 +244,7 @@ public class GameManager : MonoBehaviour
 
     public void TryPlantCard(int cardIndex, GridTile selectedGridTile)
     {
-        if (!InitCallerArgsForCard(cardIndex)) return;
-        callerArgs.playedTile = selectedGridTile;
+        if (!InitCallerArgsForCard(cardIndex, selectedGridTile)) return;
         if (selectedCardBlueprint.CanExecute(callerArgs))
         {
             selectedCardBlueprint.Execute(callerArgs);
@@ -275,7 +274,7 @@ public class GameManager : MonoBehaviour
     }
 
 
-    public bool InitCallerArgsForCard(int cardIndex)
+    public bool InitCallerArgsForCard(int cardIndex, GridTile playedGridTile)
     {
         if (currentGameState != GameState.SelectCards) return false;
         if (cardIndex < 0 || cardIndex >= currentHand.Count)
@@ -286,27 +285,8 @@ public class GameManager : MonoBehaviour
 
         Debug.Log($"Trying to play {currentHand[cardIndex]}");
         selectedCard = currentHand[cardIndex];
-        return InitCallerArgsForCard(GetTemporaryCardInstance(cardIndex));
-    }
-
-    private bool InitCallerArgsForCard(CardInstance cardInstance)
-    {
-        selectedCardBlueprint = cardInstance;
-        if (selectedCardBlueprint.GetPlantFunctionExecuteType() == EXECUTION_TYPE.IMMEDIATE)
-        {
-            Debug.Log("CANT PLACE WISDOM ON GRID");
-            return false;
-        }
-
-        callerArgs = new CallerArgs()
-        {
-            needNeighbor = selectedPlantNeedNeighbor,
-            CallingCardInstance = selectedCardBlueprint,
-            gameManager = this
-        };
-        //Update Mana and Card Piles
-
-
+        selectedCardBlueprint = GetTemporaryCardInstance(cardIndex);
+        callerArgs = GetTemporaryCallerArgs(cardIndex, playedGridTile);
         return true;
     }
 
@@ -505,6 +485,17 @@ public class GameManager : MonoBehaviour
         }
         CardInstance newCardInstance = new CardInstance(currentHand[cardIndex], currentWisdomTypes);
         return newCardInstance;
+    }
+
+    public CallerArgs GetTemporaryCallerArgs(int cardIndex, GridTile gridTile)
+    {
+        return new CallerArgs()
+        {
+            needNeighbor = selectedPlantNeedNeighbor,
+            CallingCardInstance = GetTemporaryCardInstance(cardIndex),
+            playedTile = gridTile,
+            gameManager = this
+        };
     }
 
     public bool EnoughMana(int cardManaCost)
