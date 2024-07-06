@@ -524,4 +524,9 @@ public class GameManager : MonoBehaviour
 
         return true;
     }
+
+    public void RemoveAllWisdoms()
+    {
+        currentWisdoms.Clear();
+    }
 }

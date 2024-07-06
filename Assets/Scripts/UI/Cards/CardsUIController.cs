@@ -110,6 +110,8 @@ public class CardsUIController : MonoBehaviour
         activePlantIndex = -1;
         currentState = State.SelectCard;
         EventManager.Game.UI.OnPlantHoverCanceled?.Invoke();
+        GameManager.Instance.RemoveAllWisdoms();
+        activeWisdoms.Clear();
         if (currentCards.Count >= 0)
         foreach (CardUI cardUI in currentCards)
         {
