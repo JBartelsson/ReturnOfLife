@@ -11,7 +11,6 @@ public class ComboBushCardFunction : CardFunctionBase
     public ComboBushCardFunction()
     {
         alreadyTriggered = false;
-        Debug.Log($"ALREADY TRIGGERED CONSTRUCTOR: {alreadyTriggered}");
 
     }
 

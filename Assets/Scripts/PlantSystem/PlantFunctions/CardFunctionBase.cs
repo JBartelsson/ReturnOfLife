@@ -42,18 +42,18 @@ public abstract class CardFunctionBase : PlantScriptBase
             return;
         }
 
+        callerArgs.gameManager.AddPointScore(Mathf.FloorToInt(basePoints));
         foreach (var modifier in callerArgs.playedTile.FieldModifiers)
         {
             switch (modifier.modifierType)
             {
                 case FieldModifier.ModifierType.Multiplier:
-                    basePoints *= modifier.modifierAmount;
+                    callerArgs.gameManager.AddPointScore(Mathf.FloorToInt(basePoints * Constants.MULTIPLICATION_FIELD_MULTIPLIER));
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
         }
 
-        callerArgs.gameManager.AddPointScore(Mathf.FloorToInt(basePoints));
     }
 }

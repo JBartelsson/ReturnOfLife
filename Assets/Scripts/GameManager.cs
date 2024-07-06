@@ -84,6 +84,7 @@ public class GameManager : MonoBehaviour
     private LevelSO currentLevel;
     private PlanetProgressionSO.Stage currentStage = PlanetProgressionSO.Stage.STAGE1;
 
+    private bool editorBlocked = false;
     public Score CurrentScore
     {
         get => currentScore;
@@ -115,6 +116,19 @@ public class GameManager : MonoBehaviour
         {
             Debug.LogError("Game Manager already exists!");
         }
+    }
+
+    private void OnEnable()
+    {
+        EventManager.Game.Level.OnPlantSacrificed += OnPlantSacrificed;
+    }
+    private void OnDisable()
+    {
+        EventManager.Game.Level.OnPlantSacrificed -= OnPlantSacrificed;
+    }
+    private void OnPlantSacrificed(EventManager.GameEvents.LevelEvents.PlantSacrificedArgs arg0)
+    {
+        editorBlocked = true;
     }
 
     // Start is called before the first frame update
@@ -197,7 +211,7 @@ public class GameManager : MonoBehaviour
 
     private void InitEditor()
     {
-        editorArgs.SetValues(selectedCardBlueprint, playedTile, selectedPlantNeedNeighbor, CALLER_TYPE.EDITOR);
+        editorArgs.SetValues(selectedCardBlueprint, playedTile, false, CALLER_TYPE.EDITOR);
         editorArgs.EditorCallingCardInstance = selectedCardBlueprint;
         editorArgs.gameManager = this;
         EventManager.Game.UI.OnEditorNeeded?.Invoke(new EventManager.GameEvents.UIEvents.OnEditorNeededArgs()
@@ -263,7 +277,8 @@ public class GameManager : MonoBehaviour
 
         selectedPlantNeedNeighbor = true;
 
-        if (selectedCardBlueprint.CardEditor != null)
+        //If card has an editor (2nd move) and the editor is not blocked e.g. by plant sacrifice
+        if (selectedCardBlueprint.CardEditor != null && !editorBlocked)
         {
             SwitchState(GameState.PlantEditor);
 
@@ -316,7 +331,7 @@ public class GameManager : MonoBehaviour
             plantedGridTile = playedTile
         });
         currentWisdoms.Clear();
-
+        editorBlocked = false;
         SwitchState(GameState.SelectCards);
     }
 
@@ -493,7 +508,8 @@ public class GameManager : MonoBehaviour
             needNeighbor = selectedPlantNeedNeighbor,
             CallingCardInstance = GetTemporaryCardInstance(cardIndex),
             playedTile = gridTile,
-            gameManager = this
+            gameManager = this,
+            callerType = CALLER_TYPE.PLACEMENT
         };
     }
 

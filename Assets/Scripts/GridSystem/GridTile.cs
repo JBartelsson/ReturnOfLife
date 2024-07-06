@@ -89,8 +89,12 @@ public class GridTile
     public void AddObject(CallerArgs callerArgs)
     {
         if (!IsAccessible(callerArgs)) return;
-        if (!ContainsPlant())
+        if (ContainsPlant())
         {
+            EventManager.Game.Level.OnPlantSacrificed?.Invoke(new EventManager.GameEvents.LevelEvents.PlantSacrificedArgs()
+            {
+                SacrificeCallerArgs = callerArgs
+            });
         }
         objects.Add(callerArgs.CallingCardInstance);
         OnContentUpdated?.Invoke(this, callerArgs.CallingCardInstance);

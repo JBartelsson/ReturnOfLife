@@ -24,12 +24,12 @@ public class CardInstance
         TryAddFertilizer(newFertilizers);
         InitScripts();
     }
+
     public CardInstance(CardInstance other, List<WisdomType> newFertilizers = null)
     {
         cardData = other.cardData.Copy();
         TryAddFertilizer(newFertilizers);
         InitScripts();
-
     }
 
     public CardInstance(CardInstance other)
@@ -52,6 +52,7 @@ public class CardInstance
         {
             Debug.LogWarning($"{this} tried to create a plantFunction from Default");
         }
+
         if (cardData.CardEditor.ScriptType.Type != null)
         {
             cardEditor = (CardEditorBase)Activator.CreateInstance(cardData.CardEditor.ScriptType);
@@ -61,6 +62,7 @@ public class CardInstance
         {
             Debug.LogWarning($"{this} tried to create a plantEditor from Default");
         }
+
         if (cardData.CardAccessCheck.ScriptType.Type != null)
         {
             cardAccessCheck = (CardAccessCheckBase)Activator.CreateInstance(cardData.CardAccessCheck.ScriptType);
@@ -70,8 +72,8 @@ public class CardInstance
         {
             Debug.LogWarning($"{this} tried to create a plantAccessCheck from Default");
         }
-
     }
+
     public override string ToString()
     {
         string fertilizerString = "";
@@ -79,29 +81,52 @@ public class CardInstance
         {
             fertilizerString += item.ToString();
         }
+
         return $"{cardData} played with fertilizers: {fertilizerString}";
     }
-
-
 
 
     private void TryAddFertilizer(List<WisdomType> newFertilizers)
     {
         if (newFertilizers == null) return;
         fertilizers.AddRange(newFertilizers);
-
     }
 
-    public CardData CardData { get => cardData; set => cardData = value; }
-    public List<WisdomType> Fertilizers { get => fertilizers; set => fertilizers = value; }
-    public CardFunctionBase CardFunction { get => cardFunction; set => cardFunction = value; }
-    public CardEditorBase CardEditor { get => cardEditor; set => cardEditor = value; }
-    public CardAccessCheckBase CardAccessCheck { get => cardAccessCheck; set => cardAccessCheck = value; }
+    public CardData CardData
+    {
+        get => cardData;
+        set => cardData = value;
+    }
+
+    public List<WisdomType> Fertilizers
+    {
+        get => fertilizers;
+        set => fertilizers = value;
+    }
+
+    public CardFunctionBase CardFunction
+    {
+        get => cardFunction;
+        set => cardFunction = value;
+    }
+
+    public CardEditorBase CardEditor
+    {
+        get => cardEditor;
+        set => cardEditor = value;
+    }
+
+    public CardAccessCheckBase CardAccessCheck
+    {
+        get => cardAccessCheck;
+        set => cardAccessCheck = value;
+    }
 
     public bool IsUpgraded()
     {
         return fertilizers.Contains(WisdomType.Basic);
     }
+
     public int ReturnTriggerAmount()
     {
         return fertilizers.Where((x) => x == WisdomType.Retrigger).Count();
@@ -122,18 +147,31 @@ public class CardInstance
     public void Execute(CallerArgs callerArgs)
     {
         if (CanExecute(callerArgs))
-        cardFunction.Execute(callerArgs);
+            cardFunction.Execute(callerArgs);
     }
 
     public bool CanExecute(CallerArgs callerArgs)
     {
         GridTile gridTile = callerArgs.playedTile;
-        if (cardFunction.ExecutionType != EXECUTION_TYPE.IMMEDIATE)
+        //If either one of these conditions is true, then the card can be played
+        bool gridTileAcessible = false;
+        bool neighborNeededAndNeighborThere = false;
+        bool cardCanExecuteOverride = cardFunction.CanExecute(callerArgs);
+        gridTileAcessible = gridTile.IsAccessible(callerArgs);
+        if (!callerArgs.needNeighbor)
         {
-            if (!gridTile.IsAccessible(callerArgs)) return false;
-            if (callerArgs.needNeighbor && !gridTile.HasNeighboredPlant()) return false;
+            neighborNeededAndNeighborThere = true;
         }
-        return cardFunction.CanExecute(callerArgs);
+        else
+        {
+            neighborNeededAndNeighborThere = gridTile.HasNeighboredPlant();
+        }
+        
+        Debug.Log($"Grid tile accessible: {gridTileAcessible}");
+        Debug.Log($"Neighborneeded and Neighbor there: {neighborNeededAndNeighborThere}");
+        Debug.Log($"cardCanExecuteOverride: {cardCanExecuteOverride}");
+
+        return (cardCanExecuteOverride || gridTileAcessible) && neighborNeededAndNeighborThere;
     }
 
     public bool CanBePlayedWith(CallerArgs callerArgs)

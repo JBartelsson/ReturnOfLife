@@ -85,6 +85,7 @@ public static class EventManager
             public UnityAction<Args> OnUpdateCards;
             public UnityAction<Args> OnInCardSelection;
             public UnityAction<LevelEndedArgs> OnEndLevel;
+            public UnityAction<PlantSacrificedArgs> OnPlantSacrificed;
 
         
             public class LevelEndedArgs : Args
@@ -107,6 +108,11 @@ public static class EventManager
             {
                 public GameManager.Score NewScore;
                 public LevelSO CurrentLevel;
+            }
+
+            public class PlantSacrificedArgs : Args
+            {
+                public CallerArgs SacrificeCallerArgs;
             }
 
 

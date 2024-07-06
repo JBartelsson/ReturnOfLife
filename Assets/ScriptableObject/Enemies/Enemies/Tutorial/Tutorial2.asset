@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Tutorial2
   m_EditorClassIdentifier: 
   pattern:
-    dataString: 
-    gridSize: 7
-  neededECOPoints: 350
+    dataString: CCCCCCCCCCCCCCCCCCCCCCCCC
+    gridSize: 5
+  neededECOPoints: 500

@@ -39,7 +39,6 @@ public class ConditionalHidePropertyDrawer : PropertyDrawer
         bool enabled = true;
         string propertyPath = property.propertyPath; //returns the property path of the property we want to apply the attribute to
         string conditionPath = propertyPath.Replace(property.name, condHAtt.ConditionalSourceField); //changes the path to the conditionalsource property path
-        Debug.Log(conditionPath);
         SerializedProperty sourcePropertyValue = property.serializedObject.FindProperty(conditionPath);
 
         if (condHAtt.enumType)

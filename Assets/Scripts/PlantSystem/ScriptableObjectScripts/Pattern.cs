@@ -10,13 +10,13 @@ public class Pattern
     [Serializable]
     public class Field
     {
-        public Field(Index index, SpecialFieldType specialFieldType = SpecialFieldType.NONE)
+        public Field(Index index, SpecialFieldType specialFieldType = SpecialFieldType.NORMAL_FIELD)
         {
             this.specialFieldType = specialFieldType;
             this.index = index;
         }
 
-        public SpecialFieldType specialFieldType = SpecialFieldType.NONE;
+        public SpecialFieldType specialFieldType = SpecialFieldType.NORMAL_FIELD;
         public Index index;
     }
     [SerializeField] private Field[,] data;

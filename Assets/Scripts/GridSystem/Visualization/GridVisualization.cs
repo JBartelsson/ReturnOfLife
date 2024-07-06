@@ -82,6 +82,8 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
     private void OnPlantHoverCanceled()
     {
         visualizationState = VisualizationState.NONE;
+        redCrossSpriteRenderer.gameObject.SetActive(false);
+        previewSpriteRenderer.sprite = null;
         UpdateContent();
     }
 
@@ -198,7 +200,7 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
 
     private void ShowFieldType(SpecialFieldType gridObjectFieldType)
     {
-        if (gridObjectFieldType == SpecialFieldType.NONE)
+        if (gridObjectFieldType == SpecialFieldType.NONE || gridObjectFieldType == SpecialFieldType.NORMAL_FIELD)
         {
             fieldMarker.SetActive(false);
             return;

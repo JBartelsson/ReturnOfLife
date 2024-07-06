@@ -68,6 +68,7 @@ public class CardUI : MonoBehaviour, IPointerClickHandler
     private readonly string EFFECTTYPE_WISDOM = "Wisdom";
 
     private bool cardClickEnabled = true;
+    private bool canPlayCard = true;
     private bool cardSelected = false;
 
     #endregion
@@ -86,12 +87,12 @@ public class CardUI : MonoBehaviour, IPointerClickHandler
         {
             Debug.Log($"{_cardInstance.GetCardStats().PlayCost} is not enough mana");
             _costDrop.sprite = _dropSpriteRed;
-            cardClickEnabled = false;
+            canPlayCard = false;
         }
         else
         {
             Debug.Log($"{_cardInstance.GetCardStats().PlayCost} is enough mana");
-            cardClickEnabled = true;
+            canPlayCard = true;
             _costDrop.sprite = _dropSpriteBlue;
 
         }
@@ -221,6 +222,7 @@ public class CardUI : MonoBehaviour, IPointerClickHandler
     {
         Debug.Log($"CARDCLICKENABLED IS {cardClickEnabled}");
         if (!cardClickEnabled) return;
+        if (!canPlayCard) return;
         //IF not left click
         if (eventData.pointerId != -1) return;
         if (!cardSelected)
