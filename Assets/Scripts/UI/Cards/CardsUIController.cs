@@ -52,7 +52,6 @@ public class CardsUIController : MonoBehaviour
 
     private void OnEditorNeeded(EventManager.GameEvents.UIEvents.OnEditorNeededArgs args)
     {
-        GameInputOnCancel();
         SwitchState(State.Editor);
         Debug.Log("EDITOR INITIALIZED");
         foreach (CardUI cardUI in currentCards)
@@ -160,7 +159,7 @@ public class CardsUIController : MonoBehaviour
             }
             else
             {
-                currentCards[i].SetCardUI((CardData)null);
+                currentCards[i].SetCardUI(null);
             }
         }
     }
@@ -202,6 +201,7 @@ public class CardsUIController : MonoBehaviour
         activePlantIndex = cardIndex;
         for (int i = 0; i < currentCards.Count; i++)
         {
+            if (currentCards[i].CardInstance == null) continue;
             if (currentCards[i].CardInstance.CardData.EffectType == CardData.CardEffectType.Plant && i != cardIndex)
                 currentCards[i].SetHoverState(false);
         }

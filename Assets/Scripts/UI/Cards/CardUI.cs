@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -13,7 +14,6 @@ public class CardUI : MonoBehaviour, IPointerClickHandler
 {
     #region Fields and Properties
 
-    private CardData _cardData;
     private CardInstance _cardInstance;
     private int _cardIndex = 0;
     public CardInstance CardInstance => _cardInstance;
@@ -78,11 +78,31 @@ public class CardUI : MonoBehaviour, IPointerClickHandler
     private void OnEnable()
     {
         EventManager.Game.Level.OnManaChanged += OnManaChanged;
+        EventManager.Game.Level.OnWisdomChanged += OnWisdomChanged;
+    }
+    
+    private void OnDisable()
+    {
+        EventManager.Game.Level.OnManaChanged -= OnManaChanged;
+        EventManager.Game.Level.OnWisdomChanged -= OnWisdomChanged;
+    }
+
+    private void OnWisdomChanged(EventManager.GameEvents.LevelEvents.WisdomChangedArgs arg0)
+    {
+        if (arg0.currentWisdoms.Any((wisdom) => wisdom.CardData.WisdomType == WisdomType.Basic))
+        {
+            SetCardUI(this._cardInstance, true);
+        }
+        else
+        {
+            SetCardUI(this._cardInstance, false);
+        }
     }
 
     private void OnManaChanged(EventManager.GameEvents.LevelEvents.ManaChangedArgs arg0)
     {
         Debug.Log($"CHECKING FOR MANA CHANGE On CARD {_cardIndex}: {_cardInstance}");
+        if (_cardInstance == null) return;
         if (!GameManager.Instance.EnoughMana(_cardInstance.GetCardStats().PlayCost))
         {
             Debug.Log($"{_cardInstance.GetCardStats().PlayCost} is not enough mana");
@@ -94,38 +114,28 @@ public class CardUI : MonoBehaviour, IPointerClickHandler
             Debug.Log($"{_cardInstance.GetCardStats().PlayCost} is enough mana");
             canPlayCard = true;
             _costDrop.sprite = _dropSpriteBlue;
-
         }
     }
 
-    private void OnValidate()
-    {
-        SetCardUI(_cardData);
-    }
 
     public void SetActiveState(bool state)
     {
         cardClickEnabled = state;
     }
 
-    public void SetCardUI(CardInstance cardInstance)
+    public void SetCardUI(CardInstance cardInstance, bool upgradePreview = false)
     {
         _cardInstance = cardInstance;
-        OnManaChanged(new EventManager.GameEvents.LevelEvents.ManaChangedArgs());
-        SetCardUI(cardInstance.CardData);
-    }
-
-    public void SetCardUI(CardData cardData)
-    {
-        _cardData = cardData;
-        if (_cardData != null)
+        //When card is initialized, check if the mana is enough to play it
+        if (_cardInstance != null)
         {
             ToggleVisibility(true);
-            SetCardTexts();
+            SetCardTexts(upgradePreview);
             SetRarityIcon();
             SetElementIcon();
             //SetTypeIcon();
             SetCardImage();
+            OnManaChanged(new EventManager.GameEvents.LevelEvents.ManaChangedArgs());
         }
         else
         {
@@ -138,18 +148,30 @@ public class CardUI : MonoBehaviour, IPointerClickHandler
         this.gameObject.SetActive(visible);
     }
 
-    private void SetCardTexts()
+    private void SetCardTexts(bool upgradePreview)
     {
         SetCardEffectTypeText();
+        CardStats cardStats = !upgradePreview
+            ? _cardInstance.CardData.RegularCardStats
+            : _cardInstance.CardData.UpgradedCardStats;
+        string cardName;
+        if (_cardInstance.CardData.EffectType == CardEffectType.Plant)
+        {
+            cardName = !upgradePreview ? _cardInstance.CardData.CardName : _cardInstance.CardData.CardName + "+";
+        }
+        else
+        {
+            cardName = _cardInstance.CardData.CardName;
+        }
 
-        _cardName.text = _cardData.CardName;
-        _playCost.text = _cardData.RegularCardStats.PlayCost.ToString();
-        _cardText.text = _cardData.RegularCardStats.CardText;
+        _cardName.text = cardName;
+        _playCost.text = cardStats.PlayCost.ToString();
+        _cardText.text = cardStats.CardText;
     }
 
     private void SetTypeIcon()
     {
-        switch (_cardData.EffectType)
+        switch (_cardInstance.CardData.EffectType)
         {
             case CardData.CardEffectType.Plant:
                 _typeIcon.sprite = _plantTypeIcon;
@@ -162,7 +184,7 @@ public class CardUI : MonoBehaviour, IPointerClickHandler
 
     private void SetCardEffectTypeText()
     {
-        switch (_cardData.EffectType)
+        switch (_cardInstance.CardData.EffectType)
         {
             case CardData.CardEffectType.Plant:
                 // _cardType.text = EFFECTTYPE_PLANT;
@@ -175,7 +197,7 @@ public class CardUI : MonoBehaviour, IPointerClickHandler
 
     private void SetRarityIcon()
     {
-        switch (_cardData.Rarity)
+        switch (_cardInstance.CardData.Rarity)
         {
             case CardData.CardRarity.Common:
                 _cardRarity.sprite = _commonRarityIcon;
@@ -191,7 +213,7 @@ public class CardUI : MonoBehaviour, IPointerClickHandler
 
     private void SetElementIcon()
     {
-        switch (_cardData.Element)
+        switch (_cardInstance.CardData.Element)
         {
             case CardData.CardElement.Basic:
                 _elementIcon.sprite = _basicElementIcon;
@@ -213,7 +235,7 @@ public class CardUI : MonoBehaviour, IPointerClickHandler
 
     private void SetCardImage()
     {
-        _cardImage.sprite = _cardData.PlantSprite;
+        _cardImage.sprite = _cardInstance.CardData.PlantSprite;
     }
 
     #endregion
@@ -241,14 +263,13 @@ public class CardUI : MonoBehaviour, IPointerClickHandler
     {
         if (state)
         {
-            
             backgroundSprite.material = hoverMaterial;
         }
         else
         {
             backgroundSprite.material = null;
         }
-        cardSelected = state;
 
+        cardSelected = state;
     }
 }

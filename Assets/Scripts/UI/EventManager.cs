@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -86,6 +87,7 @@ public static class EventManager
             public UnityAction<Args> OnInCardSelection;
             public UnityAction<LevelEndedArgs> OnEndLevel;
             public UnityAction<PlantSacrificedArgs> OnPlantSacrificed;
+            public UnityAction<WisdomChangedArgs> OnWisdomChanged;
 
         
             public class LevelEndedArgs : Args
@@ -97,6 +99,11 @@ public static class EventManager
             public class TurnChangedArgs : Args
             {
                 public int TurnNumber = 0;
+            }
+            
+            public class WisdomChangedArgs : Args
+            {
+                public List<CardInstance> currentWisdoms;
             }
             
             public class ManaChangedArgs : Args

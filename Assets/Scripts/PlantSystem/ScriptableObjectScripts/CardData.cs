@@ -163,6 +163,7 @@ public class CardData : ScriptableObject
     {
         public int Points;
         [FormerlySerializedAs("effectPattern")] public PatternSO EffectPattern;
+        [TextArea]
         public string CardText;
         public int PlayCost;
     }

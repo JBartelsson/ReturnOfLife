@@ -312,6 +312,7 @@ public class GameManager : MonoBehaviour
         ReduceMana(selectedCardBlueprint.GetCardStats().PlayCost);
         foreach (var wisdom in currentWisdoms)
         {
+            Debug.Log($"REDUCE MANA FOR {wisdom.GetCardStats().PlayCost}");
             ReduceMana(wisdom.GetCardStats().PlayCost);
             currentHand.Remove(wisdom);
             discardPile.Add(wisdom);
@@ -330,7 +331,7 @@ public class GameManager : MonoBehaviour
             plantedCardInstance = selectedCardBlueprint,
             plantedGridTile = playedTile
         });
-        currentWisdoms.Clear();
+        RemoveAllWisdoms();
         editorBlocked = false;
         SwitchState(GameState.SelectCards);
     }
@@ -345,7 +346,7 @@ public class GameManager : MonoBehaviour
         }
 
         ChangeMana(standardMana, true);
-        currentWisdoms.Clear();
+        RemoveAllWisdoms();
         discardPile.AddRange(currentHand);
         currentHand.Clear();
         EventManager.Game.Level.OnTurnChanged?.Invoke(new EventManager.GameEvents.LevelEvents.TurnChangedArgs()
@@ -403,11 +404,19 @@ public class GameManager : MonoBehaviour
     public void AddWisdom(CardInstance wisdom)
     {
         currentWisdoms.Add(wisdom);
+        EventManager.Game.Level.OnWisdomChanged?.Invoke(new EventManager.GameEvents.LevelEvents.WisdomChangedArgs()
+        {
+            currentWisdoms = this.currentWisdoms
+        });
     }
 
     public void RemoveWisdom(CardInstance wisdom)
     {
         currentWisdoms.Remove(wisdom);
+        EventManager.Game.Level.OnWisdomChanged?.Invoke(new EventManager.GameEvents.LevelEvents.WisdomChangedArgs()
+        {
+            currentWisdoms = this.currentWisdoms
+        });
     }
 
     //Score related
@@ -528,5 +537,9 @@ public class GameManager : MonoBehaviour
     public void RemoveAllWisdoms()
     {
         currentWisdoms.Clear();
+        EventManager.Game.Level.OnWisdomChanged?.Invoke(new EventManager.GameEvents.LevelEvents.WisdomChangedArgs()
+        {
+            currentWisdoms = this.currentWisdoms
+        });
     }
 }
