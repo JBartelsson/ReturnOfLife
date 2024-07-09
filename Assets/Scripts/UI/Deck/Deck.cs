@@ -85,7 +85,7 @@ public class Deck
     {
         for (; amount > 0; amount--)
         {
-            if (HandCards.Count <= _maxHandSize)
+            if (HandCards.Count >= _maxHandSize)
             {
                 Debug.Log("Hand is full");
                 return;
