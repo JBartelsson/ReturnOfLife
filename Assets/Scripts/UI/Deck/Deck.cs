@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static GameManager;
 using static StartDeckSO;
 using Random = UnityEngine.Random;
 
@@ -10,15 +11,18 @@ public class Deck
 {
     #region Fields and Properties
 
-    [SerializeField] private CardCollection _playerDeck;
+    private CardCollection _playerDeck = new();
 
-    private List<CardInstance> _deckPile;
-    private List<CardInstance> _discardPile;
+    //[SerializeField] private List<CardInstance> _playerDeck = new();
+
+    private List<CardInstance> _deckPile = new();
+    private List<CardInstance> _discardPile = new();
 
     private StartDeckSO _startDeck;
 
 
-    public List<CardInstance> HandCards { get; private set; }
+    public List<CardInstance> HandCards { get; private set; } = new();
+
 
     [SerializeField] private int _turnDrawCount = 5;
     [SerializeField] private int _maxHandSize = 5;
@@ -26,6 +30,14 @@ public class Deck
     #endregion
 
     #region Methods
+
+    public Deck() { }
+
+    //public Deck(int turnDrawCount, CardCollection playerDeck)
+    //{
+    //    _turnDrawCount = turnDrawCount;
+    //    _playerDeck = playerDeck;
+    //}
 
     public void InitializeDeck(StartDeckSO startDeck)
     {
@@ -39,9 +51,10 @@ public class Deck
             {
                 _playerDeck.AddCardToCollection(new CardInstance(deckEntry.cardDataReference));
             }
-            
+
         }
         _deckPile.AddRange(_playerDeck.CardsInCollection);
+        ShuffleDeck();
 
         /*
          * Debug.Log("RESETTING LEVEL");
@@ -65,6 +78,7 @@ public class Deck
          * drawPile.AddRange(deck);
          * SwitchState(GameState.EndTurn);
          */
+        Debug.Log("Johann, mach mal 10");
     }
 
     public void DrawCards(int amount = 1)
@@ -93,6 +107,7 @@ public class Deck
         CardInstance drawCard = _deckPile.First();
         HandCards.Add(drawCard);
         _deckPile.Remove(drawCard);
+        OnCardsDrawn();
         return true;
     }
 
@@ -105,19 +120,19 @@ public class Deck
     {
         _discardPile.Add(card);
         HandCards.Remove(card);
+        OnHandCardsChanged();
     }
 
     public void DiscardRandomCard()
     {
         int randomIndex = Random.Range(0, HandCards.Count);
         CardInstance randomCard = HandCards[randomIndex];
-        HandCards.Remove(randomCard);
-        _discardPile.Add(randomCard);
+        DiscardCard(randomCard);
     }
 
     public void DiscardHand()
     {
-        foreach(CardInstance card in HandCards)
+        foreach (CardInstance card in HandCards)
         {
             DiscardCard(card);
         }
@@ -125,7 +140,7 @@ public class Deck
 
     public void ShuffleDiscardPileIntoDeck()
     {
-        foreach(CardInstance card in _discardPile)
+        foreach (CardInstance card in _discardPile)
         {
             _deckPile.Add(card);
             _discardPile.Remove(card);
@@ -137,13 +152,30 @@ public class Deck
     // For each Position from the last one on, swap positions with a random position
     public void ShuffleDeck()
     {
-        for(int i = _deckPile.Count - 1; i < 0; i--)
+        for (int i = _deckPile.Count - 1; i < 0; i--)
         {
             int j = UnityEngine.Random.Range(0, i + 1);
             var temp = _deckPile[i];
             _deckPile[i] = _deckPile[j];
             _deckPile[j] = temp;
         }
+    }
+
+    private void OnHandCardsChanged()
+    {
+        EventManager.Game.Level.OnUpdateCards?.Invoke(new EventManager.GameEvents.Args()
+        {
+            sender = null
+        });
+    }
+
+    private void OnCardsDrawn()
+    {
+        EventManager.Game.Level.OnDrawCards?.Invoke(new EventManager.GameEvents.Args()
+        {
+            sender = null
+        });
+        
     }
 
     #endregion

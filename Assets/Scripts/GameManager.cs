@@ -63,10 +63,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int standardTurns = 3;
     [SerializeField] private PlanetProgressionSO planetProgression;
     private GameState currentGameState = GameState.None;
-    private List<CardInstance> deck = new();
-    private List<CardInstance> currentHand = new();
-    private List<CardInstance> drawPile = new();
-    private List<CardInstance> discardPile = new();
+
+    private Deck _deck = new Deck();
+
     private List<CardInstance> currentWisdoms = new();
     private int currentMana = 0;
     private int currentTurns = 0;
@@ -90,10 +89,6 @@ public class GameManager : MonoBehaviour
         get => currentScore;
         set => currentScore = value;
     }
-
-    public int HandSize => handSize;
-
-    public List<CardInstance> CurrentHand => currentHand;
 
     public StartDeckSO StartDeck
     {
@@ -187,25 +182,14 @@ public class GameManager : MonoBehaviour
 
     private void InitializeLevel()
     {
+        _deck.InitializeDeck(startDeck);
+
         Debug.Log("RESETTING LEVEL");
         SetPointScore(0);
-        deck.Clear();
-        currentHand.Clear();
-        drawPile.Clear();
-        discardPile.Clear();
         currentTurns = 0;
         currentPlayedCards = 0;
         selectedPlantNeedNeighbor = false;
 
-        foreach (StartDeckSO.DeckEntry deckEntry in startDeck.Deck)
-        {
-            for (int i = 0; i < deckEntry.amount; i++)
-            {
-                deck.Add(new CardInstance(deckEntry.cardDataReference));
-            }
-        }
-
-        drawPile.AddRange(deck);
         SwitchState(GameState.EndTurn);
     }
 
@@ -291,15 +275,15 @@ public class GameManager : MonoBehaviour
 
     public bool InitCallerArgsForCard(int cardIndex, GridTile playedGridTile)
     {
+        
         if (currentGameState != GameState.SelectCards) return false;
-        if (cardIndex < 0 || cardIndex >= currentHand.Count)
+        
+
+        selectedCard = _deck.HandCards[cardIndex];
+        if (selectedCard == null)
         {
-            Debug.LogError($"Card Index {cardIndex} out of Bounds!");
             return false;
         }
-
-        Debug.Log($"Trying to play {currentHand[cardIndex]}");
-        selectedCard = currentHand[cardIndex];
         selectedCardBlueprint = GetTemporaryCardInstance(cardIndex);
         callerArgs = GetTemporaryCallerArgs(cardIndex, playedGridTile);
         return true;
@@ -314,16 +298,11 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log($"REDUCE MANA FOR {wisdom.GetCardStats().PlayCost}");
             ReduceMana(wisdom.GetCardStats().PlayCost);
-            currentHand.Remove(wisdom);
-            discardPile.Add(wisdom);
+            _deck.DiscardCard(wisdom);
         }
-        currentHand.Remove(selectedCard);
-        discardPile.Add(selectedCard);
+        _deck.DiscardCard(selectedCard);
         //Event calling
-        EventManager.Game.Level.OnUpdateCards?.Invoke(new EventManager.GameEvents.Args()
-        {
-            sender = this
-        });
+
         currentPlayedCards++;
         Debug.Log("PLANT PLANTED!");
         EventManager.Game.UI.OnPlantPlanted?.Invoke(new EventManager.GameEvents.UIEvents.OnPlantPlantedArgs()
@@ -347,8 +326,9 @@ public class GameManager : MonoBehaviour
 
         ChangeMana(standardMana, true);
         RemoveAllWisdoms();
-        discardPile.AddRange(currentHand);
-        currentHand.Clear();
+
+        _deck.DiscardHand();
+
         EventManager.Game.Level.OnTurnChanged?.Invoke(new EventManager.GameEvents.LevelEvents.TurnChangedArgs()
         {
             sender = this,
@@ -369,36 +349,8 @@ public class GameManager : MonoBehaviour
 
     private void DrawCards()
     {
-        while (currentHand.Count < handSize)
-        {
-            DrawSingleCard();
-        }
-
-        EventManager.Game.Level.OnDrawCards?.Invoke(new EventManager.GameEvents.Args()
-        {
-            sender = this
-        });
+        _deck.DrawForTurn();
         SwitchState(GameState.SelectCards);
-    }
-
-    private void DrawSingleCard()
-    {
-        if (drawPile.Count == 0)
-        {
-            ReshuffleDiscardPile();
-        }
-
-        int randomIndex = UnityEngine.Random.Range(0, drawPile.Count);
-
-        CardInstance drawCard = drawPile[randomIndex];
-        currentHand.Add(drawCard);
-        drawPile.Remove(drawCard);
-    }
-
-    private void ReshuffleDiscardPile()
-    {
-        drawPile.AddRange(discardPile);
-        discardPile.Clear();
     }
 
     public void AddWisdom(CardInstance wisdom)
@@ -506,7 +458,7 @@ public class GameManager : MonoBehaviour
         {
             currentWisdomTypes.Add(wisdom.CardData.WisdomType);
         }
-        CardInstance newCardInstance = new CardInstance(currentHand[cardIndex], currentWisdomTypes);
+        CardInstance newCardInstance = new CardInstance(_deck.HandCards[cardIndex], currentWisdomTypes);
         return newCardInstance;
     }
 

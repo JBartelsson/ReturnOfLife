@@ -7,9 +7,9 @@ using UnityEngine;
 /// A generic collection of CardData. Can be used as Decks, Booster Packs, Players Card Collection, etc.
 /// </summary>
 
-public class CardCollection : ScriptableObject
+public class CardCollection
 {
-    [field: SerializeField] public List<CardInstance> CardsInCollection {  get; private set; }
+    public List<CardInstance> CardsInCollection { get; private set; } = new();
 
     public void RemoveCardFromCollection(CardInstance card)
     {
