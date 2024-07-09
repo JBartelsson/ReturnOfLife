@@ -97,6 +97,8 @@ public class Deck
 
     private bool DrawSingleCard()
     {
+        if (HandCards.Count == _maxHandSize)
+            return false;
         if (_deckPile.Count <= 0)
         {
             // Should not happen by design, but its better to be on the safe side
