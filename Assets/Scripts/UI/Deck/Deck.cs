@@ -163,17 +163,17 @@ public class Deck
 
     private void OnHandCardsChanged()
     {
-        EventManager.Game.Level.OnUpdateCards?.Invoke(new EventManager.GameEvents.Args()
+        EventManager.Game.Level.OnUpdateCards?.Invoke(new EventManager.GameEvents.DeckChangedArgs()
         {
-            sender = null
+            ChangedDeck = this
         });
     }
 
     private void OnCardsDrawn()
     {
-        EventManager.Game.Level.OnDrawCards?.Invoke(new EventManager.GameEvents.Args()
+        EventManager.Game.Level.OnDrawCards?.Invoke(new EventManager.GameEvents.DeckChangedArgs()
         {
-            sender = null
+            ChangedDeck = this
         });
         
     }

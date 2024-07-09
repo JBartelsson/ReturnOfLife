@@ -145,17 +145,17 @@ public class CardsUIController : MonoBehaviour
     }
 
     // ReSharper disable Unity.PerformanceAnalysis
-    private void OnDrawCards(EventManager.GameEvents.Args arg0)
+    private void OnDrawCards(EventManager.GameEvents.DeckChangedArgs arg0)
     {
-        if (GameManager.Instance.HandSize != currentCards.Count)
+        if (arg0.ChangedDeck.HandCards.Count != currentCards.Count)
         {
-            InitCards(GameManager.Instance.HandSize);
+            InitCards(arg0.ChangedDeck.HandCards.Count);
         };
         for (int i = 0; i < currentCards.Count; i++)
         {
-            if (i < GameManager.Instance.CurrentHand.Count)
+            if (i < arg0.ChangedDeck.HandCards.Count)
             {
-                currentCards[i].SetCardUI(GameManager.Instance.CurrentHand[i]);
+                currentCards[i].SetCardUI(arg0.ChangedDeck.HandCards[i]);
             }
             else
             {
@@ -164,7 +164,7 @@ public class CardsUIController : MonoBehaviour
         }
     }
     
-    private void OnUpdateCards(EventManager.GameEvents.Args args)
+    private void OnUpdateCards(EventManager.GameEvents.DeckChangedArgs args)
     {
         OnDrawCards(args);
     }
@@ -240,7 +240,7 @@ public class CardsUIController : MonoBehaviour
 
     private void DeselectAllOtherWisdomOfSameType(int cardIndex)
     {
-        for (int i = 0; i < GameManager.Instance.CurrentHand.Count; i++)
+        for (int i = 0; i < GameManager.Instance.Deck.HandCards.Count; i++)
         {
             if (SameWisdomAlreadyInStack(i) && i != cardIndex)
             {
@@ -255,7 +255,7 @@ public class CardsUIController : MonoBehaviour
     {
         foreach (var index in activeWisdoms)
         {
-            if (GameManager.Instance.CurrentHand[index].CardData.EffectType == CardData.CardEffectType.Wisdom)
+            if (GameManager.Instance.Deck.HandCards[index].CardData.EffectType == CardData.CardEffectType.Wisdom)
             {
                 return true;
             }
@@ -268,7 +268,7 @@ public class CardsUIController : MonoBehaviour
     {
         foreach (var index in activeWisdoms)
         {
-            if (GameManager.Instance.CurrentHand[index].CardData.EffectType == CardData.CardEffectType.Wisdom)
+            if (GameManager.Instance.Deck.HandCards[index].CardData.EffectType == CardData.CardEffectType.Wisdom)
             {
                 return true;
             }
@@ -281,7 +281,7 @@ public class CardsUIController : MonoBehaviour
     {
         foreach (var index in activeWisdoms)
         {
-            if (GameManager.Instance.CurrentHand[index].CardData.EffectType == CardData.CardEffectType.Plant)
+            if (GameManager.Instance.Deck.HandCards[index].CardData.EffectType == CardData.CardEffectType.Plant)
             {
                 return true;
             }
@@ -299,7 +299,7 @@ public class CardsUIController : MonoBehaviour
         }
         foreach (var index in activeWisdoms)
         {
-            if (currentCards[index].CardInstance.CardData.CardName == GameManager.Instance.CurrentHand[cardIndex].CardData.CardName)
+            if (currentCards[index].CardInstance.CardData.CardName == GameManager.Instance.Deck.HandCards[cardIndex].CardData.CardName)
             {
                 return true;
             }

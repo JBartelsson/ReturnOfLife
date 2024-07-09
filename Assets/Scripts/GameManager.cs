@@ -66,6 +66,12 @@ public class GameManager : MonoBehaviour
 
     private Deck _deck = new Deck();
 
+    public Deck Deck
+    {
+        get => _deck;
+        set => _deck = value;
+    }
+
     private List<CardInstance> currentWisdoms = new();
     private int currentMana = 0;
     private int currentTurns = 0;

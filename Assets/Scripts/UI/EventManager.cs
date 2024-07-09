@@ -36,6 +36,11 @@ public static class EventManager
         {
             public Component sender;
         }
+        
+        public class DeckChangedArgs : Args
+        {
+            public Deck ChangedDeck;
+        }
 
         public class InputEvents
         {
@@ -82,8 +87,8 @@ public static class EventManager
             public UnityAction<TurnChangedArgs> OnTurnChanged;
             public UnityAction<ScoreChangedArgs> OnScoreChanged;
             public UnityAction<ManaChangedArgs> OnManaChanged;
-            public UnityAction<Args> OnDrawCards;
-            public UnityAction<Args> OnUpdateCards;
+            public UnityAction<DeckChangedArgs> OnDrawCards;
+            public UnityAction<DeckChangedArgs> OnUpdateCards;
             public UnityAction<Args> OnInCardSelection;
             public UnityAction<LevelEndedArgs> OnEndLevel;
             public UnityAction<PlantSacrificedArgs> OnPlantSacrificed;
