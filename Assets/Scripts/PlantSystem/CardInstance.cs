@@ -154,24 +154,17 @@ public class CardInstance
     {
         GridTile gridTile = callerArgs.playedTile;
         //If either one of these conditions is true, then the card can be played
-        bool gridTileAcessible = false;
-        bool neighborNeededAndNeighborThere = false;
-        bool cardCanExecuteOverride = cardFunction.CanExecute(callerArgs);
-        gridTileAcessible = gridTile.IsAccessible(callerArgs);
-        if (!callerArgs.needNeighbor)
+        if (!gridTile.IsAccessible(callerArgs)) return false;
+        bool overrideNeighboring = false;
+        if (gridTile.CardInstance != null)
         {
-            neighborNeededAndNeighborThere = true;
+            overrideNeighboring = gridTile.CardInstance.CardData.CardAccessCheck.OverrideNeighboring;
         }
-        else
-        {
-            neighborNeededAndNeighborThere = gridTile.HasNeighboredPlant();
-        }
+        if (callerArgs.needNeighbor && !gridTile.HasNeighboredPlant() &&
+            !overrideNeighboring) return false;
         
-        Debug.Log($"Grid tile accessible: {gridTileAcessible}");
-        Debug.Log($"Neighborneeded and Neighbor there: {neighborNeededAndNeighborThere}");
-        Debug.Log($"cardCanExecuteOverride: {cardCanExecuteOverride}");
 
-        return (cardCanExecuteOverride || gridTileAcessible) && neighborNeededAndNeighborThere;
+        return true;
     }
 
     public bool CanBePlayedWith(CallerArgs callerArgs)

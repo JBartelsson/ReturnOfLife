@@ -17,12 +17,12 @@ MonoBehaviour:
   regularCardStats:
     Points: 0
     EffectPattern: {fileID: 0}
-    CardText: 
+    CardText: Upgrades the next Lifeform you plant this turn.
     PlayCost: 1
   upgradedCardStats:
     Points: 0
     EffectPattern: {fileID: 0}
-    CardText: 
+    CardText: Upgrades the next Lifeform you plant this turn.
     PlayCost: 1
   <Element>k__BackingField: 0
   effectType: 1

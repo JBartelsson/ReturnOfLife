@@ -72,6 +72,7 @@ public class CardData : ScriptableObject
     {
         [ClassExtends(typeof(CardAccessCheckBase))]
         public ClassTypeReference scriptType = typeof(CardFunctionBase);
+        public bool OverrideNeighboring = false;
 
         public ClassTypeReference ScriptType
         {
