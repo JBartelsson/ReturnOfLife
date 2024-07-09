@@ -85,7 +85,7 @@ public class Deck
     {
         for (; amount > 0; amount--)
         {
-            if (HandCards.Count <= _maxHandSize)
+            if (HandCards.Count >= _maxHandSize)
             {
                 Debug.Log("Hand is full");
                 return;
@@ -97,8 +97,6 @@ public class Deck
 
     private bool DrawSingleCard()
     {
-        if (HandCards.Count == _maxHandSize)
-            return false;
         if (_deckPile.Count <= 0)
         {
             // Should not happen by design, but its better to be on the safe side
