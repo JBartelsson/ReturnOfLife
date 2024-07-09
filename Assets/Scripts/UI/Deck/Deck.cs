@@ -24,14 +24,20 @@ public class Deck
     public List<CardInstance> HandCards { get; private set; } = new();
 
 
-    [SerializeField] private int _turnDrawCount = 5;
-    [SerializeField] private int _maxHandSize = 5;
+    private int _turnDrawCount = 5;
+    private int _maxHandSize = 5;
+
+    public int TurnDrawCount => _turnDrawCount;
+
+    public int MaxHandSize => _maxHandSize;
 
     #endregion
 
     #region Methods
 
-    public Deck() { }
+    public Deck()
+    {
+    }
 
     //public Deck(int turnDrawCount, CardCollection playerDeck)
     //{
@@ -51,8 +57,8 @@ public class Deck
             {
                 _playerDeck.AddCardToCollection(new CardInstance(deckEntry.cardDataReference));
             }
-
         }
+
         _deckPile.AddRange(_playerDeck.CardsInCollection);
         ShuffleDeck();
 
@@ -66,7 +72,7 @@ public class Deck
          * currentTurns = 0;
          * currentPlayedCards = 0;
          * selectedPlantNeedNeighbor = false;
-         * 
+         *
          * foreach (StartDeckSO.DeckEntry deckEntry in startDeck.Deck)
          * {
          *     for (int i = 0; i < deckEntry.amount; i++)
@@ -74,7 +80,7 @@ public class Deck
          *         deck.Add(new CardInstance(deckEntry.cardDataReference));
          *     }
          * }
-         * 
+         *
          * drawPile.AddRange(deck);
          * SwitchState(GameState.EndTurn);
          */
@@ -90,6 +96,7 @@ public class Deck
                 Debug.Log("Hand is full");
                 return;
             }
+
             if (!DrawSingleCard()) // If no card can be drawn, just return. To minimize unnecessary calls
                 return;
         }
@@ -101,9 +108,13 @@ public class Deck
         {
             // Should not happen by design, but its better to be on the safe side
             if (_discardPile.Count <= 0)
-            { return false; }
+            {
+                return false;
+            }
+
             ShuffleDiscardPileIntoDeck();
         }
+
         CardInstance drawCard = _deckPile.First();
         HandCards.Add(drawCard);
         _deckPile.Remove(drawCard);
@@ -132,19 +143,17 @@ public class Deck
 
     public void DiscardHand()
     {
-        foreach (CardInstance card in HandCards)
+        int discardedHandCount = HandCards.Count;
+        for (int i = discardedHandCount - 1; i >= 0; i--)
         {
-            DiscardCard(card);
+            DiscardCard(HandCards[i]);
         }
     }
 
     public void ShuffleDiscardPileIntoDeck()
     {
-        foreach (CardInstance card in _discardPile)
-        {
-            _deckPile.Add(card);
-            _discardPile.Remove(card);
-        }
+        _deckPile.AddRange(_discardPile);
+        _discardPile.Clear();
         ShuffleDeck();
     }
 
@@ -175,11 +184,9 @@ public class Deck
         {
             ChangedDeck = this
         });
-        
     }
 
     #endregion
 
     // GameManager
 }
-

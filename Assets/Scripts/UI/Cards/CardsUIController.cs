@@ -139,6 +139,7 @@ public class CardsUIController : MonoBehaviour
         {
             GameObject newCard = Instantiate(cardPrefab, cardsParent);
             CardUI cardUI = newCard.GetComponent<CardUI>();
+            Debug.Log($"INITILIAZED CARD WITH INDEX {i}");
             cardUI.CardIndex = i;
             currentCards.Add(cardUI);
         }
@@ -147,9 +148,9 @@ public class CardsUIController : MonoBehaviour
     // ReSharper disable Unity.PerformanceAnalysis
     private void OnDrawCards(EventManager.GameEvents.DeckChangedArgs arg0)
     {
-        if (arg0.ChangedDeck.HandCards.Count != currentCards.Count)
+        if (arg0.ChangedDeck.MaxHandSize != currentCards.Count)
         {
-            InitCards(arg0.ChangedDeck.HandCards.Count);
+            InitCards(arg0.ChangedDeck.MaxHandSize);
         };
         for (int i = 0; i < currentCards.Count; i++)
         {
