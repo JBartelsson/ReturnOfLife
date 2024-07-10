@@ -161,9 +161,9 @@ public class Deck
     // For each Position from the last one on, swap positions with a random position
     public void ShuffleDeck()
     {
-        for (int i = _deckPile.Count - 1; i < 0; i--)
+        for (int i = 0; i < _deckPile.Count - 1; i++)
         {
-            int j = UnityEngine.Random.Range(0, i + 1);
+            int j = UnityEngine.Random.Range(i, _deckPile.Count - 1);
             var temp = _deckPile[i];
             _deckPile[i] = _deckPile[j];
             _deckPile[j] = temp;

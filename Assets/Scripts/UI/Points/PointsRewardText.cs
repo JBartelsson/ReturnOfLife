@@ -45,7 +45,9 @@ public class PointsRewardText : MonoBehaviour
         // animationSequence.Append(scoreText.DOFade(1f, Constants.UI_POINT_SPEED));
         Debug.Log($"STARTING TWEEEN {gridVisualization.OwnGridTile} with {args.ScoreAdded.EcoPoints} of {args.ScoringOrigin.ToString()}");
         animationSequence = DOTween.Sequence();
-        animationSequence.Append(scoreText.transform.DOMove(textTarget.position, Constants.UI_POINT_SPEED));
+        animationSequence.Append(scoreText.DOFade(1f, Constants.UI_POINT_DISAPPEAR_SPEED));
+
+        animationSequence.Join(scoreText.transform.DOMove(textTarget.position, Constants.UI_POINT_SPEED));
         animationSequence.Append(scoreText.DOFade(0f, Constants.UI_POINT_DISAPPEAR_SPEED));
         animationSequence.AppendInterval(Constants.UI_POINT_WAIT_INTERVAL);
         animationSequence.AppendCallback(() =>
@@ -85,7 +87,7 @@ public class PointsRewardText : MonoBehaviour
             scoreText.color = Constants.MULTIPLICATION_COLOR;
         }
 
-        // scoreText.DOFade(0f, 0f);
+        scoreText.DOFade(0f, 0f);
         scoreText.text = preFix + args.ScoreAdded.EcoPoints.ToString() + " ";
     }
 
