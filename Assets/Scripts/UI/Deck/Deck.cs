@@ -50,7 +50,7 @@ public class Deck
         _deckPile.Clear();
         _discardPile.Clear();
         HandCards.Clear();
-
+        UnityEngine.Random.InitState((int)System.DateTime.Now.Ticks);
         foreach (StartDeckSO.DeckEntry deckEntry in startDeck.Deck)
         {
             for (int i = 0; i < deckEntry.amount; i++)

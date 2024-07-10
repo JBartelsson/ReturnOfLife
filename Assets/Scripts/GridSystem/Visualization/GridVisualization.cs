@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
@@ -31,8 +32,11 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
     private SpriteRenderer previewSpriteRenderer;
 
     private GridTile ownGridTile;
+
+
     private VisualizationState visualizationState = VisualizationState.NONE;
 
+    public GridTile OwnGridTile => ownGridTile;
     public enum VisualizationState
     {
         MARKED_FOR_EDITOR,

@@ -17,12 +17,12 @@ MonoBehaviour:
   regularCardStats:
     Points: 60
     EffectPattern: {fileID: 11400000, guid: cc8af7e4462826c46adbd43adf3d9ec2, type: 2}
-    CardText: If there is no other Antisocial in the Pattern, grant 60 Points.
+    CardText: Only grants points if there is no Antisocial in the Pattern.
     PlayCost: 1
   upgradedCardStats:
     Points: 150
     EffectPattern: {fileID: 11400000, guid: cc8af7e4462826c46adbd43adf3d9ec2, type: 2}
-    CardText: If there is no other Antisocial in the Pattern, grant 150 Points.
+    CardText: Only grants points if there is no Antisocial in the Pattern.
     PlayCost: 1
   <Element>k__BackingField: 0
   effectType: 0
@@ -41,6 +41,7 @@ MonoBehaviour:
     executionType: 0
     scriptType:
       _classRef: NoOtherCardsPlacable, ReturnOfLifeAssembly
+    OverrideNeighboring: 0
   cardPassiveCall:
     executionType: 0
     scriptType:

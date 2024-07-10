@@ -118,8 +118,11 @@ public static class EventManager
             
             public class ScoreChangedArgs : Args
             {
+                public GameManager.Score ScoreAdded;
                 public GameManager.Score NewScore;
                 public LevelSO CurrentLevel;
+                public CallerArgs scoreChangedCallerArgs;
+                public GameManager.SCORING_ORIGIN ScoringOrigin;
             }
 
             public class PlantSacrificedArgs : Args

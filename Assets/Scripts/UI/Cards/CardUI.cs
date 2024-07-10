@@ -40,6 +40,13 @@ public class CardUI : MonoBehaviour, IPointerClickHandler
     [SerializeField] private TextMeshProUGUI _cardType;
     [SerializeField] private TextMeshProUGUI _cardText;
 
+    [Header("Points")] [SerializeField] private TextMeshProUGUI _pointsText;
+    [SerializeField] private GameObject _pointsSymbol;
+
+    [Header("Card Colors")] 
+    [SerializeField] private Color _plantColor;
+    [SerializeField] private Color _wisdomColor;
+
     [Header("Hidden Properties ")] //references properties of the cards, that arent shown directly on the card, but in mechanics
     [SerializeField]
     private int _turnDelay;
@@ -60,8 +67,8 @@ public class CardUI : MonoBehaviour, IPointerClickHandler
     [SerializeField] private Sprite _plantTypeIcon;
     [SerializeField] private Sprite _wisdomTypeIcon;
 
-    [Header("Hover Effect")] [SerializeField]
-    private Image backgroundSprite;
+    [FormerlySerializedAs("backgroundSprite")] [Header("Hover Effect")] [SerializeField]
+    private Image _backgroundSprite;
 
     [SerializeField] private Material hoverMaterial;
     private readonly string EFFECTTYPE_PLANT = "Plant";
@@ -80,7 +87,7 @@ public class CardUI : MonoBehaviour, IPointerClickHandler
         EventManager.Game.Level.OnManaChanged += OnManaChanged;
         EventManager.Game.Level.OnWisdomChanged += OnWisdomChanged;
     }
-    
+
     private void OnDisable()
     {
         EventManager.Game.Level.OnManaChanged -= OnManaChanged;
@@ -135,11 +142,30 @@ public class CardUI : MonoBehaviour, IPointerClickHandler
             SetElementIcon();
             //SetTypeIcon();
             SetCardImage();
+            SetBackground();
             OnManaChanged(new EventManager.GameEvents.LevelEvents.ManaChangedArgs());
         }
         else
         {
             ToggleVisibility(false);
+        }
+    }
+
+    private void SetBackground()
+    {
+        switch (_cardInstance.CardData.EffectType)
+        {
+            case CardEffectType.Plant:
+                _backgroundSprite.color = _plantColor;
+                break;
+            case CardEffectType.Wisdom:
+                _backgroundSprite.color = _wisdomColor;
+                break;
+            case CardEffectType.Instant:
+                break;
+            default:
+                // _backgroundSprite.color = _plantColor;
+                break;
         }
     }
 
@@ -167,6 +193,15 @@ public class CardUI : MonoBehaviour, IPointerClickHandler
         _cardName.text = cardName;
         _playCost.text = cardStats.PlayCost.ToString();
         _cardText.text = cardStats.CardText;
+        if (cardStats.Points != 0)
+        {
+            _pointsSymbol.SetActive(true);
+            _pointsText.text = cardStats.Points.ToString();
+        }
+        else
+        {
+            _pointsSymbol.SetActive(false);
+        }
     }
 
     private void SetTypeIcon()
@@ -263,11 +298,11 @@ public class CardUI : MonoBehaviour, IPointerClickHandler
     {
         if (state)
         {
-            backgroundSprite.material = hoverMaterial;
+            _backgroundSprite.material = hoverMaterial;
         }
         else
         {
-            backgroundSprite.material = null;
+            _backgroundSprite.material = null;
         }
 
         cardSelected = state;

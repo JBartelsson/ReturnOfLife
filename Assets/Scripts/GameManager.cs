@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using DG.Tweening;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -16,27 +17,18 @@ public class GameManager : MonoBehaviour
     [Serializable]
     public struct Score
     {
+        public Score(int ecoPoints = 0)
+        {
+            this.ecoPoints = ecoPoints;
+        }
+
         public int EcoPoints
         {
             get => ecoPoints;
             set => ecoPoints = value;
         }
 
-        public int Fields
-        {
-            get => fields;
-            set => fields = value;
-        }
-
-        public int SpecialFields
-        {
-            get => specialFields;
-            set => specialFields = value;
-        }
-
         private int ecoPoints;
-        private int fields;
-        private int specialFields;
     }
 
 
@@ -90,6 +82,7 @@ public class GameManager : MonoBehaviour
     private PlanetProgressionSO.Stage currentStage = PlanetProgressionSO.Stage.STAGE1;
 
     private bool editorBlocked = false;
+
     public Score CurrentScore
     {
         get => currentScore;
@@ -100,6 +93,12 @@ public class GameManager : MonoBehaviour
     {
         get => startDeck;
         set => startDeck = value;
+    }
+
+    public enum SCORING_ORIGIN
+    {
+        LIFEFORM,
+        MULTIPLICATION
     }
 
     //Args
@@ -123,10 +122,12 @@ public class GameManager : MonoBehaviour
     {
         EventManager.Game.Level.OnPlantSacrificed += OnPlantSacrificed;
     }
+
     private void OnDisable()
     {
         EventManager.Game.Level.OnPlantSacrificed -= OnPlantSacrificed;
     }
+
     private void OnPlantSacrificed(EventManager.GameEvents.LevelEvents.PlantSacrificedArgs arg0)
     {
         editorBlocked = true;
@@ -237,13 +238,13 @@ public class GameManager : MonoBehaviour
     private void CheckSpecialFields()
     {
         int specialFieldAmount = 0;
+        Debug.Log($"CHECKING SPECIAL FIELDS");
         foreach (var specialField in GridManager.Instance.Grid.SpecialFields)
         {
             Debug.Log($"SpecialField {specialField.FieldType} is {specialField.IsFulfilled()}");
-            if (specialField.IsFulfilled()) specialFieldAmount++;
+            specialField.TryExecuteFunction();
+            specialFieldAmount++;
         }
-
-        currentScore.SpecialFields = specialFieldAmount;
     }
 
     public void TryPlantCard(int cardIndex, GridTile selectedGridTile)
@@ -281,15 +282,15 @@ public class GameManager : MonoBehaviour
 
     public bool InitCallerArgsForCard(int cardIndex, GridTile playedGridTile)
     {
-        
         if (currentGameState != GameState.SelectCards) return false;
-        
+
 
         selectedCard = _deck.HandCards[cardIndex];
         if (selectedCard == null)
         {
             return false;
         }
+
         selectedCardBlueprint = GetTemporaryCardInstance(cardIndex);
         callerArgs = GetTemporaryCallerArgs(cardIndex, playedGridTile);
         return true;
@@ -306,6 +307,7 @@ public class GameManager : MonoBehaviour
             ReduceMana(wisdom.GetCardStats().PlayCost);
             _deck.DiscardCard(wisdom);
         }
+
         _deck.DiscardCard(selectedCard);
         //Event calling
 
@@ -379,19 +381,24 @@ public class GameManager : MonoBehaviour
 
     //Score related
 
-    public void AddPointScore(int amount)
+    public void AddPointScore(int amount, CallerArgs scoreCallerArgs, SCORING_ORIGIN scoringOrigin)
     {
-        SetPointScore(currentScore.EcoPoints + amount);
+        SetPointScore(currentScore.EcoPoints + amount, scoreCallerArgs, scoringOrigin);
     }
 
-    private void SetPointScore(int newScore)
+    private void SetPointScore(int newScore, CallerArgs scoreCallerArgs = null,
+        SCORING_ORIGIN scoringOrigin = SCORING_ORIGIN.LIFEFORM)
     {
+        int oldScore = currentScore.EcoPoints;
         currentScore.EcoPoints = newScore;
         EventManager.Game.Level.OnScoreChanged?.Invoke(new EventManager.GameEvents.LevelEvents.ScoreChangedArgs()
         {
             sender = this,
             NewScore = currentScore,
-            CurrentLevel = currentLevel
+            CurrentLevel = currentLevel,
+            scoreChangedCallerArgs = scoreCallerArgs,
+            ScoringOrigin = scoringOrigin,
+            ScoreAdded = new Score(newScore - oldScore)
         });
     }
 
@@ -428,20 +435,16 @@ public class GameManager : MonoBehaviour
         return ChangeMana(-amount);
     }
 
-    private void AddSpecialFieldScore(int amount)
-    {
-        currentScore.SpecialFields += amount;
-    }
 
     public void GameOver()
     {
+        DOTween.Clear(true);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void NextLevel()
     {
-        Debug.Log($"WON LEVEL");
-
+        DOTween.Clear(true);
         if (currentStage == PlanetProgressionSO.Stage.BOSS)
         {
             WinGame();
@@ -464,6 +467,7 @@ public class GameManager : MonoBehaviour
         {
             currentWisdomTypes.Add(wisdom.CardData.WisdomType);
         }
+
         CardInstance newCardInstance = new CardInstance(_deck.HandCards[cardIndex], currentWisdomTypes);
         return newCardInstance;
     }

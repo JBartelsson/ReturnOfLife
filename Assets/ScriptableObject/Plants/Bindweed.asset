@@ -15,12 +15,12 @@ MonoBehaviour:
   plantSprite: {fileID: 21300000, guid: b702e0a87d26f7b47a7c5a8657f12d32, type: 3}
   <CardName>k__BackingField: Bindweed
   regularCardStats:
-    Points: 0
+    Points: 20
     EffectPattern: {fileID: 11400000, guid: 58e5ab6e4cf343746a10423e47c88ec9, type: 2}
     CardText: When planted, plant another Bindweed inside the Pattern.
     PlayCost: 1
   upgradedCardStats:
-    Points: 0
+    Points: 20
     EffectPattern: {fileID: 11400000, guid: 35ecfea0a95cba64c9dba6c3b6e94bb9, type: 2}
     CardText: When planted, plant another Bindweed inside the Pattern+.
     PlayCost: 1
@@ -41,6 +41,7 @@ MonoBehaviour:
     executionType: 3
     scriptType:
       _classRef: NoOtherCardsPlacable, ReturnOfLifeAssembly
+    OverrideNeighboring: 0
   cardPassiveCall:
     executionType: 3
     scriptType:

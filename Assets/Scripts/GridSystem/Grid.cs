@@ -30,33 +30,6 @@ public class Grid
         get => specialFields;
         set => specialFields = value;
     }
-
-    public class SpecialField
-    {
-        public SpecialFieldType FieldType;
-        public List<GridTile> SpecialFieldGridTiles = new();
-
-        public SpecialField(SpecialFieldType fieldType)
-        {
-            FieldType = fieldType;
-        }
-
-        public bool IsFulfilled()
-        {
-            bool fulfilled = true;
-            foreach (GridTile gridTile in SpecialFieldGridTiles)
-            {
-                if (!gridTile.ContainsPlant())
-                {
-                    fulfilled = false;
-                    break;
-                }
-            }
-
-            return fulfilled;
-        }
-    }
-
     public float CellSize
     {
         get => cellSize;
@@ -112,6 +85,7 @@ public class Grid
         }
 
         ApplyNeighbors();
+        SpecialFields = FindConnectedFields();
     }
 
     private void GetXY(Vector3 worldPosition, out int x, out int y)
@@ -242,6 +216,7 @@ public class Grid
                 visitedTiles.Add(gridTile);
                 return;
             }
+
             if (gridTile.RightNeighbor != null)
             {
                 if (gridTile.RightNeighbor.FieldType == gridTile.FieldType)
@@ -279,7 +254,8 @@ public class Grid
 
         if (gridTile.RightNeighbor != null)
         {
-            if (gridTile.RightNeighbor.FieldType == gridTile.FieldType && !visitedTiles.Contains(gridTile.RightNeighbor))
+            if (gridTile.RightNeighbor.FieldType == gridTile.FieldType &&
+                !visitedTiles.Contains(gridTile.RightNeighbor))
             {
                 PopulateFieldGroup(ref newSpecialField, ref visitedTiles, gridTile.RightNeighbor);
             }
@@ -292,7 +268,7 @@ public class Grid
                 PopulateFieldGroup(ref newSpecialField, ref visitedTiles, gridTile.TopNeighbor);
             }
         }
-        
+
         if (gridTile.LeftNeighbor != null)
         {
             if (gridTile.LeftNeighbor.FieldType == gridTile.FieldType && !visitedTiles.Contains(gridTile.LeftNeighbor))
@@ -300,9 +276,11 @@ public class Grid
                 PopulateFieldGroup(ref newSpecialField, ref visitedTiles, gridTile.LeftNeighbor);
             }
         }
+
         if (gridTile.BottomNeighbor != null)
         {
-            if (gridTile.BottomNeighbor.FieldType == gridTile.FieldType && !visitedTiles.Contains(gridTile.BottomNeighbor))
+            if (gridTile.BottomNeighbor.FieldType == gridTile.FieldType &&
+                !visitedTiles.Contains(gridTile.BottomNeighbor))
             {
                 PopulateFieldGroup(ref newSpecialField, ref visitedTiles, gridTile.BottomNeighbor);
             }
