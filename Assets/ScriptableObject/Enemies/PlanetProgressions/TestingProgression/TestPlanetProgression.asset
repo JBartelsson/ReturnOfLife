@@ -15,7 +15,7 @@ MonoBehaviour:
   progression:
   - stage: 0
     allowedEnemies:
-    - {fileID: 11400000, guid: 0ef1098056a8d4b45a3e3ece4cd76c93, type: 2}
+    - {fileID: 11400000, guid: 456380c7661fb924e958d02302e0117e, type: 2}
   - stage: 1
     allowedEnemies:
     - {fileID: 11400000, guid: 0ef1098056a8d4b45a3e3ece4cd76c93, type: 2}
