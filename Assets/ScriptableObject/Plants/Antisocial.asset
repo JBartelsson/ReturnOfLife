@@ -32,7 +32,7 @@ MonoBehaviour:
   cardFunction:
     executionType: 2
     scriptType:
-      _classRef: AntisocialFunction, ReturnOfLifeAssembly
+      _classRef: AntisocialFunction, Assembly-CSharp
   cardEditor:
     executionType: 0
     scriptType:
@@ -40,7 +40,7 @@ MonoBehaviour:
   cardAccessCheck:
     executionType: 0
     scriptType:
-      _classRef: NoOtherCardsPlacable, ReturnOfLifeAssembly
+      _classRef: NoOtherCardsPlacable, Assembly-CSharp
     OverrideNeighboring: 0
   cardPassiveCall:
     executionType: 0

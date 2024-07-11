@@ -16,6 +16,9 @@ public static class EventManager
         Game.Level.OnScoreChanged = delegate {};
         Game.Level.OnTurnChanged = delegate {};
         Game.Level.OnInCardSelection = delegate {};
+        Game.Level.OnLevelInitialized = delegate { };
+        Game.Level.OnPlantSacrificed = delegate { };
+        Game.Level.OnWisdomChanged = delegate { };
         
         Game.UI.OnEditorNeeded = delegate {};
         Game.UI.OnHoverForEditor = delegate {};
@@ -23,6 +26,8 @@ public static class EventManager
         Game.UI.OnPlantHoverChanged = delegate {};
         Game.UI.OnHoverForEditor = delegate {};
         Game.UI.OnPlantPlanted = delegate {};
+        Game.UI.OnNotEnoughMana = delegate { };
+        Game.UI.OnTutorialScreenChange = delegate { };
 
     }
 
@@ -32,6 +37,7 @@ public static class EventManager
         public LevelEvents Level = new LevelEvents();
         public UIEvents UI = new UIEvents();
         public InputEvents Input = new InputEvents();
+        public SceneSwitchEvents SceneSwitch = new SceneSwitchEvents();
         public class Args
         {
             public Component sender;
@@ -46,6 +52,11 @@ public static class EventManager
         {
             public UnityAction OnInteract;
             public UnityAction OnCancel;
+        }
+
+        public class SceneSwitchEvents
+        {
+            public UnityAction<SceneLoader.Scene> OnSceneReloadComplete;
         }
         public class UIEvents
         {
@@ -79,6 +90,7 @@ public static class EventManager
             public UnityAction<OnEditorNeededArgs> OnEditorNeeded;
             public UnityAction<OnHoverForEditorArgs> OnHoverForEditor;
             public UnityAction OnNotEnoughMana;
+            public UnityAction<bool> OnTutorialScreenChange;
 
         }
         
@@ -93,6 +105,7 @@ public static class EventManager
             public UnityAction<LevelEndedArgs> OnEndLevel;
             public UnityAction<PlantSacrificedArgs> OnPlantSacrificed;
             public UnityAction<WisdomChangedArgs> OnWisdomChanged;
+            public UnityAction<LevelInitializedArgs> OnLevelInitialized;
 
         
             public class LevelEndedArgs : Args
@@ -100,6 +113,12 @@ public static class EventManager
                 public bool WonLevel;
                 public int CurrentScore;
                 public int NeededScore;
+            }
+
+            public class LevelInitializedArgs : Args
+            {
+                public LevelSO currentLevel;
+                public string levelName;
             }
             public class TurnChangedArgs : Args
             {

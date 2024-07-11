@@ -58,6 +58,7 @@ public class CardsUIController : MonoBehaviour
         {
             cardUI.SetActiveState(false);
         }
+        EventManager.Game.UI.OnPlantHoverCanceled?.Invoke();
         GridManager.Instance.Grid.ForEachGridTile((gridTile) =>
         {
             if (args.editorCardInstance.CheckField(new EditorCallerArgs()
@@ -91,6 +92,7 @@ public class CardsUIController : MonoBehaviour
         if (currentState == State.Editor)
         {
             GridTile selectedGridTile = GridManager.Instance.Grid.GetGridObject(Mouse.current.position.ReadValue());
+            Debug.Log(selectedGridTile);
             if (selectedGridTile != null)
             {
                 GameManager.Instance.ExecuteEditor(selectedGridTile);
@@ -139,7 +141,6 @@ public class CardsUIController : MonoBehaviour
         {
             GameObject newCard = Instantiate(cardPrefab, cardsParent);
             CardUI cardUI = newCard.GetComponent<CardUI>();
-            Debug.Log($"INITILIAZED CARD WITH INDEX {i}");
             cardUI.CardIndex = i;
             currentCards.Add(cardUI);
         }

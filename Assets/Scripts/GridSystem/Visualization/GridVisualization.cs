@@ -27,6 +27,9 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
     [FormerlySerializedAs("redCrossImage")] [Header("Preview Settings")] 
     [SerializeField]
     private SpriteRenderer redCrossSpriteRenderer;
+
+    [SerializeField] private Sprite cantPlaceSprite;
+    [FormerlySerializedAs("canplaceSprite")] [FormerlySerializedAs("placeSprite")] [SerializeField] private Sprite canPlaceSprite;
     [SerializeField] private Material previewMaterial;
     [SerializeField]
     private SpriteRenderer previewSpriteRenderer;
@@ -105,9 +108,16 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
         UpdateContent();
         if (args.hoveredGridTile == ownGridTile)
         {
+            redCrossSpriteRenderer.gameObject.SetActive(true);
+
             if (!args.hoveredCardInstance.CanExecute(args.hoverCallerArgs))
             {
-                redCrossSpriteRenderer.gameObject.SetActive(true);
+                redCrossSpriteRenderer.sprite = cantPlaceSprite;
+            }
+            else
+            {
+                redCrossSpriteRenderer.sprite = canPlaceSprite;
+
             }
             SetNewSprite(args.hoveredCardInstance, previewSpriteRenderer, true);
         }

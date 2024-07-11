@@ -3,8 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
-using UnityEditor.Compilation;
-using UnityEditor.Search;
 using UnityEngine;
 [CustomEditor(typeof(CardData), true)]
 public class PlantableEditor : Editor

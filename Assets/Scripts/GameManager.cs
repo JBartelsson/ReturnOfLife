@@ -42,7 +42,8 @@ public class GameManager : MonoBehaviour
         PlantEditor,
         SpecialAbility,
         LevelEnd,
-        None
+        None,
+        Tutorial
     }
 
     [Header("Game Options")] [SerializeField]
@@ -71,6 +72,7 @@ public class GameManager : MonoBehaviour
     private bool selectedPlantNeedNeighbor = false;
     private CardInstance selectedCard;
     private GridTile playedTile;
+    private bool tutorialShowed = false;
 
     private CardInstance selectedCardBlueprint = null;
 
@@ -108,19 +110,43 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        Debug.Log($"Instance on Awake is {Instance}");
         if (Instance == null)
         {
             Instance = this;
+            //Resetting Parenting structure so dontdestroyonload does work
+            this.transform.parent = null;
+            DontDestroyOnLoad(this);
         }
         else
         {
-            Debug.LogError("Game Manager already exists!");
+            Destroy(this.gameObject);
+            Debug.LogWarning("Game Manager already exists!");
         }
     }
+
+#if  UNITY_EDITOR
+    private void Start()
+    {
+        GridManager.Instance.OnGridReady += Instance_OnGridReady;
+        BuildLevel();
+    }
+#endif
 
     private void OnEnable()
     {
         EventManager.Game.Level.OnPlantSacrificed += OnPlantSacrificed;
+        EventManager.Game.SceneSwitch.OnSceneReloadComplete += OnSceneReloadComplete;
+    }
+
+    private void OnSceneReloadComplete(SceneLoader.Scene newScene)
+    {
+        if (newScene == SceneLoader.Scene.GameScene)
+        {
+            Debug.Log("On scene Load");
+            GridManager.Instance.OnGridReady += Instance_OnGridReady;
+            BuildLevel();
+        }
     }
 
     private void OnDisable()
@@ -133,16 +159,22 @@ public class GameManager : MonoBehaviour
         editorBlocked = true;
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        GridManager.Instance.OnGridReady += Instance_OnGridReady;
-        BuildLevel();
-    }
-
     private void Instance_OnGridReady(object sender, EventArgs e)
     {
-        SwitchState(GameState.Init);
+        if (tutorialShowed)
+        {
+            EventManager.Game.UI.OnTutorialScreenChange?.Invoke(false);
+
+            SwitchState(GameState.Init);
+        }
+        else
+        {
+            tutorialShowed = true;
+            Debug.Log("SHOULD SHOW TUTORIAL");
+            EventManager.Game.UI.OnTutorialScreenChange?.Invoke(true);
+            SwitchState(GameState.Tutorial);
+
+        }
     }
 
     private void SwitchState(GameState newGameState)
@@ -176,6 +208,12 @@ public class GameManager : MonoBehaviour
             case GameState.None:
                 break;
 
+            case GameState.LevelEnd:
+                break;
+            case GameState.Tutorial:
+                Debug.Log("TUTORIAL SHOW");
+                SwitchState(GameState.Init);
+                break;
             default:
                 break;
         }
@@ -185,6 +223,11 @@ public class GameManager : MonoBehaviour
     {
         currentLevel = planetProgression.GetRandomEnemy(currentStage);
         GridManager.Instance.BuildGrid(currentLevel);
+        EventManager.Game.Level.OnLevelInitialized?.Invoke(new EventManager.GameEvents.LevelEvents.LevelInitializedArgs()
+        {
+            currentLevel = currentLevel,
+            levelName = currentLevel.name
+        });
     }
 
     private void InitializeLevel()
@@ -227,11 +270,18 @@ public class GameManager : MonoBehaviour
     {
         if (selectedGridTile == null) return;
         editorArgs.selectedGridTile = selectedGridTile;
+        
         if (selectedCardBlueprint.CheckField(editorArgs))
         {
+            Debug.Log($"CAN EXECUTE THE EDITOR THERE");
             selectedCardBlueprint.ExecuteEditor(editorArgs);
             CheckSpecialFields();
             EndCardPlaying();
+        }
+        else
+        {
+            Debug.Log($"CANT EXECUTE THE EDITOR THERE");
+
         }
     }
 
@@ -438,8 +488,8 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
-        DOTween.Clear(true);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        currentStage = PlanetProgressionSO.Stage.STAGE1;
+        SceneLoader.Reload();
     }
 
     public void NextLevel()
@@ -452,7 +502,7 @@ public class GameManager : MonoBehaviour
         }
 
         currentStage++;
-        BuildLevel();
+        SceneLoader.Reload();
     }
 
     private void WinGame()
@@ -486,7 +536,6 @@ public class GameManager : MonoBehaviour
 
     public bool EnoughMana(int cardManaCost)
     {
-        Debug.Log($"{currentMana}, incoming Mana: {cardManaCost}");
         if (currentMana - cardManaCost < 0)
         {
             EventManager.Game.UI.OnNotEnoughMana?.Invoke();

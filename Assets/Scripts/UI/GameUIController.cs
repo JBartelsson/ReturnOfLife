@@ -1,7 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 public class GameUIController : MonoBehaviour
 {
@@ -10,12 +13,31 @@ public class GameUIController : MonoBehaviour
     [Header("Score")]
     [SerializeField] private TextMeshProUGUI ecoText;
 
+    [Header("Level name")] [SerializeField]
+    private TextMeshProUGUI levelText;
+
+    [SerializeField] private Button tutorialButton;
 
     private void OnEnable()
     {
         EventManager.Game.Level.OnTurnChanged += UpdateTurn;
         EventManager.Game.Level.OnManaChanged += OnManaChanged;
         EventManager.Game.Level.OnScoreChanged += OnScoreChanged;
+        EventManager.Game.Level.OnLevelInitialized += OnLevelInitialized;
+        
+    }
+
+    private void Start()
+    {
+        tutorialButton.onClick.AddListener(() =>
+        {
+            EventManager.Game.UI.OnTutorialScreenChange?.Invoke(true);
+        });
+    }
+
+    private void OnLevelInitialized(EventManager.GameEvents.LevelEvents.LevelInitializedArgs arg0)
+    {
+        levelText.text = arg0.levelName;
     }
 
     private void OnScoreChanged(EventManager.GameEvents.LevelEvents.ScoreChangedArgs args)
@@ -33,5 +55,10 @@ public class GameUIController : MonoBehaviour
     private void UpdateTurn(EventManager.GameEvents.LevelEvents.TurnChangedArgs args)
     {
         turnsText.SetText("Turn: \n" + args.TurnNumber.ToString() + "/3");
+    }
+
+    public void EndTurn()
+    {
+        GameManager.Instance.EndTurn();
     }
 }

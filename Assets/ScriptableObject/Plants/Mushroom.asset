@@ -32,7 +32,7 @@ MonoBehaviour:
   cardFunction:
     executionType: 0
     scriptType:
-      _classRef: ComboBushCardFunction, ReturnOfLifeAssembly
+      _classRef: ComboBushCardFunction, Assembly-CSharp
   cardEditor:
     executionType: 0
     scriptType:
@@ -40,7 +40,8 @@ MonoBehaviour:
   cardAccessCheck:
     executionType: 0
     scriptType:
-      _classRef: ComboBushAccessCheck, ReturnOfLifeAssembly
+      _classRef: ComboBushAccessCheck, Assembly-CSharp
+    OverrideNeighboring: 0
   cardPassiveCall:
     executionType: 0
     scriptType:

@@ -5,7 +5,6 @@ using CodeMonkey.Utils;
 using System;
 using System.Linq;
 using System.Net;
-using log4net.Core;
 
 public class Grid
 {

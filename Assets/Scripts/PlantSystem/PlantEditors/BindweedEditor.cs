@@ -1,4 +1,3 @@
-using Ionic.Zlib;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -19,11 +18,11 @@ public class BindweedEditor : CardEditorBase
         {
             return false;
         }
-         
-        //if Distance is greater than 3 return
-        //If tile is accessible
-        callerArgs.playedTile = callerArgs.selectedGridTile;
-        if (!selectedGridTile.IsAccessible(callerArgs)) return false;
+
+        //Check if the selected field can be played with the instance (and copy the caller args because otherwise it writes into the variable)
+        CallerArgs selectedFieldCallerArgs = callerArgs.ReturnCopy();
+        selectedFieldCallerArgs.playedTile = selectedGridTile;
+        if (!selectedGridTile.IsAccessible(selectedFieldCallerArgs)) return false;
         return true;
     }
 

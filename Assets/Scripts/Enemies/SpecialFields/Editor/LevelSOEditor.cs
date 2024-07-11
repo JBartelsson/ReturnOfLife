@@ -28,7 +28,7 @@ public class LevelSOEditor : Editor
 
     }
 
-    public static void GenerateGridEditor(LevelLayoutSO.Field[,] grid, SpecialFieldType selectedType,
+    public static void GenerateGridEditor(Pattern.Field[,] grid, SpecialFieldType selectedType,
         Dictionary<SpecialFieldType, Color> paletteDictionary)
     {
         

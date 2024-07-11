@@ -19,6 +19,7 @@ public class Pattern
         public SpecialFieldType specialFieldType = SpecialFieldType.NORMAL_FIELD;
         public Index index;
     }
+
     [SerializeField] private Field[,] data;
     [SerializeField] private string dataString = "";
 
@@ -40,7 +41,7 @@ public class Pattern
         //Get Last character of hex conversion to delete leading zeros
         return fieldString[^1];
     }
-    
+
     public void SaveDataString()
     {
         string localDataString = "";
@@ -48,7 +49,6 @@ public class Pattern
         {
             for (int x = 0; x < data.GetLength(1); x++)
             {
-                
                 localDataString += Pattern.ConvertFieldToSingleString(data[x, y].specialFieldType).ToString();
             }
         }
@@ -117,7 +117,7 @@ public class Pattern
 
         data[x, y].specialFieldType = newType;
     }
-    
+
     public string DataString
     {
         get => dataString;
@@ -160,12 +160,13 @@ public class Pattern
             return $"({X}, {Y})";
         }
     }
+
     // for you to get stuff out of the grid to use in your game
     public Field GetCellState(int x, int y)
     {
         return data[x, y];
     }
-    
+
 
     public void LoadDataString()
     {
@@ -175,12 +176,39 @@ public class Pattern
         // if (oldGridSize != gridSize) LevelSOEditor.ChangeGridSize(this, true);
         foreach (char c in dataString)
         {
-            data[localX, localY] = new Field(new Index(localX, localY), (SpecialFieldType)Convert.ToInt32(c.ToString(), 16));
+            data[localX, localY] =
+                new Field(new Index(localX, localY), (SpecialFieldType)Convert.ToInt32(c.ToString(), 16));
             localX++;
             if (localX > gridSize - 1)
             {
                 localX = 0;
                 localY++;
+            }
+        }
+    }
+
+    public void LoadGrid(bool reset = false)
+    {
+        if (gridSize <= 0) return;
+        if (Data == null || Data.Length != (gridSize * gridSize) || reset)
+        {
+            Data = new Field[gridSize, gridSize];
+            for (int x = 0; x < gridSize; x++)
+            {
+                for (int y = 0; y < gridSize; y++)
+                {
+                    Data[x, y] =
+                        new Field(new Index(x, y));
+                }
+            }
+
+            if (!reset)
+            {
+                LoadDataString();
+            }
+            else
+            {
+                SaveDataString();
             }
         }
     }

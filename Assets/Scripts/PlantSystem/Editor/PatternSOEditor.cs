@@ -41,7 +41,7 @@ public class PatternSOEditor : Editor
         base.OnInspectorGUI();
     }
 
-    public static void GenerateGridEditor(LevelLayoutSO.Field[,] grid, SpecialFieldType selectedType,
+    public static void GenerateGridEditor(Pattern.Field[,] grid, SpecialFieldType selectedType,
         Dictionary<SpecialFieldType, Color> paletteDictionary)
     {
         

@@ -6030,6 +6030,8 @@ MonoBehaviour:
   - FieldType: 11
     Material: {fileID: 2100000, guid: bbd481e4ce7cd51418bf45589bf53baa, type: 2}
   redCrossSpriteRenderer: {fileID: 4949121981697543419}
+  cantPlaceSprite: {fileID: 21300000, guid: 92e4d54be16c2ad4fb3218275c733596, type: 3}
+  canPlaceSprite: {fileID: 21300000, guid: 26eaf5d2403b25446b3be180a44bf233, type: 3}
   previewMaterial: {fileID: 2100000, guid: 8b8d19f09f2b5b24fb970ce5175bc067, type: 2}
   previewSpriteRenderer: {fileID: 7725089348602594353}
   plantFertilizedMaterial: {fileID: -876546973899608171, guid: ba1e87f12de7514489e255d5136721a6, type: 3}

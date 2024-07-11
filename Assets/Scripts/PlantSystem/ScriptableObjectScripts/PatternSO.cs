@@ -61,6 +61,8 @@ public class PatternSO : ScriptableObject
         return isInPattern;
     }
 
-    
-  
+    private void Awake()
+    {
+        pattern.LoadGrid();
+    }
 }

@@ -25,6 +25,18 @@ public class CallerArgs
         needNeighbor = newNeedNeighbor;
         callerType = newCallerType;
     }
+
+    public CallerArgs ReturnCopy()
+    {
+        return new CallerArgs
+        {
+            CallingCardInstance = this.CallingCardInstance,
+            playedTile = this.playedTile,
+            needNeighbor = this.needNeighbor,
+            callerType = this.callerType,
+            gameManager = this.gameManager
+        };
+    }
 } 
 public enum CALLER_TYPE
 {

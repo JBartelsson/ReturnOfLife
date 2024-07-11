@@ -32,7 +32,7 @@ MonoBehaviour:
   cardFunction:
     executionType: 0
     scriptType:
-      _classRef: BasicFertilizerFunction, ReturnOfLifeAssembly
+      _classRef: BasicFertilizerFunction, Assembly-CSharp
   cardEditor:
     executionType: 3
     scriptType:
@@ -41,6 +41,7 @@ MonoBehaviour:
     executionType: 3
     scriptType:
       _classRef: 
+    OverrideNeighboring: 0
   cardPassiveCall:
     executionType: 0
     scriptType:

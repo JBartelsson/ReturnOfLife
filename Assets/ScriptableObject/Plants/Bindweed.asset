@@ -32,15 +32,15 @@ MonoBehaviour:
   cardFunction:
     executionType: 2
     scriptType:
-      _classRef: SinglePlacementFunction, ReturnOfLifeAssembly
+      _classRef: SinglePlacementFunction, Assembly-CSharp
   cardEditor:
     executionType: 0
     scriptType:
-      _classRef: BindweedEditor, ReturnOfLifeAssembly
+      _classRef: BindweedEditor, Assembly-CSharp
   cardAccessCheck:
     executionType: 3
     scriptType:
-      _classRef: NoOtherCardsPlacable, ReturnOfLifeAssembly
+      _classRef: NoOtherCardsPlacable, Assembly-CSharp
     OverrideNeighboring: 0
   cardPassiveCall:
     executionType: 3
