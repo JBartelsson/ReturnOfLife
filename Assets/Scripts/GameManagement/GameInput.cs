@@ -43,12 +43,12 @@ public class GameInput : MonoBehaviour
     }
     private void Cancel_performed(InputAction.CallbackContext obj)
     {
-        EventManager.Game.Input.OnCancel();
+        EventManager.Game.Input.OnCancel?.Invoke();
     }
 
     private void Interact_Performed(InputAction.CallbackContext obj)
     {
-        EventManager.Game.Input.OnInteract();
+        EventManager.Game.Input.OnInteract?.Invoke();
 
     }
 

@@ -8,6 +8,7 @@ public class CardsUIController : MonoBehaviour
 {
     [SerializeField] private GameObject cardPrefab;
     [SerializeField] private Transform cardsParent;
+    [SerializeField] private Transform hoveredCardsTransform;
     private List<CardUI> currentCards = new();
     private int activePlantIndex = -1;
 
@@ -157,6 +158,7 @@ public class CardsUIController : MonoBehaviour
         {
             if (i < arg0.ChangedDeck.HandCards.Count)
             {
+                Debug.Log($"Setting Instance of {i}");
                 currentCards[i].SetCardUI(arg0.ChangedDeck.HandCards[i]);
             }
             else
@@ -187,6 +189,7 @@ public class CardsUIController : MonoBehaviour
 
         currentGridTile = null;
         currentCards[cardIndex].SetHoverState(true);
+
         EventManager.Game.UI.OnPlantHoverCanceled?.Invoke();
        
     }

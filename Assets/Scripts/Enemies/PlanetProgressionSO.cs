@@ -27,13 +27,19 @@ public class PlanetProgressionSO : ScriptableObject
 
     public List<StageEnemies> Progression => progression;
 
-    public LevelSO GetRandomEnemy(Stage stage)
+    public LevelSO GetRandomEnemy(int index)
     {
+        if (index < 0 || index >= progression.Count) return null;
         List<LevelSO> enemiesList =
-            progression.FirstOrDefault((stageEnemies) => stageEnemies.Stage == stage)?.AllowedEnemies;
+            progression[index].AllowedEnemies;
         //Return random enemy of List
         if (enemiesList != null) return enemiesList[Random.Range(0, enemiesList.Count)];
         //default case
         return null;
+    }
+
+    public bool IsBoss(int index)
+    {
+        return index == progression.Count - 1;
     }
 }

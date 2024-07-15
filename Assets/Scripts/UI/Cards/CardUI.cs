@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -10,7 +11,7 @@ using UnityEngine.Experimental.GlobalIllumination;
 using UnityEngine.Serialization;
 using static CardData;
 
-public class CardUI : MonoBehaviour, IPointerClickHandler
+public class CardUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
     #region Fields and Properties
 
@@ -43,8 +44,9 @@ public class CardUI : MonoBehaviour, IPointerClickHandler
     [Header("Points")] [SerializeField] private TextMeshProUGUI _pointsText;
     [SerializeField] private GameObject _pointsSymbol;
 
-    [Header("Card Colors")] 
-    [SerializeField] private Color _plantColor;
+    [Header("Card Colors")] [SerializeField]
+    private Color _plantColor;
+
     [SerializeField] private Color _wisdomColor;
 
     [Header("Hidden Properties ")] //references properties of the cards, that arent shown directly on the card, but in mechanics
@@ -71,6 +73,13 @@ public class CardUI : MonoBehaviour, IPointerClickHandler
     private Image _backgroundSprite;
 
     [SerializeField] private Material hoverMaterial;
+
+    [Header("Card Mouse Hover")] [SerializeField]
+    private Transform CardMouseHoverTransform;
+
+    [SerializeField] private Transform cardParent;
+
+    private Vector3 originalPosition;
     private readonly string EFFECTTYPE_PLANT = "Plant";
     private readonly string EFFECTTYPE_WISDOM = "Wisdom";
 
@@ -78,14 +87,45 @@ public class CardUI : MonoBehaviour, IPointerClickHandler
     private bool canPlayCard = true;
     private bool cardSelected = false;
 
+    private Tween cardUpTween;
+
     #endregion
 
     #region Methods
+
+    private void Start()
+    {
+        Invoke(nameof(SetPosition), .01f);
+    }
+
+    private void SetPosition()
+    {
+        Debug.Log(cardParent.position);
+        originalPosition = cardParent.localPosition;
+    }
 
     private void OnEnable()
     {
         EventManager.Game.Level.OnManaChanged += OnManaChanged;
         EventManager.Game.Level.OnWisdomChanged += OnWisdomChanged;
+        EventManager.Game.Level.OnUpdateCards += OnUpdateCards;
+        EventManager.Game.Level.OnDrawCards += OnDrawCards;
+    }
+
+    private void OnDrawCards(EventManager.GameEvents.DeckChangedArgs arg0)
+    {
+        ResetOriginalPosition();
+    }
+
+    private void OnUpdateCards(EventManager.GameEvents.DeckChangedArgs arg0)
+    {
+        ResetOriginalPosition();
+    }
+
+    private void ResetOriginalPosition()
+    {
+        // OnPointerExit(null);
+        
     }
 
     private void OnDisable()
@@ -124,7 +164,9 @@ public class CardUI : MonoBehaviour, IPointerClickHandler
 
     public void SetActiveState(bool state)
     {
+        Debug.Log($"Changed Card Click enabled to {state}");
         cardClickEnabled = state;
+        // OnPointerExit(null);
     }
 
     public void SetCardUI(CardInstance cardInstance, bool upgradePreview = false)
@@ -141,9 +183,13 @@ public class CardUI : MonoBehaviour, IPointerClickHandler
             SetCardImage();
             SetBackground();
             OnManaChanged(new EventManager.GameEvents.LevelEvents.ManaChangedArgs());
+            SetActiveState(true);
+
         }
         else
         {
+            SetActiveState(false);
+            
             ToggleVisibility(false);
         }
     }
@@ -293,6 +339,7 @@ public class CardUI : MonoBehaviour, IPointerClickHandler
 
     public void SetHoverState(bool state = true)
     {
+        cardSelected = state;
         if (state)
         {
             _backgroundSprite.material = hoverMaterial;
@@ -300,8 +347,19 @@ public class CardUI : MonoBehaviour, IPointerClickHandler
         else
         {
             _backgroundSprite.material = null;
+            OnPointerExit(null);
         }
 
-        cardSelected = state;
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        cardUpTween = cardParent.DOLocalMove(CardMouseHoverTransform.localPosition, .3f);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if (cardSelected) return;
+        cardParent.DOLocalMove(originalPosition, .3f);
     }
 }

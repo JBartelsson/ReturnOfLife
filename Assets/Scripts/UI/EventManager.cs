@@ -19,6 +19,8 @@ public static class EventManager
         Game.Level.OnLevelInitialized = delegate { };
         Game.Level.OnPlantSacrificed = delegate { };
         Game.Level.OnWisdomChanged = delegate { };
+        Game.Level.OnPlanetProgressionWon = delegate {};
+
         
         Game.UI.OnEditorNeeded = delegate {};
         Game.UI.OnHoverForEditor = delegate {};
@@ -106,6 +108,7 @@ public static class EventManager
             public UnityAction<PlantSacrificedArgs> OnPlantSacrificed;
             public UnityAction<WisdomChangedArgs> OnWisdomChanged;
             public UnityAction<LevelInitializedArgs> OnLevelInitialized;
+            public UnityAction OnPlanetProgressionWon;
 
         
             public class LevelEndedArgs : Args

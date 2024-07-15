@@ -81,7 +81,7 @@ public class GameManager : MonoBehaviour
 
     // Progression Related
     private LevelSO currentLevel;
-    private PlanetProgressionSO.Stage currentStage = PlanetProgressionSO.Stage.STAGE1;
+    private int currentStage = 0;
 
     private bool editorBlocked = false;
 
@@ -488,14 +488,14 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
-        currentStage = PlanetProgressionSO.Stage.STAGE1;
+        currentStage = 0;
         SceneLoader.Reload();
     }
 
     public void NextLevel()
     {
         DOTween.Clear(true);
-        if (currentStage == PlanetProgressionSO.Stage.BOSS)
+        if (planetProgression.IsBoss(currentStage))
         {
             WinGame();
             return;
@@ -507,7 +507,7 @@ public class GameManager : MonoBehaviour
 
     private void WinGame()
     {
-        Debug.Log($"GAME WON!");
+        EventManager.Game.Level.OnPlanetProgressionWon?.Invoke();
     }
 
     public CardInstance GetTemporaryCardInstance(int cardIndex)

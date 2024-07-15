@@ -16,15 +16,3 @@ MonoBehaviour:
   - stage: 0
     allowedEnemies:
     - {fileID: 11400000, guid: 2518695e5a5e8254fa47a9314fdb0267, type: 2}
-  - stage: 1
-    allowedEnemies:
-    - {fileID: 11400000, guid: d0c9d55371dce924c8d0de3c3e4a9e20, type: 2}
-  - stage: 2
-    allowedEnemies:
-    - {fileID: 11400000, guid: 456380c7661fb924e958d02302e0117e, type: 2}
-  - stage: 3
-    allowedEnemies:
-    - {fileID: 11400000, guid: 0ef1098056a8d4b45a3e3ece4cd76c93, type: 2}
-  - stage: 4
-    allowedEnemies:
-    - {fileID: 0}
