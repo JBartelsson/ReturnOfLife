@@ -23,6 +23,11 @@ public class CardCollection
         }
     }
 
+    public void ClearCards()
+    {
+        CardsInCollection = new();
+    }
+
     // Multiple Copies of a Card are possible, needs another if-Statement if it should be singles
     public void AddCardToCollection(CardInstance card)
     {
