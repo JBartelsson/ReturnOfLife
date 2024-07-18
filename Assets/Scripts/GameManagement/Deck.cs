@@ -225,7 +225,7 @@ public class Deck
 
     private void AddPermanentCardToDeck(CardInstance card, InsertPosition pos)
     {
-        AddTemporaryCardToDeck(card, InsertPosition pos);
+        AddTemporaryCardToDeck(card, pos);
         _playerDeck.AddCardToCollection(card);
     }
 
@@ -241,7 +241,7 @@ public class Deck
     }
     private void RemovePermanentCardFromDeck(CardInstance card)
     {
-        _deckPile.RemoveTemporaryCardFromDeck(card);
+        RemoveTemporaryCardFromDeck(card);
         _playerDeck.RemoveCardFromCollection(card);
     }
 
