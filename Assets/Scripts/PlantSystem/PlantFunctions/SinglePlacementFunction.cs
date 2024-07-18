@@ -13,4 +13,8 @@ public class SinglePlacementFunction : CardFunctionBase
 
     }
 
+    public override void Clear(CallerArgs callerArgs)
+    {
+        
+    }
 }

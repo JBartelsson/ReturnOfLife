@@ -20,7 +20,6 @@ public abstract class CardFunctionBase : PlantScriptBase
         }
 
         //Only give points for planting a plant, when it is the first on its tile
-        Debug.Log(callerArgs);
         if (callerArgs.playedTile == null) return;
         if (cardInstance.CardData.RuntimePoints != 0 || cardInstance.CardData.OverridePointFunction)
             RewardPoints(callerArgs, cardInstance.CardData.RuntimePoints);
@@ -49,4 +48,6 @@ public abstract class CardFunctionBase : PlantScriptBase
             }
         }
     }
+
+    public abstract void Clear(CallerArgs callerArgs);
 }

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 using static CardData;
 
 public class GridTile
@@ -18,7 +19,13 @@ public class GridTile
     public SpecialFieldType FieldType => fieldType;
 
 
-    public event EventHandler<CardInstance> OnContentUpdated;
+    public event UnityAction<OnContentUpdatedArgs> OnContentUpdated;
+    
+    public class OnContentUpdatedArgs : EventManager.GameEvents.Args
+    {
+        public GridTile GridTile;
+        public CardInstance CardInstance;
+    }
 
     public GridTile(Grid grid, int x, int y)
     {
@@ -96,15 +103,20 @@ public class GridTile
             });
         }
         objects.Add(callerArgs.CallingCardInstance);
-        OnContentUpdated?.Invoke(this, callerArgs.CallingCardInstance);
-        grid.UpdateGridContent(x, y, this);
+        OnContentUpdated?.Invoke(new OnContentUpdatedArgs()
+        {
+            GridTile = this,
+            CardInstance = callerArgs.CallingCardInstance
+        });
+        grid.ChangeGridContent(x, y, this);
     }
 
     public void KillObject(CallerArgs callerArgs)
     {
         if (!ContainsAnyPlant()) return;
         CardInstance.KillLifeform(callerArgs);
-        grid.UpdateGridContent(x, y, this);
+        ClearSubscribers();
+        grid.ChangeGridContent(x, y, this);
 
     }
     public void TryReviveLifeform(CallerArgs callerArgs)
@@ -155,7 +167,7 @@ public class GridTile
                 throw new ArgumentOutOfRangeException(nameof(newFieldType), newFieldType, null);
         }
         if (invokeEvent)
-        grid.UpdateGridContent(x,y, this);
+        grid.ChangeGridContent(x,y, this);
     }
     
     
@@ -265,7 +277,7 @@ public class GridTile
         //empty the event
         ClearSubscribers();
         fieldModifiers = new();
-        grid.UpdateGridContent(x,y, this);
+        grid.ChangeGridContent(x,y, this);
     }
 
     public void ClearSubscribers()

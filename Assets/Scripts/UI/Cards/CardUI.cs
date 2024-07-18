@@ -11,162 +11,127 @@ using UnityEngine.Experimental.GlobalIllumination;
 using UnityEngine.Serialization;
 using static CardData;
 
-public class CardUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
+public class CardUI : MonoBehaviour
 {
     #region Fields and Properties
 
-    private CardInstance _cardInstance;
-    private int _cardIndex = 0;
-    public CardInstance CardInstance => _cardInstance;
+    protected CardInstance _cardInstance;
+    protected int _cardIndex = 0;
 
-    public int CardIndex
-    {
-        get => _cardIndex;
-        set => _cardIndex = value;
-    }
+    
 
     [Header("Prefab Elements")] //references objects in the card prefab
     [SerializeField]
     private Image _cardImage;
 
-    [SerializeField] private Image _costDrop;
-    [SerializeField] private Sprite _dropSpriteBlue;
-    [SerializeField] private Sprite _dropSpriteRed;
-    [SerializeField] private Image _cardRarity;
-    [SerializeField] private Image _elementIcon;
-    [SerializeField] private Image _typeIcon;
+    [SerializeField] protected Image _costDrop;
+    [SerializeField] protected Sprite _dropSpriteBlue;
 
-    [SerializeField] private TextMeshProUGUI _playCost;
-    [SerializeField] private TextMeshProUGUI _cardName;
-    [SerializeField] private TextMeshProUGUI _cardType;
-    [SerializeField] private TextMeshProUGUI _cardText;
+  
 
-    [Header("Points")] [SerializeField] private TextMeshProUGUI _pointsText;
-    [SerializeField] private GameObject _pointsSymbol;
+    [SerializeField] protected Sprite _dropSpriteRed;
+    [SerializeField] protected Image _cardRarity;
+    [SerializeField] protected Image _elementIcon;
+    [SerializeField] protected Image _typeIcon;
+
+    [SerializeField] protected TextMeshProUGUI _playCost;
+    [SerializeField] protected TextMeshProUGUI _cardName;
+    [SerializeField] protected TextMeshProUGUI _cardType;
+    [SerializeField] protected TextMeshProUGUI _cardText;
+
+    [Header("Points")] [SerializeField] protected TextMeshProUGUI _pointsText;
+    [SerializeField] protected GameObject _pointsSymbol;
 
     [Header("Card Colors")] [SerializeField]
-    private Color _plantColor;
+    protected Color _plantColor;
 
-    [SerializeField] private Color _wisdomColor;
+    [SerializeField] protected Color _wisdomColor;
 
     [Header("Hidden Properties ")] //references properties of the cards, that arent shown directly on the card, but in mechanics
     [SerializeField]
-    private int _turnDelay;
+    protected int _turnDelay;
 
     [Header("Sprite Assets")] //references to the art folder in assets
     [SerializeField]
-    private Sprite _basicElementIcon;
+    protected Sprite _basicElementIcon;
 
-    [SerializeField] private Sprite _snowElementIcon;
-    [SerializeField] private Sprite _sunElementIcon;
-    [SerializeField] private Sprite _windElementIcon;
-    [SerializeField] private Sprite _waterElementIcon;
+    [SerializeField] protected Sprite _snowElementIcon;
+    [SerializeField] protected Sprite _sunElementIcon;
+    [SerializeField] protected Sprite _windElementIcon;
+    [SerializeField] protected Sprite _waterElementIcon;
 
-    [SerializeField] private Sprite _commonRarityIcon;
-    [SerializeField] private Sprite _rareRarityIcon;
-    [SerializeField] private Sprite _epicRarityIcon;
+    [SerializeField] protected Sprite _commonRarityIcon;
+    [SerializeField] protected Sprite _rareRarityIcon;
+    [SerializeField] protected Sprite _epicRarityIcon;
 
-    [SerializeField] private Sprite _plantTypeIcon;
-    [SerializeField] private Sprite _wisdomTypeIcon;
+    
+
+    [SerializeField] protected Sprite _plantTypeIcon;
+    [SerializeField] protected Sprite _wisdomTypeIcon;
 
     [FormerlySerializedAs("backgroundSprite")] [Header("Hover Effect")] [SerializeField]
-    private Image _backgroundSprite;
+    protected Image _backgroundSprite;
 
-    [SerializeField] private Material hoverMaterial;
+    
 
-    [Header("Card Mouse Hover")] [SerializeField]
-    private Transform CardMouseHoverTransform;
+    [SerializeField] protected Material hoverMaterial;
 
-    [SerializeField] private Transform cardParent;
+    
 
-    private Vector3 originalPosition;
+    
+
+    [SerializeField] protected Transform cardParent;
+
     private readonly string EFFECTTYPE_PLANT = "Plant";
     private readonly string EFFECTTYPE_WISDOM = "Wisdom";
+    
+    public CardInstance CardInstance => _cardInstance;
 
-    private bool cardClickEnabled = true;
-    private bool canPlayCard = true;
-    private bool cardSelected = false;
+    public Sprite DropSpriteBlue
+    {
+        get => _dropSpriteBlue;
+        set => _dropSpriteBlue = value;
+    }
 
-    private Tween cardUpTween;
+    public Sprite DropSpriteRed
+    {
+        get => _dropSpriteRed;
+        set => _dropSpriteRed = value;
+    }
+    public int CardIndex
+    {
+        get => _cardIndex;
+        set => _cardIndex = value;
+    }
+    public Material HoverMaterial
+    {
+        get => hoverMaterial;
+        set => hoverMaterial = value;
+    }
+    public Image CostDrop
+    {
+        get => _costDrop;
+        set => _costDrop = value;
+    }
+
+    public Image BackgroundSprite
+    {
+        get => _backgroundSprite;
+        set => _backgroundSprite = value;
+    }
+
+    public Transform CardParent
+    {
+        get => cardParent;
+        set => cardParent = value;
+    }
+   
 
     #endregion
 
     #region Methods
 
-    private void Start()
-    {
-        Invoke(nameof(SetPosition), .01f);
-    }
-
-    private void SetPosition()
-    {
-        Debug.Log(cardParent.position);
-        originalPosition = cardParent.localPosition;
-    }
-
-    private void OnEnable()
-    {
-        EventManager.Game.Level.OnManaChanged += OnManaChanged;
-        EventManager.Game.Level.OnWisdomChanged += OnWisdomChanged;
-        EventManager.Game.Level.OnUpdateCards += OnUpdateCards;
-        EventManager.Game.Level.OnDrawCards += OnDrawCards;
-    }
-
-    private void OnDrawCards(EventManager.GameEvents.DeckChangedArgs arg0)
-    {
-        ResetOriginalPosition();
-    }
-
-    private void OnUpdateCards(EventManager.GameEvents.DeckChangedArgs arg0)
-    {
-        ResetOriginalPosition();
-    }
-
-    private void ResetOriginalPosition()
-    {
-        // OnPointerExit(null);
-        
-    }
-
-    private void OnDisable()
-    {
-        EventManager.Game.Level.OnManaChanged -= OnManaChanged;
-        EventManager.Game.Level.OnWisdomChanged -= OnWisdomChanged;
-    }
-
-    private void OnWisdomChanged(EventManager.GameEvents.LevelEvents.WisdomChangedArgs arg0)
-    {
-        if (arg0.currentWisdoms.Any((wisdom) => wisdom.CardData.WisdomType == WisdomType.Basic))
-        {
-            SetCardUI(this._cardInstance, true);
-        }
-        else
-        {
-            SetCardUI(this._cardInstance, false);
-        }
-    }
-
-    private void OnManaChanged(EventManager.GameEvents.LevelEvents.ManaChangedArgs arg0)
-    {
-        if (_cardInstance == null) return;
-        if (!GameManager.Instance.EnoughMana(_cardInstance.GetCardStats().PlayCost))
-        {
-            _costDrop.sprite = _dropSpriteRed;
-            canPlayCard = false;
-        }
-        else
-        {
-            canPlayCard = true;
-            _costDrop.sprite = _dropSpriteBlue;
-        }
-    }
-
-
-    public void SetActiveState(bool state)
-    {
-        cardClickEnabled = state;
-        // OnPointerExit(null);
-    }
+    
 
     public void SetCardUI(CardInstance cardInstance, bool upgradePreview = false)
     {
@@ -181,14 +146,9 @@ public class CardUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler,
             //SetTypeIcon();
             SetCardImage();
             SetBackground();
-            OnManaChanged(new EventManager.GameEvents.LevelEvents.ManaChangedArgs());
-            SetActiveState(true);
-
         }
         else
         {
-            SetActiveState(false);
-            
             ToggleVisibility(false);
         }
     }
@@ -290,24 +250,24 @@ public class CardUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler,
 
     private void SetElementIcon()
     {
-        switch (_cardInstance.CardData.Element)
-        {
-            case CardData.CardElement.Basic:
-                _elementIcon.sprite = _basicElementIcon;
-                break;
-            case CardData.CardElement.Snow:
-                _elementIcon.sprite = _snowElementIcon;
-                break;
-            case CardData.CardElement.Sun:
-                _elementIcon.sprite = _sunElementIcon;
-                break;
-            case CardData.CardElement.Wind:
-                _elementIcon.sprite = _windElementIcon;
-                break;
-            case CardData.CardElement.Water:
-                _elementIcon.sprite = _waterElementIcon;
-                break;
-        }
+        // switch (_cardInstance.CardData.Element)
+        // {
+        //     case CardData.CardElement.Basic:
+        //         _elementIcon.sprite = _basicElementIcon;
+        //         break;
+        //     case CardData.CardElement.Snow:
+        //         _elementIcon.sprite = _snowElementIcon;
+        //         break;
+        //     case CardData.CardElement.Sun:
+        //         _elementIcon.sprite = _sunElementIcon;
+        //         break;
+        //     case CardData.CardElement.Wind:
+        //         _elementIcon.sprite = _windElementIcon;
+        //         break;
+        //     case CardData.CardElement.Water:
+        //         _elementIcon.sprite = _waterElementIcon;
+        //         break;
+        // }
     }
 
     private void SetCardImage()
@@ -317,48 +277,5 @@ public class CardUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler,
 
     #endregion
 
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        Debug.Log($"CARDCLICKENABLED IS {cardClickEnabled}");
-        if (!cardClickEnabled) return;
-        if (!canPlayCard) return;
-        //IF not left click
-        if (eventData.pointerId != -1) return;
-        if (!cardSelected)
-        {
-            cardSelected = true;
-            CardsUIController.Instance.SelectCard(_cardIndex);
-        }
-        else
-        {
-            cardSelected = false;
-            CardsUIController.Instance.DeselectCard(_cardIndex);
-        }
-    }
-
-    public void SetHoverState(bool state = true)
-    {
-        cardSelected = state;
-        if (state)
-        {
-            _backgroundSprite.material = hoverMaterial;
-        }
-        else
-        {
-            _backgroundSprite.material = null;
-            OnPointerExit(null);
-        }
-
-    }
-
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        cardUpTween = cardParent.DOLocalMove(CardMouseHoverTransform.localPosition, .3f);
-    }
-
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        if (cardSelected) return;
-        cardParent.DOLocalMove(originalPosition, .3f);
-    }
+   
 }

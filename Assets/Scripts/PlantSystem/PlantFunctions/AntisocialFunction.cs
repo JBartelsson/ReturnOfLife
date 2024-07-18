@@ -37,4 +37,8 @@ public class AntisocialFunction : CardFunctionBase
         }
     }
 
+    public override void Clear(CallerArgs callerArgs)
+    {
+        
+    }
 }

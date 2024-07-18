@@ -10,5 +10,8 @@ public class BasicFertilizerFunction : CardFunctionBase
         // callerArgs.gameManager.AddWisdom(WisdomType.Basic);
     }
 
-   
+    public override void Clear(CallerArgs callerArgs)
+    {
+        
+    }
 }

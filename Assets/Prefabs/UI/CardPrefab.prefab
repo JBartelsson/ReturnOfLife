@@ -426,7 +426,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1433592718613909924}
-  - component: {fileID: 9183633364051301788}
+  - component: {fileID: 7287872757998513968}
   m_Layer: 5
   m_Name: CardPrefab
   m_TagString: Untagged
@@ -455,7 +455,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 180, y: 250}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &9183633364051301788
+--- !u!114 &7287872757998513968
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -464,7 +464,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3368907096960936692}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 067d3a90c282a7346a3771cfc78b5ff3, type: 3}
+  m_Script: {fileID: 11500000, guid: 49e74eee8c170d6479b82fa7a1ac429e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _cardImage: {fileID: 6612825900506483587}
@@ -472,7 +472,7 @@ MonoBehaviour:
   _dropSpriteBlue: {fileID: 21300000, guid: f1e5a063fe2fb97409e1a8538f67475d, type: 3}
   _dropSpriteRed: {fileID: 21300000, guid: 6408533200b8b3d499c1f7bcac888906, type: 3}
   _cardRarity: {fileID: 846844938053952974}
-  _elementIcon: {fileID: 5797897880185730100}
+  _elementIcon: {fileID: 0}
   _typeIcon: {fileID: 0}
   _playCost: {fileID: 1919844937375009681}
   _cardName: {fileID: 3796568494908355340}
@@ -481,22 +481,22 @@ MonoBehaviour:
   _pointsText: {fileID: 7303043841717816450}
   _pointsSymbol: {fileID: 8800368419787942907}
   _plantColor: {r: 1, g: 1, b: 1, a: 1}
-  _wisdomColor: {r: 1, g: 0.98298436, b: 0.5415094, a: 1}
+  _wisdomColor: {r: 1, g: 0.9573629, b: 0.6839622, a: 1}
   _turnDelay: 0
-  _basicElementIcon: {fileID: 21300000, guid: eae7020dc530c104695bd73352c15a3b, type: 3}
-  _snowElementIcon: {fileID: 21300000, guid: 7a9d873da0ef9d9448847f465c48d52a, type: 3}
-  _sunElementIcon: {fileID: 21300000, guid: a0820119acb41cb48b03cbef4a8ece13, type: 3}
-  _windElementIcon: {fileID: 21300000, guid: 1ca9307df0f446847b21ac43bbe44c0a, type: 3}
-  _waterElementIcon: {fileID: 21300000, guid: e013a77dec57649499d37fcb19486b1f, type: 3}
+  _basicElementIcon: {fileID: 0}
+  _snowElementIcon: {fileID: 0}
+  _sunElementIcon: {fileID: 0}
+  _windElementIcon: {fileID: 0}
+  _waterElementIcon: {fileID: 0}
   _commonRarityIcon: {fileID: 0}
   _rareRarityIcon: {fileID: 0}
   _epicRarityIcon: {fileID: 0}
-  _plantTypeIcon: {fileID: 21300000, guid: 4d3385f39c0abb548aca46996435c5b3, type: 3}
-  _wisdomTypeIcon: {fileID: 21300000, guid: b1b7a52a03dc13f42aeaf6acb3bc241a, type: 3}
+  _plantTypeIcon: {fileID: 0}
+  _wisdomTypeIcon: {fileID: 0}
   _backgroundSprite: {fileID: 6626060879351948569}
   hoverMaterial: {fileID: 2100000, guid: d0ccc4d27d1542443840c84533abed40, type: 2}
-  CardMouseHoverTransform: {fileID: 6631609999036702620}
   cardParent: {fileID: 6133112448831711212}
+  CardMouseHoverTransform: {fileID: 6631609999036702620}
 --- !u!1 &3516780636125883384
 GameObject:
   m_ObjectHideFlags: 0

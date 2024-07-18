@@ -149,7 +149,7 @@ public class Grid
         if (x >= 0 && y >= 0 && x <= width && y <= height)
         {
             gridArray[x, y] = value;
-            UpdateGridContent(x, y, gridArray[x, y]);
+            ChangeGridContent(x, y, gridArray[x, y]);
         }
     }
 
@@ -184,7 +184,7 @@ public class Grid
         return GetGridObject(x, y);
     }
 
-    public void UpdateGridContent(int x, int y, GridTile gridObject)
+    public void ChangeGridContent(int x, int y, GridTile gridObject)
     {
         OnGridTileChanged?.Invoke(this, new OnGridChangedEventArgs()
         {
@@ -196,7 +196,7 @@ public class Grid
 
     public void UpdateWholeGrid()
     {
-        ForEachGridTile((gridTile) => { UpdateGridContent(gridTile.X, gridTile.Y, gridTile); });
+        ForEachGridTile((gridTile) => { ChangeGridContent(gridTile.X, gridTile.Y, gridTile); });
     }
 
     private List<SpecialField> FindConnectedFields()

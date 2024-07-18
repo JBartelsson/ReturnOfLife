@@ -9,7 +9,7 @@ public class CardsUIController : MonoBehaviour
     [SerializeField] private GameObject cardPrefab;
     [SerializeField] private Transform cardsParent;
     [SerializeField] private Transform hoveredCardsTransform;
-    private List<CardUI> currentCards = new();
+    private List<CardHandUI> currentCards = new();
     private int activePlantIndex = -1;
 
     private List<int> activeWisdoms = new();
@@ -55,7 +55,7 @@ public class CardsUIController : MonoBehaviour
     {
         SwitchState(State.Editor);
         Debug.Log("EDITOR INITIALIZED");
-        foreach (CardUI cardUI in currentCards)
+        foreach (CardHandUI cardUI in currentCards)
         {
             cardUI.SetActiveState(false);
         }
@@ -115,7 +115,7 @@ public class CardsUIController : MonoBehaviour
         GameManager.Instance.RemoveAllWisdoms();
         activeWisdoms.Clear();
         if (currentCards.Count >= 0)
-        foreach (CardUI cardUI in currentCards)
+        foreach (CardHandUI cardUI in currentCards)
         {
             cardUI.SetHoverState(false);
             cardUI.SetActiveState(true);
@@ -141,7 +141,7 @@ public class CardsUIController : MonoBehaviour
         for (int i = 0; i < handSize - currentCardSize; i++)
         {
             GameObject newCard = Instantiate(cardPrefab, cardsParent);
-            CardUI cardUI = newCard.GetComponent<CardUI>();
+            CardHandUI cardUI = newCard.GetComponent<CardHandUI>();
             cardUI.CardIndex = i;
             currentCards.Add(cardUI);
         }

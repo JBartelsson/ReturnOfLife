@@ -220,6 +220,7 @@ public class CardInstance : ICloneable
 
     public void KillLifeform(CallerArgs callerArgs)
     {
+        cardFunction.Clear(callerArgs);
         cardStatus = CardStatusEnum.Dead;
         CardFunctionBase.RewardPoints(callerArgs, -1 * CardData.RuntimePoints);
     }

@@ -35,7 +35,6 @@ public class PointsRewardText : MonoBehaviour
     {
         if (args.scoreChangedCallerArgs == null) return;
         if (args.scoreChangedCallerArgs.playedTile != gridVisualization.OwnGridTile) return;
-        Debug.Log($"{gridVisualization.OwnGridTile} received a {args.ScoreAdded.EcoPoints} of {args.ScoringOrigin.ToString()}");
         scoreQueue.Add(args);
     }
 
@@ -43,7 +42,6 @@ public class PointsRewardText : MonoBehaviour
     {
         SetUpText(args);
         // animationSequence.Append(scoreText.DOFade(1f, Constants.UI_POINT_SPEED));
-        Debug.Log($"STARTING TWEEEN {gridVisualization.OwnGridTile} with {args.ScoreAdded.EcoPoints} of {args.ScoringOrigin.ToString()}");
         animationSequence = DOTween.Sequence();
         animationSequence.Append(scoreText.DOFade(1f, Constants.UI_POINT_DISAPPEAR_SPEED));
 

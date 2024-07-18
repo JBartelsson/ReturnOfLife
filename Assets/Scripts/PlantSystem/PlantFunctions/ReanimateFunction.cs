@@ -15,4 +15,8 @@ public class ReanimateFunction : CardFunctionBase
         gridTile.AddObject(callerArgs);
     }
 
+    public override void Clear(CallerArgs callerArgs)
+    {
+        
+    }
 }

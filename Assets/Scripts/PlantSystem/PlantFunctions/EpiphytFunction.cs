@@ -17,4 +17,8 @@ public class EpiphytFunction : CardFunctionBase
 
     }
 
+    public override void Clear(CallerArgs callerArgs)
+    {
+        
+    }
 }
