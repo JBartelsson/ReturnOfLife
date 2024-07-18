@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using UnityEngine;
 using static GameManager;
@@ -31,6 +32,15 @@ public class Deck
     public int TurnDrawCount => _turnDrawCount;
 
     public int MaxHandSize => _maxHandSize;
+
+    enum InsertPosition
+    {
+        First,
+        Last,
+        Random,
+        Discard,
+        Hand
+    }
 
     #endregion
 
@@ -88,7 +98,6 @@ public class Deck
          * drawPile.AddRange(deck);
          * SwitchState(GameState.EndTurn);
          */
-        Debug.Log("Johann, mach mal 10");
     }
 
     public void DrawCards(int amount = 1)
@@ -118,7 +127,6 @@ public class Deck
 
             ShuffleDiscardPileIntoDeck();
         }
-
         CardInstance drawCard = _deckPile.First();
         HandCards.Add(drawCard);
         _deckPile.Remove(drawCard);
@@ -188,6 +196,53 @@ public class Deck
         {
             ChangedDeck = this
         });
+    }
+
+    private void AddTemporaryCardToDeck(CardInstance card, InsertPosition pos)
+    {
+        switch(pos)
+        {
+            case InsertPosition.First:
+                _deckPile.Insert(0, card);
+                break;
+            case InsertPosition.Last:
+                _deckPile.Add(card);
+                break;
+            case InsertPosition.Random:
+                _deckPile.Insert(Random.Range(0, _deckPile.Count), card);
+                break;
+            case InsertPosition.Discard:
+                _discardPile.Add(card);
+                break;
+            case InsertPosition.Hand:
+                HandCards.Insert(0,card);
+                break;
+            default:
+                Debug.Log("Fehler im Switch Case zum Einfügen einer Karte ins Deck");
+                break;
+        }        
+    }
+
+    private void AddPermanentCardToDeck(CardInstance card, InsertPosition pos)
+    {
+        AddTemporaryCardToDeck(card, pos);
+        _playerDeck.AddCardToCollection(card);
+    }
+
+    private void RemoveTemporaryCardFromDeck(CardInstance card)
+    {
+        if (_deckPile.Remove(card))
+            return;
+        if (_discardPile.Remove(card))
+            return;
+        if (HandCards.Remove(card))
+            return;
+        Debug.Log("Fehler beim Entfernen von Karten aus dem Deck. Karte wurde nicht gefunden.");
+    }
+    private void RemovePermanentCardFromDeck(CardInstance card)
+    {
+        RemoveTemporaryCardFromDeck(card);
+        _playerDeck.RemoveCardFromCollection(card);
     }
 
     #endregion
