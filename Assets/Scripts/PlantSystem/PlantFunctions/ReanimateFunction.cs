@@ -3,14 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SinglePlacementFunction : CardFunctionBase
+public class ReanimateFunction : CardFunctionBase
 {
     public override void ExecuteCard(CallerArgs callerArgs)
     {
         GridTile gridTile = callerArgs.playedTile;
-        Debug.Log($"GETTIJNG CALLED FOR TILE {callerArgs.playedTile} AND SETTING {callerArgs.CallingCardInstance}");
+        gridTile.ForPattern(callerArgs.CallingCardInstance.GetCardStats().EffectPattern, tile =>
+        {
+            tile.TryReviveLifeform(callerArgs);
+        } );
         gridTile.AddObject(callerArgs);
-
     }
 
 }

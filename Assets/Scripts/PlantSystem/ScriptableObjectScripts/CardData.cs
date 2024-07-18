@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.Serialization;
 
 [CreateAssetMenu(menuName = "ScriptableObjects/Card")]
-public class CardData : ScriptableObject
+public class CardData : ScriptableObject, ICloneable
 {
   
     private void Awake()
@@ -105,6 +105,24 @@ public class CardData : ScriptableObject
             this.executionType = executionType;
         }
     }
+    [Serializable]
+    public class CardCanExecuteCheckCall : Executable
+    {
+        [ClassExtends(typeof(CardCanExecuteCheckBase))]
+        public ClassTypeReference scriptType = typeof(CardCanExecuteCheckBase);
+
+        public ClassTypeReference ScriptType
+        {
+            get => scriptType;
+            set => scriptType = value;
+        }
+
+        public CardCanExecuteCheckCall(Type plantScriptType, EXECUTION_TYPE executionType)
+        {
+            this.scriptType = plantScriptType;
+            this.executionType = EXECUTION_TYPE.NONE;
+        }
+    }
 
     public enum CardRarity
     {
@@ -177,10 +195,13 @@ public class CardData : ScriptableObject
     [FormerlySerializedAs("plantFunction")] [SerializeField] private CardFunctionCall cardFunction;
     [FormerlySerializedAs("plantEditor")] [SerializeField] private CardEditorCall cardEditor = null;
     [FormerlySerializedAs("plantAccessCheck")] [SerializeField] private CardAccessCheckCall cardAccessCheck = null;
+    [SerializeField] private CardCanExecuteCheckCall cardCanExecuteCheck = null;
+
 
     [FormerlySerializedAs("plantPassiveCall")] [FormerlySerializedAs("plantPassive")] [SerializeField]
     private CardPassiveCall cardPassiveCall = null;
 
+    public CardCanExecuteCheckCall CardCanExecuteCheck => cardCanExecuteCheck;
     public bool OverridePointFunction
     {
         get => overridePointFunction;
@@ -237,4 +258,8 @@ public class CardData : ScriptableObject
     public CardEffectType EffectType => effectType;
 
     public WisdomType WisdomType => wisdomType;
+    public object Clone()
+    {
+        return this.Copy();
+    }
 }

@@ -26,7 +26,7 @@ public class CallerArgs
         callerType = newCallerType;
     }
 
-    public CallerArgs ReturnCopy()
+    public CallerArgs ReturnShallowCopy()
     {
         return new CallerArgs
         {

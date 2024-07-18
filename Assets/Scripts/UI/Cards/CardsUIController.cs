@@ -158,7 +158,6 @@ public class CardsUIController : MonoBehaviour
         {
             if (i < arg0.ChangedDeck.HandCards.Count)
             {
-                Debug.Log($"Setting Instance of {i}");
                 currentCards[i].SetCardUI(arg0.ChangedDeck.HandCards[i]);
             }
             else

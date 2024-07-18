@@ -164,7 +164,6 @@ public class CardUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler,
 
     public void SetActiveState(bool state)
     {
-        Debug.Log($"Changed Card Click enabled to {state}");
         cardClickEnabled = state;
         // OnPointerExit(null);
     }

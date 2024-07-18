@@ -7,29 +7,22 @@ using UnityEngine;
 public abstract class CardFunctionBase : PlantScriptBase
 {
     public abstract void ExecuteCard(CallerArgs callerArgs);
-    public abstract bool CanExecute(CallerArgs callerArgs);
 
     public void Execute(CallerArgs callerArgs)
     {
+        Debug.Log($"EXECUTING PLANT FUNCTION");
         ExecuteCard(callerArgs);
         //Reward points if no override is defined
         CardInstance cardInstance = callerArgs.CallingCardInstance;
-        if (!callerArgs.CallingCardInstance.CardData.OverridePointFunction)
+        if (!cardInstance.CardData.OverridePointFunction)
         {
-                if (cardInstance.GetCardStats().Points == 0)
-                {
-                    cardInstance.CardData.RuntimePoints = Constants.STANDARD_PLANT_POINTS;
-                }
-                else
-                {
-                    cardInstance.CardData.RuntimePoints = cardInstance.GetCardStats().Points;
-                }
+            cardInstance.CardData.RuntimePoints = cardInstance.GetCardStats().Points;
         }
 
         //Only give points for planting a plant, when it is the first on its tile
         Debug.Log(callerArgs);
         if (callerArgs.playedTile == null) return;
-        if (callerArgs.playedTile.Content.Count == 1)
+        if (cardInstance.CardData.RuntimePoints != 0 || cardInstance.CardData.OverridePointFunction)
             RewardPoints(callerArgs, cardInstance.CardData.RuntimePoints);
     }
 
@@ -42,7 +35,8 @@ public abstract class CardFunctionBase : PlantScriptBase
             return;
         }
 
-        callerArgs.gameManager.AddPointScore(Mathf.FloorToInt(basePoints), callerArgs, GameManager.SCORING_ORIGIN.LIFEFORM);
+        callerArgs.gameManager.AddPointScore(Mathf.FloorToInt(basePoints), callerArgs,
+            GameManager.SCORING_ORIGIN.LIFEFORM);
         foreach (var modifier in callerArgs.playedTile.FieldModifiers)
         {
             switch (modifier.modifierType)
@@ -54,6 +48,5 @@ public abstract class CardFunctionBase : PlantScriptBase
                     throw new ArgumentOutOfRangeException();
             }
         }
-
     }
 }

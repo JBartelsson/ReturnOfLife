@@ -42,6 +42,10 @@ MonoBehaviour:
     scriptType:
       _classRef: NoOtherCardsPlacable, Assembly-CSharp
     OverrideNeighboring: 0
+  cardCanExecuteCheck:
+    executionType: 0
+    scriptType:
+      _classRef: CheckForNeighboring, Assembly-CSharp
   cardPassiveCall:
     executionType: 3
     scriptType:

@@ -137,7 +137,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 203206115127443112, guid: d0df6d8f51d3cdf4383671d2f6b8176f, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -0.003008198
+      value: -0.012041401
       objectReference: {fileID: 0}
     - target: {fileID: 203206115127443112, guid: d0df6d8f51d3cdf4383671d2f6b8176f, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -1059,7 +1059,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startDeck: {fileID: 11400000, guid: bc616bb0d582d564c82c73b9c79e3880, type: 2}
-  handSize: 5
+  handSize: 7
   standardMana: 3
   standardTurns: 3
   planetProgression: {fileID: 11400000, guid: 9e856ccae3068a14a9adc7db932efa65, type: 2}

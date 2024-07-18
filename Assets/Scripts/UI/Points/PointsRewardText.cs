@@ -78,7 +78,7 @@ public class PointsRewardText : MonoBehaviour
         }
         else if (args.ScoreAdded.EcoPoints < 0)
         {
-            preFix = "-";
+            preFix = "";
             scoreText.color = Constants.NEGATIVE_RED_COLOR;
         }
 

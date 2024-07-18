@@ -5,13 +5,24 @@ using System.Linq;
 using UnityEngine;
 
 [Serializable]
-public class CardInstance
+public class CardInstance : ICloneable
 {
     private CardData cardData;
     private List<WisdomType> fertilizers = new();
     private CardFunctionBase cardFunction;
     private CardEditorBase cardEditor;
     private CardAccessCheckBase cardAccessCheck;
+    private CardCanExecuteCheckBase cardCanExecuteCheckBase;
+    private CardStatusEnum cardStatus = CardStatusEnum.Alive;
+
+   
+
+
+    public enum CardStatusEnum
+    {
+        Alive, Dead, Exhausted
+    }
+    
     private int cardID = 0;
 
     public int CardID => cardID;
@@ -72,6 +83,11 @@ public class CardInstance
         {
             Debug.LogWarning($"{this} tried to create a plantAccessCheck from Default");
         }
+        if (cardData.CardCanExecuteCheck.ScriptType.Type != null)
+        {
+            cardCanExecuteCheckBase = (CardCanExecuteCheckBase)Activator.CreateInstance(cardData.CardCanExecuteCheck.ScriptType);
+            cardCanExecuteCheckBase.ExecutionType = cardData.CardAccessCheck.ExecutionType;
+        }
     }
 
     public override string ToString()
@@ -83,6 +99,11 @@ public class CardInstance
         }
 
         return $"{cardData} played with fertilizers: {fertilizerString}";
+    }
+
+    public object Clone()
+    {
+        return null;
     }
 
 
@@ -121,6 +142,17 @@ public class CardInstance
         get => cardAccessCheck;
         set => cardAccessCheck = value;
     }
+    
+    public CardCanExecuteCheckBase CardCanExecuteCheckBase
+    {
+        get => cardCanExecuteCheckBase;
+        set => cardCanExecuteCheckBase = value;
+    }
+    
+    public CardStatusEnum CardStatus
+    {
+        get => cardStatus;
+    }
 
     public bool IsUpgraded()
     {
@@ -153,23 +185,21 @@ public class CardInstance
     public bool CanExecute(CallerArgs callerArgs)
     {
         GridTile gridTile = callerArgs.playedTile;
-        //If either one of these conditions is true, then the card can be played
-        if (!gridTile.IsAccessible(callerArgs)) return false;
-        bool overrideNeighboring = false;
-        if (gridTile.CardInstance != null)
-        {
-            overrideNeighboring = gridTile.CardInstance.CardData.CardAccessCheck.OverrideNeighboring;
-        }
-        if (callerArgs.needNeighbor && !gridTile.HasNeighboredPlant() &&
-            !overrideNeighboring) return false;
-        
+        bool accessCheck = gridTile.IsAccessible(callerArgs);
+        bool canExecuteCheck = callerArgs.CallingCardInstance.CanExecuteWith(callerArgs);
 
-        return true;
+        return accessCheck || canExecuteCheck;
+
     }
 
-    public bool CanBePlayedWith(CallerArgs callerArgs)
+    public bool CanExecuteWith(CallerArgs callerArgs)
     {
-        return cardAccessCheck.CanBePlayedWith(callerArgs);
+        return cardCanExecuteCheckBase.CanExecuteWith(callerArgs);
+    }
+
+    public bool CanBeBePlantedOn(CallerArgs callerArgs)
+    {
+        return cardAccessCheck.CanBeBePlantedOn(callerArgs);
     }
 
     public bool CheckField(EditorCallerArgs editorCallerArgs)
@@ -187,4 +217,34 @@ public class CardInstance
         if (cardFunction == null) return EXECUTION_TYPE.NONE;
         return cardFunction.ExecutionType;
     }
+
+    public void KillLifeform(CallerArgs callerArgs)
+    {
+        cardStatus = CardStatusEnum.Dead;
+        CardFunctionBase.RewardPoints(callerArgs, -1 * CardData.RuntimePoints);
+    }
+
+    public void TryReviveLifeform(CallerArgs callerArgs)
+    {
+        if (!IsDead()) return;
+        cardStatus = CardStatusEnum.Alive;
+        CallerArgs reviveCallerArgs = new CallerArgs()
+        {
+            CallingCardInstance = this,
+            playedTile = callerArgs.playedTile,
+            gameManager = GameManager.Instance,
+            callerType = CALLER_TYPE.PLACEMENT, 
+        };
+        Debug.Log($"Try to revive lifeform");
+        Debug.Log($"Played Tile: {reviveCallerArgs.playedTile}");
+        Debug.Log($"{CanExecute(reviveCallerArgs)}");
+        Execute(reviveCallerArgs);
+    }
+
+    public bool IsDead()
+    {
+        return cardStatus == CardStatusEnum.Dead;
+    }
+    
+    
 }

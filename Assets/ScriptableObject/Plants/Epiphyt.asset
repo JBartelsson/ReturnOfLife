@@ -10,38 +10,42 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2e8b50ae5f69e2046bcf6f1f5f58bf0c, type: 3}
-  m_Name: Mushroom
+  m_Name: Epiphyt
   m_EditorClassIdentifier: 
-  plantSprite: {fileID: 21300000, guid: 387d69c679337bb49b863d4a457a6a05, type: 3}
-  <CardName>k__BackingField: Mushroom
+  plantSprite: {fileID: 21300000, guid: b49d30543d80df64eb6e4dc4cce43911, type: 3}
+  <CardName>k__BackingField: Epiphyt
   regularCardStats:
     Points: 0
-    EffectPattern: {fileID: 0}
-    CardText: 
+    EffectPattern: {fileID: 11400000, guid: 5286373c1ec30ab40a6e3cfe5fe7e13b, type: 2}
+    CardText: Kills a plant and grants its mana.
     PlayCost: 0
   upgradedCardStats:
     Points: 0
-    EffectPattern: {fileID: 0}
-    CardText: 
+    EffectPattern: {fileID: 11400000, guid: 5286373c1ec30ab40a6e3cfe5fe7e13b, type: 2}
+    CardText: Kills a plant and grants its mana.
     PlayCost: 0
   <Element>k__BackingField: 0
   effectType: 0
   wisdomType: 0
-  <Rarity>k__BackingField: 0
+  <Rarity>k__BackingField: 1
   overridePointFunction: 0
   cardFunction:
     executionType: 0
     scriptType:
-      _classRef: ComboBushCardFunction, Assembly-CSharp
+      _classRef: EpiphytFunction, Assembly-CSharp
   cardEditor:
-    executionType: 0
+    executionType: 3
     scriptType:
       _classRef: 
   cardAccessCheck:
+    executionType: 3
+    scriptType:
+      _classRef: NoOtherCardsPlacable, Assembly-CSharp
+    OverrideNeighboring: 0
+  cardCanExecuteCheck:
     executionType: 0
     scriptType:
-      _classRef: ComboBushAccessCheck, Assembly-CSharp
-    OverrideNeighboring: 0
+      _classRef: CanBeOnlyPlacedOnAlivePlants, Assembly-CSharp
   cardPassiveCall:
     executionType: 0
     scriptType:

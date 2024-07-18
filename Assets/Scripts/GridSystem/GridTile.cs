@@ -88,8 +88,7 @@ public class GridTile
 
     public void AddObject(CallerArgs callerArgs)
     {
-        if (!IsAccessible(callerArgs)) return;
-        if (ContainsPlant())
+        if (ContainsAnyPlant())
         {
             EventManager.Game.Level.OnPlantSacrificed?.Invoke(new EventManager.GameEvents.LevelEvents.PlantSacrificedArgs()
             {
@@ -100,6 +99,25 @@ public class GridTile
         OnContentUpdated?.Invoke(this, callerArgs.CallingCardInstance);
         grid.UpdateGridContent(x, y, this);
     }
+
+    public void KillObject(CallerArgs callerArgs)
+    {
+        if (!ContainsAnyPlant()) return;
+        CardInstance.KillLifeform(callerArgs);
+        grid.UpdateGridContent(x, y, this);
+
+    }
+    public void TryReviveLifeform(CallerArgs callerArgs)
+    {
+        if (CardInstance == null) return;
+        if (!CardInstance.IsDead()) return;
+        CallerArgs reviveCallerArgs = callerArgs.ReturnShallowCopy();
+        reviveCallerArgs.playedTile = this;
+        CardInstance oldCardInstance = CardInstance;
+        objects.Clear();
+        oldCardInstance.TryReviveLifeform(reviveCallerArgs);
+    }
+    
 
     public void ChangeFieldType(SpecialFieldType newFieldType, bool invokeEvent = true)
     {
@@ -173,15 +191,21 @@ public class GridTile
         return Mathf.Sqrt(xDistanceSqr + yDistanceSqr);
     }
 
-    public bool ContainsPlant()
+    public bool ContainsAnyPlant(bool deadIncluded = true)
     {
         if (this.Content.Count != 0)
         {
+            if (CardInstance.IsDead()) return deadIncluded;
             return true;
         }
-
         return false;
     }
+
+    public bool ContainsLivingPlant()
+    {
+        return ContainsAnyPlant(false);
+    }
+    
 
     public void ForEachNeighbor(Action<GridTile> action)
     {
@@ -212,11 +236,12 @@ public class GridTile
         LeftNeighbor?.ForTopAndBottomNeighbor(action);
     }
 
-    public bool IsAccessible(CallerArgs callerArgs)
+    public bool IsAccessible(CallerArgs callerArgs, bool emptyAreAccessible = false)
     {
-        if (objects.Count == 0) return true;
+        //If no plant is there, the Card Can Execute Function must decide if the card is placable
+        if (objects.Count == 0) return emptyAreAccessible;
         //The first plant determines if the field is accessible, this needs to be a bit more structured as it can cause problems later on maybe
-        return objects[0].CanBePlayedWith(callerArgs);
+        return objects[0].CanBeBePlantedOn(callerArgs);
 
     }
 
@@ -225,7 +250,7 @@ public class GridTile
         bool hasNeighboredPlant = false;
         this.ForEachNeighbor((gridTile) =>
         {
-            if (gridTile.ContainsPlant())
+            if (gridTile.ContainsAnyPlant())
             {
                 hasNeighboredPlant = true;
             }
@@ -238,9 +263,15 @@ public class GridTile
         objects.Clear();
         fieldType = SpecialFieldType.NONE;
         //empty the event
-        OnContentUpdated = delegate { };
+        ClearSubscribers();
         fieldModifiers = new();
         grid.UpdateGridContent(x,y, this);
+    }
+
+    public void ClearSubscribers()
+    {
+        OnContentUpdated = delegate { };
+
     }
 
     public void ResetSubscriptions()
@@ -248,7 +279,7 @@ public class GridTile
         OnContentUpdated = delegate { };
     }
 
-    public void ForPattern(PatternSO pattern, Action<GridTile> action)
+    public void ForPattern(PatternSO pattern, Action<GridTile> action, bool includeCenter = false)
     {
         pattern.ForEachNormalFieldRelative((field, relativeX, relativeY) =>
         {
@@ -257,6 +288,6 @@ public class GridTile
             {
                 action(affectedTile);
             }
-        });
+        }, includeCenter);
     }
 }

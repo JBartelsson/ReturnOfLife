@@ -19,7 +19,7 @@ public class SpecialField
             bool fulfilled = true;
             foreach (GridTile gridTile in SpecialFieldGridTiles)
             {
-                if (!gridTile.ContainsPlant())
+                if (!gridTile.ContainsAnyPlant())
                 {
                     fulfilled = false;
                     break;

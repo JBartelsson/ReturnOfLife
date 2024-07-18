@@ -6,7 +6,7 @@ using UnityEngine;
 [Serializable]
 public class NoOtherCardsPlacable : CardAccessCheckBase
 {
-    public override bool CanBePlayedWith(CallerArgs callerArgs)
+    public override bool CanBeBePlantedOn(CallerArgs callerArgs)
     {
         return false;
     }

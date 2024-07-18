@@ -156,7 +156,6 @@ public class GameManager : MonoBehaviour
 
     private void OnPlantSacrificed(EventManager.GameEvents.LevelEvents.PlantSacrificedArgs arg0)
     {
-        editorBlocked = true;
     }
 
     private void Instance_OnGridReady(object sender, EventArgs e)
@@ -382,7 +381,7 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        ChangeMana(standardMana, true);
+        SetMana(standardMana);
         RemoveAllWisdoms();
 
         _deck.DiscardHand();
@@ -452,21 +451,14 @@ public class GameManager : MonoBehaviour
         });
     }
 
-    private bool ChangeMana(int amount, bool overrideMana = false)
+    private bool SetMana(int amount)
     {
-        if (!overrideMana)
+        if (amount < 0)
         {
-            if (currentMana + amount < 0)
-            {
-                return false;
-            }
+            return false;
+        }
 
-            currentMana += amount;
-        }
-        else
-        {
-            currentMana = amount;
-        }
+        currentMana = amount;
 
         EventManager.Game.Level.OnManaChanged?.Invoke(new EventManager.GameEvents.LevelEvents.ManaChangedArgs()
         {
@@ -477,12 +469,13 @@ public class GameManager : MonoBehaviour
 
     public bool AddMana(int amount)
     {
-        return ChangeMana(amount);
+        Debug.Log($"ADD MANA CALLED FOR {amount}");
+        return SetMana(currentMana + amount);
     }
 
     public bool ReduceMana(int amount)
     {
-        return ChangeMana(-amount);
+        return SetMana(currentMana - amount);
     }
 
 

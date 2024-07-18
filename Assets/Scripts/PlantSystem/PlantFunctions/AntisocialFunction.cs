@@ -16,6 +16,7 @@ public class AntisocialFunction : CardFunctionBase
         gridTile.ForPattern(callerArgs.CallingCardInstance.GetCardStats().EffectPattern, tile =>
         {
             if (tile.CardInstance == null) return;
+            if (tile.CardInstance.IsDead()) return;
             Debug.Log(tile.CardInstance.CardData.CardName);
             Debug.Log(callerArgs.CallingCardInstance.CardData.CardName);
 
@@ -36,8 +37,4 @@ public class AntisocialFunction : CardFunctionBase
         }
     }
 
-    public override bool CanExecute(CallerArgs callerArgs)
-    {
-        return true;
-    }
 }

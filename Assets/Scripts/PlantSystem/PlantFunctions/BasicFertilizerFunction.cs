@@ -10,8 +10,5 @@ public class BasicFertilizerFunction : CardFunctionBase
         // callerArgs.gameManager.AddWisdom(WisdomType.Basic);
     }
 
-    public override bool CanExecute(CallerArgs callerArgs)
-    {
-        return true;
-    }
+   
 }

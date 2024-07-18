@@ -14,7 +14,7 @@ public class PatternSO : ScriptableObject
         set => pattern = value;
     }
 
-    public void ForEachNormalFieldRelative(Action<Pattern.Field, int, int> function)
+    public void ForEachNormalFieldRelative(Action<Pattern.Field, int, int> function, bool includeCenter = false)
     {
         Pattern.Field centerField = null;
         for (int x = 0; x < pattern.Data.GetLength(0); x++)
@@ -24,6 +24,11 @@ public class PatternSO : ScriptableObject
                 if (pattern.Data[x, y].specialFieldType == SpecialFieldType.CENTER)
                 {
                     centerField = pattern.Data[x, y];
+                    if (includeCenter)
+                    {
+                        function(centerField, 0, 0);
+
+                    }
                 }
             }
         }

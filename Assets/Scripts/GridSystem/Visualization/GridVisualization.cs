@@ -24,12 +24,16 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
     [SerializeField] private MeshRenderer fieldMarkerMeshRenderer;
     [SerializeField] private List<FieldMaterial> fieldMaterials;
 
-    [FormerlySerializedAs("redCrossImage")] [Header("Preview Settings")] 
+    [Header("Status References")] [SerializeField]
+    private SpriteRenderer statusSpriteRenderer;
+
+    [SerializeField] private Sprite deathSprite;
+    [Header("Preview Settings")] 
     [SerializeField]
     private SpriteRenderer redCrossSpriteRenderer;
 
     [SerializeField] private Sprite cantPlaceSprite;
-    [FormerlySerializedAs("canplaceSprite")] [FormerlySerializedAs("placeSprite")] [SerializeField] private Sprite canPlaceSprite;
+    [SerializeField] private Sprite canPlaceSprite;
     [SerializeField] private Material previewMaterial;
     [SerializeField]
     private SpriteRenderer previewSpriteRenderer;
@@ -62,6 +66,8 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
         spriteRenderer.sprite = null;
         visualizer.sharedMaterial = standardVisualizationMaterial;
         fieldMarker.SetActive(false);
+        statusSpriteRenderer.gameObject.SetActive(false);
+
         redCrossSpriteRenderer.gameObject.SetActive(false);
 
     }
@@ -158,6 +164,15 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
         if (ghost)
         {
             target.material.SetFloat("_Alpha", Constants.HOVERED_ALPHA_VALUE);
+        }
+
+        //Dead Vision
+        statusSpriteRenderer.gameObject.SetActive(false);
+        if (cardInstance.IsDead())
+        {
+            statusSpriteRenderer.gameObject.SetActive(true);
+            statusSpriteRenderer.sprite = deathSprite;
+            target.material.SetFloat("_Saturation", Constants.DEATH_SATURATION_VALUE);
         }
 
     }
