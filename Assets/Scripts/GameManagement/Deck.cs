@@ -6,6 +6,7 @@ using System.Linq;
 using UnityEngine;
 using static GameManager;
 using static StartDeckSO;
+using Debug = UnityEngine.Debug;
 using Random = UnityEngine.Random;
 
 [Serializable]
@@ -218,7 +219,7 @@ public class Deck
                 HandCards.Insert(0,card);
                 break;
             default:
-                Debug.Log("Fehler im Switch Case zum Einfügen einer Karte ins Deck");
+                Debug.Log("Fehler im Switch Case zum Einfï¿½gen einer Karte ins Deck");
                 break;
         }        
     }
