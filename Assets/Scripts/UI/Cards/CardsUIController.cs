@@ -33,6 +33,14 @@ public class CardsUIController : MonoBehaviour
         EventManager.Game.Level.OnTurnChanged += OnTurnChanged;
         EventManager.Game.Input.OnCancel += GameInputOnCancel;
         EventManager.Game.Input.OnInteract += GameInputOnInteract;
+        EventManager.Game.Level.EndSingleCardPlay += EndSingleCardPlay;
+        
+    }
+
+    private void EndSingleCardPlay()
+    {
+        SwitchState(State.SelectCard);
+        GameInputOnCancel();
     }
 
     private void OnTurnChanged(EventManager.GameEvents.LevelEvents.TurnChangedArgs arg0)
@@ -47,7 +55,6 @@ public class CardsUIController : MonoBehaviour
 
     private void OnPlantPlanted(EventManager.GameEvents.UIEvents.OnPlantPlantedArgs arg0)
     {
-        currentState = State.SelectCard;
         GameInputOnCancel();
     }
 
@@ -86,7 +93,7 @@ public class CardsUIController : MonoBehaviour
             GridTile gridTile = GridManager.Instance.Grid.GetGridObject(Mouse.current.position.ReadValue());
             if (gridTile != null && activePlantIndex != -1)
             {
-                GameManager.Instance.TryPlantCard(activePlantIndex, gridTile);
+                GameManager.Instance.TryQueueLifeform(activePlantIndex, gridTile);
             }
         }
 

@@ -147,6 +147,11 @@ public class Deck
         OnHandCardsChanged();
     }
 
+    public void DiscardCard(int index)
+    {
+        DiscardCard(HandCards[index]);
+    }
+
     public void DiscardRandomCard()
     {
         int randomIndex = Random.Range(0, HandCards.Count);

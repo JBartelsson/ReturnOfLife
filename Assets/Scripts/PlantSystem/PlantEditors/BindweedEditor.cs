@@ -32,6 +32,9 @@ public class BindweedEditor : CardEditorBase
         Debug.Log($"EXECUTING EDITOR FUNCTION");
         callerArgs.playedTile = callerArgs.selectedGridTile;
         callerArgs.EditorCallingCardInstance.CardFunction.ExecutionType = EXECUTION_TYPE.IMMEDIATE;
-        callerArgs.EditorCallingCardInstance.Execute(callerArgs);
+        CardInstance newBindweedInstance = new CardInstance(callerArgs.EditorCallingCardInstance);
+        callerArgs.BlockSecondMove = true;
+        callerArgs.CallingCardInstance = newBindweedInstance;
+        GameManager.Instance.TryQueueLifeform(callerArgs);
     }
 }

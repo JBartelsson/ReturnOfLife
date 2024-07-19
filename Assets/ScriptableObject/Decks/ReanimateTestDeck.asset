@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf1bd9b9c80383c468f2d3e89a03269b, type: 3}
+  m_Name: ReanimateTestDeck
+  m_EditorClassIdentifier: 
+  deck:
+  - cardDataReference: {fileID: 11400000, guid: 98c6f96c449621649ac14102db1c8d68, type: 2}
+    amount: 1
+  - cardDataReference: {fileID: 11400000, guid: a416360e50c533b498d0e17cb1bc9e51, type: 2}
+    amount: 2
+  - cardDataReference: {fileID: 11400000, guid: fd3d643ded233674b82fadd4fb8f792d, type: 2}
+    amount: 4
+  - cardDataReference: {fileID: 11400000, guid: ad5acc2c55572ca449ce56c739d7eb9e, type: 2}
+    amount: 3
+  - cardDataReference: {fileID: 11400000, guid: f015392eac15d4f4fae338bba164cabd, type: 2}
+    amount: 3
+  - cardDataReference: {fileID: 11400000, guid: 51b65114571f73c4e8ae3c54ca2f7d3e, type: 2}
+    amount: 4
+  - cardDataReference: {fileID: 11400000, guid: 662b499d15f1ad84193d91f4fa014184, type: 2}
+    amount: 4

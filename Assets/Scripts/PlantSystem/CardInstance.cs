@@ -234,12 +234,10 @@ public class CardInstance : ICloneable
             CallingCardInstance = this,
             playedTile = callerArgs.playedTile,
             gameManager = GameManager.Instance,
-            callerType = CALLER_TYPE.PLACEMENT, 
+            callerType = CALLER_TYPE.REVIVE
         };
-        Debug.Log($"Try to revive lifeform");
-        Debug.Log($"Played Tile: {reviveCallerArgs.playedTile}");
-        Debug.Log($"{CanExecute(reviveCallerArgs)}");
-        Execute(reviveCallerArgs);
+       
+        GameManager.Instance.TryQueueLifeform(reviveCallerArgs);
     }
 
     public bool IsDead()

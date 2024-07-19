@@ -126,8 +126,12 @@ public class GridTile
         CallerArgs reviveCallerArgs = callerArgs.ReturnShallowCopy();
         reviveCallerArgs.playedTile = this;
         CardInstance oldCardInstance = CardInstance;
-        objects.Clear();
         oldCardInstance.TryReviveLifeform(reviveCallerArgs);
+    }
+
+    public void ClearTile()
+    {
+        objects.Clear();
     }
     
 

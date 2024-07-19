@@ -70,9 +70,9 @@ public class GameManager : MonoBehaviour
     private int currentTurns = 0;
     private int currentPlayedCards = 0;
     private bool selectedPlantNeedNeighbor = false;
-    private CardInstance selectedCard;
-    private GridTile playedTile;
+    private int selectedCardIndex;
     private bool tutorialShowed = false;
+    private bool blockQueue = false;
 
     private CardInstance selectedCardBlueprint = null;
 
@@ -104,7 +104,7 @@ public class GameManager : MonoBehaviour
     }
 
     //Args
-    private CallerArgs callerArgs = new CallerArgs();
+    private List<CallerArgs> playingQueue = new();
     private EditorCallerArgs editorArgs = new EditorCallerArgs();
 
 
@@ -200,7 +200,6 @@ public class GameManager : MonoBehaviour
             case GameState.SetPlant:
                 break;
             case GameState.PlantEditor:
-                InitEditor();
                 break;
             case GameState.SpecialAbility:
                 break;
@@ -242,26 +241,31 @@ public class GameManager : MonoBehaviour
         SwitchState(GameState.EndTurn);
     }
 
-    private void InitEditor()
+    private void InitEditor(CallerArgs callerArgs)
     {
-        editorArgs.SetValues(selectedCardBlueprint, playedTile, false, CALLER_TYPE.EDITOR);
-        editorArgs.EditorCallingCardInstance = selectedCardBlueprint;
-        editorArgs.gameManager = this;
+        editorArgs = new EditorCallerArgs()
+        {
+            callerType = CALLER_TYPE.EDITOR,
+            CallingCardInstance = callerArgs.CallingCardInstance,
+            EditorCallingCardInstance = callerArgs.CallingCardInstance,
+            gameManager = this,
+            needNeighbor = false,
+            playedTile = callerArgs.playedTile,
+        };
+        Debug.Log($"Editor Args are: " + editorArgs);
         EventManager.Game.UI.OnEditorNeeded?.Invoke(new EventManager.GameEvents.UIEvents.OnEditorNeededArgs()
         {
-            editorCardInstance = selectedCardBlueprint,
-            editorOriginGridTile = playedTile
+            editorCardInstance = callerArgs.CallingCardInstance,
+            editorOriginGridTile = callerArgs.playedTile
         });
     }
 
     private void Update()
     {
-        if (currentGameState == GameState.SetPlant)
+        if (playingQueue.Count != 0 && !blockQueue)
         {
-        }
-
-        if (currentGameState == GameState.PlantEditor)
-        {
+            blockQueue = true;
+            PlayLifeForm(playingQueue[0]);
         }
     }
 
@@ -274,13 +278,7 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log($"CAN EXECUTE THE EDITOR THERE");
             selectedCardBlueprint.ExecuteEditor(editorArgs);
-            CheckSpecialFields();
-            EndCardPlaying();
-        }
-        else
-        {
-            Debug.Log($"CANT EXECUTE THE EDITOR THERE");
-
+            blockQueue = false;
         }
     }
 
@@ -296,60 +294,69 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void TryPlantCard(int cardIndex, GridTile selectedGridTile)
+    public void TryQueueLifeform(int cardIndex, GridTile selectedGridTile)
     {
-        if (!InitCallerArgsForCard(cardIndex, selectedGridTile)) return;
-        if (selectedCardBlueprint.CanExecute(callerArgs))
+        CardInstance cardInstance = GetTemporaryCardInstance(cardIndex);
+        selectedCardIndex = cardIndex;
+
+        TryQueueLifeform(cardInstance, selectedGridTile);
+       
+    }
+
+    public void TryQueueLifeform(CardInstance cardInstance, GridTile selectedGridTile)
+    {
+        selectedCardBlueprint = cardInstance;
+        CallerArgs newCallerArgs = GetTemporaryCallerArgs(cardInstance, selectedGridTile);
+        TryQueueLifeform(newCallerArgs);
+    }
+
+    public void TryQueueLifeform(CallerArgs callerArgs)
+    {
+        if (callerArgs.CallingCardInstance.CanExecute(callerArgs) || callerArgs.callerType == CALLER_TYPE.REVIVE)
         {
-            selectedCardBlueprint.Execute(callerArgs);
-            PlantCard(selectedGridTile);
-            CheckSpecialFields();
-        }
-        else
-        {
-            Debug.Log("CANT EXECUTE FUNCTION THERE");
+            Debug.Log($"QUEUED {callerArgs}");
+            playingQueue.Insert(0, callerArgs);
         }
     }
 
-    private void PlantCard(GridTile selectedTile)
+    public void PlayLifeForm(CallerArgs callerArgs)
     {
-        this.playedTile = selectedTile;
-
-        selectedPlantNeedNeighbor = true;
-
-        //If card has an editor (2nd move) and the editor is not blocked e.g. by plant sacrifice
-        if (selectedCardBlueprint.CardEditor != null && !editorBlocked)
+        playingQueue.RemoveAt(0);
+        if (callerArgs.callerType == CALLER_TYPE.REVIVE)
         {
-            SwitchState(GameState.PlantEditor);
-
+            callerArgs.playedTile.ClearTile();
+        }
+        Debug.Log($"Playing Lifeform with {callerArgs}");
+        selectedCardBlueprint = callerArgs.CallingCardInstance;
+        selectedCardBlueprint.Execute(callerArgs);
+        CheckSpecialFields();
+        EventManager.Game.UI.OnPlantPlanted?.Invoke(new EventManager.GameEvents.UIEvents.OnPlantPlantedArgs()
+        {
+            plantedCardInstance = selectedCardBlueprint,
+            plantedGridTile = callerArgs.playedTile
+        });
+        //If card has an editor (2nd move) and the editor is not blocked e.g. by plant sacrifice
+        Debug.Log($"Editor is blocked: {callerArgs.BlockSecondMove}");
+        if (selectedCardBlueprint.CardEditor != null && !callerArgs.BlockSecondMove)
+        {
+            InitEditor(callerArgs);
             return;
         }
 
+        //If there are still cards to plant, return
+        blockQueue = false;
+        if (playingQueue.Count != 0) return;
+        Debug.Log("Playing Queue is Zero");
         EndCardPlaying();
-    }
-
-
-    public bool InitCallerArgsForCard(int cardIndex, GridTile playedGridTile)
-    {
-        if (currentGameState != GameState.SelectCards) return false;
-
-
-        selectedCard = _deck.HandCards[cardIndex];
-        if (selectedCard == null)
-        {
-            return false;
-        }
-
-        selectedCardBlueprint = GetTemporaryCardInstance(cardIndex);
-        callerArgs = GetTemporaryCallerArgs(cardIndex, playedGridTile);
-        return true;
     }
 
 
     private void EndCardPlaying()
     {
+        Debug.Log("End this Single Card Play");
+
         //Deck manipulation, in the future in the Deck class
-        ReduceMana(selectedCardBlueprint.GetCardStats().PlayCost);
+        ReduceMana(_deck.HandCards[selectedCardIndex].GetCardStats().PlayCost);
         foreach (var wisdom in currentWisdoms)
         {
             Debug.Log($"REDUCE MANA FOR {wisdom.GetCardStats().PlayCost}");
@@ -357,18 +364,16 @@ public class GameManager : MonoBehaviour
             _deck.DiscardCard(wisdom);
         }
 
-        _deck.DiscardCard(selectedCard);
+        _deck.DiscardCard(selectedCardIndex);
         //Event calling
 
         currentPlayedCards++;
         Debug.Log("PLANT PLANTED!");
-        EventManager.Game.UI.OnPlantPlanted?.Invoke(new EventManager.GameEvents.UIEvents.OnPlantPlantedArgs()
-        {
-            plantedCardInstance = selectedCardBlueprint,
-            plantedGridTile = playedTile
-        });
+        
+        selectedPlantNeedNeighbor = true;
         RemoveAllWisdoms();
         editorBlocked = false;
+        EventManager.Game.Level.EndSingleCardPlay?.Invoke();
         SwitchState(GameState.SelectCards);
     }
 
@@ -517,10 +522,15 @@ public class GameManager : MonoBehaviour
 
     public CallerArgs GetTemporaryCallerArgs(int cardIndex, GridTile gridTile)
     {
+        return GetTemporaryCallerArgs(GetTemporaryCardInstance(cardIndex), gridTile);
+    }
+    
+    public CallerArgs GetTemporaryCallerArgs(CardInstance cardInstance, GridTile gridTile)
+    {
         return new CallerArgs()
         {
             needNeighbor = selectedPlantNeedNeighbor,
-            CallingCardInstance = GetTemporaryCardInstance(cardIndex),
+            CallingCardInstance = cardInstance,
             playedTile = gridTile,
             gameManager = this,
             callerType = CALLER_TYPE.PLACEMENT
