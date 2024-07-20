@@ -16,6 +16,12 @@ public class Deck
 
     private CardCollection _playerDeck = new();
 
+    public CardCollection PlayerDeck
+    {
+        get => _playerDeck;
+        set => _playerDeck = value;
+    }
+
     //[SerializeField] private List<CardInstance> _playerDeck = new();
 
     public List<CardInstance> _deckPile = new();
@@ -74,8 +80,7 @@ public class Deck
             }
         }
 
-        _deckPile.AddRange(_playerDeck.CardsInCollection);
-        ShuffleDeck();
+        
 
         /*
          * Debug.Log("RESETTING LEVEL");
@@ -99,6 +104,12 @@ public class Deck
          * drawPile.AddRange(deck);
          * SwitchState(GameState.EndTurn);
          */
+    }
+
+    public void Reset()
+    {
+        _deckPile.AddRange(_playerDeck.CardsInCollection);
+        ShuffleDeck();
     }
 
     public void DrawCards(int amount = 1)

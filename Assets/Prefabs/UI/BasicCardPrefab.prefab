@@ -426,9 +426,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1433592718613909924}
-  - component: {fileID: 7287872757998513968}
+  - component: {fileID: 3906537861391957886}
   m_Layer: 5
-  m_Name: CardPrefab
+  m_Name: BasicCardPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -453,9 +453,9 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 180, y: 250}
+  m_SizeDelta: {x: 250, y: 250}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &7287872757998513968
+--- !u!114 &3906537861391957886
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -464,14 +464,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 3368907096960936692}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 49e74eee8c170d6479b82fa7a1ac429e, type: 3}
+  m_Script: {fileID: 11500000, guid: 067d3a90c282a7346a3771cfc78b5ff3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _cardImage: {fileID: 6612825900506483587}
   _costDrop: {fileID: 1215338025049925912}
   _dropSpriteBlue: {fileID: 21300000, guid: f1e5a063fe2fb97409e1a8538f67475d, type: 3}
   _dropSpriteRed: {fileID: 21300000, guid: 6408533200b8b3d499c1f7bcac888906, type: 3}
-  _cardRarity: {fileID: 846844938053952974}
+  _cardRarity: {fileID: 0}
   _elementIcon: {fileID: 0}
   _typeIcon: {fileID: 0}
   _playCost: {fileID: 1919844937375009681}
@@ -481,8 +481,7 @@ MonoBehaviour:
   _pointsText: {fileID: 7303043841717816450}
   _pointsSymbol: {fileID: 8800368419787942907}
   _plantColor: {r: 1, g: 1, b: 1, a: 1}
-  _wisdomColor: {r: 1, g: 0.9573629, b: 0.6839622, a: 1}
-  _turnDelay: 0
+  _wisdomColor: {r: 1, g: 0.97542053, b: 0.6084906, a: 1}
   _basicElementIcon: {fileID: 0}
   _snowElementIcon: {fileID: 0}
   _sunElementIcon: {fileID: 0}
@@ -496,7 +495,6 @@ MonoBehaviour:
   _backgroundSprite: {fileID: 6626060879351948569}
   hoverMaterial: {fileID: 2100000, guid: d0ccc4d27d1542443840c84533abed40, type: 2}
   cardParent: {fileID: 6133112448831711212}
-  CardMouseHoverTransform: {fileID: 6631609999036702620}
 --- !u!1 &3516780636125883384
 GameObject:
   m_ObjectHideFlags: 0
@@ -1341,8 +1339,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
-    eirmod tempor invidunt ut labore et dolore magna aliquyam
+  m_text: 'testtesttesttesttesttest test test test test test test test test test
+    test test test test test test test test test test '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1369,12 +1367,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 10.5
+  m_fontSize: 12
   m_fontSizeBase: 120
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 4
-  m_fontSizeMax: 72
+  m_fontSizeMax: 12
   m_fontStyle: 0
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256

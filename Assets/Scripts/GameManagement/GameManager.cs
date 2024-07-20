@@ -125,10 +125,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
-#if  UNITY_EDITOR
+#if UNITY_EDITOR
     private void Start()
     {
         GridManager.Instance.OnGridReady += Instance_OnGridReady;
+        _deck.InitializeDeck(startDeck);
         BuildLevel();
     }
 #endif
@@ -139,12 +140,15 @@ public class GameManager : MonoBehaviour
         EventManager.Game.SceneSwitch.OnSceneReloadComplete += OnSceneReloadComplete;
     }
 
-    private void OnSceneReloadComplete(SceneLoader.Scene newScene)
+    private void OnSceneReloadComplete(EventManager.GameEvents.SceneReloadArgs args)
     {
-        if (newScene == SceneLoader.Scene.GameScene)
+        if (args.newScene == SceneLoader.Scene.GameScene)
         {
             Debug.Log("On scene Load");
             GridManager.Instance.OnGridReady += Instance_OnGridReady;
+            if (args.oldSCene != SceneLoader.Scene.GameScene)
+            _deck.InitializeDeck(startDeck);
+
             BuildLevel();
         }
     }
@@ -172,7 +176,6 @@ public class GameManager : MonoBehaviour
             Debug.Log("SHOULD SHOW TUTORIAL");
             EventManager.Game.UI.OnTutorialScreenChange?.Invoke(true);
             SwitchState(GameState.Tutorial);
-
         }
     }
 
@@ -221,17 +224,17 @@ public class GameManager : MonoBehaviour
     {
         currentLevel = planetProgression.GetRandomEnemy(currentStage);
         GridManager.Instance.BuildGrid(currentLevel);
-        EventManager.Game.Level.OnLevelInitialized?.Invoke(new EventManager.GameEvents.LevelEvents.LevelInitializedArgs()
-        {
-            currentLevel = currentLevel,
-            levelName = currentLevel.name
-        });
+        EventManager.Game.Level.OnLevelInitialized?.Invoke(
+            new EventManager.GameEvents.LevelEvents.LevelInitializedArgs()
+            {
+                currentLevel = currentLevel,
+                levelName = currentLevel.name
+            });
     }
 
     private void InitializeLevel()
     {
-        _deck.InitializeDeck(startDeck);
-
+        _deck.Reset();
         Debug.Log("RESETTING LEVEL");
         SetPointScore(0);
         currentTurns = 0;
@@ -267,13 +270,18 @@ public class GameManager : MonoBehaviour
             blockQueue = true;
             PlayLifeForm(playingQueue[0]);
         }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            AddPointScore(500, new CallerArgs(), SCORING_ORIGIN.LIFEFORM);
+        }
     }
 
     public void ExecuteEditor(GridTile selectedGridTile)
     {
         if (selectedGridTile == null) return;
         editorArgs.selectedGridTile = selectedGridTile;
-        
+
         if (selectedCardBlueprint.CheckField(editorArgs))
         {
             Debug.Log($"CAN EXECUTE THE EDITOR THERE");
@@ -300,7 +308,6 @@ public class GameManager : MonoBehaviour
         selectedCardIndex = cardIndex;
 
         TryQueueLifeform(cardInstance, selectedGridTile);
-       
     }
 
     public void TryQueueLifeform(CardInstance cardInstance, GridTile selectedGridTile)
@@ -326,6 +333,7 @@ public class GameManager : MonoBehaviour
         {
             callerArgs.playedTile.ClearTile();
         }
+
         Debug.Log($"Playing Lifeform with {callerArgs}");
         selectedCardBlueprint = callerArgs.CallingCardInstance;
         selectedCardBlueprint.Execute(callerArgs);
@@ -369,7 +377,7 @@ public class GameManager : MonoBehaviour
 
         currentPlayedCards++;
         Debug.Log("PLANT PLANTED!");
-        
+
         selectedPlantNeedNeighbor = true;
         RemoveAllWisdoms();
         editorBlocked = false;
@@ -524,7 +532,7 @@ public class GameManager : MonoBehaviour
     {
         return GetTemporaryCallerArgs(GetTemporaryCardInstance(cardIndex), gridTile);
     }
-    
+
     public CallerArgs GetTemporaryCallerArgs(CardInstance cardInstance, GridTile gridTile)
     {
         return new CallerArgs()

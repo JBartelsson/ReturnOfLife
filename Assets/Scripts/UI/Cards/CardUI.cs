@@ -47,9 +47,6 @@ public class CardUI : MonoBehaviour
 
     [SerializeField] protected Color _wisdomColor;
 
-    [Header("Hidden Properties ")] //references properties of the cards, that arent shown directly on the card, but in mechanics
-    [SerializeField]
-    protected int _turnDelay;
 
     [Header("Sprite Assets")] //references to the art folder in assets
     [SerializeField]
@@ -234,18 +231,18 @@ public class CardUI : MonoBehaviour
 
     private void SetRarityIcon()
     {
-        switch (_cardInstance.CardData.Rarity)
-        {
-            case CardData.CardRarity.Common:
-                _cardRarity.sprite = _commonRarityIcon;
-                break;
-            case CardData.CardRarity.Rare:
-                _cardRarity.sprite = _rareRarityIcon;
-                break;
-            case CardData.CardRarity.Epic:
-                _cardRarity.sprite = _epicRarityIcon;
-                break;
-        }
+        // switch (_cardInstance.CardData.Rarity)
+        // {
+        //     case CardData.CardRarity.Common:
+        //         _cardRarity.sprite = _commonRarityIcon;
+        //         break;
+        //     case CardData.CardRarity.Rare:
+        //         _cardRarity.sprite = _rareRarityIcon;
+        //         break;
+        //     case CardData.CardRarity.Epic:
+        //         _cardRarity.sprite = _epicRarityIcon;
+        //         break;
+        // }
     }
 
     private void SetElementIcon()

@@ -6,8 +6,16 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class CardHandUI : CardUI, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
+public class CardHandUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
+    [SerializeField] private CardUI cardUI;
+
+    public CardUI CardUI
+    {
+        get => cardUI;
+        set => cardUI = value;
+    }
+
     [Header("Card Mouse Hover")] [SerializeField]
     private Transform CardMouseHoverTransform;
     private bool cardClickEnabled = true;
@@ -24,8 +32,8 @@ public class CardHandUI : CardUI, IPointerClickHandler, IPointerEnterHandler, IP
 
     private void SetPosition()
     {
-        Debug.Log(cardParent.position);
-        originalPosition = cardParent.localPosition;
+        Debug.Log(cardUI.CardParent.position);
+        originalPosition = cardUI.CardParent.localPosition;
     }
     
     public void OnPointerClick(PointerEventData eventData)
@@ -38,12 +46,12 @@ public class CardHandUI : CardUI, IPointerClickHandler, IPointerEnterHandler, IP
         if (!cardSelected)
         {
             cardSelected = true;
-            CardsUIController.Instance.SelectCard(_cardIndex);
+            CardsUIController.Instance.SelectCard(cardUI.CardIndex);
         }
         else
         {
             cardSelected = false;
-            CardsUIController.Instance.DeselectCard(_cardIndex);
+            CardsUIController.Instance.DeselectCard(cardUI.CardIndex);
         }
     }
 
@@ -52,11 +60,11 @@ public class CardHandUI : CardUI, IPointerClickHandler, IPointerEnterHandler, IP
         cardSelected = state;
         if (state)
         {
-            _backgroundSprite.material = hoverMaterial;
+            cardUI.BackgroundSprite.material = cardUI.HoverMaterial;
         }
         else
         {
-            _backgroundSprite.material = null;
+            cardUI.BackgroundSprite.material = null;
             OnPointerExit(null);
         }
 
@@ -64,13 +72,13 @@ public class CardHandUI : CardUI, IPointerClickHandler, IPointerEnterHandler, IP
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        cardUpTween = cardParent.DOLocalMove(CardMouseHoverTransform.localPosition, .3f);
+        cardUpTween = cardUI.CardParent.DOLocalMove(CardMouseHoverTransform.localPosition, .3f);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         if (cardSelected) return;
-        cardParent.DOLocalMove(originalPosition, .3f);
+        cardUI.CardParent.DOLocalMove(originalPosition, .3f);
     }
     
     private void OnEnable()
@@ -90,26 +98,26 @@ public class CardHandUI : CardUI, IPointerClickHandler, IPointerEnterHandler, IP
     {
         if (arg0.currentWisdoms.Any((wisdom) => wisdom.CardData.WisdomType == WisdomType.Basic))
         {
-            SetCardUI(_cardInstance, true);
+            cardUI.SetCardUI(cardUI.CardInstance, true);
         }
         else
         {
-            SetCardUI(_cardInstance, false);
+            cardUI.SetCardUI(cardUI.CardInstance, false);
         }
     }
 
     private void OnManaChanged(EventManager.GameEvents.LevelEvents.ManaChangedArgs arg0)
     {
-        if (_cardInstance == null) return;
-        if (!GameManager.Instance.EnoughMana(_cardInstance.GetCardStats().PlayCost))
+        if (cardUI.CardInstance == null) return;
+        if (!GameManager.Instance.EnoughMana(cardUI.CardInstance.GetCardStats().PlayCost))
         {
-            CostDrop.sprite = _dropSpriteRed;
+            cardUI.CostDrop.sprite = cardUI.DropSpriteRed;
             canPlayCard = false;
         }
         else
         {
             canPlayCard = true;
-            CostDrop.sprite = _dropSpriteBlue;
+            cardUI.CostDrop.sprite = cardUI.DropSpriteBlue;
         }
     }
 

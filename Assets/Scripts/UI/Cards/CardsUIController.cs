@@ -148,9 +148,9 @@ public class CardsUIController : MonoBehaviour
         for (int i = 0; i < handSize - currentCardSize; i++)
         {
             GameObject newCard = Instantiate(cardPrefab, cardsParent);
-            CardHandUI cardUI = newCard.GetComponent<CardHandUI>();
-            cardUI.CardIndex = i;
-            currentCards.Add(cardUI);
+            CardHandUI cardHandUI = newCard.GetComponent<CardHandUI>();
+            cardHandUI.CardUI.CardIndex = i;
+            currentCards.Add(cardHandUI);
         }
     }
 
@@ -165,11 +165,11 @@ public class CardsUIController : MonoBehaviour
         {
             if (i < arg0.ChangedDeck.HandCards.Count)
             {
-                currentCards[i].SetCardUI(arg0.ChangedDeck.HandCards[i]);
+                currentCards[i].CardUI.SetCardUI(arg0.ChangedDeck.HandCards[i]);
             }
             else
             {
-                currentCards[i].SetCardUI(null);
+                currentCards[i].CardUI.SetCardUI(null);
             }
         }
     }
@@ -181,12 +181,12 @@ public class CardsUIController : MonoBehaviour
 
     public void SelectCard(int cardIndex)
     {
-        if (currentCards[cardIndex].CardInstance.CardData.EffectType == CardData.CardEffectType.Wisdom)
+        if (currentCards[cardIndex].CardUI.CardInstance.CardData.EffectType == CardData.CardEffectType.Wisdom)
         {
             HandleWisdomClick(cardIndex);
            
         }
-        if (currentCards[cardIndex].CardInstance.CardData.EffectType == CardData.CardEffectType.Plant)
+        if (currentCards[cardIndex].CardUI.CardInstance.CardData.EffectType == CardData.CardEffectType.Plant)
         {
             HandlePlantClick(cardIndex);
            
@@ -202,7 +202,7 @@ public class CardsUIController : MonoBehaviour
 
     private void HandleWisdomClick(int cardIndex)
     {
-        GameManager.Instance.AddWisdom(currentCards[cardIndex].CardInstance);
+        GameManager.Instance.AddWisdom(currentCards[cardIndex].CardUI.CardInstance);
         activeWisdoms.Add(cardIndex);
         DeselectAllOtherWisdomOfSameType(cardIndex);
     }
@@ -212,8 +212,8 @@ public class CardsUIController : MonoBehaviour
         activePlantIndex = cardIndex;
         for (int i = 0; i < currentCards.Count; i++)
         {
-            if (currentCards[i].CardInstance == null) continue;
-            if (currentCards[i].CardInstance.CardData.EffectType == CardData.CardEffectType.Plant && i != cardIndex)
+            if (currentCards[i].CardUI.CardInstance == null) continue;
+            if (currentCards[i].CardUI.CardInstance.CardData.EffectType == CardData.CardEffectType.Plant && i != cardIndex)
                 currentCards[i].SetHoverState(false);
         }
         SwitchState(State.PlacePlant);
@@ -222,12 +222,12 @@ public class CardsUIController : MonoBehaviour
     public void DeselectCard(int cardIndex)
     {
         //DESELECT ALL CARDS AT THE MOMENT, NEEDS TO CHANGE
-        if (currentCards[cardIndex].CardInstance.CardData.EffectType == CardData.CardEffectType.Wisdom)
+        if (currentCards[cardIndex].CardUI.CardInstance.CardData.EffectType == CardData.CardEffectType.Wisdom)
         {
             DeselectWisdom(cardIndex);
         }
         
-        if (currentCards[cardIndex].CardInstance.CardData.EffectType == CardData.CardEffectType.Plant)
+        if (currentCards[cardIndex].CardUI.CardInstance.CardData.EffectType == CardData.CardEffectType.Plant)
         {
             DeselectPlant(cardIndex);
         }
@@ -243,7 +243,7 @@ public class CardsUIController : MonoBehaviour
 
     private void DeselectWisdom(int cardIndex)
     {
-        GameManager.Instance.RemoveWisdom(currentCards[cardIndex].CardInstance);
+        GameManager.Instance.RemoveWisdom(currentCards[cardIndex].CardUI.CardInstance);
         activeWisdoms.Remove(cardIndex);
         currentCards[cardIndex].SetHoverState(false);
         EventManager.Game.UI.OnPlantHoverCanceled?.Invoke();
@@ -255,7 +255,7 @@ public class CardsUIController : MonoBehaviour
         {
             if (SameWisdomAlreadyInStack(i) && i != cardIndex)
             {
-                GameManager.Instance.RemoveWisdom(currentCards[i].CardInstance);
+                GameManager.Instance.RemoveWisdom(currentCards[i].CardUI.CardInstance);
                 activeWisdoms.Remove(i);
                 currentCards[i].SetHoverState(false);
             }
@@ -303,14 +303,14 @@ public class CardsUIController : MonoBehaviour
 
     private bool SameWisdomAlreadyInStack(int cardIndex)
     {
-        if (currentCards[cardIndex].CardInstance.CardData.EffectType != CardData.CardEffectType.Wisdom)
+        if (currentCards[cardIndex].CardUI.CardInstance.CardData.EffectType != CardData.CardEffectType.Wisdom)
         {
             Debug.LogWarning("TRYING TO CHECK FOR A NON WISDOM CARD IN WISDOM LOOP");
             return false;
         }
         foreach (var index in activeWisdoms)
         {
-            if (currentCards[index].CardInstance.CardData.CardName == GameManager.Instance.Deck.HandCards[cardIndex].CardData.CardName)
+            if (currentCards[index].CardUI.CardInstance.CardData.CardName == GameManager.Instance.Deck.HandCards[cardIndex].CardData.CardName)
             {
                 return true;
             }

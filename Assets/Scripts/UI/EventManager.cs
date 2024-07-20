@@ -31,6 +31,8 @@ public static class EventManager
         Game.UI.OnPlantPlanted = delegate {};
         Game.UI.OnNotEnoughMana = delegate { };
         Game.UI.OnTutorialScreenChange = delegate { };
+        Game.UI.OnCardPickScreenChange = delegate { };
+        Game.UI.OnChangeOtherCanvasesStatus = delegate { };
 
     }
 
@@ -51,6 +53,12 @@ public static class EventManager
             public Deck ChangedDeck;
         }
 
+        public class SceneReloadArgs : Args
+        {
+            public SceneLoader.Scene oldSCene;
+            public SceneLoader.Scene newScene;
+        }
+
         public class InputEvents
         {
             public UnityAction OnInteract;
@@ -59,7 +67,7 @@ public static class EventManager
 
         public class SceneSwitchEvents
         {
-            public UnityAction<SceneLoader.Scene> OnSceneReloadComplete;
+            public UnityAction<SceneReloadArgs> OnSceneReloadComplete;
         }
         public class UIEvents
         {
@@ -85,6 +93,11 @@ public static class EventManager
                 public GridTile editorOriginGridTile;
                 public EditorCallerArgs EditorCallerArgs;
             }
+
+            public class BoolArgs : Args
+            {
+                public bool status;
+            }
             
 
             public UnityAction<OnHoverChangedArgs> OnPlantHoverChanged;
@@ -94,6 +107,8 @@ public static class EventManager
             public UnityAction<OnHoverForEditorArgs> OnHoverForEditor;
             public UnityAction OnNotEnoughMana;
             public UnityAction<bool> OnTutorialScreenChange;
+            public UnityAction<BoolArgs> OnCardPickScreenChange;
+            public UnityAction<bool> OnChangeOtherCanvasesStatus;
 
         }
         

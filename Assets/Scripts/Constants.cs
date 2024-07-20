@@ -18,4 +18,5 @@ public class Constants
     public const float UI_POINT_SPEED = .5f;
     public const float UI_POINT_DISAPPEAR_SPEED = .25f;
     public const float UI_POINT_WAIT_INTERVAL = .25f;
+    public const int AMOUNT_OF_PICK_CARDS = 3;
 }

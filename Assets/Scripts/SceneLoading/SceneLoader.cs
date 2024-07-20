@@ -10,12 +10,15 @@ public static class SceneLoader
         GameScene,
         MainMenuScene,
         LoadingScene,
+        None
     }
 
     private static Scene targetScene = Scene.GameScene;
+    private static Scene oldScene = Scene.MainMenuScene;
 
     public static void Load(Scene targetScene)
     {
+        oldScene = targetScene;
         SceneLoader.targetScene = targetScene;
         DOTween.Clear(true);
         SceneManager.LoadScene(SceneLoader.Scene.LoadingScene.ToString());
@@ -32,7 +35,11 @@ public static class SceneLoader
         if (sceneAsyncOperation == null)return;
         sceneAsyncOperation.completed += operation =>
         {
-            EventManager.Game.SceneSwitch.OnSceneReloadComplete?.Invoke(targetScene);
+            EventManager.Game.SceneSwitch.OnSceneReloadComplete?.Invoke(new EventManager.GameEvents.SceneReloadArgs()
+            {
+                oldSCene = oldScene,
+                newScene = targetScene
+            });
         };
     }
 }
