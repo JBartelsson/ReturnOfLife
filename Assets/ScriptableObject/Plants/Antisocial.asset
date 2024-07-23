@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e8b50ae5f69e2046bcf6f1f5f58bf0c, type: 3}
   m_Name: Antisocial
   m_EditorClassIdentifier: 
-  plantSprite: {fileID: 21300000, guid: 4ce3cef2c1476d04da69bfeb8c09c97d, type: 3}
+  plantSprite: {fileID: 21300000, guid: ed9fdedcfacbe374e9092618b41d5054, type: 3}
   <CardName>k__BackingField: Antisocial
   regularCardStats:
     Points: 60
