@@ -23,7 +23,7 @@ public static class EventManager
         Game.Level.EndSingleCardPlay = delegate {};
 
         
-        Game.UI.OnEditorNeeded = delegate {};
+        Game.UI.OnSecondMoveNeeded = delegate {};
         Game.UI.OnHoverForEditor = delegate {};
         Game.UI.OnPlantHoverCanceled = delegate {};
         Game.UI.OnPlantHoverChanged = delegate {};
@@ -87,11 +87,11 @@ public static class EventManager
                 public GridTile plantedGridTile;
             }
             
-            public class OnEditorNeededArgs : Args
+            public class OnSecondMoveNeededArgs : Args
             {
                 public CardInstance editorCardInstance;
                 public GridTile editorOriginGridTile;
-                public EditorCallerArgs EditorCallerArgs;
+                public SecondMoveCallerArgs SecondMoveCallerArgs;
             }
 
             public class BoolArgs : Args
@@ -103,7 +103,7 @@ public static class EventManager
             public UnityAction<OnHoverChangedArgs> OnPlantHoverChanged;
             public UnityAction OnPlantHoverCanceled; 
             public UnityAction<OnPlantPlantedArgs> OnPlantPlanted;
-            public UnityAction<OnEditorNeededArgs> OnEditorNeeded;
+            public UnityAction<OnSecondMoveNeededArgs> OnSecondMoveNeeded;
             public UnityAction<OnHoverForEditorArgs> OnHoverForEditor;
             public UnityAction OnNotEnoughMana;
             public UnityAction<bool> OnTutorialScreenChange;

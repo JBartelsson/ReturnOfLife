@@ -73,6 +73,9 @@ public class GameManager : MonoBehaviour
     private int selectedCardIndex;
     private bool tutorialShowed = false;
     private bool blockQueue = false;
+    private bool blockSecondMoveQueue = false;
+    private int blockSecondMoveTimer = 0;
+    private int blockQueueTimer = 0;
 
     private CardInstance selectedCardBlueprint = null;
 
@@ -105,7 +108,9 @@ public class GameManager : MonoBehaviour
 
     //Args
     private List<CallerArgs> playingQueue = new();
-    private EditorCallerArgs editorArgs = new EditorCallerArgs();
+    private List<CallerArgs> secondMoveQueue = new();
+    private SecondMoveCallerArgs secondMoveArgs = new SecondMoveCallerArgs();
+
 
 
     private void Awake()
@@ -244,9 +249,11 @@ public class GameManager : MonoBehaviour
         SwitchState(GameState.EndTurn);
     }
 
-    private void InitEditor(CallerArgs callerArgs)
+    private void InitSecondMove(CallerArgs callerArgs)
     {
-        editorArgs = new EditorCallerArgs()
+        Debug.Log($"INITIALIZES ONE SECOND MOVE for {callerArgs}");
+        secondMoveQueue.RemoveAt(0);
+        secondMoveArgs = new SecondMoveCallerArgs()
         {
             callerType = CALLER_TYPE.EDITOR,
             CallingCardInstance = callerArgs.CallingCardInstance,
@@ -255,38 +262,54 @@ public class GameManager : MonoBehaviour
             needNeighbor = false,
             playedTile = callerArgs.playedTile,
         };
-        Debug.Log($"Editor Args are: " + editorArgs);
-        EventManager.Game.UI.OnEditorNeeded?.Invoke(new EventManager.GameEvents.UIEvents.OnEditorNeededArgs()
+        EventManager.Game.UI.OnSecondMoveNeeded?.Invoke(new EventManager.GameEvents.UIEvents.OnSecondMoveNeededArgs()
         {
             editorCardInstance = callerArgs.CallingCardInstance,
             editorOriginGridTile = callerArgs.playedTile
         });
     }
 
+    public void CancelSecondMove()
+    {
+        blockSecondMoveQueue = false;
+        CheckForEmptyQueue();
+    }
+
     private void Update()
     {
+       
+        
         if (playingQueue.Count != 0 && !blockQueue)
         {
             blockQueue = true;
             PlayLifeForm(playingQueue[0]);
+            return;
         }
-
+        
+        if (secondMoveQueue.Count != 0 && !blockSecondMoveQueue)
+        {
+            blockSecondMoveQueue = true;
+            blockQueue = true;
+            InitSecondMove(secondMoveQueue[0]);
+            return;
+        }
         if (Input.GetKeyDown(KeyCode.Space))
         {
             AddPointScore(500, new CallerArgs(), SCORING_ORIGIN.LIFEFORM);
         }
     }
 
-    public void ExecuteEditor(GridTile selectedGridTile)
+    public void ExecuteSecondMove(GridTile selectedGridTile)
     {
         if (selectedGridTile == null) return;
-        editorArgs.selectedGridTile = selectedGridTile;
+        secondMoveArgs.selectedGridTile = selectedGridTile;
 
-        if (selectedCardBlueprint.CheckField(editorArgs))
+        if (selectedCardBlueprint.CheckField(secondMoveArgs))
         {
             Debug.Log($"CAN EXECUTE THE EDITOR THERE");
-            selectedCardBlueprint.ExecuteEditor(editorArgs);
-            blockQueue = false;
+            selectedCardBlueprint.ExecuteSecondMove(secondMoveArgs);
+            blockSecondMoveQueue = false;
+            CheckForEmptyQueue();
         }
     }
 
@@ -326,6 +349,13 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void CheckForEmptyQueue()
+    {
+        blockQueue = false;
+        if (playingQueue.Count != 0) return;
+        if (secondMoveQueue.Count != 0) return;
+        EndCardPlaying();
+    }
     public void PlayLifeForm(CallerArgs callerArgs)
     {
         playingQueue.RemoveAt(0);
@@ -345,17 +375,17 @@ public class GameManager : MonoBehaviour
         });
         //If card has an editor (2nd move) and the editor is not blocked e.g. by plant sacrifice
         Debug.Log($"Editor is blocked: {callerArgs.BlockSecondMove}");
-        if (selectedCardBlueprint.CardEditor != null && !callerArgs.BlockSecondMove)
+        if (selectedCardBlueprint.CardSecondMove != null && !callerArgs.BlockSecondMove)
         {
-            InitEditor(callerArgs);
+            for (int i = 0; i < selectedCardBlueprint.GetCardStats().SecondMoveCallAmount; i++)
+            {
+                secondMoveQueue.Add(callerArgs);
+            }
             return;
         }
 
         //If there are still cards to plant, return
-        blockQueue = false;
-        if (playingQueue.Count != 0) return;
-        Debug.Log("Playing Queue is Zero");
-        EndCardPlaying();
+        CheckForEmptyQueue();
     }
 
 

@@ -19,4 +19,7 @@ public class Constants
     public const float UI_POINT_DISAPPEAR_SPEED = .25f;
     public const float UI_POINT_WAIT_INTERVAL = .25f;
     public const int AMOUNT_OF_PICK_CARDS = 3;
+    
+    //GameManager Stuff
+    public const float CLICK_COOLDOWN = .1f;
 }

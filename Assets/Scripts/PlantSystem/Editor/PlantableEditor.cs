@@ -41,8 +41,8 @@ public class PlantableEditor : Editor
         });
         reflectionDropDownList.Add(new ReflectionDropDown()
         {
-            scriptType = typeof(CardEditorBase),
-            allScripts = GetAll<CardEditorBase>(),
+            scriptType = typeof(CardSecondMoveBase),
+            allScripts = GetAll<CardSecondMoveBase>(),
             fieldName = "Plant Editor"
         });
 

@@ -3,10 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 [Serializable]
-public abstract class CardEditorBase : PlantScriptBase
+public abstract class CardSecondMoveBase : PlantScriptBase
 {
 
-    public CardEditorBase()
+    public CardSecondMoveBase()
     {
         if (ExecutionType == EXECUTION_TYPE.AFTER_PLACEMENT)
         {
@@ -14,9 +14,9 @@ public abstract class CardEditorBase : PlantScriptBase
         }
     }
 
-    public abstract bool CheckField(EditorCallerArgs callerArgs);
+    public abstract bool CheckField(SecondMoveCallerArgs callerArgs);
 
 
-    public abstract void ExecuteEditor(EditorCallerArgs callerArgs);
+    public abstract void ExecuteEditor(SecondMoveCallerArgs callerArgs);
    
 }

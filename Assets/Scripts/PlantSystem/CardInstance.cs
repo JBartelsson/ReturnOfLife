@@ -10,7 +10,7 @@ public class CardInstance : ICloneable
     private CardData cardData;
     private List<WisdomType> fertilizers = new();
     private CardFunctionBase cardFunction;
-    private CardEditorBase cardEditor;
+    private CardSecondMoveBase cardSecondMove;
     private CardAccessCheckBase cardAccessCheck;
     private CardCanExecuteCheckBase cardCanExecuteCheckBase;
     private CardStatusEnum cardStatus = CardStatusEnum.Alive;
@@ -66,8 +66,8 @@ public class CardInstance : ICloneable
 
         if (cardData.CardEditor.ScriptType.Type != null)
         {
-            cardEditor = (CardEditorBase)Activator.CreateInstance(cardData.CardEditor.ScriptType);
-            cardEditor.ExecutionType = cardData.CardEditor.ExecutionType;
+            cardSecondMove = (CardSecondMoveBase)Activator.CreateInstance(cardData.CardEditor.ScriptType);
+            cardSecondMove.ExecutionType = cardData.CardEditor.ExecutionType;
         }
         else
         {
@@ -131,10 +131,10 @@ public class CardInstance : ICloneable
         set => cardFunction = value;
     }
 
-    public CardEditorBase CardEditor
+    public CardSecondMoveBase CardSecondMove
     {
-        get => cardEditor;
-        set => cardEditor = value;
+        get => cardSecondMove;
+        set => cardSecondMove = value;
     }
 
     public CardAccessCheckBase CardAccessCheck
@@ -202,14 +202,14 @@ public class CardInstance : ICloneable
         return cardAccessCheck.CanBeBePlantedOn(callerArgs);
     }
 
-    public bool CheckField(EditorCallerArgs editorCallerArgs)
+    public bool CheckField(SecondMoveCallerArgs secondMoveCallerArgs)
     {
-        return cardEditor.CheckField(editorCallerArgs);
+        return cardSecondMove.CheckField(secondMoveCallerArgs);
     }
 
-    public void ExecuteEditor(EditorCallerArgs editorCallerArgs)
+    public void ExecuteSecondMove(SecondMoveCallerArgs secondMoveCallerArgs)
     {
-        cardEditor.ExecuteEditor(editorCallerArgs);
+        cardSecondMove.ExecuteEditor(secondMoveCallerArgs);
     }
 
     public EXECUTION_TYPE GetPlantFunctionExecuteType()

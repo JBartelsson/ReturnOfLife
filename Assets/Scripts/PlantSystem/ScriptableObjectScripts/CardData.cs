@@ -51,7 +51,7 @@ public class CardData : ScriptableObject, ICloneable
     [Serializable]
     public class CardEditorCall : Executable
     {
-        [ClassExtends(typeof(CardEditorBase))]
+        [ClassExtends(typeof(CardSecondMoveBase))]
         public ClassTypeReference scriptType = typeof(CardFunctionBase);
 
         public ClassTypeReference ScriptType
@@ -185,6 +185,7 @@ public class CardData : ScriptableObject, ICloneable
         [TextArea]
         public string CardText;
         public int PlayCost;
+        public int SecondMoveCallAmount = 1;
     }
 
 

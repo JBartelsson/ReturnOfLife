@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EditorCallerArgs : CallerArgs
+public class SecondMoveCallerArgs : CallerArgs
 {
     //Used for editor access checks, so playedTile and selectedTile is different
     public GridTile selectedGridTile;
     public CardInstance EditorCallingCardInstance;
 
-    public EditorCallerArgs()
+    public SecondMoveCallerArgs()
     {
         if (callerType == CALLER_TYPE.NONE)
         {

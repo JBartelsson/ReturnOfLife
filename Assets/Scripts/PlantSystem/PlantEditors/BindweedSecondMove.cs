@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public class BindweedEditor : CardEditorBase
+public class BindweedSecondMove : CardSecondMoveBase
 {
     private const int BINDWEED_RANGE = 3;
 
-    public override bool CheckField(EditorCallerArgs callerArgs)
+    public override bool CheckField(SecondMoveCallerArgs callerArgs)
     {
         GridTile selectedGridTile = callerArgs.selectedGridTile;
         GridTile caller = callerArgs.playedTile;
@@ -28,7 +28,7 @@ public class BindweedEditor : CardEditorBase
     }
 
 
-    public override void ExecuteEditor(EditorCallerArgs callerArgs)
+    public override void ExecuteEditor(SecondMoveCallerArgs callerArgs)
     {
         Debug.Log($"EXECUTING EDITOR FUNCTION");
         callerArgs.playedTile = callerArgs.selectedGridTile;

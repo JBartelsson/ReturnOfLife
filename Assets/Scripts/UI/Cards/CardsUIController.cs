@@ -16,6 +16,7 @@ public class CardsUIController : MonoBehaviour
     //Hovering Effect
     private GridTile oldGridTile;
     private GridTile currentGridTile;
+    private float clickCooldownTimer = 0;
 
     public enum State
     {
@@ -28,7 +29,7 @@ public class CardsUIController : MonoBehaviour
     {
         EventManager.Game.Level.OnDrawCards += OnDrawCards;
         EventManager.Game.Level.OnUpdateCards += OnUpdateCards;
-        EventManager.Game.UI.OnEditorNeeded += OnEditorNeeded;
+        EventManager.Game.UI.OnSecondMoveNeeded += OnSecondMoveNeeded;
         EventManager.Game.UI.OnPlantPlanted += OnPlantPlanted;
         EventManager.Game.Level.OnTurnChanged += OnTurnChanged;
         EventManager.Game.Input.OnCancel += GameInputOnCancel;
@@ -58,7 +59,7 @@ public class CardsUIController : MonoBehaviour
         GameInputOnCancel();
     }
 
-    private void OnEditorNeeded(EventManager.GameEvents.UIEvents.OnEditorNeededArgs args)
+    private void OnSecondMoveNeeded(EventManager.GameEvents.UIEvents.OnSecondMoveNeededArgs neededArgs)
     {
         SwitchState(State.Editor);
         Debug.Log("EDITOR INITIALIZED");
@@ -67,14 +68,15 @@ public class CardsUIController : MonoBehaviour
             cardUI.SetActiveState(false);
         }
         EventManager.Game.UI.OnPlantHoverCanceled?.Invoke();
+        bool secondMovePlayable = false;
         GridManager.Instance.Grid.ForEachGridTile((gridTile) =>
         {
-            if (args.editorCardInstance.CheckField(new EditorCallerArgs()
+            if (neededArgs.editorCardInstance.CheckField(new SecondMoveCallerArgs()
                 {
-                    playedTile = args.editorOriginGridTile,
+                    playedTile = neededArgs.editorOriginGridTile,
                     selectedGridTile = gridTile,
-                    CallingCardInstance = args.editorCardInstance,
-                    EditorCallingCardInstance = args.editorCardInstance,
+                    CallingCardInstance = neededArgs.editorCardInstance,
+                    EditorCallingCardInstance = neededArgs.editorCardInstance,
                     callerType = CALLER_TYPE.EDITOR
                 }))
             {
@@ -82,12 +84,20 @@ public class CardsUIController : MonoBehaviour
                 {
                     hoveredGridTile = gridTile
                 });
+                secondMovePlayable = true;
             }
         });
+        if (!secondMovePlayable)
+        {
+            GameManager.Instance.CancelSecondMove();
+            GameInputOnCancel();
+        }
     }
 
     private void GameInputOnInteract()
     {
+        // if (clickCooldownTimer > 0) return;
+        // clickCooldownTimer = Constants.CLICK_COOLDOWN;
         if (currentState == State.PlacePlant)
         {
             GridTile gridTile = GridManager.Instance.Grid.GetGridObject(Mouse.current.position.ReadValue());
@@ -103,7 +113,7 @@ public class CardsUIController : MonoBehaviour
             Debug.Log(selectedGridTile);
             if (selectedGridTile != null)
             {
-                GameManager.Instance.ExecuteEditor(selectedGridTile);
+                GameManager.Instance.ExecuteSecondMove(selectedGridTile);
             }
         }
         
@@ -115,7 +125,6 @@ public class CardsUIController : MonoBehaviour
         //If right click
         Debug.Log("GAME INPUT ON CANCEL IS CALLED");
         //Editor is uncancelable
-        if (currentState == State.Editor) return;
         activePlantIndex = -1;
         currentState = State.SelectCard;
         EventManager.Game.UI.OnPlantHoverCanceled?.Invoke();
@@ -321,6 +330,8 @@ public class CardsUIController : MonoBehaviour
 
     private void Update()
     {
+        clickCooldownTimer -= Time.deltaTime;
+        
         if (currentState == State.PlacePlant && activePlantIndex != -1)
         {
             currentGridTile = GridManager.Instance.Grid.GetGridObject(Input.mousePosition);
