@@ -28,7 +28,7 @@ public class CardLibrary : MonoBehaviour
 
     public CardCollection ReturnAmountOfCardInstances(int amount)
     {
-        if (amount > cardDataList.Count - 1) return null;
+        if (amount > cardDataList.Count) return null;
         CardCollection tempCardCollection = new CardCollection(cardDataList);
         CardCollection returnCardCollection = new CardCollection();
         tempCardCollection.ShuffleCardCollection();
