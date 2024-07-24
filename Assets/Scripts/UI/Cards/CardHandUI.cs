@@ -90,8 +90,7 @@ public class CardHandUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
 
     private void OnDisable()
     {
-        EventManager.Game.Level.OnManaChanged -= OnManaChanged;
-        EventManager.Game.Level.OnWisdomChanged -= OnWisdomChanged;
+        
     }
 
     private void OnWisdomChanged(EventManager.GameEvents.LevelEvents.WisdomChangedArgs arg0)
@@ -106,7 +105,7 @@ public class CardHandUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
         }
     }
 
-    private void OnManaChanged(EventManager.GameEvents.LevelEvents.ManaChangedArgs arg0)
+    public void OnManaChanged(EventManager.GameEvents.LevelEvents.ManaChangedArgs arg0)
     {
         if (cardUI.CardInstance == null) return;
         if (!GameManager.Instance.EnoughMana(cardUI.CardInstance.GetCardStats().PlayCost))

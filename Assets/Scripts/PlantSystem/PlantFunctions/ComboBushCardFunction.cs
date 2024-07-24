@@ -53,7 +53,8 @@ public class ComboBushCardFunction : CardFunctionBase
 
         callingGridTile.ForPattern(bushInstance.GetCardStats().EffectPattern, gridTile =>
         {
-            CallerArgs bushCallerArgs = new CallerArgs(new CardInstance(bushInstance), null, false, CALLER_TYPE.EFFECT);
+            CardInstance newBushInstance = new CardInstance(bushInstance);
+            CallerArgs bushCallerArgs = new CallerArgs(newBushInstance, null, false, CALLER_TYPE.EFFECT);
             bushCallerArgs.gameManager = GameManager.Instance;
             bushCallerArgs.playedTile = gridTile;
             bool isComboBush = false;
@@ -62,9 +63,9 @@ public class ComboBushCardFunction : CardFunctionBase
                 isComboBush = bushCallerArgs.CallingCardInstance.CardData.CardName ==
                          gridTile.CardInstance.CardData.CardName;
             }
-            if (gridTile.IsAccessible(bushCallerArgs, true) && !isComboBush)
+            if (newBushInstance.CanExecute(bushCallerArgs) && !isComboBush)
             {
-                bushInstance.Execute(bushCallerArgs);
+                newBushInstance.Execute(bushCallerArgs);
             }
         });
     }

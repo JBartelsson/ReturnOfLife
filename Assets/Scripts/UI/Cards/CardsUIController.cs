@@ -185,6 +185,7 @@ public class CardsUIController : MonoBehaviour
             if (i < arg0.ChangedDeck.HandCards.Count)
             {
                 currentCards[i].CardUI.SetCardUI(arg0.ChangedDeck.HandCards[i]);
+                currentCards[i].OnManaChanged(null);
             }
             else
             {
