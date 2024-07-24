@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e8b50ae5f69e2046bcf6f1f5f58bf0c, type: 3}
   m_Name: Normalo
   m_EditorClassIdentifier: 
-  plantSprite: {fileID: 21300000, guid: 9cb460474e2f7764ca6b2dd6c8d713eb, type: 3}
+  plantSprite: {fileID: 21300000, guid: a588770723659aa448f506270b644ad1, type: 3}
   <CardName>k__BackingField: Normalo
   regularCardStats:
-    Points: 20
+    Points: 15
     EffectPattern: {fileID: 11400000, guid: 5286373c1ec30ab40a6e3cfe5fe7e13b, type: 2}
     CardText: Does nothing.
     PlayCost: 1
