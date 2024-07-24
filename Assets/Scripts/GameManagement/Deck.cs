@@ -40,7 +40,7 @@ public class Deck
 
     public int MaxHandSize => _maxHandSize;
 
-    enum InsertPosition
+    public enum InsertPosition
     {
         First,
         Last,
@@ -65,6 +65,8 @@ public class Deck
 
     public void InitializeDeck(StartDeckSO startDeck)
     {
+        Debug.Log("INITIALIZING DECK!");
+        StartDeckSO startDeckCopy = GameObject.Instantiate(startDeck);
         _deckPile.Clear();
         _discardPile.Clear();
         HandCards.Clear();
@@ -72,7 +74,7 @@ public class Deck
         _playerDeck.ClearCards();
 
         UnityEngine.Random.InitState((int)System.DateTime.Now.Ticks);
-        foreach (StartDeckSO.DeckEntry deckEntry in startDeck.Deck)
+        foreach (StartDeckSO.DeckEntry deckEntry in startDeckCopy.Deck)
         {
             for (int i = 0; i < deckEntry.amount; i++)
             {
@@ -108,6 +110,10 @@ public class Deck
 
     public void Reset()
     {
+        Debug.Log("RESETTING DECK");
+        _deckPile.Clear();
+        _discardPile.Clear();
+        HandCards.Clear();
         _deckPile.AddRange(_playerDeck.CardsInCollection);
         ShuffleDeck();
     }
@@ -240,7 +246,7 @@ public class Deck
         }        
     }
 
-    private void AddPermanentCardToDeck(CardInstance card, InsertPosition pos)
+    public void AddPermanentCardToDeck(CardInstance card, InsertPosition pos = InsertPosition.Random)
     {
         AddTemporaryCardToDeck(card, pos);
         _playerDeck.AddCardToCollection(card);

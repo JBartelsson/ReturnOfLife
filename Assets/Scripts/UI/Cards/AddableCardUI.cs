@@ -23,7 +23,8 @@ public class AddableCardUI : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        GameManager.Instance.Deck.PlayerDeck.AddCardToCollection(cardUI.CardInstance);
+        Debug.Log("Card Clicked!");
+        GameManager.Instance.Deck.AddPermanentCardToDeck(cardUI.CardInstance);
         cardPickController.CardPicked();
     }
 }
