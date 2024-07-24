@@ -49,7 +49,7 @@ public class CallerArgs
 public enum CALLER_TYPE
 {
     NONE,
-    EDITOR,
+    SECOND_MOVE,
     EFFECT,
     PLACEMENT,
     PASSIVE,

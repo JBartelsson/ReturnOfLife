@@ -28,7 +28,7 @@ public class BindweedSecondMove : CardSecondMoveBase
     }
 
 
-    public override void ExecuteEditor(SecondMoveCallerArgs callerArgs)
+    public override void ExecuteSecondMove(SecondMoveCallerArgs callerArgs)
     {
         Debug.Log($"EXECUTING EDITOR FUNCTION");
         callerArgs.playedTile = callerArgs.selectedGridTile;
@@ -36,6 +36,7 @@ public class BindweedSecondMove : CardSecondMoveBase
         CardInstance newBindweedInstance = new CardInstance(callerArgs.EditorCallingCardInstance);
         callerArgs.BlockSecondMove = true;
         callerArgs.CallingCardInstance = newBindweedInstance;
+        callerArgs.EditorCallingCardInstance = newBindweedInstance;
         GameManager.Instance.TryQueueLifeform(callerArgs);
     }
 }

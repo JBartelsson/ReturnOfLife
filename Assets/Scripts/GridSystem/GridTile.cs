@@ -28,7 +28,7 @@ public class GridTile
     }
 
     public event UnityAction<OnContentUpdatedArgs> OnContentUpdated;
-    
+
     public class OnContentUpdatedArgs : EventManager.GameEvents.Args
     {
         public GridTile GridTile;
@@ -93,8 +93,7 @@ public class GridTile
         set => y = value;
     }
 
-   
-    
+
     public List<FieldModifier> FieldModifiers
     {
         get => fieldModifiers;
@@ -105,11 +104,13 @@ public class GridTile
     {
         if (ContainsAnyPlant())
         {
-            EventManager.Game.Level.OnPlantSacrificed?.Invoke(new EventManager.GameEvents.LevelEvents.PlantSacrificedArgs()
-            {
-                SacrificeCallerArgs = callerArgs
-            });
+            EventManager.Game.Level.OnPlantSacrificed?.Invoke(
+                new EventManager.GameEvents.LevelEvents.PlantSacrificedArgs()
+                {
+                    SacrificeCallerArgs = callerArgs
+                });
         }
+
         objects.Add(callerArgs.CallingCardInstance);
         OnContentUpdated?.Invoke(new OnContentUpdatedArgs()
         {
@@ -122,18 +123,26 @@ public class GridTile
     public void KillObject(CallerArgs callerArgs)
     {
         if (!ContainsAnyPlant()) return;
-        CardInstance.KillLifeform(callerArgs);
+        CallerArgs killCallerArgs = callerArgs.ReturnShallowCopy();
+        killCallerArgs.playedTile = this;
+        CardInstance.KillLifeform(killCallerArgs);
         ClearSubscribers();
         grid.ChangeGridContent(x, y, this);
-
     }
+
     public void TryReviveLifeform(CallerArgs callerArgs)
     {
         if (CardInstance == null) return;
         if (!CardInstance.IsDead()) return;
         CallerArgs reviveCallerArgs = callerArgs.ReturnShallowCopy();
         reviveCallerArgs.playedTile = this;
+        reviveCallerArgs.CallingCardInstance = CardInstance;
         CardInstance oldCardInstance = CardInstance;
+        if (!CardInstance.IsUpgraded())
+        {
+            CardInstance.Upgrades.Add(WisdomType.Basic);
+        }
+
         oldCardInstance.TryReviveLifeform(reviveCallerArgs);
     }
 
@@ -141,7 +150,7 @@ public class GridTile
     {
         objects.Clear();
     }
-    
+
 
     public void ChangeFieldType(SpecialFieldType newFieldType, bool invokeEvent = true)
     {
@@ -169,7 +178,8 @@ public class GridTile
             case SpecialFieldType.TIME_PLAY:
                 break;
             case SpecialFieldType.MULTIPLY:
-                fieldModifiers.Add(new FieldModifier(FieldModifier.ModifierType.Multiplier, Constants.MULTIPLICATION_FIELD_MULTIPLIER));
+                fieldModifiers.Add(new FieldModifier(FieldModifier.ModifierType.Multiplier,
+                    Constants.MULTIPLICATION_FIELD_MULTIPLIER));
                 break;
             case SpecialFieldType.NORMAL_FIELD:
                 break;
@@ -178,11 +188,10 @@ public class GridTile
             default:
                 throw new ArgumentOutOfRangeException(nameof(newFieldType), newFieldType, null);
         }
+
         if (invokeEvent)
-        grid.ChangeGridContent(x,y, this);
+            grid.ChangeGridContent(x, y, this);
     }
-    
-    
 
 
     public override string ToString()
@@ -222,6 +231,7 @@ public class GridTile
             if (CardInstance.IsDead()) return deadIncluded;
             return true;
         }
+
         return false;
     }
 
@@ -229,7 +239,7 @@ public class GridTile
     {
         return ContainsAnyPlant(false);
     }
-    
+
 
     public void ForEachNeighbor(Action<GridTile> action)
     {
@@ -266,7 +276,6 @@ public class GridTile
         if (objects.Count == 0) return emptyAreAccessible;
         //The first plant determines if the field is accessible, this needs to be a bit more structured as it can cause problems later on maybe
         return objects[0].CanBeBePlantedOn(callerArgs);
-
     }
 
     public bool HasNeighboredPlant()
@@ -289,13 +298,12 @@ public class GridTile
         //empty the event
         ClearSubscribers();
         fieldModifiers = new();
-        grid.ChangeGridContent(x,y, this);
+        grid.ChangeGridContent(x, y, this);
     }
 
     public void ClearSubscribers()
     {
         OnContentUpdated = delegate { };
-
     }
 
     public void ResetSubscriptions()

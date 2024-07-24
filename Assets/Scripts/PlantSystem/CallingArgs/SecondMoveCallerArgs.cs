@@ -12,8 +12,13 @@ public class SecondMoveCallerArgs : CallerArgs
     {
         if (callerType == CALLER_TYPE.NONE)
         {
-            callerType = CALLER_TYPE.EDITOR;
+            callerType = CALLER_TYPE.SECOND_MOVE;
         }
+    }
+
+    public override string ToString()
+    {
+        return base.ToString() + $", played on: {selectedGridTile} from CardInstance: {EditorCallingCardInstance}";
     }
 
     public void SetValues(CardInstance newCallingPlantable, CardInstance newEditorCallingCardInstance, GridTile newPlayedTile, GridTile newSelectedTile, bool newNeedNeighbor, CALLER_TYPE newCallerType)

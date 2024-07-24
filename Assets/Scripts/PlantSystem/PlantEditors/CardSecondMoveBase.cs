@@ -17,6 +17,6 @@ public abstract class CardSecondMoveBase : PlantScriptBase
     public abstract bool CheckField(SecondMoveCallerArgs callerArgs);
 
 
-    public abstract void ExecuteEditor(SecondMoveCallerArgs callerArgs);
+    public abstract void ExecuteSecondMove(SecondMoveCallerArgs callerArgs);
    
 }

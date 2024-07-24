@@ -8,21 +8,21 @@ using UnityEngine;
 public class CardInstance : ICloneable
 {
     private CardData cardData;
-    private List<WisdomType> fertilizers = new();
+    private List<WisdomType> upgrades = new();
     private CardFunctionBase cardFunction;
     private CardSecondMoveBase cardSecondMove;
     private CardAccessCheckBase cardAccessCheck;
     private CardCanExecuteCheckBase cardCanExecuteCheckBase;
     private CardStatusEnum cardStatus = CardStatusEnum.Alive;
 
-   
-
 
     public enum CardStatusEnum
     {
-        Alive, Dead, Exhausted
+        Alive,
+        Dead,
+        Exhausted
     }
-    
+
     private int cardID = 0;
 
     public int CardID => cardID;
@@ -46,7 +46,7 @@ public class CardInstance : ICloneable
     public CardInstance(CardInstance other)
     {
         cardData = other.cardData.Copy();
-        fertilizers.AddRange(other.fertilizers);
+        upgrades.AddRange(other.upgrades);
         InitScripts();
     }
 
@@ -83,9 +83,11 @@ public class CardInstance : ICloneable
         {
             Debug.LogWarning($"{this} tried to create a plantAccessCheck from Default");
         }
+
         if (cardData.CardCanExecuteCheck.ScriptType.Type != null)
         {
-            cardCanExecuteCheckBase = (CardCanExecuteCheckBase)Activator.CreateInstance(cardData.CardCanExecuteCheck.ScriptType);
+            cardCanExecuteCheckBase =
+                (CardCanExecuteCheckBase)Activator.CreateInstance(cardData.CardCanExecuteCheck.ScriptType);
             cardCanExecuteCheckBase.ExecutionType = cardData.CardAccessCheck.ExecutionType;
         }
     }
@@ -93,7 +95,7 @@ public class CardInstance : ICloneable
     public override string ToString()
     {
         string fertilizerString = "";
-        foreach (var item in this.fertilizers)
+        foreach (var item in this.upgrades)
         {
             fertilizerString += item.ToString();
         }
@@ -110,7 +112,7 @@ public class CardInstance : ICloneable
     private void TryAddFertilizer(List<WisdomType> newFertilizers)
     {
         if (newFertilizers == null) return;
-        fertilizers.AddRange(newFertilizers);
+        upgrades.AddRange(newFertilizers);
     }
 
     public CardData CardData
@@ -119,10 +121,10 @@ public class CardInstance : ICloneable
         set => cardData = value;
     }
 
-    public List<WisdomType> Fertilizers
+    public List<WisdomType> Upgrades
     {
-        get => fertilizers;
-        set => fertilizers = value;
+        get => upgrades;
+        set => upgrades = value;
     }
 
     public CardFunctionBase CardFunction
@@ -142,13 +144,13 @@ public class CardInstance : ICloneable
         get => cardAccessCheck;
         set => cardAccessCheck = value;
     }
-    
+
     public CardCanExecuteCheckBase CardCanExecuteCheckBase
     {
         get => cardCanExecuteCheckBase;
         set => cardCanExecuteCheckBase = value;
     }
-    
+
     public CardStatusEnum CardStatus
     {
         get => cardStatus;
@@ -156,12 +158,12 @@ public class CardInstance : ICloneable
 
     public bool IsUpgraded()
     {
-        return fertilizers.Contains(WisdomType.Basic);
+        return upgrades.Contains(WisdomType.Basic);
     }
 
     public int ReturnTriggerAmount()
     {
-        return fertilizers.Where((x) => x == WisdomType.Retrigger).Count();
+        return upgrades.Where((x) => x == WisdomType.Retrigger).Count();
     }
 
     public CardData.CardStats GetCardStats()
@@ -178,6 +180,7 @@ public class CardInstance : ICloneable
 
     public void Execute(CallerArgs callerArgs)
     {
+        callerArgs.CallingCardInstance = this;
         if (CanExecute(callerArgs))
             cardFunction.Execute(callerArgs);
     }
@@ -187,9 +190,9 @@ public class CardInstance : ICloneable
         GridTile gridTile = callerArgs.playedTile;
         bool accessCheck = gridTile.IsAccessible(callerArgs);
         bool canExecuteCheck = callerArgs.CallingCardInstance.CanExecuteWith(callerArgs);
-
-        return accessCheck || canExecuteCheck;
-
+        bool revive = callerArgs.callerType == CALLER_TYPE.REVIVE;
+        
+        return accessCheck || canExecuteCheck || revive;
     }
 
     public bool CanExecuteWith(CallerArgs callerArgs)
@@ -209,7 +212,8 @@ public class CardInstance : ICloneable
 
     public void ExecuteSecondMove(SecondMoveCallerArgs secondMoveCallerArgs)
     {
-        cardSecondMove.ExecuteEditor(secondMoveCallerArgs);
+        secondMoveCallerArgs.EditorCallingCardInstance = this;
+        cardSecondMove.ExecuteSecondMove(secondMoveCallerArgs);
     }
 
     public EXECUTION_TYPE GetPlantFunctionExecuteType()
@@ -234,9 +238,10 @@ public class CardInstance : ICloneable
             CallingCardInstance = this,
             playedTile = callerArgs.playedTile,
             gameManager = GameManager.Instance,
-            callerType = CALLER_TYPE.REVIVE
+            callerType = CALLER_TYPE.REVIVE, 
+            needNeighbor = false
         };
-       
+        Debug.Log($"TRYING TO REVIVE LIFEFORM");
         GameManager.Instance.TryQueueLifeform(reviveCallerArgs);
     }
 
@@ -244,6 +249,4 @@ public class CardInstance : ICloneable
     {
         return cardStatus == CardStatusEnum.Dead;
     }
-    
-    
 }

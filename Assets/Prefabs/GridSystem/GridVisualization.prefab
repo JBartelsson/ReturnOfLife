@@ -1246,7 +1246,7 @@ MonoBehaviour:
     Sprite: {fileID: 21300000, guid: c7f65c9c336b2ea4c8363d080056dedf, type: 3}
   lavaSprite: {fileID: 21300000, guid: 6d4fdb96e8baf514eaa7d85be4c623d7, type: 3}
   normalGroundSprite: {fileID: 21300000, guid: 94c7635b1bef8144488f5f95c6bce2a1, type: 3}
-  fieldPlantedSprite: {fileID: 21300000, guid: 13cd75db7b46c4249896c61192fd3a0b, type: 3}
+  fieldPlantedSprite: {fileID: 21300000, guid: 94c7635b1bef8144488f5f95c6bce2a1, type: 3}
   groundStatusSpriteRenderer: {fileID: 3183129030241490190}
   statusSpriteRenderer: {fileID: 1856605024649796988}
   deathSprite: {fileID: 21300000, guid: a35cae7a7f31efe42bf2f18153d332f9, type: 3}

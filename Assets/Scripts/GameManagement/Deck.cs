@@ -63,8 +63,10 @@ public class Deck
     //    _playerDeck = playerDeck;
     //}
 
-    public void InitializeDeck(StartDeckSO startDeck)
+    public void InitializeDeck(StartDeckSO startDeck, int maxHandSize = 6, int turnDraw = 6)
     {
+        _maxHandSize = maxHandSize;
+        _turnDrawCount = turnDraw;
         Debug.Log("INITIALIZING DECK!");
         StartDeckSO startDeckCopy = GameObject.Instantiate(startDeck);
         _deckPile.Clear();

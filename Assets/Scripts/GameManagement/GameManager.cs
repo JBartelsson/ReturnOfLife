@@ -134,7 +134,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         GridManager.Instance.OnGridReady += Instance_OnGridReady;
-        _deck.InitializeDeck(startDeck);
+        _deck.InitializeDeck(startDeck, handSize, handSize);
         BuildLevel();
     }
 #endif
@@ -152,7 +152,7 @@ public class GameManager : MonoBehaviour
             Debug.Log("On scene Load");
             GridManager.Instance.OnGridReady += Instance_OnGridReady;
             if (args.oldSCene != SceneLoader.Scene.GameScene)
-            _deck.InitializeDeck(startDeck);
+            _deck.InitializeDeck(startDeck, handSize, handSize);
 
             BuildLevel();
         }
@@ -251,11 +251,12 @@ public class GameManager : MonoBehaviour
 
     private void InitSecondMove(CallerArgs callerArgs)
     {
+        selectedCardBlueprint = callerArgs.CallingCardInstance;
         Debug.Log($"INITIALIZES ONE SECOND MOVE for {callerArgs}");
         secondMoveQueue.RemoveAt(0);
         secondMoveArgs = new SecondMoveCallerArgs()
         {
-            callerType = CALLER_TYPE.EDITOR,
+            callerType = CALLER_TYPE.SECOND_MOVE,
             CallingCardInstance = callerArgs.CallingCardInstance,
             EditorCallingCardInstance = callerArgs.CallingCardInstance,
             gameManager = this,
@@ -304,6 +305,7 @@ public class GameManager : MonoBehaviour
         if (selectedGridTile == null) return;
         secondMoveArgs.selectedGridTile = selectedGridTile;
 
+        Debug.Log($"Trying to Execute Editor of {selectedCardBlueprint}");
         if (selectedCardBlueprint.CheckField(secondMoveArgs))
         {
             Debug.Log($"CAN EXECUTE THE EDITOR THERE");
@@ -311,6 +313,9 @@ public class GameManager : MonoBehaviour
             blockSecondMoveQueue = false;
             CheckForEmptyQueue();
         }
+        Debug.Log($"CANT EXECUTE THE EDITOR THERE");
+
+        Debug.Log(secondMoveArgs);
     }
 
     private void CheckSpecialFields()
@@ -342,7 +347,7 @@ public class GameManager : MonoBehaviour
 
     public void TryQueueLifeform(CallerArgs callerArgs)
     {
-        if (callerArgs.CallingCardInstance.CanExecute(callerArgs) || callerArgs.callerType == CALLER_TYPE.REVIVE)
+        if (callerArgs.CallingCardInstance.CanExecute(callerArgs))
         {
             Debug.Log($"QUEUED {callerArgs}");
             playingQueue.Insert(0, callerArgs);
@@ -379,12 +384,13 @@ public class GameManager : MonoBehaviour
         {
             for (int i = 0; i < selectedCardBlueprint.GetCardStats().SecondMoveCallAmount; i++)
             {
-                secondMoveQueue.Add(callerArgs);
+                secondMoveQueue.Insert(0, callerArgs);
             }
             return;
         }
 
         //If there are still cards to plant, return
+        if (callerArgs.callerType == CALLER_TYPE.SECOND_MOVE) return;
         CheckForEmptyQueue();
     }
 
@@ -392,7 +398,7 @@ public class GameManager : MonoBehaviour
     private void EndCardPlaying()
     {
         Debug.Log("End this Single Card Play");
-
+        Debug.Log($"Trying to end turn of card {selectedCardIndex}");
         //Deck manipulation, in the future in the Deck class
         ReduceMana(_deck.HandCards[selectedCardIndex].GetCardStats().PlayCost);
         foreach (var wisdom in currentWisdoms)

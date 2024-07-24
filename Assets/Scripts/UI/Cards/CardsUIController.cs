@@ -13,6 +13,7 @@ public class CardsUIController : MonoBehaviour
     private int activePlantIndex = -1;
 
     private List<int> activeWisdoms = new();
+
     //Hovering Effect
     private GridTile oldGridTile;
     private GridTile currentGridTile;
@@ -20,11 +21,14 @@ public class CardsUIController : MonoBehaviour
 
     public enum State
     {
-        SelectCard, PlacePlant, Editor
+        SelectCard,
+        PlacePlant,
+        SecondMove
     }
 
     private State currentState = State.SelectCard;
     public static CardsUIController Instance { get; private set; }
+
     private void OnEnable()
     {
         EventManager.Game.Level.OnDrawCards += OnDrawCards;
@@ -35,7 +39,6 @@ public class CardsUIController : MonoBehaviour
         EventManager.Game.Input.OnCancel += GameInputOnCancel;
         EventManager.Game.Input.OnInteract += GameInputOnInteract;
         EventManager.Game.Level.EndSingleCardPlay += EndSingleCardPlay;
-        
     }
 
     private void EndSingleCardPlay()
@@ -61,12 +64,13 @@ public class CardsUIController : MonoBehaviour
 
     private void OnSecondMoveNeeded(EventManager.GameEvents.UIEvents.OnSecondMoveNeededArgs neededArgs)
     {
-        SwitchState(State.Editor);
+        SwitchState(State.SecondMove);
         Debug.Log("EDITOR INITIALIZED");
         foreach (CardHandUI cardUI in currentCards)
         {
             cardUI.SetActiveState(false);
         }
+
         EventManager.Game.UI.OnPlantHoverCanceled?.Invoke();
         bool secondMovePlayable = false;
         GridManager.Instance.Grid.ForEachGridTile((gridTile) =>
@@ -77,19 +81,19 @@ public class CardsUIController : MonoBehaviour
                     selectedGridTile = gridTile,
                     CallingCardInstance = neededArgs.editorCardInstance,
                     EditorCallingCardInstance = neededArgs.editorCardInstance,
-                    callerType = CALLER_TYPE.EDITOR
+                    callerType = CALLER_TYPE.SECOND_MOVE
                 }))
             {
-                EventManager.Game.UI.OnHoverForEditor?.Invoke(new EventManager.GameEvents.UIEvents.OnHoverForEditorArgs()
-                {
-                    hoveredGridTile = gridTile
-                });
+                EventManager.Game.UI.OnHoverForEditor?.Invoke(
+                    new EventManager.GameEvents.UIEvents.OnHoverForEditorArgs()
+                    {
+                        hoveredGridTile = gridTile
+                    });
                 secondMovePlayable = true;
             }
         });
         if (!secondMovePlayable)
         {
-            GameManager.Instance.CancelSecondMove();
             GameInputOnCancel();
         }
     }
@@ -107,7 +111,7 @@ public class CardsUIController : MonoBehaviour
             }
         }
 
-        if (currentState == State.Editor)
+        if (currentState == State.SecondMove)
         {
             GridTile selectedGridTile = GridManager.Instance.Grid.GetGridObject(Mouse.current.position.ReadValue());
             Debug.Log(selectedGridTile);
@@ -116,7 +120,6 @@ public class CardsUIController : MonoBehaviour
                 GameManager.Instance.ExecuteSecondMove(selectedGridTile);
             }
         }
-        
     }
 
 
@@ -124,18 +127,22 @@ public class CardsUIController : MonoBehaviour
     {
         //If right click
         Debug.Log("GAME INPUT ON CANCEL IS CALLED");
-        //Editor is uncancelable
+        if (currentState == State.SecondMove)
+        {
+            GameManager.Instance.CancelSecondMove();
+        }
+
         activePlantIndex = -1;
         currentState = State.SelectCard;
         EventManager.Game.UI.OnPlantHoverCanceled?.Invoke();
         GameManager.Instance.RemoveAllWisdoms();
         activeWisdoms.Clear();
         if (currentCards.Count >= 0)
-        foreach (CardHandUI cardUI in currentCards)
-        {
-            cardUI.SetHoverState(false);
-            cardUI.SetActiveState(true);
-        }
+            foreach (CardHandUI cardUI in currentCards)
+            {
+                cardUI.SetHoverState(false);
+                cardUI.SetActiveState(true);
+            }
     }
 
     private void Awake()
@@ -168,8 +175,11 @@ public class CardsUIController : MonoBehaviour
     {
         if (arg0.ChangedDeck.MaxHandSize != currentCards.Count)
         {
+            Debug.Log(arg0.ChangedDeck.MaxHandSize);
             InitCards(arg0.ChangedDeck.MaxHandSize);
-        };
+        }
+
+        ;
         for (int i = 0; i < currentCards.Count; i++)
         {
             if (i < arg0.ChangedDeck.HandCards.Count)
@@ -182,7 +192,7 @@ public class CardsUIController : MonoBehaviour
             }
         }
     }
-    
+
     private void OnUpdateCards(EventManager.GameEvents.DeckChangedArgs args)
     {
         OnDrawCards(args);
@@ -193,20 +203,18 @@ public class CardsUIController : MonoBehaviour
         if (currentCards[cardIndex].CardUI.CardInstance.CardData.EffectType == CardData.CardEffectType.Wisdom)
         {
             HandleWisdomClick(cardIndex);
-           
         }
+
         if (currentCards[cardIndex].CardUI.CardInstance.CardData.EffectType == CardData.CardEffectType.Plant)
         {
             HandlePlantClick(cardIndex);
-           
         }
-        
+
 
         currentGridTile = null;
         currentCards[cardIndex].SetHoverState(true);
 
         EventManager.Game.UI.OnPlantHoverCanceled?.Invoke();
-       
     }
 
     private void HandleWisdomClick(int cardIndex)
@@ -222,9 +230,11 @@ public class CardsUIController : MonoBehaviour
         for (int i = 0; i < currentCards.Count; i++)
         {
             if (currentCards[i].CardUI.CardInstance == null) continue;
-            if (currentCards[i].CardUI.CardInstance.CardData.EffectType == CardData.CardEffectType.Plant && i != cardIndex)
+            if (currentCards[i].CardUI.CardInstance.CardData.EffectType == CardData.CardEffectType.Plant &&
+                i != cardIndex)
                 currentCards[i].SetHoverState(false);
         }
+
         SwitchState(State.PlacePlant);
     }
 
@@ -235,7 +245,7 @@ public class CardsUIController : MonoBehaviour
         {
             DeselectWisdom(cardIndex);
         }
-        
+
         if (currentCards[cardIndex].CardUI.CardInstance.CardData.EffectType == CardData.CardEffectType.Plant)
         {
             DeselectPlant(cardIndex);
@@ -269,8 +279,8 @@ public class CardsUIController : MonoBehaviour
                 currentCards[i].SetHoverState(false);
             }
         }
-            
     }
+
     private bool WisdomInCardStack()
     {
         foreach (var index in activeWisdoms)
@@ -317,9 +327,11 @@ public class CardsUIController : MonoBehaviour
             Debug.LogWarning("TRYING TO CHECK FOR A NON WISDOM CARD IN WISDOM LOOP");
             return false;
         }
+
         foreach (var index in activeWisdoms)
         {
-            if (currentCards[index].CardUI.CardInstance.CardData.CardName == GameManager.Instance.Deck.HandCards[cardIndex].CardData.CardName)
+            if (currentCards[index].CardUI.CardInstance.CardData.CardName ==
+                GameManager.Instance.Deck.HandCards[cardIndex].CardData.CardName)
             {
                 return true;
             }
@@ -331,7 +343,7 @@ public class CardsUIController : MonoBehaviour
     private void Update()
     {
         clickCooldownTimer -= Time.deltaTime;
-        
+
         if (currentState == State.PlacePlant && activePlantIndex != -1)
         {
             currentGridTile = GridManager.Instance.Grid.GetGridObject(Input.mousePosition);
@@ -340,12 +352,13 @@ public class CardsUIController : MonoBehaviour
             {
                 CardInstance hoveredCardInstance =
                     GameManager.Instance.GetTemporaryCardInstance(activePlantIndex);
-                EventManager.Game.UI.OnPlantHoverChanged?.Invoke(new EventManager.GameEvents.UIEvents.OnHoverChangedArgs()
-                {
-                    hoveredCardInstance = hoveredCardInstance,
-                    hoveredGridTile = currentGridTile,
-                    hoverCallerArgs = GameManager.Instance.GetTemporaryCallerArgs(activePlantIndex, currentGridTile)
-                });
+                EventManager.Game.UI.OnPlantHoverChanged?.Invoke(
+                    new EventManager.GameEvents.UIEvents.OnHoverChangedArgs()
+                    {
+                        hoveredCardInstance = hoveredCardInstance,
+                        hoveredGridTile = currentGridTile,
+                        hoverCallerArgs = GameManager.Instance.GetTemporaryCallerArgs(activePlantIndex, currentGridTile)
+                    });
                 currentGridTile = oldGridTile;
             }
         }
