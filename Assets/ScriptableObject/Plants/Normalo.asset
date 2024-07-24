@@ -15,7 +15,7 @@ MonoBehaviour:
   plantSprite: {fileID: 21300000, guid: a588770723659aa448f506270b644ad1, type: 3}
   <CardName>k__BackingField: Normalo
   regularCardStats:
-    Points: 20
+    Points: 15
     EffectPattern: {fileID: 11400000, guid: 5286373c1ec30ab40a6e3cfe5fe7e13b, type: 2}
     CardText: Does nothing.
     PlayCost: 1

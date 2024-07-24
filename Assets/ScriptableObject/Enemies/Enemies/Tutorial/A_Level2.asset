@@ -15,4 +15,4 @@ MonoBehaviour:
   pattern:
     dataString: BBBBBBBBBBBBBBBBABBBBBBAAABBBBBBABBBBBBBBBBBBBBBB
     gridSize: 7
-  neededECOPoints: 350
+  neededECOPoints: 300
