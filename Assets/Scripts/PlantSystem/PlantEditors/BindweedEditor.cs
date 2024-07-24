@@ -22,7 +22,8 @@ public class BindweedEditor : CardEditorBase
         //Check if the selected field can be played with the instance (and copy the caller args because otherwise it writes into the variable)
         CallerArgs selectedFieldCallerArgs = callerArgs.ReturnShallowCopy();
         selectedFieldCallerArgs.playedTile = selectedGridTile;
-        if (!selectedGridTile.IsAccessible(selectedFieldCallerArgs, true)) return false;
+        selectedFieldCallerArgs.needNeighbor = false;
+        if (!callerArgs.EditorCallingCardInstance.CanExecute(selectedFieldCallerArgs)) return false;
         return true;
     }
 

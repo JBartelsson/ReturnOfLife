@@ -141,7 +141,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 203206115127443112, guid: d0df6d8f51d3cdf4383671d2f6b8176f, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.006591797
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 242301456418667055, guid: d0df6d8f51d3cdf4383671d2f6b8176f, type: 3}
       propertyPath: m_AnchorMax.y
@@ -1127,7 +1127,7 @@ MonoBehaviour:
   handSize: 7
   standardMana: 3
   standardTurns: 3
-  planetProgression: {fileID: 11400000, guid: c972c9f0022e4ab46aefce1b07eaed52, type: 2}
+  planetProgression: {fileID: 11400000, guid: 9e856ccae3068a14a9adc7db932efa65, type: 2}
 --- !u!1 &1045059058
 GameObject:
   m_ObjectHideFlags: 0

@@ -8,6 +8,7 @@ public class CheckForNeighboring : CardCanExecuteCheckBase
 {
     public override bool CanExecuteWith(CallerArgs callerArgs)
     {
+        if (callerArgs.playedTile.IsLava()) return false;
         if (callerArgs.playedTile.ContainsAnyPlant()) return false;
         if (callerArgs.needNeighbor && !callerArgs.playedTile.HasNeighboredPlant()) return false;
 

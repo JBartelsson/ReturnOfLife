@@ -8,6 +8,11 @@ public class SpecialField
         public List<GridTile> SpecialFieldGridTiles = new();
         private bool alreadyFulfilled = false;
 
+        public bool AlreadyFulfilled
+        {
+            get => alreadyFulfilled;
+        }
+
         public SpecialField(SpecialFieldType fieldType)
         {
             FieldType = fieldType;

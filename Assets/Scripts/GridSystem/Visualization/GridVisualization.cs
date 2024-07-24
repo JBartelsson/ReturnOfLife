@@ -10,20 +10,25 @@ using UnityEngine.UI;
 
 public class GridVisualization : MonoBehaviour, IPointerClickHandler
 {
-    [SerializeField] private SpriteRenderer spriteRenderer;
-    [SerializeField] private Material standardVisualizationMaterial;
+    [FormerlySerializedAs("spriteRenderer")] [SerializeField] private SpriteRenderer lifeFormSpriteRenderer;
 
-    [SerializeField] private Material markedMaterial;
+    [FormerlySerializedAs("markedSprite")]
+    [FormerlySerializedAs("markedMaterial")]
+    [Header("UI Hover Effects")]
+    [SerializeField] private Sprite editorSprite;
+    [FormerlySerializedAs("previewMaterial")] [SerializeField] private Sprite hoverSprite;
 
-
-    [SerializeField] private MeshRenderer visualizer;
+    [FormerlySerializedAs("visualizer")] [SerializeField] private SpriteRenderer hoverEffectSpriteRenderer;
 
     [Header("Special Fields")] [SerializeField]
     private GameObject fieldMarker;
 
-    [SerializeField] private MeshRenderer fieldMarkerMeshRenderer;
-    [SerializeField] private List<FieldMaterial> fieldMaterials;
+    [SerializeField] private List<FieldSprite> fieldMaterials;
 
+    [SerializeField] private Sprite lavaSprite;
+    [SerializeField] private Sprite normalGroundSprite;
+    [SerializeField] private Sprite fieldPlantedSprite;
+    [SerializeField] private SpriteRenderer groundStatusSpriteRenderer;
     [Header("Status References")] [SerializeField]
     private SpriteRenderer statusSpriteRenderer;
 
@@ -34,7 +39,6 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
 
     [SerializeField] private Sprite cantPlaceSprite;
     [SerializeField] private Sprite canPlaceSprite;
-    [SerializeField] private Material previewMaterial;
     [SerializeField]
     private SpriteRenderer previewSpriteRenderer;
 
@@ -52,10 +56,10 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
     }
 
     [Serializable]
-    public class FieldMaterial
+    public class FieldSprite
     {
         public SpecialFieldType FieldType;
-        public Material Material;
+        public Sprite Sprite;
     }
 
     [SerializeField] private Material plantFertilizedMaterial;
@@ -63,8 +67,7 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
 
     private void Awake()
     {
-        spriteRenderer.sprite = null;
-        visualizer.sharedMaterial = standardVisualizationMaterial;
+        lifeFormSpriteRenderer.sprite = null;
         fieldMarker.SetActive(false);
         statusSpriteRenderer.gameObject.SetActive(false);
 
@@ -179,25 +182,26 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
 
     private void ClearGridTile()
     {
-        SetNewSprite((Sprite)null, spriteRenderer);
+        SetNewSprite((Sprite)null, lifeFormSpriteRenderer);
         SetNewSprite((Sprite)null, previewSpriteRenderer);
     }
 
     private void SetMarkedState()
     {
+        hoverEffectSpriteRenderer.gameObject.SetActive(false);
         switch (visualizationState)
         {
             case VisualizationState.MARKED_FOR_EDITOR:
-                visualizer.sharedMaterial = markedMaterial;
+                hoverEffectSpriteRenderer.gameObject.SetActive(true);
+                hoverEffectSpriteRenderer.sprite = editorSprite;
                 break;
             case VisualizationState.PLANTING_PREVIEW:
-                visualizer.sharedMaterial = previewMaterial;
+                hoverEffectSpriteRenderer.gameObject.SetActive(true);
+                hoverEffectSpriteRenderer.sprite = hoverSprite;
                 break;
             case VisualizationState.NONE:
-                visualizer.sharedMaterial = standardVisualizationMaterial;
                 break;
             default:
-                visualizer.sharedMaterial = markedMaterial;
                 break;
         }
     }
@@ -214,7 +218,7 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
 
         if (ownGridTile.Content.Count > 0)
         {
-            SetNewSprite(ownGridTile.Content[0], spriteRenderer);
+            SetNewSprite(ownGridTile.Content[0], lifeFormSpriteRenderer);
         }
         else
         {
@@ -223,21 +227,36 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
 
         //mark grid Tile if its used for an editor
         SetMarkedState();
-
-        ShowFieldType(ownGridTile.FieldType);
+        UpdateGroundStatus();
     }
 
-    private void ShowFieldType(SpecialFieldType gridObjectFieldType)
+    private void UpdateGroundStatus()
     {
-        if (gridObjectFieldType == SpecialFieldType.NONE || gridObjectFieldType == SpecialFieldType.NORMAL_FIELD)
+        if (ownGridTile.IsLava())
         {
-            fieldMarker.SetActive(false);
+            groundStatusSpriteRenderer.sprite = lavaSprite;
             return;
         }
 
-        fieldMarker.SetActive(true);
-        fieldMarkerMeshRenderer.sharedMaterial =
-            fieldMaterials.First((x) => x.FieldType == gridObjectFieldType).Material;
+        if (ownGridTile.CardInstance != null)
+        {
+            bool condition = false;
+            if (ownGridTile.SpecialField == null)
+            {
+                groundStatusSpriteRenderer.sprite = fieldPlantedSprite;
+                return;
+            }
+            if (ownGridTile.SpecialField.AlreadyFulfilled)
+            {
+                groundStatusSpriteRenderer.sprite = fieldPlantedSprite;
+                return;
+            }
+            
+        }
+        //Set Ground Sprite
+        groundStatusSpriteRenderer.sprite =
+            fieldMaterials.First((x) => x.FieldType == ownGridTile.FieldType).Sprite;
+
     }
 
     public void OnPointerClick(PointerEventData eventData)

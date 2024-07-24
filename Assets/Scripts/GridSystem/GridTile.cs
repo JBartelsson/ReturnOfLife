@@ -13,11 +13,19 @@ public class GridTile
     private int x;
     private int y;
     private Grid grid;
+    private SpecialField specialField;
+
+
     private SpecialFieldType fieldType = SpecialFieldType.NONE;
     private List<FieldModifier> fieldModifiers = new();
 
     public SpecialFieldType FieldType => fieldType;
 
+    public SpecialField SpecialField
+    {
+        get => specialField;
+        set => specialField = value;
+    }
 
     public event UnityAction<OnContentUpdatedArgs> OnContentUpdated;
     
@@ -305,5 +313,10 @@ public class GridTile
                 action(affectedTile);
             }
         }, includeCenter);
+    }
+
+    public bool IsLava()
+    {
+        return fieldType == SpecialFieldType.NONE;
     }
 }

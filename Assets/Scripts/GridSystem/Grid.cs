@@ -15,6 +15,7 @@ public class Grid
     private GridTile[,] gridArray;
     private Vector3 originPosition;
     private List<CardInstance> plantInstances = new();
+    private List<SpecialField> specialFields = new();
 
     public List<CardInstance> PlantInstances
     {
@@ -22,7 +23,6 @@ public class Grid
         set => plantInstances = value;
     }
 
-    private List<SpecialField> specialFields = new();
 
     public List<SpecialField> SpecialFields
     {
@@ -85,6 +85,13 @@ public class Grid
 
         ApplyNeighbors();
         SpecialFields = FindConnectedFields();
+        foreach (var specialField in SpecialFields)
+        {
+            foreach (var specialFieldGridTile in specialField.SpecialFieldGridTiles)
+            {
+                specialFieldGridTile.SpecialField = specialField;
+            }
+        }
     }
 
     private void GetXY(Vector3 worldPosition, out int x, out int y)
