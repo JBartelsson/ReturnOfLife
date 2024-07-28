@@ -24,7 +24,7 @@ MonoBehaviour:
     Points: 0
     EffectPattern: {fileID: 11400000, guid: 03c55ff4c842f654baba9ec08d703ece, type: 2}
     CardText: Kills a plant and grants its mana.
-    PlayCost: 1
+    PlayCost: 0
     SecondMoveCallAmount: 3
   <Element>k__BackingField: 0
   effectType: 0
