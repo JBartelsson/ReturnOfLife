@@ -18,7 +18,7 @@ MonoBehaviour:
     Points: 1
     EffectPattern: {fileID: 11400000, guid: 4263142aff317ce42bc4b97925970b8d, type: 2}
     CardText: Revives all Lifeforms in the Pattern and triggers their effects.
-    PlayCost: 2
+    PlayCost: 1
     SecondMoveCallAmount: 1
   upgradedCardStats:
     Points: 1
@@ -34,11 +34,11 @@ MonoBehaviour:
   cardFunction:
     executionType: 0
     scriptType:
-      _classRef: ReanimateFunction, Assembly-CSharp
+      _classRef: SinglePlacementFunction, Assembly-CSharp
   cardEditor:
     executionType: 3
     scriptType:
-      _classRef: 
+      _classRef: ReanimateSecondMove, Assembly-CSharp
   cardAccessCheck:
     executionType: 3
     scriptType:
