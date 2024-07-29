@@ -18,12 +18,14 @@ MonoBehaviour:
     Points: 60
     EffectPattern: {fileID: 11400000, guid: cc8af7e4462826c46adbd43adf3d9ec2, type: 2}
     CardText: Only grants points if there is no Antisocial in the Pattern.
-    PlayCost: 1
+    PlayCost: 2
+    SecondMoveCallAmount: 1
   upgradedCardStats:
     Points: 120
     EffectPattern: {fileID: 11400000, guid: cc8af7e4462826c46adbd43adf3d9ec2, type: 2}
     CardText: Only grants points if there is no Antisocial in the Pattern.
-    PlayCost: 1
+    PlayCost: 2
+    SecondMoveCallAmount: 1
   <Element>k__BackingField: 0
   effectType: 0
   wisdomType: 0

@@ -10,12 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cf1bd9b9c80383c468f2d3e89a03269b, type: 3}
-  m_Name: Anna_TestDeck_1
+  m_Name: Anna_TutorialDeck
   m_EditorClassIdentifier: 
   deck:
-  - cardDataReference: {fileID: 11400000, guid: fd3d643ded233674b82fadd4fb8f792d, type: 2}
-    amount: 2
-  - cardDataReference: {fileID: 11400000, guid: ad5acc2c55572ca449ce56c739d7eb9e, type: 2}
-    amount: 2
   - cardDataReference: {fileID: 11400000, guid: 662b499d15f1ad84193d91f4fa014184, type: 2}
-    amount: 6
+    amount: 1
+  - cardDataReference: {fileID: 11400000, guid: fd3d643ded233674b82fadd4fb8f792d, type: 2}
+    amount: 1
