@@ -831,7 +831,6 @@ MonoBehaviour:
   allMainCanvases:
   - {fileID: 7023456510512442625}
   - {fileID: 7098127971944039228}
-  - {fileID: 0}
 --- !u!1 &3000337536125834506
 GameObject:
   m_ObjectHideFlags: 0

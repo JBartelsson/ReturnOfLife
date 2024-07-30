@@ -119,28 +119,27 @@ public class GameManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
+            InitEventSubscriptions();
             //Resetting Parenting structure so dontdestroyonload does work
             this.transform.parent = null;
             DontDestroyOnLoad(this);
+#if UNITY_EDITOR
+ 
+            SceneLoader.Load(SceneLoader.Scene.GameScene);
+#endif
         }
         else
         {
             Destroy(this.gameObject);
             Debug.LogWarning("Game Manager already exists!");
         }
+
     }
 
-#if UNITY_EDITOR
-    private void Start()
-    {
-        GridManager.Instance.OnGridReady += Instance_OnGridReady;
-        _deck.InitializeDeck(startDeck, handSize, handSize);
-        BuildLevel();
-    }
-#endif
 
-    private void OnEnable()
+    private void InitEventSubscriptions()
     {
+        Debug.Log("SUBSCRIBING FROM GAMEMANAGER TO FUNCTIONS");
         EventManager.Game.Level.OnPlantSacrificed += OnPlantSacrificed;
         EventManager.Game.SceneSwitch.OnSceneReloadComplete += OnSceneReloadComplete;
     }
@@ -151,16 +150,11 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("On scene Load");
             GridManager.Instance.OnGridReady += Instance_OnGridReady;
-            if (args.oldSCene != SceneLoader.Scene.GameScene)
+            if (!_deck.IsInitialized())
             _deck.InitializeDeck(startDeck, handSize, handSize);
 
             BuildLevel();
         }
-    }
-
-    private void OnDisable()
-    {
-        EventManager.Game.Level.OnPlantSacrificed -= OnPlantSacrificed;
     }
 
     private void OnPlantSacrificed(EventManager.GameEvents.LevelEvents.PlantSacrificedArgs arg0)
@@ -182,6 +176,8 @@ public class GameManager : MonoBehaviour
             EventManager.Game.UI.OnTutorialScreenChange?.Invoke(true);
             SwitchState(GameState.Tutorial);
         }
+        GridManager.Instance.OnGridReady -= Instance_OnGridReady;
+
     }
 
     private void SwitchState(GameState newGameState)
@@ -357,6 +353,28 @@ public class GameManager : MonoBehaviour
     private void CheckForEmptyQueue()
     {
         blockQueue = false;
+        if (selectedCardIndex != -1)
+        {
+            Debug.Log($"Trying to end turn of card {selectedCardIndex}");
+            //Deck manipulation, in the future in the Deck class
+            ReduceMana(_deck.HandCards[selectedCardIndex].GetCardStats().PlayCost);
+            foreach (var wisdom in currentWisdoms)
+            {
+                Debug.Log($"REDUCE MANA FOR {wisdom.GetCardStats().PlayCost}");
+                ReduceMana(wisdom.GetCardStats().PlayCost);
+                _deck.DiscardCard(wisdom);
+            }
+
+            _deck.DiscardCard(selectedCardIndex);
+            //Event calling
+
+            currentPlayedCards++;
+            Debug.Log("PLANT PLANTED!");
+
+            selectedPlantNeedNeighbor = true;
+            RemoveAllWisdoms();
+            selectedCardIndex = -1;
+        }
         if (playingQueue.Count != 0) return;
         if (secondMoveQueue.Count != 0) return;
         EndCardPlaying();
@@ -397,25 +415,7 @@ public class GameManager : MonoBehaviour
 
     private void EndCardPlaying()
     {
-        Debug.Log("End this Single Card Play");
-        Debug.Log($"Trying to end turn of card {selectedCardIndex}");
-        //Deck manipulation, in the future in the Deck class
-        ReduceMana(_deck.HandCards[selectedCardIndex].GetCardStats().PlayCost);
-        foreach (var wisdom in currentWisdoms)
-        {
-            Debug.Log($"REDUCE MANA FOR {wisdom.GetCardStats().PlayCost}");
-            ReduceMana(wisdom.GetCardStats().PlayCost);
-            _deck.DiscardCard(wisdom);
-        }
-
-        _deck.DiscardCard(selectedCardIndex);
-        //Event calling
-
-        currentPlayedCards++;
-        Debug.Log("PLANT PLANTED!");
-
-        selectedPlantNeedNeighbor = true;
-        RemoveAllWisdoms();
+        
         editorBlocked = false;
         EventManager.Game.Level.EndSingleCardPlay?.Invoke();
         SwitchState(GameState.SelectCards);
@@ -531,6 +531,7 @@ public class GameManager : MonoBehaviour
     public void GameOver()
     {
         currentStage = 0;
+        _deck.InitializeDeck(startDeck);
         SceneLoader.Reload();
     }
 

@@ -18,7 +18,7 @@ public class SimpleTutorialUI : MonoBehaviour
     }
 
     [SerializeField] private List<TutorialItem> tutorialList;
-    [SerializeField] private Canvas tutorialScreen;
+    [SerializeField] private CanvasGroup tutorialScreen;
     [SerializeField] private TextMeshProUGUI tutorialText;
     [SerializeField] private Image tutorialImage;
     [SerializeField] private Button continueButton;
@@ -26,11 +26,20 @@ public class SimpleTutorialUI : MonoBehaviour
     [Header("Animation Settings")] [SerializeField]
     private float animationSpeed = .3f;
     private int currentIndex = 0;
+
+    private void Start()
+    {
+        
+        tutorialCanvasGroup.DOFade(0f, 0f);
+        tutorialScreen.DOFade(0f, 0f);
+        tutorialScreen.gameObject.SetActive(false);
+        EventManager.Game.UI.OnTutorialScreenChange += OnTutorialScreenChange;
+
+    }
+
     private void OnEnable()
     {
-        EventManager.Game.UI.OnTutorialScreenChange += OnTutorialScreenChange;
         continueButton.onClick.AddListener(ContinueButtonOnclicked);
-        tutorialCanvasGroup.DOFade(0f, 0f);
     }
 
     private void OnDisable()
@@ -47,26 +56,38 @@ public class SimpleTutorialUI : MonoBehaviour
     private void OnTutorialScreenChange(bool status)
     {
         currentIndex = 0;
-        tutorialScreen.gameObject.SetActive(status);
-        ChangeSlide(0);
+        if (status)
+        {
+            ChangeSlide(0, true);
+            tutorialScreen.gameObject.SetActive(true);
+        }
+        tutorialScreen.DOFade(status ? 1f : 0f, animationSpeed).OnComplete(() =>
+        {
+            tutorialScreen.gameObject.SetActive(status);
+        });
+        
     }
 
-    private void ChangeSlide(int index)
+    
+
+    private void ChangeSlide(int index, bool instant = false)
     {
-        tutorialCanvasGroup.DOFade(0f, animationSpeed).OnComplete(() =>
+        float localAnimationSpeed = instant ? 0f : this.animationSpeed;
+        if (index >= tutorialList.Count)
+        {
+            OnTutorialScreenChange(false);
+            return;
+        }
+        
+        tutorialCanvasGroup.DOFade(0f, localAnimationSpeed).OnComplete(() =>
         {
             foreach (var tutorialItem in tutorialList)
             {
                 tutorialItem.tutorialImageObject.SetActive(false); 
             }
-            tutorialList[currentIndex].tutorialImageObject.SetActive(true);
-            tutorialText.text = tutorialList[currentIndex].tutorialText;
-            
-            if (index >= tutorialList.Count)
-            {
-                OnTutorialScreenChange(false);
-            }
-            tutorialCanvasGroup.DOFade(1f, animationSpeed);
+            tutorialList[index].tutorialImageObject.SetActive(true);
+            tutorialText.text = tutorialList[index].tutorialText;
+            tutorialCanvasGroup.DOFade(1f, localAnimationSpeed);
         });
         
     }

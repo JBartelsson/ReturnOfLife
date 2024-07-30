@@ -360,7 +360,7 @@ public class CardsUIController : MonoBehaviour
                         hoveredGridTile = currentGridTile,
                         hoverCallerArgs = GameManager.Instance.GetTemporaryCallerArgs(activePlantIndex, currentGridTile)
                     });
-                currentGridTile = oldGridTile;
+                oldGridTile = currentGridTile;
             }
         }
     }

@@ -106,7 +106,7 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
 
     private void OnPlantHoverChanged(EventManager.GameEvents.UIEvents.OnHoverChangedArgs args)
     {
-        ClearGridTile();
+        
         visualizationState = VisualizationState.NONE;
         if (args.hoveredCardInstance.GetCardStats().EffectPattern.IsTileInPattern(args.hoveredGridTile, ownGridTile))
         {
@@ -114,7 +114,7 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
         }
 
         redCrossSpriteRenderer.gameObject.SetActive(false);
-        UpdateContent();
+        SetMarkedState();
         if (args.hoveredGridTile == ownGridTile)
         {
             redCrossSpriteRenderer.gameObject.SetActive(true);
@@ -129,6 +129,10 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
 
             }
             SetNewSprite(args.hoveredCardInstance, previewSpriteRenderer, true);
+        }
+        else
+        {
+            SetNewSprite((Sprite)null, previewSpriteRenderer);
         }
     }
 

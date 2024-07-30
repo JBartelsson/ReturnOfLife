@@ -110,6 +110,10 @@ public class Deck
          */
     }
 
+    public bool IsInitialized()
+    {
+        return PlayerDeck.CardsInCollection.Count != 0;
+    }
     public void Reset()
     {
         Debug.Log("RESETTING DECK");
