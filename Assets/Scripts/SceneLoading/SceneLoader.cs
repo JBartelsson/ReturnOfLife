@@ -10,6 +10,9 @@ public static class SceneLoader
         GameScene,
         MainMenuScene,
         LoadingScene,
+        TitleScreen,
+        Settings,
+        Credits,
         None
     }
 
