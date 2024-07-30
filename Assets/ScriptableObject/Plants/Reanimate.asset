@@ -34,11 +34,11 @@ MonoBehaviour:
   cardFunction:
     executionType: 0
     scriptType:
-      _classRef: ReanimateFunction, Assembly-CSharp
+      _classRef: SinglePlacementFunction, Assembly-CSharp
   cardEditor:
     executionType: 3
     scriptType:
-      _classRef: 
+      _classRef: ReanimateSecondMove, Assembly-CSharp
   cardAccessCheck:
     executionType: 3
     scriptType:

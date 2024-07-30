@@ -54,7 +54,7 @@ public class GameUIController : MonoBehaviour
 
     private void UpdateTurn(EventManager.GameEvents.LevelEvents.TurnChangedArgs args)
     {
-        turnsText.SetText("Turn: \n" + args.TurnNumber.ToString() + "/3");
+        turnsText.SetText(args.TurnNumber.ToString() + "/3");
     }
 
     public void EndTurn()
