@@ -3,11 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
+using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
 using UnityEngine.Experimental.GlobalIllumination;
+using UnityEngine.Rendering;
 using UnityEngine.Serialization;
 using static CardData;
 
@@ -72,11 +74,7 @@ public class CardUI : MonoBehaviour
     
 
     [SerializeField] protected Material hoverMaterial;
-
     
-
-    
-
     [SerializeField] protected Transform cardParent;
 
     private readonly string EFFECTTYPE_PLANT = "Plant";

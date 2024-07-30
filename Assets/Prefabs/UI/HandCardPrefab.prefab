@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 970864678581597562, guid: 3d9ad85fdc3c93e4f900dc2359fb8507, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1245631948852558066, guid: 3d9ad85fdc3c93e4f900dc2359fb8507, type: 3}
       propertyPath: m_fontSize
       value: 9.65
@@ -23,6 +27,10 @@ PrefabInstance:
     - target: {fileID: 1245631948852558066, guid: 3d9ad85fdc3c93e4f900dc2359fb8507, type: 3}
       propertyPath: m_hasFontAssetChanged
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1334994341867778792, guid: 3d9ad85fdc3c93e4f900dc2359fb8507, type: 3}
+      propertyPath: m_AdditionalShaderChannelsFlag
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 1433592718613909924, guid: 3d9ad85fdc3c93e4f900dc2359fb8507, type: 3}
       propertyPath: m_Pivot.x
@@ -151,6 +159,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardUI: {fileID: 6271659122452762061}
+  cardCanvas: {fileID: 8338834195772883035}
+  normalSortingLayer: 0
+  hoveredSortingLayer: 100
   CardMouseHoverTransform: {fileID: 4411154796157988143}
 --- !u!114 &6271659122452762061 stripped
 MonoBehaviour:
@@ -163,3 +174,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 067d3a90c282a7346a3771cfc78b5ff3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!223 &8338834195772883035 stripped
+Canvas:
+  m_CorrespondingSourceObject: {fileID: 1334994341867778792, guid: 3d9ad85fdc3c93e4f900dc2359fb8507, type: 3}
+  m_PrefabInstance: {fileID: 7007504001101148851}
+  m_PrefabAsset: {fileID: 0}
