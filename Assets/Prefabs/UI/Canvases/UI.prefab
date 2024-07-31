@@ -714,6 +714,7 @@ RectTransform:
   - {fileID: 3299573895283667330}
   - {fileID: 574184638438003328}
   - {fileID: 6676196493826916919}
+  - {fileID: 3680804067111454069}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1472,7 +1473,7 @@ MonoBehaviour:
   m_ChildControlHeight: 0
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
-  m_ReverseArrangement: 0
+  m_ReverseArrangement: 1
 --- !u!1 &6467251913679902360
 GameObject:
   m_ObjectHideFlags: 0
@@ -1994,6 +1995,60 @@ PrefabInstance:
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1433592718613909924, guid: 3d9ad85fdc3c93e4f900dc2359fb8507, type: 3}
   m_PrefabInstance: {fileID: 496582859861169446}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1058080260038490058
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 4976693491228153385}
+    m_Modifications:
+    - target: {fileID: 4448388406368514751, guid: de10637162fb0264a84bbdd1bbb0ddc8, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4448388406368514751, guid: de10637162fb0264a84bbdd1bbb0ddc8, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4448388406368514751, guid: de10637162fb0264a84bbdd1bbb0ddc8, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4448388406368514751, guid: de10637162fb0264a84bbdd1bbb0ddc8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4448388406368514751, guid: de10637162fb0264a84bbdd1bbb0ddc8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4448388406368514751, guid: de10637162fb0264a84bbdd1bbb0ddc8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4497619032489591815, guid: de10637162fb0264a84bbdd1bbb0ddc8, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5780904548430954842, guid: de10637162fb0264a84bbdd1bbb0ddc8, type: 3}
+      propertyPath: m_Name
+      value: TipScreen
+      objectReference: {fileID: 0}
+    - target: {fileID: 5780904548430954842, guid: de10637162fb0264a84bbdd1bbb0ddc8, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: de10637162fb0264a84bbdd1bbb0ddc8, type: 3}
+--- !u!224 &3680804067111454069 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 4448388406368514751, guid: de10637162fb0264a84bbdd1bbb0ddc8, type: 3}
+  m_PrefabInstance: {fileID: 1058080260038490058}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1205266089558502283
 PrefabInstance:

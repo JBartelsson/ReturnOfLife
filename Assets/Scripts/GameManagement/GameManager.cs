@@ -112,7 +112,6 @@ public class GameManager : MonoBehaviour
     private SecondMoveCallerArgs secondMoveArgs = new SecondMoveCallerArgs();
 
 
-
     private void Awake()
     {
         Debug.Log($"Instance on Awake is {Instance}");
@@ -124,7 +123,7 @@ public class GameManager : MonoBehaviour
             this.transform.parent = null;
             DontDestroyOnLoad(this);
 #if UNITY_EDITOR
- 
+
             SceneLoader.Load(SceneLoader.Scene.GameScene);
 #endif
         }
@@ -133,7 +132,6 @@ public class GameManager : MonoBehaviour
             Destroy(this.gameObject);
             Debug.LogWarning("Game Manager already exists!");
         }
-
     }
 
 
@@ -151,7 +149,7 @@ public class GameManager : MonoBehaviour
             Debug.Log("On scene Load");
             GridManager.Instance.OnGridReady += Instance_OnGridReady;
             if (!_deck.IsInitialized())
-            _deck.InitializeDeck(startDeck, handSize, handSize);
+                _deck.InitializeDeck(startDeck, handSize, handSize);
 
             BuildLevel();
         }
@@ -176,8 +174,8 @@ public class GameManager : MonoBehaviour
             EventManager.Game.UI.OnTutorialScreenChange?.Invoke(true);
             SwitchState(GameState.Tutorial);
         }
-        GridManager.Instance.OnGridReady -= Instance_OnGridReady;
 
+        GridManager.Instance.OnGridReady -= Instance_OnGridReady;
     }
 
     private void SwitchState(GameState newGameState)
@@ -250,6 +248,12 @@ public class GameManager : MonoBehaviour
         selectedCardBlueprint = callerArgs.CallingCardInstance;
         Debug.Log($"INITIALIZES ONE SECOND MOVE for {callerArgs}");
         secondMoveQueue.RemoveAt(0);
+        if (selectedCardBlueprint.IsDead())
+        {
+            CancelSecondMove();
+            return;
+        }
+
         secondMoveArgs = new SecondMoveCallerArgs()
         {
             callerType = CALLER_TYPE.SECOND_MOVE,
@@ -274,15 +278,14 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-       
-        
+
         if (playingQueue.Count != 0 && !blockQueue)
         {
             blockQueue = true;
             PlayLifeForm(playingQueue[0]);
             return;
         }
-        
+
         if (secondMoveQueue.Count != 0 && !blockSecondMoveQueue)
         {
             blockSecondMoveQueue = true;
@@ -290,6 +293,7 @@ public class GameManager : MonoBehaviour
             InitSecondMove(secondMoveQueue[0]);
             return;
         }
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
             AddPointScore(500, new CallerArgs(), SCORING_ORIGIN.LIFEFORM);
@@ -309,6 +313,7 @@ public class GameManager : MonoBehaviour
             blockSecondMoveQueue = false;
             CheckForEmptyQueue();
         }
+
         Debug.Log($"CANT EXECUTE THE EDITOR THERE");
 
         Debug.Log(secondMoveArgs);
@@ -375,10 +380,12 @@ public class GameManager : MonoBehaviour
             RemoveAllWisdoms();
             selectedCardIndex = -1;
         }
+
         if (playingQueue.Count != 0) return;
         if (secondMoveQueue.Count != 0) return;
         EndCardPlaying();
     }
+
     public void PlayLifeForm(CallerArgs callerArgs)
     {
         playingQueue.RemoveAt(0);
@@ -404,6 +411,7 @@ public class GameManager : MonoBehaviour
             {
                 secondMoveQueue.Insert(0, callerArgs);
             }
+
             return;
         }
 
@@ -415,7 +423,6 @@ public class GameManager : MonoBehaviour
 
     private void EndCardPlaying()
     {
-        
         editorBlocked = false;
         EventManager.Game.Level.EndSingleCardPlay?.Invoke();
         SwitchState(GameState.SelectCards);
