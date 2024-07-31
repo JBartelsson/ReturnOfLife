@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 80d95370bce8dba44bcb83a9b06bc4ca, type: 3}
-  m_Name: AnnaTestPlanetProgression 1
+  m_Name: AnnaTest_1_PlanetProgression
   m_EditorClassIdentifier: 
   progression:
   - stage: 0
@@ -18,22 +18,28 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 63716d4b6a9409b4593e5c34991bf4fb, type: 2}
   - stage: 0
     allowedEnemies:
-    - {fileID: 11400000, guid: 2d039e5fc25082941a963f24cccd7960, type: 2}
-  - stage: 0
-    allowedEnemies:
     - {fileID: 11400000, guid: cb4b5facc2b3e1d469424a691884f5b0, type: 2}
   - stage: 0
     allowedEnemies:
-    - {fileID: 11400000, guid: 4f0edf23cf5adc144a31bfca930d937d, type: 2}
+    - {fileID: 11400000, guid: 640613ac597915e44aaf335df2f7d719, type: 2}
   - stage: 0
     allowedEnemies:
     - {fileID: 11400000, guid: 4d49d4850526a4d4e90765c0e951a9af, type: 2}
   - stage: 0
     allowedEnemies:
+    - {fileID: 11400000, guid: 4f0edf23cf5adc144a31bfca930d937d, type: 2}
+  - stage: 0
+    allowedEnemies:
     - {fileID: 11400000, guid: 421610ab4ce1e3f4ba43d401d3b2b1d9, type: 2}
   - stage: 0
     allowedEnemies:
-    - {fileID: 11400000, guid: 2518695e5a5e8254fa47a9314fdb0267, type: 2}
+    - {fileID: 11400000, guid: ac348bb4f28edd347a6a309252409a8b, type: 2}
   - stage: 0
     allowedEnemies:
-    - {fileID: 11400000, guid: d0c9d55371dce924c8d0de3c3e4a9e20, type: 2}
+    - {fileID: 11400000, guid: 2d039e5fc25082941a963f24cccd7960, type: 2}
+  - stage: 0
+    allowedEnemies:
+    - {fileID: 11400000, guid: 40c8521a197781b478068bdde4de2fac, type: 2}
+  - stage: 0
+    allowedEnemies:
+    - {fileID: 11400000, guid: 449464151f1b1ed46988caa2e1b6b66e, type: 2}
