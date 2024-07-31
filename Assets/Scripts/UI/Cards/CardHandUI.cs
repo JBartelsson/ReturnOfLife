@@ -31,6 +31,7 @@ public class CardHandUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     private void Start()
     {
         SetPosition();
+        cardCanvas.sortingOrder = normalSortingLayer;
     }
 
     private void SetPosition()
@@ -64,10 +65,12 @@ public class CardHandUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
         if (state)
         {
             cardUI.BackgroundSprite.material = cardUI.HoverMaterial;
+            cardCanvas.sortingOrder = hoveredSortingLayer;
         }
         else
         {
             cardUI.BackgroundSprite.material = null;
+            cardCanvas.sortingOrder = normalSortingLayer;
             OnPointerExit(null);
         }
 
@@ -130,5 +133,17 @@ public class CardHandUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     {
         cardClickEnabled = state;
         // OnPointerExit(null);
+    }
+
+    private void Update()
+    {
+        if (cardSelected)
+        {
+            if (Input.GetKeyDown(KeyCode.D))
+            {
+                GameManager.Instance.Deck.DiscardCard(cardUI.CardIndex);
+                GameManager.Instance.Deck.DrawCards(1);
+            }
+        }
     }
 }
