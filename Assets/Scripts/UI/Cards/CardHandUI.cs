@@ -9,7 +9,9 @@ using UnityEngine.EventSystems;
 public class CardHandUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] private CardUI cardUI;
-
+    [SerializeField] private Canvas cardCanvas;
+    [SerializeField] private int normalSortingLayer;
+    [SerializeField] private int hoveredSortingLayer;
     public CardUI CardUI
     {
         get => cardUI;
@@ -22,6 +24,7 @@ public class CardHandUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     private bool canPlayCard = true;
     private bool cardSelected = false;
     private Vector3 originalPosition;
+    
 
     private Tween cardUpTween;
 
@@ -73,11 +76,13 @@ public class CardHandUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     public void OnPointerEnter(PointerEventData eventData)
     {
         cardUpTween = cardUI.CardParent.DOLocalMove(CardMouseHoverTransform.localPosition, .3f);
+        cardCanvas.sortingOrder = hoveredSortingLayer;
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         if (cardSelected) return;
+        cardCanvas.sortingOrder = normalSortingLayer;
         cardUI.CardParent.DOLocalMove(originalPosition, .3f);
     }
     
