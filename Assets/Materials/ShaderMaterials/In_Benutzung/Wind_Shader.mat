@@ -36,6 +36,10 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _Glowmap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: b702e0a87d26f7b47a7c5a8657f12d32, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -58,7 +62,13 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _Alpha: 1
+    - _PulseMax: 1
+    - _PulseMin: 0.3
+    - _PulseSpeed: 1
+    - _Saturation: 1
     - _WindIntensity: 0.2
     - _WindSpeed: 0.3
-    m_Colors: []
+    m_Colors:
+    - _GlowColor: {r: 2.842767, g: 1.91826, b: 0, a: 0}
   m_BuildTextureStacks: []
