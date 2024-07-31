@@ -713,7 +713,7 @@ PrefabInstance:
       objectReference: {fileID: 519420031}
     - target: {fileID: 6489517828526856880, guid: d0df6d8f51d3cdf4383671d2f6b8176f, type: 3}
       propertyPath: m_RenderMode
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6511925901419391343, guid: d0df6d8f51d3cdf4383671d2f6b8176f, type: 3}
       propertyPath: m_Enabled
