@@ -131,7 +131,7 @@ public class PatternPropertyDrawer : PropertyDrawer
 
 
         GUI.color = Color.white;
-
+    GUI.contentColor = Color.white;
         EditorGUILayout.EndVertical();
         if (changed)
         {
