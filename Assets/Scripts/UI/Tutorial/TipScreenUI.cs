@@ -36,17 +36,38 @@ public class TipScreenUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI tipText;
     [SerializeField] private float animationSpeed = .3f;
 
-    public static List<TipType> tipMemory = new ();
+    public static List<TipType> tipMemory = new();
+
     private void Start()
     {
         continueButton.onClick.AddListener(CloseTip);
-        tipCanvas.gameObject.SetActive(false);
-        
+    }
+
+    private void OnEnable()
+    {
+        EventManager.Game.Level.OnLevelInitialized += OnLevelInitialized;
+        EventManager.Game.Level.OnSecondMoveSuccessful += OnSecondMoveNeeded;
+    }
+
+    private void OnSecondMoveNeeded()
+    {
+        ShowTip(TipType.ExtraMove);
+        EventManager.Game.Level.OnSecondMoveSuccessful -= OnSecondMoveNeeded;
+    }
+
+    private void OnLevelInitialized(EventManager.GameEvents.LevelEvents.LevelInitializedArgs arg0)
+    {
+        if (GridManager.Instance.Grid.SpecialFields.Any((x) => x.FieldType == SpecialFieldType.MULTIPLY))
+        {
+            ShowTip(TipType.MultiplyField);
+            EventManager.Game.Level.OnLevelInitialized -= OnLevelInitialized;
+            return;
+        }
+        CloseTip();
     }
 
     public void ShowTip(TipType tipToShow)
     {
-        Debug.Log("Show Tip called");
         TipItem tipItem = tips.FirstOrDefault((x) => x.tipType == tipToShow);
 
         if (tipItem == null) return;
@@ -55,16 +76,18 @@ public class TipScreenUI : MonoBehaviour
             return;
         }
 
+        Debug.Log($"Tip {tipToShow} showed");
         tipText.text = tipItem.tipText;
         tipCanvas.gameObject.SetActive(true);
         tipCanvas.DOFade(1f, animationSpeed);
-
+        EventManager.Game.UI.OnBlockGamePlay?.Invoke(true);
         tipMemory.Add(tipToShow);
     }
 
     private void CloseTip()
     {
         tipCanvas.DOFade(0f, animationSpeed).OnComplete(() => { tipCanvas.gameObject.SetActive(false); });
+        EventManager.Game.UI.OnBlockGamePlay?.Invoke(false);
     }
 
     private void Update()

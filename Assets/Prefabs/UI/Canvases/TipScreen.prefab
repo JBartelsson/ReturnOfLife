@@ -955,6 +955,10 @@ MonoBehaviour:
   - tipPosition: {fileID: 5993239960829835894}
     tipType: 0
     tipText: YO Multiply field make 1,5x and go boom!
+  - tipPosition: {fileID: 5993239960829835894}
+    tipType: 3
+    tipText: Some Lifeforms feature extra Moves. Click on the highlighted fields
+      to play it or cancel it with right click.
   tipCanvas: {fileID: 4124351689645032746}
   continueButton: {fileID: 8811766574527004184}
   tipText: {fileID: 1631771969307094313}

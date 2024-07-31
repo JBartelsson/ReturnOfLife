@@ -20,7 +20,8 @@ public static class EventManager
         Game.Level.OnPlantSacrificed = delegate { };
         Game.Level.OnWisdomChanged = delegate { };
         Game.Level.OnPlanetProgressionWon = delegate {};
-        Game.Level.EndSingleCardPlay = delegate {};
+        Game.Level.OnEndSingleCardPlay = delegate {};
+        Game.Level.OnSecondMoveSuccessful = delegate { };
 
         
         Game.UI.OnSecondMoveNeeded = delegate {};
@@ -33,6 +34,8 @@ public static class EventManager
         Game.UI.OnTutorialScreenChange = delegate { };
         Game.UI.OnCardPickScreenChange = delegate { };
         Game.UI.OnChangeOtherCanvasesStatus = delegate { };
+        Game.UI.OnBlockGamePlay = delegate { };
+        Game.UI.OnSecondMoveQueueEmpty = delegate { };
 
     }
 
@@ -109,7 +112,8 @@ public static class EventManager
             public UnityAction<bool> OnTutorialScreenChange;
             public UnityAction<BoolArgs> OnCardPickScreenChange;
             public UnityAction<bool> OnChangeOtherCanvasesStatus;
-
+            public UnityAction<bool> OnBlockGamePlay;
+            public UnityAction OnSecondMoveQueueEmpty;
         }
         
         public class LevelEvents
@@ -125,7 +129,8 @@ public static class EventManager
             public UnityAction<WisdomChangedArgs> OnWisdomChanged;
             public UnityAction<LevelInitializedArgs> OnLevelInitialized;
             public UnityAction OnPlanetProgressionWon;
-            public UnityAction EndSingleCardPlay;
+            public UnityAction OnEndSingleCardPlay;
+            public UnityAction OnSecondMoveSuccessful;
 
         
             public class LevelEndedArgs : Args
