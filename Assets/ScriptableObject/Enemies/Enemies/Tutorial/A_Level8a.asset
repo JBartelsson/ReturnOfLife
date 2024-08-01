@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: A_Level8a
   m_EditorClassIdentifier: 
   pattern:
-    dataString: CBBBBBCBBBBBBBBBABBBBBBAAABBBBBBABBBBBBBBBCBBBBBC
+    dataString: BBBBBBBBBBBBBBBACCCBABACCCBABACCCBABBBBBBBBBBBBBB
     gridSize: 7
-  neededECOPoints: 400
+  neededECOPoints: 350

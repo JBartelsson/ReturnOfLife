@@ -24,22 +24,40 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 7435ef0104353e74a9bb2d8e005ce019, type: 2}
   - stage: 0
     allowedEnemies:
+    - {fileID: 11400000, guid: ddf851f7695a66d44b063afec9dfe67a, type: 2}
+  - stage: 0
+    allowedEnemies:
     - {fileID: 11400000, guid: 5309a643508bee444ade79b01a7b294c, type: 2}
   - stage: 0
     allowedEnemies:
     - {fileID: 11400000, guid: 633da65b8aaa8db439c0276aecf1f863, type: 2}
   - stage: 0
     allowedEnemies:
-    - {fileID: 11400000, guid: dfd75a4a91636304c90162cde5a4aa08, type: 2}
+    - {fileID: 11400000, guid: ac348bb4f28edd347a6a309252409a8b, type: 2}
   - stage: 0
     allowedEnemies:
     - {fileID: 11400000, guid: c74a41771b36efa45bc3335f9e677900, type: 2}
   - stage: 0
     allowedEnemies:
-    - {fileID: 11400000, guid: ddf851f7695a66d44b063afec9dfe67a, type: 2}
+    - {fileID: 11400000, guid: 7435ef0104353e74a9bb2d8e005ce019, type: 2}
   - stage: 0
     allowedEnemies:
     - {fileID: 11400000, guid: 59c8756f58a9e5f49bd1a74817be4b5d, type: 2}
   - stage: 0
     allowedEnemies:
+    - {fileID: 11400000, guid: dfd75a4a91636304c90162cde5a4aa08, type: 2}
+  - stage: 0
+    allowedEnemies:
     - {fileID: 11400000, guid: 75dc8054d6a0ed64fa69414fe723cc6b, type: 2}
+  - stage: 0
+    allowedEnemies:
+    - {fileID: 11400000, guid: 12dd189a59ea6704cb8a27381b98894b, type: 2}
+  - stage: 0
+    allowedEnemies:
+    - {fileID: 11400000, guid: 472afadf2a41bab4bac3ac15e7f959c7, type: 2}
+  - stage: 0
+    allowedEnemies:
+    - {fileID: 11400000, guid: d81ff7e2f50b77541bab82d660f6cd8b, type: 2}
+  - stage: 0
+    allowedEnemies:
+    - {fileID: 11400000, guid: d3b68f2d4cdeb7e49b87db5df14e52c9, type: 2}
