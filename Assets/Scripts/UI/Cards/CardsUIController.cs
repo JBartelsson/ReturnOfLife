@@ -65,7 +65,7 @@ public class CardsUIController : MonoBehaviour
 
     private void OnPlantPlanted(EventManager.GameEvents.UIEvents.OnPlantPlantedArgs arg0)
     {
-        GameInputOnCancel();
+        CancelPlaying();
     }
 
     private void OnSecondMoveNeeded(EventManager.GameEvents.UIEvents.OnSecondMoveNeededArgs neededArgs)
@@ -136,6 +136,8 @@ public class CardsUIController : MonoBehaviour
     private void GameInputOnCancel()
     {
         CancelPlaying();
+        GameManager.Instance.RemoveAllWisdoms();
+        activeWisdoms.Clear();
     }
 
     private void CancelPlaying(bool overwriteEditorBlock = false)
@@ -151,8 +153,7 @@ public class CardsUIController : MonoBehaviour
         activePlantIndex = -1;
         currentState = State.SelectCard;
         EventManager.Game.UI.OnPlantHoverCanceled?.Invoke();
-        GameManager.Instance.RemoveAllWisdoms();
-        activeWisdoms.Clear();
+        
         if (currentCards.Count >= 0)
             foreach (CardHandUI cardUI in currentCards)
             {

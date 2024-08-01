@@ -116,6 +116,10 @@ public class CardHandUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
 
     private void OnWisdomChanged(EventManager.GameEvents.LevelEvents.WisdomChangedArgs arg0)
     {
+        foreach (var arg0CurrentWisdom in arg0.currentWisdoms)
+        {
+            Debug.Log($"Wisdom changed! {arg0CurrentWisdom}");
+        }
         if (arg0.currentWisdoms.Any((wisdom) => wisdom.CardData.WisdomType == WisdomType.Basic))
         {
             cardUI.SetCardUI(cardUI.CardInstance, true);

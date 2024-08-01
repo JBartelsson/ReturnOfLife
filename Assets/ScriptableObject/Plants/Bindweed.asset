@@ -30,6 +30,7 @@ MonoBehaviour:
   effectType: 0
   wisdomType: 0
   <Rarity>k__BackingField: 0
+  secondMoveText: Plant Bindweed
   overridePointFunction: 0
   cardFunction:
     executionType: 2

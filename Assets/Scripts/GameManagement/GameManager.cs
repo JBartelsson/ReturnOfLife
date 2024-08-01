@@ -388,6 +388,8 @@ public class GameManager : MonoBehaviour
             Debug.Log($"Trying to end turn of card {selectedCardIndex}");
             //Deck manipulation, in the future in the Deck class
             ReduceMana(_deck.HandCards[selectedCardIndex].GetCardStats().PlayCost);
+            Debug.Log($"Current Wisdoms: {currentWisdoms.Count}");
+            CardInstance playedCard = _deck.HandCards[selectedCardIndex];
             foreach (var wisdom in currentWisdoms)
             {
                 Debug.Log($"REDUCE MANA FOR {wisdom.GetCardStats().PlayCost}");
@@ -395,7 +397,7 @@ public class GameManager : MonoBehaviour
                 _deck.DiscardCard(wisdom);
             }
 
-            _deck.DiscardCard(selectedCardIndex);
+            _deck.DiscardCard(playedCard);
             //Event calling
 
             currentPlayedCards++;
