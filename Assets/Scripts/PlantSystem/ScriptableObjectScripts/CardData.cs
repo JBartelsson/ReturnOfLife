@@ -169,6 +169,11 @@ public class CardData : ScriptableObject, ICloneable
     [SerializeField] private WisdomType wisdomType;
 
     [field: SerializeField] public CardRarity Rarity { get; private set; }
+    [Header("UI Stuff")]
+    [SerializeField] private string secondMoveText;
+
+    public string SecondMoveText => secondMoveText;
+
     private int runtimePoints = 0;
     
     private static int cardDataIDCounter = 0;

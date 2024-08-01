@@ -20,7 +20,14 @@ public class SecondMoveUI : MonoBehaviour
     private void OnEnable()
     {
         EventManager.Game.UI.OnSecondMoveNeeded += OnSecondMoveNeeded;
+        EventManager.Game.Level.OnSecondMoveSuccessful += OnSecondMoveSuccessful;
         EventManager.Game.UI.OnSecondMoveQueueEmpty += OnSecondMoveQueueEmpty;
+    }
+
+    private void OnSecondMoveSuccessful()
+    {
+        secondMoveCanvasGroup.gameObject.SetActive(true);
+        secondMoveCanvasGroup.DOFade(1f, Constants.UI_FAST_FADE_SPEED).SetEase(Ease.OutQuad);
     }
 
     private void OnSecondMoveQueueEmpty()
@@ -34,9 +41,7 @@ public class SecondMoveUI : MonoBehaviour
         Debug.Log(arg0.editorCardInstance.CardData);
         Debug.Log(arg0.editorCardInstance.CardData.PlantSprite);
         secondMoveSpriteRenderer.sprite = arg0.editorCardInstance.CardData.PlantSprite;
-        secondMoveText.text = arg0.editorCardInstance.CardData.CardName + " " + arg0.SecondMoveCallerArgs.SecondMoveNumber + "x";
-        secondMoveCanvasGroup.gameObject.SetActive(true);
-        secondMoveCanvasGroup.DOFade(1f, Constants.UI_FAST_FADE_SPEED).SetEase(Ease.OutQuad);
+        secondMoveText.text = arg0.editorCardInstance.CardData.SecondMoveText + " " + arg0.SecondMoveCallerArgs.SecondMoveNumber + "x";
     }
 
     private void HideWindow()

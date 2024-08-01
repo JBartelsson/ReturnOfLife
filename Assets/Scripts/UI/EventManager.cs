@@ -22,6 +22,7 @@ public static class EventManager
         Game.Level.OnPlanetProgressionWon = delegate {};
         Game.Level.OnEndSingleCardPlay = delegate {};
         Game.Level.OnSecondMoveSuccessful = delegate { };
+        Game.Level.OnShuffeDiscardPileIntoDrawPile = delegate { };
 
         
         Game.UI.OnSecondMoveNeeded = delegate {};
@@ -131,6 +132,7 @@ public static class EventManager
             public UnityAction OnPlanetProgressionWon;
             public UnityAction OnEndSingleCardPlay;
             public UnityAction OnSecondMoveSuccessful;
+            public UnityAction OnShuffeDiscardPileIntoDrawPile;
 
         
             public class LevelEndedArgs : Args

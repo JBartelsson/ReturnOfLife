@@ -35,18 +35,32 @@ public class TipScreenUI : MonoBehaviour
     [SerializeField] private Button continueButton;
     [SerializeField] private TextMeshProUGUI tipText;
     [SerializeField] private float animationSpeed = .3f;
+    [SerializeField] private RectTransform tipScreenRect;
 
     public static List<TipType> tipMemory = new();
 
     private void Start()
     {
-        continueButton.onClick.AddListener(CloseTip);
+        continueButton.onClick.AddListener(() => CloseTip());
     }
 
     private void OnEnable()
     {
         EventManager.Game.Level.OnLevelInitialized += OnLevelInitialized;
         EventManager.Game.Level.OnSecondMoveSuccessful += OnSecondMoveNeeded;
+        EventManager.Game.Level.OnTurnChanged += OnTurnChanged;
+        EventManager.Game.Level.OnShuffeDiscardPileIntoDrawPile += OnShuffeDiscardPileIntoDrawPile;
+    }
+
+    private void OnShuffeDiscardPileIntoDrawPile()
+    {
+        ShowTip(TipType.CardsEmpty);
+    }
+
+    private void OnTurnChanged(EventManager.GameEvents.LevelEvents.TurnChangedArgs arg0)
+    {
+        if (arg0.TurnNumber != 3) return;
+        ShowTip(TipType.ThirdTurn);
     }
 
     private void OnSecondMoveNeeded()
@@ -63,7 +77,7 @@ public class TipScreenUI : MonoBehaviour
             EventManager.Game.Level.OnLevelInitialized -= OnLevelInitialized;
             return;
         }
-        CloseTip();
+        CloseTip(true);
     }
 
     public void ShowTip(TipType tipToShow)
@@ -77,6 +91,7 @@ public class TipScreenUI : MonoBehaviour
         }
 
         Debug.Log($"Tip {tipToShow} showed");
+        tipScreenRect.position = tipItem.tipPosition.position;
         tipText.text = tipItem.tipText;
         tipCanvas.gameObject.SetActive(true);
         tipCanvas.DOFade(1f, animationSpeed);
@@ -84,9 +99,10 @@ public class TipScreenUI : MonoBehaviour
         tipMemory.Add(tipToShow);
     }
 
-    private void CloseTip()
+    private void CloseTip(bool instant = false)
     {
-        tipCanvas.DOFade(0f, animationSpeed).OnComplete(() => { tipCanvas.gameObject.SetActive(false); });
+        float speed = instant ? 0f : animationSpeed;
+        tipCanvas.DOFade(0f, speed).OnComplete(() => { tipCanvas.gameObject.SetActive(false); });
         EventManager.Game.UI.OnBlockGamePlay?.Invoke(false);
     }
 
