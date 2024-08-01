@@ -85,8 +85,11 @@ public class Grid
 
         ApplyNeighbors();
         SpecialFields = FindConnectedFields();
+        Debug.Log($"Special Fields:");
+
         foreach (var specialField in SpecialFields)
         {
+            Debug.Log($"Grid has {specialField} in Grid!");
             foreach (var specialFieldGridTile in specialField.SpecialFieldGridTiles)
             {
                 specialFieldGridTile.SpecialField = specialField;
@@ -223,31 +226,11 @@ public class Grid
                 return;
             }
 
-            if (gridTile.RightNeighbor != null)
-            {
-                if (gridTile.RightNeighbor.FieldType == gridTile.FieldType)
-                {
-                    {
-                        SpecialField newField = new(gridTile.FieldType);
-                        PopulateFieldGroup(ref newField, ref visitedTiles, gridTile);
-                        specialFieldsList.Add(newField);
-                        return;
-                    }
-                }
-            }
-
-            if (gridTile.BottomNeighbor != null)
-            {
-                if (gridTile.BottomNeighbor.FieldType == gridTile.FieldType)
-                {
-                    {
-                        SpecialField newField = new(gridTile.FieldType);
-                        PopulateFieldGroup(ref newField, ref visitedTiles, gridTile);
-                        specialFieldsList.Add(newField);
-                        return;
-                    }
-                }
-            }
+            SpecialField newField = new(gridTile.FieldType);
+            PopulateFieldGroup(ref newField, ref visitedTiles, gridTile);
+            specialFieldsList.Add(newField);
+            
+            
         });
         return specialFieldsList;
     }
