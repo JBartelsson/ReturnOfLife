@@ -16,7 +16,7 @@ MonoBehaviour:
   <CardName>k__BackingField: Epiphyt
   regularCardStats:
     Points: 0
-    EffectPattern: {fileID: 11400000, guid: 03c55ff4c842f654baba9ec08d703ece, type: 2}
+    EffectPattern: {fileID: 11400000, guid: 0b9b2a87fef7c7746b6a64e574cdd886, type: 2}
     CardText: Kills a plant and grants its mana.
     PlayCost: 0
     SecondMoveCallAmount: 1
