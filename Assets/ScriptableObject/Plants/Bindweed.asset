@@ -17,13 +17,13 @@ MonoBehaviour:
   regularCardStats:
     Points: 20
     EffectPattern: {fileID: 11400000, guid: 58e5ab6e4cf343746a10423e47c88ec9, type: 2}
-    CardText: When planted, plant another Bindweed inside the Pattern.
+    CardText: When planted, plant another Bindweed inside the <b>Pattern</b>.
     PlayCost: 1
     SecondMoveCallAmount: 1
   upgradedCardStats:
     Points: 20
     EffectPattern: {fileID: 11400000, guid: 35ecfea0a95cba64c9dba6c3b6e94bb9, type: 2}
-    CardText: When planted, plant another Bindweed inside the Pattern+.
+    CardText: When planted, plant another Bindweed inside the <b>Pattern+</b>.
     PlayCost: 1
     SecondMoveCallAmount: 1
   <Element>k__BackingField: 0

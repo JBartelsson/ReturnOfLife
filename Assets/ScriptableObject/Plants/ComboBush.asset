@@ -18,18 +18,21 @@ MonoBehaviour:
     Points: 15
     EffectPattern: {fileID: 11400000, guid: a66e24e2058a24543bbfc0274f6f0133, type: 2}
     CardText: If a Lifeform is planted on top of it, it kills the Lifeform and plants
-      new Lycoperdon on empty fields in the Pattern.
+      new Lycoperdon on empty fields in the <b>Pattern</b>.
     PlayCost: 2
+    SecondMoveCallAmount: 1
   upgradedCardStats:
     Points: 15
     EffectPattern: {fileID: 11400000, guid: b83dc6f660126f24c89ca6f7dd25b3e7, type: 2}
     CardText: If a Lifeform is planted on top of it, it kills the Lifeform and plants
-      new Lycoperdon on empty fields in the Pattern+.
+      new Lycoperdon on empty fields in the <b>Pattern+</b>.
     PlayCost: 2
+    SecondMoveCallAmount: 1
   <Element>k__BackingField: 0
   effectType: 0
   wisdomType: 0
   <Rarity>k__BackingField: 0
+  secondMoveText: 
   overridePointFunction: 0
   cardFunction:
     executionType: 2
