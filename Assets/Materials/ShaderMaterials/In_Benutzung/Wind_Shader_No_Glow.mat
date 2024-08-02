@@ -63,8 +63,8 @@ Material:
     m_Ints: []
     m_Floats:
     - _Alpha: 1
-    - _PulseMax: 1
-    - _PulseMin: 0.3
+    - _PulseMax: 0
+    - _PulseMin: 0
     - _PulseSpeed: 1
     - _Saturation: 1
     - _WindIntensity: 0.2

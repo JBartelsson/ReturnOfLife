@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class CardsViewUI : MonoBehaviour
@@ -9,6 +11,8 @@ public class CardsViewUI : MonoBehaviour
     [SerializeField] private GameObject cardPrefab;
 
     [SerializeField] private RectTransform cardsSpawnTarget;
+
+    [SerializeField] private TextMeshProUGUI cardCanvasTitle;
 
     private List<CardUI> currentCardUIs = new ();
     // Start is called before the first frame update
@@ -23,10 +27,26 @@ public class CardsViewUI : MonoBehaviour
         //Fade in or out
         UIUtils.FadeStandard(cardsViewCanvasGroup, args.State);
 
+        string title = "";
+        switch (args.Pile)
+        {
+            case DeckViewUI.Pile.DrawPile:
+                title = "Draw Pile";
+                break;
+            case DeckViewUI.Pile.DiscardPile:
+                title = "Discard Pile";
+                break;
+            case DeckViewUI.Pile.DeckPile:
+                title = "Deck";
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
         //Show Cards
         if (args.State)
         {
             cardsSpawnTarget.anchoredPosition = Vector2.zero;
+            cardCanvasTitle.text = title;
             SpawnCards(args.cards);
         }
     }

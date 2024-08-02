@@ -25,6 +25,7 @@ public static class EventManager
         Game.Level.OnSecondMoveSuccessful = delegate { };
         Game.Level.OnShuffeDiscardPileIntoDrawPile = delegate { };
         Game.Level.OnCardAdded = delegate { };
+        Game.Level.OnDiscardUsed = delegate { };
 
         
         Game.UI.OnSecondMoveNeeded = delegate {};
@@ -105,6 +106,7 @@ public static class EventManager
             public class OnOpenCardViewArgs : Args
             {
                 public bool State;
+                public DeckViewUI.Pile Pile;
                 public List<CardInstance> cards;
             }
 
@@ -147,6 +149,7 @@ public static class EventManager
             public UnityAction OnSecondMoveSuccessful;
             public UnityAction OnShuffeDiscardPileIntoDrawPile;
             public UnityAction<CardInstance> OnCardAdded;
+            public UnityAction<int> OnDiscardUsed;
 
         
             public class LevelEndedArgs : Args

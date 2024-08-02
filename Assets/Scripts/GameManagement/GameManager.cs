@@ -8,6 +8,7 @@ using DG.Tweening;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using static GameManager;
 
 public class GameManager : MonoBehaviour
@@ -54,6 +55,7 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private int standardMana = 3;
     [SerializeField] private int standardTurns = 3;
+    [FormerlySerializedAs("standardDiscard")] [SerializeField] private int standardDiscards = 3;
     [SerializeField] private PlanetProgressionSO planetProgression;
     private GameState currentGameState = GameState.None;
 
@@ -68,6 +70,7 @@ public class GameManager : MonoBehaviour
     private List<CardInstance> currentWisdoms = new();
     private int currentMana = 0;
     private int currentTurns = 0;
+    private int currentDiscards = 0;
     private int currentPlayedCards = 0;
     private bool selectedPlantNeedNeighbor = false;
     private int selectedCardIndex;
@@ -465,6 +468,7 @@ public class GameManager : MonoBehaviour
         }
 
         SetMana(standardMana);
+        SetDiscards(standardDiscards);
         RemoveAllWisdoms();
 
 
@@ -475,6 +479,12 @@ public class GameManager : MonoBehaviour
         });
         _deck.DiscardHand();
         SwitchState(GameState.DrawCards);
+    }
+
+    private void SetDiscards(int discards)
+    {
+        currentDiscards = discards;
+        EventManager.Game.Level.OnDiscardUsed(currentDiscards);
     }
 
     private void EndLevel()
@@ -638,5 +648,14 @@ public class GameManager : MonoBehaviour
         {
             currentWisdoms = this.currentWisdoms
         });
+    }
+
+    public void DiscardCard(int index)
+    {
+        if (currentDiscards <= 0) return;
+        Deck.DiscardCard(index);
+        Deck.DrawCards(1);
+        SetDiscards(currentDiscards - 1);
+        
     }
 }

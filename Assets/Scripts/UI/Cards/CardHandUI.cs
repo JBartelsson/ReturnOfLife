@@ -158,8 +158,7 @@ public class CardHandUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
         {
             if (Input.GetKeyDown(KeyCode.D))
             {
-                GameManager.Instance.Deck.DiscardCard(cardUI.CardIndex);
-                GameManager.Instance.Deck.DrawCards(1);
+                
             }
         }
     }

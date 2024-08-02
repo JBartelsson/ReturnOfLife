@@ -1,14 +1,19 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class CardsUIController : MonoBehaviour
 {
     [SerializeField] private GameObject cardPrefab;
     [SerializeField] private Transform cardsParent;
     [SerializeField] private Transform hoveredCardsTransform;
+    [SerializeField] private Button discardButton;
+    [SerializeField] private TextMeshProUGUI discardLeftText;
+    
     private List<CardHandUI> currentCards = new();
     private int activePlantIndex = -1;
 
@@ -40,6 +45,25 @@ public class CardsUIController : MonoBehaviour
         EventManager.Game.Input.OnInteract += GameInputOnInteract;
         EventManager.Game.Level.OnEndSingleCardPlay += EndSingleCardPlay;
         EventManager.Game.UI.OnBlockGamePlay += OnBlockGamePlay;
+        EventManager.Game.Level.OnDiscardUsed += OnDiscardUsed;
+        discardButton.onClick.AddListener(() =>
+        {
+            DiscardCard();
+        });
+    }
+
+    private void OnDiscardUsed(int discardsLeft)
+    {
+        discardLeftText.text = $"({discardsLeft} left)";
+        if (discardsLeft == 0)
+        {
+            discardButton.interactable = false;
+        }
+        else
+        {
+            discardButton.interactable = true;
+
+        }
     }
 
     private void OnBlockGamePlay(bool status)
@@ -65,6 +89,13 @@ public class CardsUIController : MonoBehaviour
 
     private void OnPlantPlanted(EventManager.GameEvents.UIEvents.OnPlantPlantedArgs arg0)
     {
+        CancelPlaying();
+    }
+
+    private void DiscardCard()
+    {
+        if (activePlantIndex == -1 ) return;
+        GameManager.Instance.DiscardCard(activePlantIndex);
         CancelPlaying();
     }
 

@@ -61,6 +61,7 @@ public class DeckViewUI : MonoBehaviour, IPointerClickHandler
         EventManager.Game.UI.OnOpenCardView?.Invoke(new EventManager.GameEvents.UIEvents.OnOpenCardViewArgs()
         {
             cards = this.cards,
+            Pile = pile,
             State = cardViewOpen
         });
         if (cardViewOpen)
