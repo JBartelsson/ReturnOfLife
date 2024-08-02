@@ -18,7 +18,7 @@ public class CardsUIController : MonoBehaviour
     private GridTile oldGridTile;
     private GridTile currentGridTile;
     private float clickCooldownTimer = 0;
-
+    private bool gameplayBlocked = false;
     public enum State
     {
         SelectCard,
@@ -38,7 +38,13 @@ public class CardsUIController : MonoBehaviour
         EventManager.Game.Level.OnTurnChanged += OnTurnChanged;
         EventManager.Game.Input.OnCancel += GameInputOnCancel;
         EventManager.Game.Input.OnInteract += GameInputOnInteract;
-        EventManager.Game.Level.EndSingleCardPlay += EndSingleCardPlay;
+        EventManager.Game.Level.OnEndSingleCardPlay += EndSingleCardPlay;
+        EventManager.Game.UI.OnBlockGamePlay += OnBlockGamePlay;
+    }
+
+    private void OnBlockGamePlay(bool status)
+    {
+        gameplayBlocked = status;
     }
 
     private void EndSingleCardPlay()
@@ -59,7 +65,7 @@ public class CardsUIController : MonoBehaviour
 
     private void OnPlantPlanted(EventManager.GameEvents.UIEvents.OnPlantPlantedArgs arg0)
     {
-        GameInputOnCancel();
+        CancelPlaying();
     }
 
     private void OnSecondMoveNeeded(EventManager.GameEvents.UIEvents.OnSecondMoveNeededArgs neededArgs)
@@ -92,14 +98,18 @@ public class CardsUIController : MonoBehaviour
                 secondMovePlayable = true;
             }
         });
+        Debug.Log($"Second Move is {secondMovePlayable}!");
         if (!secondMovePlayable)
         {
-            GameInputOnCancel();
+            CancelPlaying(true);
+            return;
         }
+        EventManager.Game.Level.OnSecondMoveSuccessful?.Invoke();
     }
 
     private void GameInputOnInteract()
     {
+        if (gameplayBlocked) return;
         // if (clickCooldownTimer > 0) return;
         // clickCooldownTimer = Constants.CLICK_COOLDOWN;
         if (currentState == State.PlacePlant)
@@ -125,6 +135,14 @@ public class CardsUIController : MonoBehaviour
 
     private void GameInputOnCancel()
     {
+        CancelPlaying();
+        GameManager.Instance.RemoveAllWisdoms();
+        activeWisdoms.Clear();
+    }
+
+    private void CancelPlaying(bool overwriteEditorBlock = false)
+    {
+        if (gameplayBlocked && !overwriteEditorBlock) return;
         //If right click
         Debug.Log("GAME INPUT ON CANCEL IS CALLED");
         if (currentState == State.SecondMove)
@@ -135,8 +153,7 @@ public class CardsUIController : MonoBehaviour
         activePlantIndex = -1;
         currentState = State.SelectCard;
         EventManager.Game.UI.OnPlantHoverCanceled?.Invoke();
-        GameManager.Instance.RemoveAllWisdoms();
-        activeWisdoms.Clear();
+        
         if (currentCards.Count >= 0)
             foreach (CardHandUI cardUI in currentCards)
             {

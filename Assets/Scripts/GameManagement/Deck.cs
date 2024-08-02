@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Serialization;
 using static GameManager;
 using static StartDeckSO;
 using Debug = UnityEngine.Debug;
@@ -24,7 +25,7 @@ public class Deck
 
     //[SerializeField] private List<CardInstance> _playerDeck = new();
 
-    public List<CardInstance> _deckPile = new();
+    [FormerlySerializedAs("_deckPile")] public List<CardInstance> _drawPile = new();
     public List<CardInstance> _discardPile = new();
 
     private StartDeckSO _startDeck;
@@ -69,7 +70,7 @@ public class Deck
         _turnDrawCount = turnDraw;
         Debug.Log("INITIALIZING DECK!");
         StartDeckSO startDeckCopy = GameObject.Instantiate(startDeck);
-        _deckPile.Clear();
+        _drawPile.Clear();
         _discardPile.Clear();
         HandCards.Clear();
         //TODO remove when menu is implemented
@@ -117,10 +118,10 @@ public class Deck
     public void Reset()
     {
         Debug.Log("RESETTING DECK");
-        _deckPile.Clear();
+        _drawPile.Clear();
         _discardPile.Clear();
         HandCards.Clear();
-        _deckPile.AddRange(_playerDeck.CardsInCollection);
+        _drawPile.AddRange(_playerDeck.CardsInCollection);
         ShuffleDeck();
     }
 
@@ -141,7 +142,7 @@ public class Deck
 
     private bool DrawSingleCard()
     {
-        if (_deckPile.Count <= 0)
+        if (_drawPile.Count <= 0)
         {
             // Should not happen by design, but its better to be on the safe side
             if (_discardPile.Count <= 0)
@@ -151,9 +152,9 @@ public class Deck
 
             ShuffleDiscardPileIntoDeck();
         }
-        CardInstance drawCard = _deckPile.First();
+        CardInstance drawCard = _drawPile.First();
         HandCards.Add(drawCard);
-        _deckPile.Remove(drawCard);
+        _drawPile.Remove(drawCard);
         OnCardsDrawn();
         return true;
     }
@@ -193,7 +194,8 @@ public class Deck
 
     public void ShuffleDiscardPileIntoDeck()
     {
-        _deckPile.AddRange(_discardPile);
+        EventManager.Game.Level.OnShuffeDiscardPileIntoDrawPile?.Invoke();
+        _drawPile.AddRange(_discardPile);
         _discardPile.Clear();
         ShuffleDeck();
     }
@@ -202,12 +204,12 @@ public class Deck
     // For each Position from the last one on, swap positions with a random position
     public void ShuffleDeck()
     {
-        for (int i = 0; i < _deckPile.Count - 1; i++)
+        for (int i = 0; i < _drawPile.Count - 1; i++)
         {
-            int j = UnityEngine.Random.Range(i, _deckPile.Count - 1);
-            var temp = _deckPile[i];
-            _deckPile[i] = _deckPile[j];
-            _deckPile[j] = temp;
+            int j = UnityEngine.Random.Range(i, _drawPile.Count - 1);
+            var temp = _drawPile[i];
+            _drawPile[i] = _drawPile[j];
+            _drawPile[j] = temp;
         }
     }
 
@@ -232,13 +234,13 @@ public class Deck
         switch(pos)
         {
             case InsertPosition.First:
-                _deckPile.Insert(0, card);
+                _drawPile.Insert(0, card);
                 break;
             case InsertPosition.Last:
-                _deckPile.Add(card);
+                _drawPile.Add(card);
                 break;
             case InsertPosition.Random:
-                _deckPile.Insert(Random.Range(0, _deckPile.Count), card);
+                _drawPile.Insert(Random.Range(0, _drawPile.Count), card);
                 break;
             case InsertPosition.Discard:
                 _discardPile.Add(card);
@@ -256,11 +258,16 @@ public class Deck
     {
         AddTemporaryCardToDeck(card, pos);
         _playerDeck.AddCardToCollection(card);
+        EventManager.Game.Level.OnCardAdded?.Invoke(card);
+        EventManager.Game.Level.OnDeckChanged?.Invoke(new EventManager.GameEvents.DeckChangedArgs()
+        {
+            ChangedDeck = this
+        });
     }
 
     private void RemoveTemporaryCardFromDeck(CardInstance card)
     {
-        if (_deckPile.Remove(card))
+        if (_drawPile.Remove(card))
             return;
         if (_discardPile.Remove(card))
             return;
@@ -272,6 +279,10 @@ public class Deck
     {
         RemoveTemporaryCardFromDeck(card);
         _playerDeck.RemoveCardFromCollection(card);
+        EventManager.Game.Level.OnDeckChanged?.Invoke(new EventManager.GameEvents.DeckChangedArgs()
+        {
+            ChangedDeck = this
+        });
     }
 
     #endregion

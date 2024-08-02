@@ -24,7 +24,7 @@ public class SpecialField
             bool fulfilled = true;
             foreach (GridTile gridTile in SpecialFieldGridTiles)
             {
-                if (!gridTile.ContainsAnyPlant())
+                if (!gridTile.ContainsLivingPlant())
                 {
                     fulfilled = false;
                     break;
