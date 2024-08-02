@@ -55,3 +55,8 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 472afadf2a41bab4bac3ac15e7f959c7, type: 2}
     - {fileID: 11400000, guid: d81ff7e2f50b77541bab82d660f6cd8b, type: 2}
     - {fileID: 11400000, guid: d3b68f2d4cdeb7e49b87db5df14e52c9, type: 2}
+  - stage: 0
+    allowedEnemies:
+    - {fileID: 11400000, guid: f8c16036fd4eee243ae55fad9c489323, type: 2}
+    - {fileID: 11400000, guid: bb75494d8baa8bd419c096dcae0d6ee4, type: 2}
+    - {fileID: 11400000, guid: f66817b23dc3f674ca2c62401f51af00, type: 2}
