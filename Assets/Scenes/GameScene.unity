@@ -1193,11 +1193,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4244db174c471a74ba030e1518279d90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startDeck: {fileID: 11400000, guid: d47908b174d44a5449715d6e978e9519, type: 2}
+  startDeck: {fileID: 11400000, guid: 22115b2d89455484894cf219c331c07d, type: 2}
   handSize: 6
   standardMana: 3
   standardTurns: 3
-  planetProgression: {fileID: 11400000, guid: 874719d14e5ee534fa2f507b8842bcd3, type: 2}
+  planetProgression: {fileID: 11400000, guid: 6e94a5606a9b013458f6d7b745fea5df, type: 2}
 --- !u!1 &1045059058
 GameObject:
   m_ObjectHideFlags: 0
