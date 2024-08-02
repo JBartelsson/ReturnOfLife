@@ -17,7 +17,7 @@ MonoBehaviour:
   regularCardStats:
     Points: 0
     EffectPattern: {fileID: 11400000, guid: 0b9b2a87fef7c7746b6a64e574cdd886, type: 2}
-    CardText: Kills one Lifeform in the <b>Pattern</b> and grants its mana.
+    CardText: Kills up to one Lifeform in the <b>Pattern</b> and grants its mana.
     PlayCost: 0
     SecondMoveCallAmount: 1
   upgradedCardStats:
