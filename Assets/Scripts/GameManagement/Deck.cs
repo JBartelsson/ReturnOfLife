@@ -258,6 +258,11 @@ public class Deck
     {
         AddTemporaryCardToDeck(card, pos);
         _playerDeck.AddCardToCollection(card);
+        EventManager.Game.Level.OnCardAdded?.Invoke(card);
+        EventManager.Game.Level.OnDeckChanged?.Invoke(new EventManager.GameEvents.DeckChangedArgs()
+        {
+            ChangedDeck = this
+        });
     }
 
     private void RemoveTemporaryCardFromDeck(CardInstance card)
@@ -274,6 +279,10 @@ public class Deck
     {
         RemoveTemporaryCardFromDeck(card);
         _playerDeck.RemoveCardFromCollection(card);
+        EventManager.Game.Level.OnDeckChanged?.Invoke(new EventManager.GameEvents.DeckChangedArgs()
+        {
+            ChangedDeck = this
+        });
     }
 
     #endregion

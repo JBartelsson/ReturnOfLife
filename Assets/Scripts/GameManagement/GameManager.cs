@@ -532,6 +532,10 @@ public class GameManager : MonoBehaviour
             ScoringOrigin = scoringOrigin,
             ScoreAdded = new Score(newScore - oldScore)
         });
+        if (currentLevel.RequirementsMet(this))
+        {
+            EndLevel();
+        }
     }
 
     private bool SetMana(int amount)

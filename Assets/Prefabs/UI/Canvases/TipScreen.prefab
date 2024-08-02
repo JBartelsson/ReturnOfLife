@@ -807,14 +807,14 @@ Canvas:
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
-  m_OverrideSorting: 0
+  m_OverrideSorting: 1
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 700
   m_TargetDisplay: 0
 --- !u!114 &6365991315080601213
 MonoBehaviour:
@@ -1002,6 +1002,9 @@ MonoBehaviour:
     tipType: 1
     tipText: If the cards in your draw pile are empty, the discard pile gets shuffled
       into the draw pile.
+  - tipPosition: {fileID: 5993239960829835894}
+    tipType: 4
+    tipText: Don't forget your rewards!
   tipCanvas: {fileID: 4124351689645032746}
   continueButton: {fileID: 8811766574527004184}
   tipText: {fileID: 1631771969307094313}

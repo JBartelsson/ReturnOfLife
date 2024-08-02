@@ -163,8 +163,8 @@ RectTransform:
   m_GameObject: {fileID: 8324837245356192078}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 6347845432294777817}
   - {fileID: 8166805234173222620}
@@ -252,6 +252,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pile: 0
   numberText: {fileID: 5157373201524853066}
+  deckViewCanvas: {fileID: 7061348404191677077}
 --- !u!1 &8335282903936348235
 GameObject:
   m_ObjectHideFlags: 0

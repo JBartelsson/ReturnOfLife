@@ -14,7 +14,8 @@ public class TipScreenUI : MonoBehaviour
         MultiplyField,
         CardsEmpty,
         ThirdTurn,
-        ExtraMove
+        ExtraMove,
+        CardSkip
     }
 
     [Serializable]
@@ -50,6 +51,12 @@ public class TipScreenUI : MonoBehaviour
         EventManager.Game.Level.OnSecondMoveSuccessful += OnSecondMoveNeeded;
         EventManager.Game.Level.OnTurnChanged += OnTurnChanged;
         EventManager.Game.Level.OnShuffeDiscardPileIntoDrawPile += OnShuffeDiscardPileIntoDrawPile;
+        EventManager.Game.UI.OnCardFirstSkipEvent += OnCardFirstSkipEvent;
+    }
+
+    private void OnCardFirstSkipEvent()
+    {
+        ShowTip(TipType.CardSkip);
     }
 
     private void OnShuffeDiscardPileIntoDrawPile()
@@ -75,7 +82,6 @@ public class TipScreenUI : MonoBehaviour
         {
             ShowTip(TipType.MultiplyField);
             EventManager.Game.Level.OnLevelInitialized -= OnLevelInitialized;
-            return;
         }
         CloseTip(true);
     }
