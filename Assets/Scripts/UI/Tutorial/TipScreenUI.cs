@@ -14,7 +14,8 @@ public class TipScreenUI : MonoBehaviour
         MultiplyField,
         CardsEmpty,
         ThirdTurn,
-        ExtraMove
+        ExtraMove,
+        CardSkip
     }
 
     [Serializable]
@@ -35,18 +36,58 @@ public class TipScreenUI : MonoBehaviour
     [SerializeField] private Button continueButton;
     [SerializeField] private TextMeshProUGUI tipText;
     [SerializeField] private float animationSpeed = .3f;
+    [SerializeField] private RectTransform tipScreenRect;
 
-    public static List<TipType> tipMemory = new ();
+    public static List<TipType> tipMemory = new();
+
     private void Start()
     {
-        continueButton.onClick.AddListener(CloseTip);
-        tipCanvas.gameObject.SetActive(false);
-        
+        continueButton.onClick.AddListener(() => CloseTip());
+    }
+
+    private void OnEnable()
+    {
+        EventManager.Game.Level.OnLevelInitialized += OnLevelInitialized;
+        EventManager.Game.Level.OnSecondMoveSuccessful += OnSecondMoveNeeded;
+        EventManager.Game.Level.OnTurnChanged += OnTurnChanged;
+        EventManager.Game.Level.OnShuffeDiscardPileIntoDrawPile += OnShuffeDiscardPileIntoDrawPile;
+        EventManager.Game.UI.OnCardFirstSkipEvent += OnCardFirstSkipEvent;
+    }
+
+    private void OnCardFirstSkipEvent()
+    {
+        ShowTip(TipType.CardSkip);
+    }
+
+    private void OnShuffeDiscardPileIntoDrawPile()
+    {
+        ShowTip(TipType.CardsEmpty);
+    }
+
+    private void OnTurnChanged(EventManager.GameEvents.LevelEvents.TurnChangedArgs arg0)
+    {
+        if (arg0.TurnNumber != 3) return;
+        ShowTip(TipType.ThirdTurn);
+    }
+
+    private void OnSecondMoveNeeded()
+    {
+        ShowTip(TipType.ExtraMove);
+        EventManager.Game.Level.OnSecondMoveSuccessful -= OnSecondMoveNeeded;
+    }
+
+    private void OnLevelInitialized(EventManager.GameEvents.LevelEvents.LevelInitializedArgs arg0)
+    {
+        if (GridManager.Instance.Grid.SpecialFields.Any((x) => x.FieldType == SpecialFieldType.MULTIPLY))
+        {
+            ShowTip(TipType.MultiplyField);
+            EventManager.Game.Level.OnLevelInitialized -= OnLevelInitialized;
+        }
+        CloseTip(true);
     }
 
     public void ShowTip(TipType tipToShow)
     {
-        Debug.Log("Show Tip called");
         TipItem tipItem = tips.FirstOrDefault((x) => x.tipType == tipToShow);
 
         if (tipItem == null) return;
@@ -55,16 +96,20 @@ public class TipScreenUI : MonoBehaviour
             return;
         }
 
+        Debug.Log($"Tip {tipToShow} showed");
+        tipScreenRect.position = tipItem.tipPosition.position;
         tipText.text = tipItem.tipText;
         tipCanvas.gameObject.SetActive(true);
         tipCanvas.DOFade(1f, animationSpeed);
-
+        EventManager.Game.UI.OnBlockGamePlay?.Invoke(true);
         tipMemory.Add(tipToShow);
     }
 
-    private void CloseTip()
+    private void CloseTip(bool instant = false)
     {
-        tipCanvas.DOFade(0f, animationSpeed).OnComplete(() => { tipCanvas.gameObject.SetActive(false); });
+        float speed = instant ? 0f : animationSpeed;
+        tipCanvas.DOFade(0f, speed).OnComplete(() => { tipCanvas.gameObject.SetActive(false); });
+        EventManager.Game.UI.OnBlockGamePlay?.Invoke(false);
     }
 
     private void Update()

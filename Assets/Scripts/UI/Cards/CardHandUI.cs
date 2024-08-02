@@ -31,7 +31,7 @@ public class CardHandUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     private void Start()
     {
         SetPosition();
-        cardCanvas.sortingOrder = normalSortingLayer;
+        PutCardInBack();
     }
 
     private void SetPosition()
@@ -65,12 +65,12 @@ public class CardHandUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
         if (state)
         {
             cardUI.BackgroundSprite.material = cardUI.HoverMaterial;
-            cardCanvas.sortingOrder = hoveredSortingLayer;
+            PutCardInFront();
+
         }
         else
         {
             cardUI.BackgroundSprite.material = null;
-            cardCanvas.sortingOrder = normalSortingLayer;
             OnPointerExit(null);
         }
 
@@ -79,14 +79,27 @@ public class CardHandUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     public void OnPointerEnter(PointerEventData eventData)
     {
         cardUpTween = cardUI.CardParent.DOLocalMove(CardMouseHoverTransform.localPosition, .3f);
-        cardCanvas.sortingOrder = hoveredSortingLayer;
+        PutCardInFront();
+
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         if (cardSelected) return;
-        cardCanvas.sortingOrder = normalSortingLayer;
         cardUI.CardParent.DOLocalMove(originalPosition, .3f);
+        PutCardInBack();
+    }
+
+    private void PutCardInFront()
+    {
+        if (cardCanvas == null) return;
+        cardCanvas.sortingOrder = hoveredSortingLayer;
+    }
+
+    private void PutCardInBack()
+    {
+        if (cardCanvas == null) return;
+        cardCanvas.sortingOrder = normalSortingLayer;
     }
     
     private void OnEnable()
@@ -103,6 +116,10 @@ public class CardHandUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
 
     private void OnWisdomChanged(EventManager.GameEvents.LevelEvents.WisdomChangedArgs arg0)
     {
+        foreach (var arg0CurrentWisdom in arg0.currentWisdoms)
+        {
+            Debug.Log($"Wisdom changed! {arg0CurrentWisdom}");
+        }
         if (arg0.currentWisdoms.Any((wisdom) => wisdom.CardData.WisdomType == WisdomType.Basic))
         {
             cardUI.SetCardUI(cardUI.CardInstance, true);

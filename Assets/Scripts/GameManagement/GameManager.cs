@@ -108,9 +108,21 @@ public class GameManager : MonoBehaviour
 
     //Args
     private List<CallerArgs> playingQueue = new();
-    private List<CallerArgs> secondMoveQueue = new();
-    private SecondMoveCallerArgs secondMoveArgs = new SecondMoveCallerArgs();
 
+    public class SecondMoveQueueItem
+    {
+        public CallerArgs CallerArgs;
+        public int secondMoveNumber = 1;
+
+        public SecondMoveQueueItem(CallerArgs callerArgs, int secondMoveNumber)
+        {
+            CallerArgs = callerArgs;
+            this.secondMoveNumber = secondMoveNumber;
+        }
+    }
+    private List<SecondMoveQueueItem> secondMoveQueue = new();
+    private SecondMoveCallerArgs secondMoveArgs = new SecondMoveCallerArgs();
+    private bool secondMoveQueueEmptyCalled = false;
 
     private void Awake()
     {
@@ -243,8 +255,9 @@ public class GameManager : MonoBehaviour
         SwitchState(GameState.EndTurn);
     }
 
-    private void InitSecondMove(CallerArgs callerArgs)
+    private void InitSecondMove(SecondMoveQueueItem secondMoveQueueItem)
     {
+        CallerArgs callerArgs = secondMoveQueueItem.CallerArgs;
         selectedCardBlueprint = callerArgs.CallingCardInstance;
         Debug.Log($"INITIALIZES ONE SECOND MOVE for {callerArgs}");
         secondMoveQueue.RemoveAt(0);
@@ -262,11 +275,14 @@ public class GameManager : MonoBehaviour
             gameManager = this,
             needNeighbor = false,
             playedTile = callerArgs.playedTile,
+            SecondMoveNumber = secondMoveQueueItem.secondMoveNumber
         };
+        Debug.Log($"SECOND MOVE CARD ISNTANCE {callerArgs.CallingCardInstance}");
         EventManager.Game.UI.OnSecondMoveNeeded?.Invoke(new EventManager.GameEvents.UIEvents.OnSecondMoveNeededArgs()
         {
             editorCardInstance = callerArgs.CallingCardInstance,
-            editorOriginGridTile = callerArgs.playedTile
+            editorOriginGridTile = callerArgs.playedTile,
+            SecondMoveCallerArgs = secondMoveArgs
         });
     }
 
@@ -289,9 +305,18 @@ public class GameManager : MonoBehaviour
         if (secondMoveQueue.Count != 0 && !blockSecondMoveQueue)
         {
             blockSecondMoveQueue = true;
+            secondMoveQueueEmptyCalled = false;
             blockQueue = true;
             InitSecondMove(secondMoveQueue[0]);
             return;
+        }
+        else
+        {
+            if (!secondMoveQueueEmptyCalled && !blockSecondMoveQueue)
+            {
+                secondMoveQueueEmptyCalled = true;
+                EventManager.Game.UI.OnSecondMoveQueueEmpty?.Invoke();
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.Space))
@@ -363,6 +388,8 @@ public class GameManager : MonoBehaviour
             Debug.Log($"Trying to end turn of card {selectedCardIndex}");
             //Deck manipulation, in the future in the Deck class
             ReduceMana(_deck.HandCards[selectedCardIndex].GetCardStats().PlayCost);
+            Debug.Log($"Current Wisdoms: {currentWisdoms.Count}");
+            CardInstance playedCard = _deck.HandCards[selectedCardIndex];
             foreach (var wisdom in currentWisdoms)
             {
                 Debug.Log($"REDUCE MANA FOR {wisdom.GetCardStats().PlayCost}");
@@ -370,7 +397,7 @@ public class GameManager : MonoBehaviour
                 _deck.DiscardCard(wisdom);
             }
 
-            _deck.DiscardCard(selectedCardIndex);
+            _deck.DiscardCard(playedCard);
             //Event calling
 
             currentPlayedCards++;
@@ -409,7 +436,7 @@ public class GameManager : MonoBehaviour
         {
             for (int i = 0; i < selectedCardBlueprint.GetCardStats().SecondMoveCallAmount; i++)
             {
-                secondMoveQueue.Insert(0, callerArgs);
+                secondMoveQueue.Insert(0, new SecondMoveQueueItem(callerArgs, i + 1));
             }
 
             return;
@@ -424,7 +451,7 @@ public class GameManager : MonoBehaviour
     private void EndCardPlaying()
     {
         editorBlocked = false;
-        EventManager.Game.Level.EndSingleCardPlay?.Invoke();
+        EventManager.Game.Level.OnEndSingleCardPlay?.Invoke();
         SwitchState(GameState.SelectCards);
     }
 
@@ -440,13 +467,13 @@ public class GameManager : MonoBehaviour
         SetMana(standardMana);
         RemoveAllWisdoms();
 
-        _deck.DiscardHand();
 
         EventManager.Game.Level.OnTurnChanged?.Invoke(new EventManager.GameEvents.LevelEvents.TurnChangedArgs()
         {
             sender = this,
             TurnNumber = currentTurns
         });
+        _deck.DiscardHand();
         SwitchState(GameState.DrawCards);
     }
 
@@ -505,6 +532,10 @@ public class GameManager : MonoBehaviour
             ScoringOrigin = scoringOrigin,
             ScoreAdded = new Score(newScore - oldScore)
         });
+        if (currentLevel.RequirementsMet(this))
+        {
+            EndLevel();
+        }
     }
 
     private bool SetMana(int amount)

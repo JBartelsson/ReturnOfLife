@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -25,8 +26,7 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
 
     [SerializeField] private List<FieldSprite> fieldMaterials;
 
-    [SerializeField] private Sprite lavaSprite;
-    [SerializeField] private Sprite normalGroundSprite;
+    
     [SerializeField] private Sprite fieldPlantedSprite;
     [SerializeField] private SpriteRenderer groundStatusSpriteRenderer;
     [Header("Status References")] [SerializeField]
@@ -42,6 +42,9 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
     [SerializeField]
     private SpriteRenderer previewSpriteRenderer;
 
+    [Header("Second Move Settings")] 
+    [SerializeField]
+    private TextMeshPro secondMoveText;
     private GridTile ownGridTile;
 
 
@@ -70,7 +73,7 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
         lifeFormSpriteRenderer.sprite = null;
         fieldMarker.SetActive(false);
         statusSpriteRenderer.gameObject.SetActive(false);
-
+        secondMoveText.gameObject.SetActive(false);
         redCrossSpriteRenderer.gameObject.SetActive(false);
 
     }
@@ -80,14 +83,33 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
         EventManager.Game.UI.OnPlantHoverChanged += OnPlantHoverChanged;
         EventManager.Game.UI.OnPlantHoverCanceled += OnPlantHoverCanceled;
         EventManager.Game.UI.OnHoverForEditor += OnHoverForEditor;
+        EventManager.Game.UI.OnSecondMoveNeeded += OnSecondMoveNeeded;
+        EventManager.Game.UI.OnSecondMoveQueueEmpty += OnSecondMoveQueueEmpty;
+
     }
+
+    private void OnSecondMoveQueueEmpty()
+    {
+        secondMoveText.DOFade(0f, Constants.UI_FAST_FADE_SPEED).OnComplete(()=> secondMoveText.gameObject.SetActive(false));
+
+    }
+
+    private void OnSecondMoveNeeded(EventManager.GameEvents.UIEvents.OnSecondMoveNeededArgs args)
+    {
+        if (args.editorOriginGridTile == ownGridTile)
+        {
+            secondMoveText.gameObject.SetActive(true);
+            secondMoveText.DOFade(1f, Constants.UI_FAST_FADE_SPEED);
+        }
+    }
+
+
     private void OnDisable()
     {
         EventManager.Game.UI.OnPlantHoverChanged -= OnPlantHoverChanged;
         EventManager.Game.UI.OnPlantHoverCanceled -= OnPlantHoverCanceled;
         EventManager.Game.UI.OnHoverForEditor -= OnHoverForEditor;
     }
-
     private void OnHoverForEditor(EventManager.GameEvents.UIEvents.OnHoverForEditorArgs args)
     {
         if (args.hoveredGridTile != ownGridTile) return;
@@ -100,6 +122,7 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
         visualizationState = VisualizationState.NONE;
         redCrossSpriteRenderer.gameObject.SetActive(false);
         previewSpriteRenderer.sprite = null;
+        secondMoveText.gameObject.SetActive(false);
         UpdateContent();
     }
 
@@ -153,15 +176,6 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
         if (cardInstance.IsUpgraded())
         {
             target.material = plantFertilizedMaterial;
-            var croppedTexture = new Texture2D((int)newSprite.rect.width,
-                (int)newSprite.rect.height);
-            var pixels = newSprite.texture.GetPixels(0,
-                0,
-                (int)newSprite.rect.width,
-                (int)newSprite.rect.height);
-            croppedTexture.SetPixels(pixels);
-            croppedTexture.Apply();
-            plantFertilizedMaterial.SetTexture("_MainTex", croppedTexture);
         }
         else
         {
@@ -238,7 +252,7 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
     {
         if (ownGridTile.IsLava())
         {
-            groundStatusSpriteRenderer.sprite = lavaSprite;
+            groundStatusSpriteRenderer.sprite = fieldMaterials.FirstOrDefault((x) => x.FieldType == SpecialFieldType.NONE)?.Sprite;
             return;
         }
 

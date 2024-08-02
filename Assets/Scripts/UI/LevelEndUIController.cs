@@ -17,13 +17,20 @@ public class LevelEndUIController : MonoBehaviour
     [SerializeField] private Color gameOverColor;
     [SerializeField] private Color winColor;
     [SerializeField] private Image bgImage;
+    private static bool cardAddUsed = false;
     private void Start()
     {
         endLevelCanvas.gameObject.SetActive(false);
         EventManager.Game.Level.OnEndLevel += OnEndLevel;
+        EventManager.Game.Level.OnCardAdded += OnCardAdded;
         nextButton.onClick.AddListener(NextLevel);
         gameOverButton.onClick.AddListener(GameOver);
         pickACardButton.onClick.AddListener(PickACardClick);
+    }
+
+    private void OnCardAdded(CardInstance arg0)
+    {
+        cardAddUsed = true;
     }
 
     private void PickACardClick()
@@ -65,6 +72,12 @@ public class LevelEndUIController : MonoBehaviour
 
     private void NextLevel()
     {
+        if (!cardAddUsed)
+        {
+            EventManager.Game.UI.OnCardFirstSkipEvent?.Invoke();
+            cardAddUsed = true;
+            return;
+        }
         GameManager.Instance.NextLevel();
         endLevelCanvas.gameObject.SetActive(false);
 
