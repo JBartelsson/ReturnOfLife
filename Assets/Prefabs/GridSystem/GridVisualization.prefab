@@ -1401,6 +1401,7 @@ MonoBehaviour:
   strength: 0.1
   speed: 1
   rectTransform: {fileID: 2944377518704103318}
+  moveDirection: 1
 --- !u!1 &8457298010069779333
 GameObject:
   m_ObjectHideFlags: 0
@@ -1474,7 +1475,7 @@ MonoBehaviour:
   previewSpriteRenderer: {fileID: 7725089348602594353}
   secondMoveText: {fileID: 6844569353054982758}
   plantFertilizedMaterial: {fileID: -876546973899608171, guid: ba1e87f12de7514489e255d5136721a6, type: 3}
-  plantNonFertilizedMaterial: {fileID: 2100000, guid: 7cfb0b9714109b645a51f70f69a9314f, type: 2}
+  plantNonFertilizedMaterial: {fileID: 2100000, guid: eb988fb0b27001b48a8c925260174581, type: 2}
 --- !u!114 &5915872477216182871
 MonoBehaviour:
   m_ObjectHideFlags: 0

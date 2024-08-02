@@ -534,7 +534,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 208dc28bb95aeea42a127f5eff9cc035, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  strength: 10
+  strength: 0.005
   speed: 1
   rectTransform: {fileID: 2693682945185839483}
   moveDirection: 1
