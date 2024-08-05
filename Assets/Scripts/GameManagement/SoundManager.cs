@@ -141,6 +141,10 @@ public class SoundManager : MonoBehaviour
     private void OnCardSelected(CardInstance arg0)
     {
         //Card Click Sound
+        if (arg0.CardData.EffectType == CardData.CardEffectType.Wisdom)
+        {
+            // If wisdom selected
+        }
     }
 
     private void OnScoreChanged(EventManager.GameEvents.LevelEvents.ScoreChangedArgs args)
