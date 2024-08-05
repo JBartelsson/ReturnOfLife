@@ -7,7 +7,6 @@
 [Ll]ogs/
 [Uu]ser[Ss]ettings/
 Assets/AssetStoreTools*
-!FMOD/Project/Build
 
 # Visual Studio cache directory
 .vs/
