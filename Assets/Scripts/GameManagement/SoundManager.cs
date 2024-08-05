@@ -9,10 +9,28 @@ public class SoundManager : MonoBehaviour
 {
     public enum Sound
     {
-        PlantGrown = 1,
-        Point = 2,
-        MainMenuMusic = 3, 
-        PlantDeath = 4,
+        PlantedLifeform = 1,
+        PlantedUpgradedLifeform = 2,
+        PlantedNormalo = 22,
+        PlantedBindweed = 3,
+        PlantedAntisocial = 4,
+        PlantedEpiphyt = 5,
+        PlantedLycoperdon = 6,
+        PlantedReanimate = 7,
+        LifeformKilled = 8,
+        LifeformRevived = 9,
+        OnDrawCards = 10,
+        OnScoreChanged = 11,
+        ButtonClick = 12,
+        CardHover = 13,
+        OnCardSelected = 14,
+        CardDiscarded = 15,
+        EpiphanyMode = 16,
+        EndTurn = 17,
+        OnEndLevel = 18,
+        OnTipShowed = 19,
+        OnDeckView = 20,
+        Music = 21,
     }
     public static SoundManager Instance { get; private set; }
     private void Awake()
@@ -103,36 +121,33 @@ public class SoundManager : MonoBehaviour
         
         if (!args.plantedCardInstance.IsUpgraded())
         {
-            //Play normal sound
+            PlayOneShot(Sound.PlantedLifeform);
         }
         else
         {
-            //Play upgraded placement sound
+            PlayOneShot(Sound.PlantedUpgradedLifeform);
         }
         
         //Lifeform plant
         switch (args.plantedCardInstance.CardData.LifeformType)
         {
             case CardData.LifeformTypeEnum.Antisocial:
-                PlayOneShot(Sound.PlantGrown);
+                PlayOneShot(Sound.PlantedAntisocial);
                 break;
             case CardData.LifeformTypeEnum.Bindweed:
-                PlayOneShot(Sound.PlantGrown);
+                PlayOneShot(Sound.PlantedBindweed);
                 break;
             case CardData.LifeformTypeEnum.Lycoperdon:
-                PlayOneShot(Sound.PlantGrown);
+                PlayOneShot(Sound.PlantedLycoperdon);
                 break;
             case CardData.LifeformTypeEnum.Epiphyt:
-                PlayOneShot(Sound.PlantGrown);
+                PlayOneShot(Sound.PlantedEpiphyt);
                 break;
             case CardData.LifeformTypeEnum.Normalo:
-                PlayOneShot(Sound.PlantGrown);
+                PlayOneShot(Sound.PlantedNormalo);
                 break;
             case CardData.LifeformTypeEnum.Reanimate:
-                PlayOneShot(Sound.PlantGrown);
-                break;
-            case CardData.LifeformTypeEnum.Epiphany:
-                PlayOneShot(Sound.PlantGrown);
+                PlayOneShot(Sound.PlantedReanimate);
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
