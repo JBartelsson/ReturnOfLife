@@ -1460,12 +1460,12 @@ MonoBehaviour:
   fieldMarker: {fileID: 7313581121341986992}
   fieldMaterials:
   - FieldType: 12
-    Sprite: {fileID: 21300000, guid: 6d4fdb96e8baf514eaa7d85be4c623d7, type: 3}
+    Sprite: {fileID: 21300000, guid: 270b2effb7e8f474480a24109b6885b2, type: 3}
   - FieldType: 11
-    Sprite: {fileID: 21300000, guid: 94c7635b1bef8144488f5f95c6bce2a1, type: 3}
+    Sprite: {fileID: 21300000, guid: d5cf74db99755e845ae5bc5a119cdc0b, type: 3}
   - FieldType: 10
     Sprite: {fileID: 21300000, guid: c7f65c9c336b2ea4c8363d080056dedf, type: 3}
-  fieldPlantedSprite: {fileID: 21300000, guid: 94c7635b1bef8144488f5f95c6bce2a1, type: 3}
+  fieldPlantedSprite: {fileID: 21300000, guid: 6cbbc08c423c7d9439462216e66905cf, type: 3}
   groundStatusSpriteRenderer: {fileID: 3183129030241490190}
   statusSpriteRenderer: {fileID: 1856605024649796988}
   deathSprite: {fileID: 21300000, guid: a35cae7a7f31efe42bf2f18153d332f9, type: 3}
