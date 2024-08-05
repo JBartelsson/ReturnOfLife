@@ -428,6 +428,7 @@ public class GameManager : MonoBehaviour
         selectedCardBlueprint = callerArgs.CallingCardInstance;
         selectedCardBlueprint.Execute(callerArgs);
         CheckSpecialFields();
+        EventManager.Game.UI.OnEndSingleCardPlay?.Invoke();
         
         //If card has an editor (2nd move) and the editor is not blocked e.g. by plant sacrifice
         Debug.Log($"Editor is blocked: {callerArgs.BlockSecondMove}");

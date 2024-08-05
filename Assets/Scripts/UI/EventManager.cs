@@ -42,6 +42,7 @@ public static class EventManager
         Game.UI.OnSecondMoveQueueEmpty = delegate { };
         Game.UI.OnCardFirstSkipEvent = delegate { };
         Game.UI.OnOpenCardView = delegate { };
+        Game.UI.OnEndSingleCardPlay = delegate { };
 
     }
 
@@ -124,6 +125,7 @@ public static class EventManager
             public UnityAction OnSecondMoveQueueEmpty;
             public UnityAction OnCardFirstSkipEvent;
             public UnityAction<OnOpenCardViewArgs> OnOpenCardView;
+            public UnityAction OnEndSingleCardPlay;
         }
         
         public class LevelEvents
