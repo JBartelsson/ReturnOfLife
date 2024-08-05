@@ -1462,7 +1462,7 @@ MonoBehaviour:
   - FieldType: 12
     Sprite: {fileID: 21300000, guid: 270b2effb7e8f474480a24109b6885b2, type: 3}
   - FieldType: 11
-    Sprite: {fileID: 21300000, guid: d5cf74db99755e845ae5bc5a119cdc0b, type: 3}
+    Sprite: {fileID: 21300000, guid: 2bcc9e5174972b140b8c10b50ac6bdb7, type: 3}
   - FieldType: 10
     Sprite: {fileID: 21300000, guid: c7f65c9c336b2ea4c8363d080056dedf, type: 3}
   fieldPlantedSprite: {fileID: 21300000, guid: 6cbbc08c423c7d9439462216e66905cf, type: 3}
