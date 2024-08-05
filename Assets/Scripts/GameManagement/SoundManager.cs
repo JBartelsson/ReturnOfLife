@@ -38,16 +38,79 @@ public class SoundManager : MonoBehaviour
 
     private void OnEnable()
     {
-        EventManager.Game.Level.OnPlantPlanted += OnPlantPlanted;
+        EventManager.Game.Level.OnLifeformPlanted += OnPlantPlanted;
         EventManager.Game.Level.OnScoreChanged += OnScoreChanged;
+        EventManager.Game.UI.OnCardSelected += OnCardSelected;
+        EventManager.Game.Level.OnDrawCards += OnDrawCards;
+        EventManager.Game.Level.OnLifeformKilled += OnLifeformKilled;
+        EventManager.Game.Level.OnLifeformRevived += OnLifeformRevived;
+        EventManager.Game.Level.OnEffectUsed += OnEffectUsed;
+        EventManager.Game.Level.OnTurnChanged += OnTurnChanged;
+        EventManager.Game.Level.OnEndLevel += OnEndLevel;
+    }
+
+    private void OnEndLevel(EventManager.GameEvents.LevelEvents.LevelEndedArgs arg0)
+    {
+        if (arg0.WonLevel)
+        {
+            //Won level   
+        }
+        else
+        {
+            //Lose level   
+        }
+    }
+
+    private void OnTurnChanged(EventManager.GameEvents.LevelEvents.TurnChangedArgs arg0)
+    {
+        //Turn changes
+    }
+
+
+    private void OnEffectUsed(CallerArgs arg0)
+    {
+        //Lyco Effect
+    }
+
+    private void OnLifeformRevived(CallerArgs arg0)
+    {
+        
+    }
+
+    private void OnLifeformKilled(CallerArgs arg0)
+    {
+        
+    }
+
+    private void OnDrawCards(EventManager.GameEvents.DeckChangedArgs arg0)
+    {
+        //Wird pro Karte aufgerufen
+    }
+
+    private void OnCardSelected(CardInstance arg0)
+    {
+        //Card Click Sound
     }
 
     private void OnScoreChanged(EventManager.GameEvents.LevelEvents.ScoreChangedArgs args)
     {
+        // on Score change
+        //args.ScoreAdded sind die Anzahl der Punkte
     }
 
-    private void OnPlantPlanted(EventManager.GameEvents.LevelEvents.OnPlantPlantedArgs args)
+    private void OnPlantPlanted(EventManager.GameEvents.LevelEvents.OnLifeformPlantedArgs args)
     {
+        
+        if (!args.plantedCardInstance.IsUpgraded())
+        {
+            //Play normal sound
+        }
+        else
+        {
+            //Play upgraded placement sound
+        }
+        
+        //Lifeform plant
         switch (args.plantedCardInstance.CardData.LifeformType)
         {
             case CardData.LifeformTypeEnum.Antisocial:
@@ -74,6 +137,7 @@ public class SoundManager : MonoBehaviour
             default:
                 throw new ArgumentOutOfRangeException();
         }
+
     }
 
     private void PlayOneShot(Sound sound)

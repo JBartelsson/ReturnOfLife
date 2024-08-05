@@ -47,10 +47,10 @@ public class ComboBushCardFunction : CardFunctionBase
         if (callingGridTile == null) return;
         Debug.Log($"On Content Updated is called on {callingGridTile}");
         // if (alreadyTriggered) return;
-        alreadyTriggered = true;
         //Select Effect Pattern depending on Upgrade
         PatternSO effectPattern = null;
 
+        bool effectUsed = false;
         callingGridTile.ForPattern(bushInstance.GetCardStats().EffectPattern, gridTile =>
         {
             if (gridTile.ContainsAnyPlant()) return;
@@ -59,7 +59,10 @@ public class ComboBushCardFunction : CardFunctionBase
             CallerArgs bushCallerArgs = new CallerArgs(newBushInstance, null, false, CALLER_TYPE.EFFECT);
             bushCallerArgs.gameManager = GameManager.Instance;
             bushCallerArgs.playedTile = gridTile;
+            effectUsed = true;
             newBushInstance.Execute(bushCallerArgs);
         });
+        
+        EventManager.Game.Level.OnEffectUsed?.Invoke(null);
     }
 }

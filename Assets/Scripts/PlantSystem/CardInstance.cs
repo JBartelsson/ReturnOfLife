@@ -226,6 +226,7 @@ public class CardInstance : ICloneable
     {
         cardFunction.Clear(callerArgs);
         cardStatus = CardStatusEnum.Dead;
+        EventManager.Game.Level.OnLifeformRevived?.Invoke(callerArgs);
         CardFunctionBase.RewardPoints(callerArgs, -1 * CardData.RuntimePoints);
     }
 
@@ -242,6 +243,8 @@ public class CardInstance : ICloneable
             needNeighbor = false
         };
         Debug.Log($"TRYING TO REVIVE LIFEFORM");
+        EventManager.Game.Level.OnLifeformRevived?.Invoke(callerArgs);
+
         GameManager.Instance.TryQueueLifeform(reviveCallerArgs);
     }
 

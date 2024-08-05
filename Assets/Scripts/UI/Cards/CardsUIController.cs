@@ -108,7 +108,7 @@ public class CardsUIController : MonoBehaviour
             cardUI.SetActiveState(false);
         }
 
-        EventManager.Game.UI.OnPlantHoverCanceled?.Invoke();
+        EventManager.Game.UI.OnLifeformHoverCanceled?.Invoke();
         bool secondMovePlayable = false;
         GridManager.Instance.Grid.ForEachGridTile((gridTile) =>
         {
@@ -183,7 +183,7 @@ public class CardsUIController : MonoBehaviour
 
         activePlantIndex = -1;
         currentState = State.SelectCard;
-        EventManager.Game.UI.OnPlantHoverCanceled?.Invoke();
+        EventManager.Game.UI.OnLifeformHoverCanceled?.Invoke();
         
         if (currentCards.Count >= 0)
             foreach (CardHandUI cardUI in currentCards)
@@ -258,12 +258,14 @@ public class CardsUIController : MonoBehaviour
         {
             HandlePlantClick(cardIndex);
         }
+        
+        EventManager.Game.UI.OnCardSelected?.Invoke(currentCards[cardIndex].CardUI.CardInstance);
 
 
         currentGridTile = null;
         currentCards[cardIndex].SetHoverState(true);
 
-        EventManager.Game.UI.OnPlantHoverCanceled?.Invoke();
+        EventManager.Game.UI.OnLifeformHoverCanceled?.Invoke();
     }
 
     private void HandleWisdomClick(int cardIndex)
@@ -306,7 +308,7 @@ public class CardsUIController : MonoBehaviour
         activePlantIndex = -1;
         currentState = State.SelectCard;
         currentCards[cardIndex].SetHoverState(false);
-        EventManager.Game.UI.OnPlantHoverCanceled?.Invoke();
+        EventManager.Game.UI.OnLifeformHoverCanceled?.Invoke();
     }
 
     private void DeselectWisdom(int cardIndex)
@@ -314,7 +316,7 @@ public class CardsUIController : MonoBehaviour
         GameManager.Instance.RemoveWisdom(currentCards[cardIndex].CardUI.CardInstance);
         activeWisdoms.Remove(cardIndex);
         currentCards[cardIndex].SetHoverState(false);
-        EventManager.Game.UI.OnPlantHoverCanceled?.Invoke();
+        EventManager.Game.UI.OnLifeformHoverCanceled?.Invoke();
     }
 
     private void DeselectAllOtherWisdomOfSameType(int cardIndex)
@@ -401,8 +403,8 @@ public class CardsUIController : MonoBehaviour
             {
                 CardInstance hoveredCardInstance =
                     GameManager.Instance.GetTemporaryCardInstance(activePlantIndex);
-                EventManager.Game.UI.OnPlantHoverChanged?.Invoke(
-                    new EventManager.GameEvents.UIEvents.OnHoverChangedArgs()
+                EventManager.Game.UI.OnLifeformHoverChanged?.Invoke(
+                    new EventManager.GameEvents.UIEvents.OnLifeformChangedArgs()
                     {
                         hoveredCardInstance = hoveredCardInstance,
                         hoveredGridTile = currentGridTile,

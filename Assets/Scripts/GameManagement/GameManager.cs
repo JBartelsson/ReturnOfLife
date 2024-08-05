@@ -153,7 +153,7 @@ public class GameManager : MonoBehaviour
     private void InitEventSubscriptions()
     {
         Debug.Log("SUBSCRIBING FROM GAMEMANAGER TO FUNCTIONS");
-        EventManager.Game.Level.OnPlantSacrificed += OnPlantSacrificed;
+        EventManager.Game.Level.OnLifeformSacrificed += OnPlantSacrificed;
         EventManager.Game.SceneSwitch.OnSceneReloadComplete += OnSceneReloadComplete;
     }
 
@@ -170,7 +170,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void OnPlantSacrificed(EventManager.GameEvents.LevelEvents.PlantSacrificedArgs arg0)
+    private void OnPlantSacrificed(EventManager.GameEvents.LevelEvents.LifeformSacrificedArgs arg0)
     {
     }
 

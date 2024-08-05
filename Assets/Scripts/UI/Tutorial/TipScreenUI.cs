@@ -5,6 +5,7 @@ using System.Linq;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 using UnityEngine.UI;
 
 public class TipScreenUI : MonoBehaviour
@@ -40,9 +41,13 @@ public class TipScreenUI : MonoBehaviour
 
     public static List<TipType> tipMemory = new();
 
+    public List<TipType> tipQueue = new ();
+    private bool blockQueue;
+    private bool tipCanBeClosed;
+
     private void Start()
     {
-        continueButton.onClick.AddListener(() => CloseTip());
+        continueButton.onClick.AddListener(UnBlockQueue);
     }
 
     private void OnEnable()
@@ -56,23 +61,23 @@ public class TipScreenUI : MonoBehaviour
 
     private void OnCardFirstSkipEvent()
     {
-        ShowTip(TipType.CardSkip);
+        QueueTip(TipType.CardSkip);
     }
 
     private void OnShuffeDiscardPileIntoDrawPile()
     {
-        ShowTip(TipType.CardsEmpty);
+        QueueTip(TipType.CardsEmpty);
     }
 
     private void OnTurnChanged(EventManager.GameEvents.LevelEvents.TurnChangedArgs arg0)
     {
         if (arg0.TurnNumber != 3) return;
-        ShowTip(TipType.ThirdTurn);
+        QueueTip(TipType.ThirdTurn);
     }
 
     private void OnSecondMoveNeeded()
     {
-        ShowTip(TipType.ExtraMove);
+        QueueTip(TipType.ExtraMove);
         EventManager.Game.Level.OnSecondMoveSuccessful -= OnSecondMoveNeeded;
     }
 
@@ -80,11 +85,17 @@ public class TipScreenUI : MonoBehaviour
     {
         if (GridManager.Instance.Grid.SpecialFields.Any((x) => x.FieldType == SpecialFieldType.MULTIPLY))
         {
-            ShowTip(TipType.MultiplyField);
+            QueueTip(TipType.MultiplyField);
             EventManager.Game.Level.OnLevelInitialized -= OnLevelInitialized;
         }
         CloseTip(true);
     }
+
+    public void QueueTip(TipType tipToShow)
+    {
+        tipQueue.Add(tipToShow);
+    }
+    
 
     public void ShowTip(TipType tipToShow)
     {
@@ -107,16 +118,34 @@ public class TipScreenUI : MonoBehaviour
 
     private void CloseTip(bool instant = false)
     {
+        tipCanBeClosed = false;
         float speed = instant ? 0f : animationSpeed;
         tipCanvas.DOFade(0f, speed).OnComplete(() => { tipCanvas.gameObject.SetActive(false); });
         EventManager.Game.UI.OnBlockGamePlay?.Invoke(false);
     }
 
+    private void UnBlockQueue()
+    {
+        blockQueue = false;
+        tipCanBeClosed = true;
+
+    }
+
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.T))
+        if (tipQueue.Count == 0 && !blockQueue && tipCanBeClosed)
         {
-            ShowTip(TipType.MultiplyField);
+            CloseTip();
         }
+        if (tipQueue.Count != 0 && ! blockQueue)
+        {
+            ShowTip(tipQueue[0]);
+            tipQueue.RemoveAt(0);
+            blockQueue = true;
+            tipCanBeClosed = false;
+
+        }
+
+        
     }
 }

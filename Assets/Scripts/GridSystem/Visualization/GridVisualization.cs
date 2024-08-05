@@ -80,8 +80,8 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
 
     private void OnEnable()
     {
-        EventManager.Game.UI.OnPlantHoverChanged += OnPlantHoverChanged;
-        EventManager.Game.UI.OnPlantHoverCanceled += OnPlantHoverCanceled;
+        EventManager.Game.UI.OnLifeformHoverChanged += OnPlantHoverChanged;
+        EventManager.Game.UI.OnLifeformHoverCanceled += OnPlantHoverCanceled;
         EventManager.Game.UI.OnHoverForEditor += OnHoverForEditor;
         EventManager.Game.UI.OnSecondMoveNeeded += OnSecondMoveNeeded;
         EventManager.Game.UI.OnSecondMoveQueueEmpty += OnSecondMoveQueueEmpty;
@@ -106,8 +106,8 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
 
     private void OnDisable()
     {
-        EventManager.Game.UI.OnPlantHoverChanged -= OnPlantHoverChanged;
-        EventManager.Game.UI.OnPlantHoverCanceled -= OnPlantHoverCanceled;
+        EventManager.Game.UI.OnLifeformHoverChanged -= OnPlantHoverChanged;
+        EventManager.Game.UI.OnLifeformHoverCanceled -= OnPlantHoverCanceled;
         EventManager.Game.UI.OnHoverForEditor -= OnHoverForEditor;
     }
     private void OnHoverForEditor(EventManager.GameEvents.UIEvents.OnHoverForEditorArgs args)
@@ -127,7 +127,7 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
     }
 
 
-    private void OnPlantHoverChanged(EventManager.GameEvents.UIEvents.OnHoverChangedArgs args)
+    private void OnPlantHoverChanged(EventManager.GameEvents.UIEvents.OnLifeformChangedArgs args)
     {
         
         visualizationState = VisualizationState.NONE;
