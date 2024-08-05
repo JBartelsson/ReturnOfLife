@@ -14,20 +14,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   plantSprite: {fileID: 21300000, guid: 0d0517264a9475848b0724362fb7e690, type: 3}
   <CardName>k__BackingField: Epiphany
+  lifeformType: 7
   regularCardStats:
     Points: 0
     EffectPattern: {fileID: 0}
     CardText: Upgrades the next Lifeform you plant this turn.
     PlayCost: 1
+    SecondMoveCallAmount: 1
   upgradedCardStats:
     Points: 0
     EffectPattern: {fileID: 0}
     CardText: Upgrades the next Lifeform you plant this turn.
     PlayCost: 1
+    SecondMoveCallAmount: 1
   <Element>k__BackingField: 0
   effectType: 1
   wisdomType: 0
   <Rarity>k__BackingField: 1
+  secondMoveText: 
   overridePointFunction: 0
   cardFunction:
     executionType: 0
@@ -42,6 +46,10 @@ MonoBehaviour:
     scriptType:
       _classRef: 
     OverrideNeighboring: 0
+  cardCanExecuteCheck:
+    executionType: 0
+    scriptType:
+      _classRef: 
   cardPassiveCall:
     executionType: 0
     scriptType:

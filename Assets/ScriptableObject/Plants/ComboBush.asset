@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   plantSprite: {fileID: 21300000, guid: 82c4cd29ab4d5b540a0098aa3cfb58b3, type: 3}
   <CardName>k__BackingField: Lycoperdon
+  lifeformType: 3
   regularCardStats:
     Points: 15
     EffectPattern: {fileID: 11400000, guid: a66e24e2058a24543bbfc0274f6f0133, type: 2}
