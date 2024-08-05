@@ -39,7 +39,6 @@ public class CardsUIController : MonoBehaviour
         EventManager.Game.Level.OnDrawCards += OnDrawCards;
         EventManager.Game.Level.OnUpdateCards += OnUpdateCards;
         EventManager.Game.UI.OnSecondMoveNeeded += OnSecondMoveNeeded;
-        EventManager.Game.UI.OnPlantPlanted += OnPlantPlanted;
         EventManager.Game.Level.OnTurnChanged += OnTurnChanged;
         EventManager.Game.Input.OnCancel += GameInputOnCancel;
         EventManager.Game.Input.OnInteract += GameInputOnInteract;
@@ -85,11 +84,6 @@ public class CardsUIController : MonoBehaviour
     private void SwitchState(State newState)
     {
         currentState = newState;
-    }
-
-    private void OnPlantPlanted(EventManager.GameEvents.UIEvents.OnPlantPlantedArgs arg0)
-    {
-        CancelPlaying();
     }
 
     private void DiscardCard()

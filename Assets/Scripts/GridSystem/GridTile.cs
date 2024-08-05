@@ -112,6 +112,16 @@ public class GridTile
         }
 
         objects.Add(callerArgs.CallingCardInstance);
+        //If Objects has only one Lifeform
+        if (objects.Count == 1)
+        {
+            EventManager.Game.Level.OnPlantPlanted?.Invoke(new EventManager.GameEvents.LevelEvents.OnPlantPlantedArgs()
+            {
+                plantedCardInstance = callerArgs.CallingCardInstance,
+                plantedGridTile = this
+            });
+        }
+
         OnContentUpdated?.Invoke(new OnContentUpdatedArgs()
         {
             GridTile = this,

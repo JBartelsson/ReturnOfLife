@@ -11,7 +11,8 @@ public class SoundManager : MonoBehaviour
     {
         PlantGrown = 1,
         Point = 2,
-        MainMenuMusic = 3,
+        MainMenuMusic = 3, 
+        PlantDeath = 4,
     }
     public static SoundManager Instance { get; private set; }
     private void Awake()
@@ -37,13 +38,42 @@ public class SoundManager : MonoBehaviour
 
     private void OnEnable()
     {
-        EventManager.Game.UI.OnPlantPlanted += OnPlantPlanted;
+        EventManager.Game.Level.OnPlantPlanted += OnPlantPlanted;
+        EventManager.Game.Level.OnScoreChanged += OnScoreChanged;
     }
 
-    private void OnPlantPlanted(EventManager.GameEvents.UIEvents.OnPlantPlantedArgs arg0)
+    private void OnScoreChanged(EventManager.GameEvents.LevelEvents.ScoreChangedArgs args)
     {
-        Debug.Log("On Plant Planted");
-        PlayOneShot(Sound.PlantGrown);
+    }
+
+    private void OnPlantPlanted(EventManager.GameEvents.LevelEvents.OnPlantPlantedArgs args)
+    {
+        switch (args.plantedCardInstance.CardData.LifeformType)
+        {
+            case CardData.LifeformTypeEnum.Antisocial:
+                PlayOneShot(Sound.PlantGrown);
+                break;
+            case CardData.LifeformTypeEnum.Bindweed:
+                PlayOneShot(Sound.PlantGrown);
+                break;
+            case CardData.LifeformTypeEnum.Lycoperdon:
+                PlayOneShot(Sound.PlantGrown);
+                break;
+            case CardData.LifeformTypeEnum.Epiphyt:
+                PlayOneShot(Sound.PlantGrown);
+                break;
+            case CardData.LifeformTypeEnum.Normalo:
+                PlayOneShot(Sound.PlantGrown);
+                break;
+            case CardData.LifeformTypeEnum.Reanimate:
+                PlayOneShot(Sound.PlantGrown);
+                break;
+            case CardData.LifeformTypeEnum.Epiphany:
+                PlayOneShot(Sound.PlantGrown);
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
     }
 
     private void PlayOneShot(Sound sound)

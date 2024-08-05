@@ -428,11 +428,7 @@ public class GameManager : MonoBehaviour
         selectedCardBlueprint = callerArgs.CallingCardInstance;
         selectedCardBlueprint.Execute(callerArgs);
         CheckSpecialFields();
-        EventManager.Game.UI.OnPlantPlanted?.Invoke(new EventManager.GameEvents.UIEvents.OnPlantPlantedArgs()
-        {
-            plantedCardInstance = selectedCardBlueprint,
-            plantedGridTile = callerArgs.playedTile
-        });
+        
         //If card has an editor (2nd move) and the editor is not blocked e.g. by plant sacrifice
         Debug.Log($"Editor is blocked: {callerArgs.BlockSecondMove}");
         if (selectedCardBlueprint.CardSecondMove != null && !callerArgs.BlockSecondMove)

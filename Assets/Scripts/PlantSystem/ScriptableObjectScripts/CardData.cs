@@ -17,6 +17,11 @@ public class CardData : ScriptableObject, ICloneable
         cardDataIDCounter++;
     }
 
+    public enum LifeformTypeEnum
+    {
+        Antisocial = 1, Bindweed = 2, Lycoperdon = 3, Epiphyt = 4, Normalo = 5, Reanimate = 6, Epiphany = 7
+    }
+
     [Serializable]
     public abstract class Executable
     {
@@ -156,6 +161,14 @@ public class CardData : ScriptableObject, ICloneable
     private Sprite plantSprite;
     [field: Header("Text Information")]
     [field: SerializeField] public string CardName { get; private set; }
+
+    [SerializeField] private LifeformTypeEnum lifeformType;
+
+    public LifeformTypeEnum LifeformType
+    {
+        get => lifeformType;
+        set => lifeformType = value;
+    }
 
     [SerializeField] private CardStats regularCardStats;
     [SerializeField] private CardStats upgradedCardStats;

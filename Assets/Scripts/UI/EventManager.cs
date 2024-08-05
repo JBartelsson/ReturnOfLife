@@ -26,6 +26,7 @@ public static class EventManager
         Game.Level.OnShuffeDiscardPileIntoDrawPile = delegate { };
         Game.Level.OnCardAdded = delegate { };
         Game.Level.OnDiscardUsed = delegate { };
+        Game.Level.OnPlantPlanted = delegate {};
 
         
         Game.UI.OnSecondMoveNeeded = delegate {};
@@ -33,7 +34,6 @@ public static class EventManager
         Game.UI.OnPlantHoverCanceled = delegate {};
         Game.UI.OnPlantHoverChanged = delegate {};
         Game.UI.OnHoverForEditor = delegate {};
-        Game.UI.OnPlantPlanted = delegate {};
         Game.UI.OnNotEnoughMana = delegate { };
         Game.UI.OnTutorialScreenChange = delegate { };
         Game.UI.OnCardPickScreenChange = delegate { };
@@ -90,11 +90,7 @@ public static class EventManager
             {
                 public GridTile hoveredGridTile;
             }
-            public class OnPlantPlantedArgs : Args
-            {
-                public CardInstance plantedCardInstance;
-                public GridTile plantedGridTile;
-            }
+           
             
             public class OnSecondMoveNeededArgs : Args
             {
@@ -118,7 +114,6 @@ public static class EventManager
 
             public UnityAction<OnHoverChangedArgs> OnPlantHoverChanged;
             public UnityAction OnPlantHoverCanceled; 
-            public UnityAction<OnPlantPlantedArgs> OnPlantPlanted;
             public UnityAction<OnSecondMoveNeededArgs> OnSecondMoveNeeded;
             public UnityAction<OnHoverForEditorArgs> OnHoverForEditor;
             public UnityAction OnNotEnoughMana;
@@ -150,6 +145,8 @@ public static class EventManager
             public UnityAction OnShuffeDiscardPileIntoDrawPile;
             public UnityAction<CardInstance> OnCardAdded;
             public UnityAction<int> OnDiscardUsed;
+            public UnityAction<OnPlantPlantedArgs> OnPlantPlanted;
+
 
         
             public class LevelEndedArgs : Args
@@ -157,6 +154,12 @@ public static class EventManager
                 public bool WonLevel;
                 public int CurrentScore;
                 public int NeededScore;
+            }
+            
+            public class OnPlantPlantedArgs : Args
+            {
+                public CardInstance plantedCardInstance;
+                public GridTile plantedGridTile;
             }
 
             public class LevelInitializedArgs : Args
