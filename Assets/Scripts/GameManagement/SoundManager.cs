@@ -2,8 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using FMOD.Studio;
 using FMODUnity;
+using Unity.VisualScripting;
 using UnityEngine;
+using STOP_MODE = FMOD.Studio.STOP_MODE;
 
 public class SoundManager : MonoBehaviour
 {
@@ -11,22 +14,25 @@ public class SoundManager : MonoBehaviour
     {
         PlantGrown = 1,
         Point = 2,
-        MainMenuMusic = 3, 
+        MainMenuMusic = 3,
         PlantDeath = 4,
     }
+
     public static SoundManager Instance { get; private set; }
+
     private void Awake()
     {
         if (Instance != null)
         {
             Destroy(Instance.gameObject);
         }
+
         Instance = this;
         //Resetting Parenting structure so dontdestroyonload does work
         this.transform.parent = null;
         DontDestroyOnLoad(this);
     }
-    
+
     [Serializable]
     public class SoundItem
     {
@@ -34,7 +40,37 @@ public class SoundManager : MonoBehaviour
         public EventReference EventReference;
     }
 
+    public class LoopItem
+    {
+        public Sound Sound;
+        public EventInstance EventInstance;
+
+        public LoopItem(Sound sound, EventReference eventReference)
+        {
+            Sound = sound;
+            EventInstance = RuntimeManager.CreateInstance(eventReference);
+            StartLoop();
+        }
+
+        public void StartLoop()
+        {
+            this.EventInstance.start();
+        }
+
+        public void StopLoop()
+        {
+            EventInstance.stop(STOP_MODE.ALLOWFADEOUT);
+        }
+
+        public void Destroy()
+        {
+            EventInstance.stop(STOP_MODE.IMMEDIATE);
+            EventInstance.release();
+        }
+    }
+
     [SerializeField] private List<SoundItem> soundItems;
+    private List<LoopItem> loopQueue = new();
 
     private void OnEnable()
     {
@@ -74,22 +110,23 @@ public class SoundManager : MonoBehaviour
 
     private void OnLifeformRevived(CallerArgs arg0)
     {
-        
     }
 
     private void OnLifeformKilled(CallerArgs arg0)
     {
-        
     }
 
     private void OnDrawCards(EventManager.GameEvents.DeckChangedArgs arg0)
     {
         //Wird pro Karte aufgerufen
+        StopLoop(Sound.Point);
+
     }
 
     private void OnCardSelected(CardInstance arg0)
     {
         //Card Click Sound
+        StartLoop(Sound.Point);
     }
 
     private void OnScoreChanged(EventManager.GameEvents.LevelEvents.ScoreChangedArgs args)
@@ -100,7 +137,6 @@ public class SoundManager : MonoBehaviour
 
     private void OnPlantPlanted(EventManager.GameEvents.LevelEvents.OnLifeformPlantedArgs args)
     {
-        
         if (!args.plantedCardInstance.IsUpgraded())
         {
             //Play normal sound
@@ -109,7 +145,7 @@ public class SoundManager : MonoBehaviour
         {
             //Play upgraded placement sound
         }
-        
+
         //Lifeform plant
         switch (args.plantedCardInstance.CardData.LifeformType)
         {
@@ -137,15 +173,51 @@ public class SoundManager : MonoBehaviour
             default:
                 throw new ArgumentOutOfRangeException();
         }
-
     }
 
     private void PlayOneShot(Sound sound)
     {
-        SoundItem soundItem =
-            soundItems.FirstOrDefault((soundItem) => soundItem.sound == sound);
-        Debug.Log($"SOUND ITEM IS {soundItem}");
-        if (soundItem == null) return;
-        FMODUnity.RuntimeManager.PlayOneShot(soundItem.EventReference, Camera.main.transform.position);
+        EventReference? eventReference = GetEventReference(sound);
+        if (eventReference.HasValue)
+            FMODUnity.RuntimeManager.PlayOneShot(eventReference.Value, Camera.main.transform.position);
+    }
+
+    private EventReference? GetEventReference(Sound sound)
+    {
+        SoundItem soundItem = soundItems.FirstOrDefault((soundItem) => soundItem.sound == sound);
+        if (soundItem == null) return null;
+        return soundItem.EventReference;
+    }
+
+//Starts a Loop
+    private void StartLoop(Sound sound)
+    {
+        if (loopQueue.Any((item => item.Sound == sound)))
+        {
+            loopQueue.First(item => item.Sound == sound).StartLoop();
+            Debug.Log("Started Loop Again");
+            return;
+        }
+
+        EventReference? eventReference = GetEventReference(sound);
+        if (!eventReference.HasValue) return;
+        LoopItem loopItem = new LoopItem(sound, eventReference.Value);
+        loopQueue.Add(loopItem);
+    }
+
+//Stops a Loop
+    private void StopLoop(Sound sound)
+    {
+        if (!loopQueue.Any((item => item.Sound == sound))) return;
+        loopQueue.First((item => item.Sound == sound)).StopLoop();
+    }
+
+    private void OnDestroy()
+    {
+        //Clean UP
+        foreach (var loopItem in loopQueue)
+        {
+            loopItem.Destroy();
+        }
     }
 }
