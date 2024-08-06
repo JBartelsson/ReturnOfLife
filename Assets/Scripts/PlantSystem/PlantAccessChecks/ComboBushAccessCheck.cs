@@ -8,7 +8,8 @@ public class ComboBushAccessCheck : CardAccessCheckBase
 {
     public override bool CanBeBePlantedOn(CallerArgs callerArgs)
     {
-        if (callerArgs.CallingCardInstance.IsDead()) return false;
+        if (callerArgs.playedTile.CardInstance == null) return true;
+        if (callerArgs.playedTile.CardInstance.IsDead()) return false;
         return true;
     }
 

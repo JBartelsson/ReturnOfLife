@@ -8,6 +8,7 @@ using DG.Tweening;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using static GameManager;
 
 public class GameManager : MonoBehaviour
@@ -54,6 +55,10 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private int standardMana = 3;
     [SerializeField] private int standardTurns = 3;
+
+    [FormerlySerializedAs("standardDiscard")] [SerializeField]
+    private int standardDiscards = 3;
+
     [SerializeField] private PlanetProgressionSO planetProgression;
     private GameState currentGameState = GameState.None;
 
@@ -68,6 +73,7 @@ public class GameManager : MonoBehaviour
     private List<CardInstance> currentWisdoms = new();
     private int currentMana = 0;
     private int currentTurns = 0;
+    private int currentDiscards = 0;
     private int currentPlayedCards = 0;
     private bool selectedPlantNeedNeighbor = false;
     private int selectedCardIndex;
@@ -108,10 +114,23 @@ public class GameManager : MonoBehaviour
 
     //Args
     private List<CallerArgs> playingQueue = new();
-    private List<CallerArgs> secondMoveQueue = new();
+
+    public class SecondMoveQueueItem
+    {
+        public CallerArgs CallerArgs;
+        public int secondMoveNumber = 1;
+
+        public SecondMoveQueueItem(CallerArgs callerArgs, int secondMoveNumber)
+        {
+            CallerArgs = callerArgs;
+            this.secondMoveNumber = secondMoveNumber;
+        }
+    }
+
+    private List<SecondMoveQueueItem> secondMoveQueue = new();
     private SecondMoveCallerArgs secondMoveArgs = new SecondMoveCallerArgs();
-
-
+    private bool secondMoveQueueEmptyCalled = false;
+    private float queueTimer;
 
     private void Awake()
     {
@@ -119,9 +138,14 @@ public class GameManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
+            InitEventSubscriptions();
             //Resetting Parenting structure so dontdestroyonload does work
             this.transform.parent = null;
             DontDestroyOnLoad(this);
+#if UNITY_EDITOR
+
+            SceneLoader.Load(SceneLoader.Scene.GameScene);
+#endif
         }
         else
         {
@@ -130,18 +154,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
-#if UNITY_EDITOR
-    private void Start()
-    {
-        GridManager.Instance.OnGridReady += Instance_OnGridReady;
-        _deck.InitializeDeck(startDeck, handSize, handSize);
-        BuildLevel();
-    }
-#endif
 
-    private void OnEnable()
+    private void InitEventSubscriptions()
     {
-        EventManager.Game.Level.OnPlantSacrificed += OnPlantSacrificed;
+        Debug.Log("SUBSCRIBING FROM GAMEMANAGER TO FUNCTIONS");
+        EventManager.Game.Level.OnLifeformSacrificed += OnPlantSacrificed;
         EventManager.Game.SceneSwitch.OnSceneReloadComplete += OnSceneReloadComplete;
     }
 
@@ -151,19 +168,14 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("On scene Load");
             GridManager.Instance.OnGridReady += Instance_OnGridReady;
-            if (args.oldSCene != SceneLoader.Scene.GameScene)
-            _deck.InitializeDeck(startDeck, handSize, handSize);
+            if (!_deck.IsInitialized())
+                _deck.InitializeDeck(startDeck, handSize, handSize);
 
             BuildLevel();
         }
     }
 
-    private void OnDisable()
-    {
-        EventManager.Game.Level.OnPlantSacrificed -= OnPlantSacrificed;
-    }
-
-    private void OnPlantSacrificed(EventManager.GameEvents.LevelEvents.PlantSacrificedArgs arg0)
+    private void OnPlantSacrificed(EventManager.GameEvents.LevelEvents.LifeformSacrificedArgs arg0)
     {
     }
 
@@ -182,6 +194,8 @@ public class GameManager : MonoBehaviour
             EventManager.Game.UI.OnTutorialScreenChange?.Invoke(true);
             SwitchState(GameState.Tutorial);
         }
+
+        GridManager.Instance.OnGridReady -= Instance_OnGridReady;
     }
 
     private void SwitchState(GameState newGameState)
@@ -249,11 +263,18 @@ public class GameManager : MonoBehaviour
         SwitchState(GameState.EndTurn);
     }
 
-    private void InitSecondMove(CallerArgs callerArgs)
+    private void InitSecondMove(SecondMoveQueueItem secondMoveQueueItem)
     {
+        CallerArgs callerArgs = secondMoveQueueItem.CallerArgs;
         selectedCardBlueprint = callerArgs.CallingCardInstance;
         Debug.Log($"INITIALIZES ONE SECOND MOVE for {callerArgs}");
         secondMoveQueue.RemoveAt(0);
+        if (selectedCardBlueprint.IsDead())
+        {
+            CancelSecondMove();
+            return;
+        }
+
         secondMoveArgs = new SecondMoveCallerArgs()
         {
             callerType = CALLER_TYPE.SECOND_MOVE,
@@ -262,11 +283,14 @@ public class GameManager : MonoBehaviour
             gameManager = this,
             needNeighbor = false,
             playedTile = callerArgs.playedTile,
+            SecondMoveNumber = secondMoveQueueItem.secondMoveNumber
         };
+        Debug.Log($"SECOND MOVE CARD ISNTANCE {callerArgs.CallingCardInstance}");
         EventManager.Game.UI.OnSecondMoveNeeded?.Invoke(new EventManager.GameEvents.UIEvents.OnSecondMoveNeededArgs()
         {
             editorCardInstance = callerArgs.CallingCardInstance,
-            editorOriginGridTile = callerArgs.playedTile
+            editorOriginGridTile = callerArgs.playedTile,
+            SecondMoveCallerArgs = secondMoveArgs
         });
     }
 
@@ -278,22 +302,32 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-       
-        
-        if (playingQueue.Count != 0 && !blockQueue)
+        if (playingQueue.Count != 0)
         {
+            if (blockQueue && playingQueue[0].callerType != CALLER_TYPE.EFFECT) return;
             blockQueue = true;
             PlayLifeForm(playingQueue[0]);
+
             return;
         }
-        
+
         if (secondMoveQueue.Count != 0 && !blockSecondMoveQueue)
         {
             blockSecondMoveQueue = true;
+            secondMoveQueueEmptyCalled = false;
             blockQueue = true;
             InitSecondMove(secondMoveQueue[0]);
             return;
         }
+        else
+        {
+            if (!secondMoveQueueEmptyCalled && !blockSecondMoveQueue)
+            {
+                secondMoveQueueEmptyCalled = true;
+                EventManager.Game.UI.OnSecondMoveQueueEmpty?.Invoke();
+            }
+        }
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
             AddPointScore(500, new CallerArgs(), SCORING_ORIGIN.LIFEFORM);
@@ -313,6 +347,7 @@ public class GameManager : MonoBehaviour
             blockSecondMoveQueue = false;
             CheckForEmptyQueue();
         }
+
         Debug.Log($"CANT EXECUTE THE EDITOR THERE");
 
         Debug.Log(secondMoveArgs);
@@ -357,10 +392,36 @@ public class GameManager : MonoBehaviour
     private void CheckForEmptyQueue()
     {
         blockQueue = false;
+        if (selectedCardIndex != -1)
+        {
+            Debug.Log($"Trying to end turn of card {selectedCardIndex}");
+            //Deck manipulation, in the future in the Deck class
+            ReduceMana(_deck.HandCards[selectedCardIndex].GetCardStats().PlayCost);
+            Debug.Log($"Current Wisdoms: {currentWisdoms.Count}");
+            CardInstance playedCard = _deck.HandCards[selectedCardIndex];
+            foreach (var wisdom in currentWisdoms)
+            {
+                Debug.Log($"REDUCE MANA FOR {wisdom.GetCardStats().PlayCost}");
+                ReduceMana(wisdom.GetCardStats().PlayCost);
+                _deck.DiscardCard(wisdom);
+            }
+
+            _deck.DiscardCard(playedCard);
+            //Event calling
+
+            currentPlayedCards++;
+            Debug.Log("PLANT PLANTED!");
+
+            selectedPlantNeedNeighbor = true;
+            RemoveAllWisdoms();
+            selectedCardIndex = -1;
+        }
+
         if (playingQueue.Count != 0) return;
         if (secondMoveQueue.Count != 0) return;
         EndCardPlaying();
     }
+
     public void PlayLifeForm(CallerArgs callerArgs)
     {
         playingQueue.RemoveAt(0);
@@ -373,19 +434,17 @@ public class GameManager : MonoBehaviour
         selectedCardBlueprint = callerArgs.CallingCardInstance;
         selectedCardBlueprint.Execute(callerArgs);
         CheckSpecialFields();
-        EventManager.Game.UI.OnPlantPlanted?.Invoke(new EventManager.GameEvents.UIEvents.OnPlantPlantedArgs()
-        {
-            plantedCardInstance = selectedCardBlueprint,
-            plantedGridTile = callerArgs.playedTile
-        });
+        EventManager.Game.UI.OnEndSingleCardPlay?.Invoke();
+
         //If card has an editor (2nd move) and the editor is not blocked e.g. by plant sacrifice
         Debug.Log($"Editor is blocked: {callerArgs.BlockSecondMove}");
         if (selectedCardBlueprint.CardSecondMove != null && !callerArgs.BlockSecondMove)
         {
             for (int i = 0; i < selectedCardBlueprint.GetCardStats().SecondMoveCallAmount; i++)
             {
-                secondMoveQueue.Insert(0, callerArgs);
+                secondMoveQueue.Insert(0, new SecondMoveQueueItem(callerArgs, i + 1));
             }
+
             return;
         }
 
@@ -397,27 +456,8 @@ public class GameManager : MonoBehaviour
 
     private void EndCardPlaying()
     {
-        Debug.Log("End this Single Card Play");
-        Debug.Log($"Trying to end turn of card {selectedCardIndex}");
-        //Deck manipulation, in the future in the Deck class
-        ReduceMana(_deck.HandCards[selectedCardIndex].GetCardStats().PlayCost);
-        foreach (var wisdom in currentWisdoms)
-        {
-            Debug.Log($"REDUCE MANA FOR {wisdom.GetCardStats().PlayCost}");
-            ReduceMana(wisdom.GetCardStats().PlayCost);
-            _deck.DiscardCard(wisdom);
-        }
-
-        _deck.DiscardCard(selectedCardIndex);
-        //Event calling
-
-        currentPlayedCards++;
-        Debug.Log("PLANT PLANTED!");
-
-        selectedPlantNeedNeighbor = true;
-        RemoveAllWisdoms();
         editorBlocked = false;
-        EventManager.Game.Level.EndSingleCardPlay?.Invoke();
+        EventManager.Game.Level.OnEndSingleCardPlay?.Invoke();
         SwitchState(GameState.SelectCards);
     }
 
@@ -431,16 +471,23 @@ public class GameManager : MonoBehaviour
         }
 
         SetMana(standardMana);
+        SetDiscards(standardDiscards);
         RemoveAllWisdoms();
 
-        _deck.DiscardHand();
 
         EventManager.Game.Level.OnTurnChanged?.Invoke(new EventManager.GameEvents.LevelEvents.TurnChangedArgs()
         {
             sender = this,
             TurnNumber = currentTurns
         });
+        _deck.DiscardHand();
         SwitchState(GameState.DrawCards);
+    }
+
+    private void SetDiscards(int discards)
+    {
+        currentDiscards = discards;
+        EventManager.Game.Level.OnDiscardUsed(currentDiscards);
     }
 
     private void EndLevel()
@@ -498,6 +545,10 @@ public class GameManager : MonoBehaviour
             ScoringOrigin = scoringOrigin,
             ScoreAdded = new Score(newScore - oldScore)
         });
+        // if (currentLevel.RequirementsMet(this))
+        // {
+        //     EndLevel();
+        // }
     }
 
     private bool SetMana(int amount)
@@ -531,6 +582,7 @@ public class GameManager : MonoBehaviour
     public void GameOver()
     {
         currentStage = 0;
+        _deck.InitializeDeck(startDeck);
         SceneLoader.Reload();
     }
 
@@ -599,5 +651,13 @@ public class GameManager : MonoBehaviour
         {
             currentWisdoms = this.currentWisdoms
         });
+    }
+
+    public void DiscardCard(int index)
+    {
+        if (currentDiscards <= 0) return;
+        Deck.DiscardCard(index);
+        Deck.DrawCards(1);
+        SetDiscards(currentDiscards - 1);
     }
 }

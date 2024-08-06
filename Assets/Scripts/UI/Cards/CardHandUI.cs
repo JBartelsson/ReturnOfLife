@@ -9,7 +9,16 @@ using UnityEngine.EventSystems;
 public class CardHandUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] private CardUI cardUI;
+    [SerializeField] private Canvas cardCanvas;
+    private int normalSortingLayer;
 
+    public int NormalSortingLayer
+    {
+        get => normalSortingLayer;
+        set => normalSortingLayer = value;
+    }
+
+    [SerializeField] private int hoveredSortingLayer;
     public CardUI CardUI
     {
         get => cardUI;
@@ -22,12 +31,14 @@ public class CardHandUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     private bool canPlayCard = true;
     private bool cardSelected = false;
     private Vector3 originalPosition;
+    
 
     private Tween cardUpTween;
 
     private void Start()
     {
         SetPosition();
+        PutCardInBack();
     }
 
     private void SetPosition()
@@ -61,6 +72,8 @@ public class CardHandUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
         if (state)
         {
             cardUI.BackgroundSprite.material = cardUI.HoverMaterial;
+            PutCardInFront();
+
         }
         else
         {
@@ -73,12 +86,27 @@ public class CardHandUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     public void OnPointerEnter(PointerEventData eventData)
     {
         cardUpTween = cardUI.CardParent.DOLocalMove(CardMouseHoverTransform.localPosition, .3f);
+        PutCardInFront();
+
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         if (cardSelected) return;
+        PutCardInBack();
         cardUI.CardParent.DOLocalMove(originalPosition, .3f);
+    }
+
+    private void PutCardInFront()
+    {
+        if (cardCanvas == null) return;
+        cardCanvas.sortingOrder = hoveredSortingLayer;
+    }
+
+    private void PutCardInBack()
+    {
+        if (cardCanvas == null) return;
+        cardCanvas.sortingOrder = normalSortingLayer;
     }
     
     private void OnEnable()
@@ -95,6 +123,10 @@ public class CardHandUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
 
     private void OnWisdomChanged(EventManager.GameEvents.LevelEvents.WisdomChangedArgs arg0)
     {
+        foreach (var arg0CurrentWisdom in arg0.currentWisdoms)
+        {
+            Debug.Log($"Wisdom changed! {arg0CurrentWisdom}");
+        }
         if (arg0.currentWisdoms.Any((wisdom) => wisdom.CardData.WisdomType == WisdomType.Basic))
         {
             cardUI.SetCardUI(cardUI.CardInstance, true);
@@ -125,5 +157,16 @@ public class CardHandUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     {
         cardClickEnabled = state;
         // OnPointerExit(null);
+    }
+
+    private void Update()
+    {
+        if (cardSelected)
+        {
+            if (Input.GetKeyDown(KeyCode.D))
+            {
+                
+            }
+        }
     }
 }

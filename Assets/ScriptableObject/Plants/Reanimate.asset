@@ -12,24 +12,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e8b50ae5f69e2046bcf6f1f5f58bf0c, type: 3}
   m_Name: Reanimate
   m_EditorClassIdentifier: 
-  plantSprite: {fileID: 21300000, guid: 387d69c679337bb49b863d4a457a6a05, type: 3}
+  plantSprite: {fileID: 21300000, guid: 8e63551e5b5cd5a4f84778fb6d4f18bc, type: 3}
   <CardName>k__BackingField: Reanimate
+  lifeformType: 6
   regularCardStats:
     Points: 1
     EffectPattern: {fileID: 11400000, guid: 4263142aff317ce42bc4b97925970b8d, type: 2}
-    CardText: Revives all Lifeforms in the Pattern and triggers their effects.
+    CardText: Revives up to one Lifeform in the <b>Pattern</b> and triggers its upgraded
+      effects.
     PlayCost: 2
     SecondMoveCallAmount: 1
   upgradedCardStats:
     Points: 1
-    EffectPattern: {fileID: 11400000, guid: 4263142aff317ce42bc4b97925970b8d, type: 2}
-    CardText: Revives all Lifeforms in the Pattern and triggers their effects.
+    EffectPattern: {fileID: 11400000, guid: 03c55ff4c842f654baba9ec08d703ece, type: 2}
+    CardText: Revives up to three Lifeforms in the <b>Pattern+</b> and triggers their
+      upgraded effects.
     PlayCost: 2
     SecondMoveCallAmount: 3
   <Element>k__BackingField: 0
   effectType: 0
   wisdomType: 0
   <Rarity>k__BackingField: 1
+  secondMoveText: Revive Lifeform
   overridePointFunction: 0
   cardFunction:
     executionType: 0

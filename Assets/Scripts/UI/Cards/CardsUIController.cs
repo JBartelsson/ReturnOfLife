@@ -1,14 +1,19 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class CardsUIController : MonoBehaviour
 {
     [SerializeField] private GameObject cardPrefab;
     [SerializeField] private Transform cardsParent;
     [SerializeField] private Transform hoveredCardsTransform;
+    [SerializeField] private Button discardButton;
+    [SerializeField] private TextMeshProUGUI discardLeftText;
+    
     private List<CardHandUI> currentCards = new();
     private int activePlantIndex = -1;
 
@@ -18,7 +23,7 @@ public class CardsUIController : MonoBehaviour
     private GridTile oldGridTile;
     private GridTile currentGridTile;
     private float clickCooldownTimer = 0;
-
+    private bool gameplayBlocked = false;
     public enum State
     {
         SelectCard,
@@ -34,11 +39,36 @@ public class CardsUIController : MonoBehaviour
         EventManager.Game.Level.OnDrawCards += OnDrawCards;
         EventManager.Game.Level.OnUpdateCards += OnUpdateCards;
         EventManager.Game.UI.OnSecondMoveNeeded += OnSecondMoveNeeded;
-        EventManager.Game.UI.OnPlantPlanted += OnPlantPlanted;
+        EventManager.Game.UI.OnEndSingleCardPlay += OnPlantPlanted;
         EventManager.Game.Level.OnTurnChanged += OnTurnChanged;
         EventManager.Game.Input.OnCancel += GameInputOnCancel;
         EventManager.Game.Input.OnInteract += GameInputOnInteract;
-        EventManager.Game.Level.EndSingleCardPlay += EndSingleCardPlay;
+        EventManager.Game.Level.OnEndSingleCardPlay += EndSingleCardPlay;
+        EventManager.Game.UI.OnBlockGamePlay += OnBlockGamePlay;
+        EventManager.Game.Level.OnDiscardUsed += OnDiscardUsed;
+        discardButton.onClick.AddListener(() =>
+        {
+            DiscardCard();
+        });
+    }
+
+    private void OnDiscardUsed(int discardsLeft)
+    {
+        discardLeftText.text = $"({discardsLeft} left)";
+        if (discardsLeft == 0)
+        {
+            discardButton.interactable = false;
+        }
+        else
+        {
+            discardButton.interactable = true;
+
+        }
+    }
+
+    private void OnBlockGamePlay(bool status)
+    {
+        gameplayBlocked = status;
     }
 
     private void EndSingleCardPlay()
@@ -57,9 +87,16 @@ public class CardsUIController : MonoBehaviour
         currentState = newState;
     }
 
-    private void OnPlantPlanted(EventManager.GameEvents.UIEvents.OnPlantPlantedArgs arg0)
+    private void OnPlantPlanted()
     {
-        GameInputOnCancel();
+        CancelPlaying();
+    }
+
+    private void DiscardCard()
+    {
+        if (activePlantIndex == -1 ) return;
+        GameManager.Instance.DiscardCard(activePlantIndex);
+        CancelPlaying();
     }
 
     private void OnSecondMoveNeeded(EventManager.GameEvents.UIEvents.OnSecondMoveNeededArgs neededArgs)
@@ -71,7 +108,7 @@ public class CardsUIController : MonoBehaviour
             cardUI.SetActiveState(false);
         }
 
-        EventManager.Game.UI.OnPlantHoverCanceled?.Invoke();
+        EventManager.Game.UI.OnLifeformHoverCanceled?.Invoke();
         bool secondMovePlayable = false;
         GridManager.Instance.Grid.ForEachGridTile((gridTile) =>
         {
@@ -92,14 +129,18 @@ public class CardsUIController : MonoBehaviour
                 secondMovePlayable = true;
             }
         });
+        Debug.Log($"Second Move is {secondMovePlayable}!");
         if (!secondMovePlayable)
         {
-            GameInputOnCancel();
+            CancelPlaying(true);
+            return;
         }
+        EventManager.Game.Level.OnSecondMoveSuccessful?.Invoke();
     }
 
     private void GameInputOnInteract()
     {
+        if (gameplayBlocked) return;
         // if (clickCooldownTimer > 0) return;
         // clickCooldownTimer = Constants.CLICK_COOLDOWN;
         if (currentState == State.PlacePlant)
@@ -125,6 +166,14 @@ public class CardsUIController : MonoBehaviour
 
     private void GameInputOnCancel()
     {
+        CancelPlaying();
+        GameManager.Instance.RemoveAllWisdoms();
+        activeWisdoms.Clear();
+    }
+
+    private void CancelPlaying(bool overwriteEditorBlock = false)
+    {
+        if (gameplayBlocked && !overwriteEditorBlock) return;
         //If right click
         Debug.Log("GAME INPUT ON CANCEL IS CALLED");
         if (currentState == State.SecondMove)
@@ -134,9 +183,8 @@ public class CardsUIController : MonoBehaviour
 
         activePlantIndex = -1;
         currentState = State.SelectCard;
-        EventManager.Game.UI.OnPlantHoverCanceled?.Invoke();
-        GameManager.Instance.RemoveAllWisdoms();
-        activeWisdoms.Clear();
+        EventManager.Game.UI.OnLifeformHoverCanceled?.Invoke();
+        
         if (currentCards.Count >= 0)
             foreach (CardHandUI cardUI in currentCards)
             {
@@ -165,6 +213,7 @@ public class CardsUIController : MonoBehaviour
         {
             GameObject newCard = Instantiate(cardPrefab, cardsParent);
             CardHandUI cardHandUI = newCard.GetComponent<CardHandUI>();
+            cardHandUI.NormalSortingLayer = handSize - i;
             cardHandUI.CardUI.CardIndex = i;
             currentCards.Add(cardHandUI);
         }
@@ -210,12 +259,14 @@ public class CardsUIController : MonoBehaviour
         {
             HandlePlantClick(cardIndex);
         }
+        
+        EventManager.Game.UI.OnCardSelected?.Invoke(currentCards[cardIndex].CardUI.CardInstance);
 
 
         currentGridTile = null;
         currentCards[cardIndex].SetHoverState(true);
 
-        EventManager.Game.UI.OnPlantHoverCanceled?.Invoke();
+        EventManager.Game.UI.OnLifeformHoverCanceled?.Invoke();
     }
 
     private void HandleWisdomClick(int cardIndex)
@@ -258,7 +309,7 @@ public class CardsUIController : MonoBehaviour
         activePlantIndex = -1;
         currentState = State.SelectCard;
         currentCards[cardIndex].SetHoverState(false);
-        EventManager.Game.UI.OnPlantHoverCanceled?.Invoke();
+        EventManager.Game.UI.OnLifeformHoverCanceled?.Invoke();
     }
 
     private void DeselectWisdom(int cardIndex)
@@ -266,7 +317,7 @@ public class CardsUIController : MonoBehaviour
         GameManager.Instance.RemoveWisdom(currentCards[cardIndex].CardUI.CardInstance);
         activeWisdoms.Remove(cardIndex);
         currentCards[cardIndex].SetHoverState(false);
-        EventManager.Game.UI.OnPlantHoverCanceled?.Invoke();
+        EventManager.Game.UI.OnLifeformHoverCanceled?.Invoke();
     }
 
     private void DeselectAllOtherWisdomOfSameType(int cardIndex)
@@ -353,14 +404,14 @@ public class CardsUIController : MonoBehaviour
             {
                 CardInstance hoveredCardInstance =
                     GameManager.Instance.GetTemporaryCardInstance(activePlantIndex);
-                EventManager.Game.UI.OnPlantHoverChanged?.Invoke(
-                    new EventManager.GameEvents.UIEvents.OnHoverChangedArgs()
+                EventManager.Game.UI.OnLifeformHoverChanged?.Invoke(
+                    new EventManager.GameEvents.UIEvents.OnLifeformChangedArgs()
                     {
                         hoveredCardInstance = hoveredCardInstance,
                         hoveredGridTile = currentGridTile,
                         hoverCallerArgs = GameManager.Instance.GetTemporaryCallerArgs(activePlantIndex, currentGridTile)
                     });
-                currentGridTile = oldGridTile;
+                oldGridTile = currentGridTile;
             }
         }
     }

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{07c50059-8745-48da-9728-3785a5963ef8}">
+		<property name="assetPath">
+			<value>SFX/Kombo_Explosion.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>1.6545833333333333</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{8c6137e3-bde7-4c00-8e58-02ba76506efc}</destination>
+		</relationship>
+	</object>
+</objects>

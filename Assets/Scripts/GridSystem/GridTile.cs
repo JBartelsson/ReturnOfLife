@@ -104,14 +104,24 @@ public class GridTile
     {
         if (ContainsAnyPlant())
         {
-            EventManager.Game.Level.OnPlantSacrificed?.Invoke(
-                new EventManager.GameEvents.LevelEvents.PlantSacrificedArgs()
+            EventManager.Game.Level.OnLifeformSacrificed?.Invoke(
+                new EventManager.GameEvents.LevelEvents.LifeformSacrificedArgs()
                 {
                     SacrificeCallerArgs = callerArgs
                 });
         }
 
         objects.Add(callerArgs.CallingCardInstance);
+        //If Objects has only one Lifeform
+        if (objects.Count == 1)
+        {
+            EventManager.Game.Level.OnLifeformPlanted?.Invoke(new EventManager.GameEvents.LevelEvents.OnLifeformPlantedArgs()
+            {
+                plantedCardInstance = callerArgs.CallingCardInstance,
+                plantedGridTile = this
+            });
+        }
+
         OnContentUpdated?.Invoke(new OnContentUpdatedArgs()
         {
             GridTile = this,
@@ -142,7 +152,7 @@ public class GridTile
         {
             CardInstance.Upgrades.Add(WisdomType.Basic);
         }
-
+        
         oldCardInstance.TryReviveLifeform(reviveCallerArgs);
     }
 

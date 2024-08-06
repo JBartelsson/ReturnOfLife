@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: ReanimatePattern
   m_EditorClassIdentifier: 
   pattern:
-    dataString: BBBBDBBBB
+    dataString: CBCBDBCBC
     gridSize: 3

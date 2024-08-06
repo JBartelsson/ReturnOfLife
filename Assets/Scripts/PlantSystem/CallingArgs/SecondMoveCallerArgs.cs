@@ -7,6 +7,7 @@ public class SecondMoveCallerArgs : CallerArgs
     //Used for editor access checks, so playedTile and selectedTile is different
     public GridTile selectedGridTile;
     public CardInstance EditorCallingCardInstance;
+    public int SecondMoveNumber;
 
     public SecondMoveCallerArgs()
     {
