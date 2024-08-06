@@ -43,8 +43,13 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
     [SerializeField] private Sprite canPlaceSprite;
     [SerializeField] private SpriteRenderer previewSpriteRenderer;
 
-    [Header("Second Move Settings")] [SerializeField]
+    [FormerlySerializedAs("placementArrowSpriteRenderer")] [SerializeField]
+    private WiggleAnimation placementArrowWiggle;
+
+    [Header("Text Settings")] [SerializeField]
     private TextMeshPro secondMoveText;
+
+    [SerializeField] private TextMeshPro notEnoughManaText;
 
     private GridTile ownGridTile;
 
@@ -52,12 +57,13 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
 
 
     private VisualizationState visualizationState = VisualizationState.NONE;
+    private bool markedForMove = false;
 
     public GridTile OwnGridTile => ownGridTile;
 
     public enum VisualizationState
     {
-        MARKED_FOR_EDITOR,
+        MARKED_FOR_MOVE,
         PLANTING_PREVIEW,
         NONE
     }
@@ -84,6 +90,8 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
         statusSpriteRenderer.gameObject.SetActive(false);
         secondMoveText.gameObject.SetActive(false);
         redCrossSpriteRenderer.gameObject.SetActive(false);
+        notEnoughManaText.gameObject.SetActive(false);
+        placementArrowWiggle.gameObject.SetActive(false);
     }
 
     private void Start()
@@ -95,23 +103,57 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
     {
         EventManager.Game.UI.OnLifeformHoverChanged += OnPlantHoverChanged;
         EventManager.Game.UI.OnLifeformHoverCanceled += OnPlantHoverCanceled;
-        EventManager.Game.UI.OnHoverForEditor += OnHoverForEditor;
+        EventManager.Game.UI.OnHoverForSecondMove += OnHoverForSecondMove;
         EventManager.Game.UI.OnSecondMoveNeeded += OnSecondMoveNeeded;
         EventManager.Game.UI.OnSecondMoveQueueEmpty += OnSecondMoveQueueEmpty;
+        EventManager.Game.UI.OnCardSelectGridTileUpdate += OnCardSelectGridTileUpdate;
+        EventManager.Game.Level.OnLifeformPlanted += OnLifeformPlanted;
+    }
+
+    private void OnLifeformPlanted(EventManager.GameEvents.LevelEvents.OnLifeformPlantedArgs arg0)
+    {
+        markedForMove = false;
+        SetMarkedState();
+    }
+
+    private void OnCardSelectGridTileUpdate(EventManager.GameEvents.UIEvents.CardSelectGridUpdateArgs args)
+    {
+        if (args.UpdatedTile != ownGridTile) return;
+        Debug.Log($"Update arrived at {ownGridTile}. Status is {args.Status}");
+        if (args.Status)
+        {
+            markedForMove = true;
+            SetMarkedState();
+        }
+        else
+        {
+            markedForMove = false;
+            SetMarkedState();
+        }
     }
 
     private void OnSecondMoveQueueEmpty()
     {
         secondMoveText.DOFade(0f, Constants.UI_FAST_FADE_SPEED)
             .OnComplete(() => secondMoveText.gameObject.SetActive(false));
+        markedForMove = false;
+        SetMarkedState();
     }
 
     private void OnSecondMoveNeeded(EventManager.GameEvents.UIEvents.OnSecondMoveNeededArgs args)
     {
         if (args.editorOriginGridTile == ownGridTile)
         {
+            secondMoveText.DOFade(0f, 0f);
             secondMoveText.gameObject.SetActive(true);
-            secondMoveText.DOFade(1f, Constants.UI_FAST_FADE_SPEED);
+            secondMoveText.text = args.SecondMoveCallerArgs.CallingCardInstance.CardData.SecondMoveText;
+            Tween fadeTween = secondMoveText.DOFade(1f, Constants.UI_FAST_FADE_SPEED);
+            if (args.SecondMoveCallerArgs.CallingCardInstance.CardData.RuntimePoints != 0)
+            {
+                fadeTween.SetDelay(Constants.UI_POINT_DISAPPEAR_SPEED * 3);
+            }
+
+            fadeTween.Play();
         }
     }
 
@@ -120,22 +162,31 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
     {
         EventManager.Game.UI.OnLifeformHoverChanged -= OnPlantHoverChanged;
         EventManager.Game.UI.OnLifeformHoverCanceled -= OnPlantHoverCanceled;
-        EventManager.Game.UI.OnHoverForEditor -= OnHoverForEditor;
+        EventManager.Game.UI.OnHoverForSecondMove -= OnHoverForSecondMove;
     }
 
-    private void OnHoverForEditor(EventManager.GameEvents.UIEvents.OnHoverForEditorArgs args)
+    private void OnHoverForSecondMove(EventManager.GameEvents.UIEvents.OnHoverForEditorArgs args)
     {
         if (args.hoveredGridTile != ownGridTile) return;
-        visualizationState = VisualizationState.MARKED_FOR_EDITOR;
+        markedForMove = true;
         SetMarkedState();
+    }
+
+    private void ShowWiggleArrow()
+    {
+        placementArrowWiggle.gameObject.SetActive(true);
+        placementArrowWiggle.StartAnimation();
     }
 
     private void OnPlantHoverCanceled()
     {
         visualizationState = VisualizationState.NONE;
+        markedForMove = false;
         redCrossSpriteRenderer.gameObject.SetActive(false);
         previewSpriteRenderer.sprite = null;
         secondMoveText.gameObject.SetActive(false);
+        notEnoughManaText.gameObject.SetActive(false);
+        placementArrowWiggle.gameObject.SetActive(false);
         SetMarkedState();
     }
 
@@ -149,21 +200,22 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
         }
 
         redCrossSpriteRenderer.gameObject.SetActive(false);
+        notEnoughManaText.gameObject.SetActive(false);
         SetMarkedState();
         if (args.hoveredGridTile == ownGridTile)
         {
-            redCrossSpriteRenderer.gameObject.SetActive(true);
+            SetNewSprite(args.hoveredCardInstance, previewSpriteRenderer, true);
+            if (!GameManager.Instance.EnoughManaFor(args.hoveredCardInstance))
+            {
+                notEnoughManaText.gameObject.SetActive(true);
+                return;
+            }
 
             if (!args.hoveredCardInstance.CanExecute(args.hoverCallerArgs))
             {
+                redCrossSpriteRenderer.gameObject.SetActive(true);
                 redCrossSpriteRenderer.sprite = cantPlaceSprite;
             }
-            else
-            {
-                redCrossSpriteRenderer.sprite = canPlaceSprite;
-            }
-
-            SetNewSprite(args.hoveredCardInstance, previewSpriteRenderer, true);
         }
         else
         {
@@ -212,8 +264,8 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
         statusSpriteRenderer.gameObject.SetActive(false);
         if (cardInstance.IsDead())
         {
-            statusSpriteRenderer.gameObject.SetActive(true);
-            statusSpriteRenderer.sprite = deathSprite;
+            // statusSpriteRenderer.gameObject.SetActive(true);
+            // statusSpriteRenderer.sprite = deathSprite;
             target.material.SetFloat("_Saturation", Constants.DEATH_SATURATION_VALUE);
         }
     }
@@ -227,11 +279,17 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
     private void SetMarkedState()
     {
         hoverEffectSpriteRenderer.gameObject.SetActive(false);
+        placementArrowWiggle.gameObject.SetActive(false);
+        if (markedForMove)
+        {
+            hoverEffectSpriteRenderer.gameObject.SetActive(true);
+            ShowWiggleArrow();
+            hoverEffectSpriteRenderer.sprite = editorSprite;
+        }
+
         switch (visualizationState)
         {
-            case VisualizationState.MARKED_FOR_EDITOR:
-                hoverEffectSpriteRenderer.gameObject.SetActive(true);
-                hoverEffectSpriteRenderer.sprite = editorSprite;
+            case VisualizationState.MARKED_FOR_MOVE:
                 break;
             case VisualizationState.PLANTING_PREVIEW:
                 hoverEffectSpriteRenderer.gameObject.SetActive(true);

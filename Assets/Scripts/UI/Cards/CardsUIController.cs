@@ -121,7 +121,7 @@ public class CardsUIController : MonoBehaviour
                     callerType = CALLER_TYPE.SECOND_MOVE
                 }))
             {
-                EventManager.Game.UI.OnHoverForEditor?.Invoke(
+                EventManager.Game.UI.OnHoverForSecondMove?.Invoke(
                     new EventManager.GameEvents.UIEvents.OnHoverForEditorArgs()
                     {
                         hoveredGridTile = gridTile
@@ -145,6 +145,7 @@ public class CardsUIController : MonoBehaviour
         // clickCooldownTimer = Constants.CLICK_COOLDOWN;
         if (currentState == State.PlacePlant)
         {
+            if (!GameManager.Instance.EnoughManaFor(GameManager.Instance.Deck.HandCards[activePlantIndex])) return;
             GridTile gridTile = GridManager.Instance.Grid.GetGridObject(Mouse.current.position.ReadValue());
             if (gridTile != null && activePlantIndex != -1)
             {
@@ -250,6 +251,7 @@ public class CardsUIController : MonoBehaviour
 
     public void SelectCard(int cardIndex)
     {
+        EventManager.Game.UI.OnLifeformHoverCanceled?.Invoke();
         if (currentCards[cardIndex].CardUI.CardInstance.CardData.EffectType == CardData.CardEffectType.Wisdom)
         {
             HandleWisdomClick(cardIndex);
@@ -266,7 +268,6 @@ public class CardsUIController : MonoBehaviour
         currentGridTile = null;
         currentCards[cardIndex].SetHoverState(true);
 
-        EventManager.Game.UI.OnLifeformHoverCanceled?.Invoke();
     }
 
     private void HandleWisdomClick(int cardIndex)
@@ -287,6 +288,21 @@ public class CardsUIController : MonoBehaviour
                 currentCards[i].SetHoverState(false);
         }
 
+        CallerArgs tempCallerArgs = GameManager.Instance.GetTemporaryCallerArgs(activePlantIndex, null);
+        CardInstance tempCardInstance = GameManager.Instance.GetTemporaryCardInstance(activePlantIndex);
+        GridManager.Instance.Grid.ForEachGridTile((gridTile) =>
+        {
+            tempCallerArgs.playedTile = gridTile;
+            CardInstance cardInstanceOnGridTile = gridTile.CardInstance;
+            bool canBeExecuted = tempCardInstance.CanExecute(tempCallerArgs);
+            
+            EventManager.Game.UI.OnCardSelectGridTileUpdate?.Invoke(new EventManager.GameEvents.UIEvents.CardSelectGridUpdateArgs()
+            {
+                Status = canBeExecuted,
+                UpdatedTile = gridTile
+            });
+        });
+        
         SwitchState(State.PlacePlant);
     }
 

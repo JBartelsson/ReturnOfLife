@@ -14,6 +14,7 @@ public class TitleScreen : MonoBehaviour
 
     public void OpenSettings()
     {
+        return;
         //Load Settings Menu
         SceneLoader.Load(SceneLoader.Scene.Settings);
         //SceneManager.LoadScene(3);

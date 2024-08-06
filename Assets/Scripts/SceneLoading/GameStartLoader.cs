@@ -1,13 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class BackToMenu : MonoBehaviour
+public class GameStartLoader : MonoBehaviour
 {
-    // Start is called before the first frame update
-    
-    public void LoadMenu()
+    private void Start()
     {
         SceneLoader.Load(SceneLoader.Scene.TitleScreen);
     }

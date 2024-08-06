@@ -8,7 +8,6 @@ public static class SceneLoader
 {
     public enum Scene {
         GameScene,
-        MainMenuScene,
         LoadingScene,
         TitleScreen,
         Settings,
@@ -17,7 +16,7 @@ public static class SceneLoader
     }
 
     private static Scene targetScene = Scene.GameScene;
-    private static Scene oldScene = Scene.MainMenuScene;
+    private static Scene oldScene = Scene.TitleScreen;
 
     public static void Load(Scene targetScene)
     {

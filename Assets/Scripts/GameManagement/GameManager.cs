@@ -637,12 +637,18 @@ public class GameManager : MonoBehaviour
     {
         if (currentMana - cardManaCost < 0)
         {
-            EventManager.Game.UI.OnNotEnoughMana?.Invoke();
+            // EventManager.Game.UI.OnNotEnoughMana?.Invoke();
             return false;
         }
 
         return true;
     }
+
+    public bool EnoughManaFor(CardInstance cardInstance)
+    {
+        return EnoughMana(cardInstance.GetCardStats().PlayCost);
+    }
+
 
     public void RemoveAllWisdoms()
     {

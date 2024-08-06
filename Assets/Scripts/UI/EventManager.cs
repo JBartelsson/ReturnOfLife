@@ -32,10 +32,10 @@ public static class EventManager
 
 
         Game.UI.OnSecondMoveNeeded = delegate { };
-        Game.UI.OnHoverForEditor = delegate { };
+        Game.UI.OnHoverForSecondMove = delegate { };
         Game.UI.OnLifeformHoverCanceled = delegate { };
         Game.UI.OnLifeformHoverChanged = delegate { };
-        Game.UI.OnHoverForEditor = delegate { };
+        Game.UI.OnHoverForSecondMove = delegate { };
         Game.UI.OnNotEnoughMana = delegate { };
         Game.UI.OnTutorialScreenChange = delegate { };
         Game.UI.OnCardPickScreenChange = delegate { };
@@ -46,6 +46,7 @@ public static class EventManager
         Game.UI.OnOpenCardView = delegate { };
         Game.UI.OnEndSingleCardPlay = delegate { };
         Game.UI.OnCardSelected = delegate { };
+        Game.UI.OnCardSelectGridTileUpdate = delegate { };
     }
 
 
@@ -116,12 +117,17 @@ public static class EventManager
             {
                 public bool status;
             }
+            public class CardSelectGridUpdateArgs : Args
+            {
+                public bool Status;
+                public GridTile UpdatedTile;
+            }
 
 
             public UnityAction<OnLifeformChangedArgs> OnLifeformHoverChanged;
             public UnityAction OnLifeformHoverCanceled;
             public UnityAction<OnSecondMoveNeededArgs> OnSecondMoveNeeded;
-            public UnityAction<OnHoverForEditorArgs> OnHoverForEditor;
+            public UnityAction<OnHoverForEditorArgs> OnHoverForSecondMove;
             public UnityAction OnNotEnoughMana;
             public UnityAction<bool> OnTutorialScreenChange;
             public UnityAction<BoolArgs> OnCardPickScreenChange;
@@ -132,6 +138,7 @@ public static class EventManager
             public UnityAction<OnOpenCardViewArgs> OnOpenCardView;
             public UnityAction OnEndSingleCardPlay;
             public UnityAction<CardInstance> OnCardSelected;
+            public UnityAction<CardSelectGridUpdateArgs> OnCardSelectGridTileUpdate;
            
         }
 
