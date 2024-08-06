@@ -27,13 +27,19 @@ public class SimpleTutorialUI : MonoBehaviour
     private float animationSpeed = .3f;
     private int currentIndex = 0;
 
+    private void Awake()
+    {
+        tutorialScreen.gameObject.SetActive(false);
+        tutorialCanvasGroup.DOFade(0f, 0f);
+        tutorialScreen.DOFade(0f, 0f);
+        EventManager.Game.UI.OnTutorialScreenChange += OnTutorialScreenChange;
+
+    }
+
     private void Start()
     {
         
-        tutorialCanvasGroup.DOFade(0f, 0f);
-        tutorialScreen.DOFade(0f, 0f);
-        tutorialScreen.gameObject.SetActive(false);
-        EventManager.Game.UI.OnTutorialScreenChange += OnTutorialScreenChange;
+        
 
     }
 
@@ -60,11 +66,16 @@ public class SimpleTutorialUI : MonoBehaviour
         {
             ChangeSlide(0, true);
             tutorialScreen.gameObject.SetActive(true);
+            tutorialScreen.DOFade(1f, 0f);
         }
-        tutorialScreen.DOFade(status ? 1f : 0f, animationSpeed).OnComplete(() =>
+        else
         {
-            tutorialScreen.gameObject.SetActive(status);
-        });
+            tutorialScreen.DOFade(status ? 1f : 0f, animationSpeed).OnComplete(() =>
+            {
+                tutorialScreen.gameObject.SetActive(status);
+            });
+        }
+       
         
     }
 

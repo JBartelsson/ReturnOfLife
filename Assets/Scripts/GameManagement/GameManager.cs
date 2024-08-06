@@ -62,6 +62,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private PlanetProgressionSO planetProgression;
     private GameState currentGameState = GameState.None;
 
+    [Header("Debug Settings")] 
+    [SerializeField] private bool debug = false;
     private Deck _deck = new Deck();
 
     public Deck Deck
@@ -139,11 +141,12 @@ public class GameManager : MonoBehaviour
         {
             Instance = this;
             InitEventSubscriptions();
+
             //Resetting Parenting structure so dontdestroyonload does work
             this.transform.parent = null;
             DontDestroyOnLoad(this);
 #if UNITY_EDITOR
-
+            if (!debug)
             SceneLoader.Load(SceneLoader.Scene.GameScene);
 #endif
         }
@@ -152,6 +155,10 @@ public class GameManager : MonoBehaviour
             Destroy(this.gameObject);
             Debug.LogWarning("Game Manager already exists!");
         }
+    }
+
+    private void Start()
+    {
     }
 
 
@@ -328,10 +335,12 @@ public class GameManager : MonoBehaviour
             }
         }
 
+        #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.Space))
         {
             AddPointScore(500, new CallerArgs(), SCORING_ORIGIN.LIFEFORM);
         }
+        #endif
     }
 
     public void ExecuteSecondMove(GridTile selectedGridTile)

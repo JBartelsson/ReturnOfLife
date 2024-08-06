@@ -1671,6 +1671,7 @@ MonoBehaviour:
   standardTurns: 3
   standardDiscards: 3
   planetProgression: {fileID: 11400000, guid: 6e94a5606a9b013458f6d7b745fea5df, type: 2}
+  debug: 1
 --- !u!1 &1045059058
 GameObject:
   m_ObjectHideFlags: 0

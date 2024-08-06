@@ -14,6 +14,7 @@ public class WiggleAnimation : MonoBehaviour
     private float topPosition;
     private float bottomPosition;
     private Vector3? ogPosition;
+    private Tween animationTween;
 
     public enum MoveDirection
     {
@@ -35,20 +36,25 @@ public class WiggleAnimation : MonoBehaviour
     public void StartAnimation()
     {
         rectTransform.position = ogPosition.Value;
+        if (animationTween != null)
+        {
+            animationTween.Kill();
+            animationTween = null;
+        }
         if (moveDirection == MoveDirection.Y)
         {
             topPosition = rectTransform.position.y + strength;
             bottomPosition = rectTransform.position.y - strength;
             rectTransform.position = new Vector3(rectTransform.position.x, topPosition, rectTransform.position.z);
 
-            rectTransform.DOMoveY(bottomPosition, speed).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutSine);
+            animationTween = rectTransform.DOMoveY(bottomPosition, speed).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutSine);
         }
         else
         {
             topPosition = rectTransform.position.x + strength;
             bottomPosition = rectTransform.position.x - strength;
             rectTransform.position = new Vector3(topPosition, rectTransform.position.y, rectTransform.position.z);
-            rectTransform.DOMoveX(bottomPosition, speed).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutSine);
+            animationTween = rectTransform.DOMoveX(bottomPosition, speed).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutSine);
         }
     }
 

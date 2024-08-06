@@ -45,6 +45,12 @@ public class TipScreenUI : MonoBehaviour
     private bool blockQueue;
     private bool tipCanBeClosed;
 
+    private void Awake()
+    {
+        tipCanvas.gameObject.SetActive(false);
+        tipCanvas.DOFade(0f, 0f);
+    }
+
     private void Start()
     {
         continueButton.onClick.AddListener(UnBlockQueue);
@@ -83,6 +89,7 @@ public class TipScreenUI : MonoBehaviour
 
     private void OnLevelInitialized(EventManager.GameEvents.LevelEvents.LevelInitializedArgs arg0)
     {
+
         if (GridManager.Instance.Grid.SpecialFields.Any((x) => x.FieldType == SpecialFieldType.MULTIPLY))
         {
             QueueTip(TipType.MultiplyField);
@@ -90,7 +97,7 @@ public class TipScreenUI : MonoBehaviour
         }
         else
         {
-        CloseTip(true);
+            CloseTip(true);
             
         }
             

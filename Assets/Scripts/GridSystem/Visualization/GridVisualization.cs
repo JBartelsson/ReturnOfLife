@@ -174,6 +174,7 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
 
     private void ShowWiggleArrow()
     {
+        if (placementArrowWiggle.gameObject.activeInHierarchy) return;
         placementArrowWiggle.gameObject.SetActive(true);
         placementArrowWiggle.StartAnimation();
     }
@@ -201,7 +202,7 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
 
         redCrossSpriteRenderer.gameObject.SetActive(false);
         notEnoughManaText.gameObject.SetActive(false);
-        SetMarkedState();
+        SetMarkedState();   
         if (args.hoveredGridTile == ownGridTile)
         {
             SetNewSprite(args.hoveredCardInstance, previewSpriteRenderer, true);
@@ -279,14 +280,14 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
     private void SetMarkedState()
     {
         hoverEffectSpriteRenderer.gameObject.SetActive(false);
-        placementArrowWiggle.gameObject.SetActive(false);
+
+        // placementArrowWiggle.gameObject.SetActive(false);
         if (markedForMove)
         {
             hoverEffectSpriteRenderer.gameObject.SetActive(true);
             ShowWiggleArrow();
             hoverEffectSpriteRenderer.sprite = editorSprite;
         }
-
         switch (visualizationState)
         {
             case VisualizationState.MARKED_FOR_MOVE:
@@ -301,6 +302,7 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
                 break;
         }
     }
+
 
     public void UpdateContent(GridTile gridObject)
     {
