@@ -158,11 +158,11 @@ public class SoundManager : MonoBehaviour
         
         if (!args.plantedCardInstance.IsUpgraded())
         {
-            //Play normal sound
+            PlayOneShot(Sound.PlantedLifeform);
         }
         else
         {
-            //Play upgraded placement sound
+            PlayOneShot(Sound.PlantedUpgradedLifeform);
         }
         
         //Lifeform plant
