@@ -5,7 +5,8 @@ using UnityEngine;
 
 public class DailyDosisOfSports : MonoBehaviour
 {
-    public string[] ClubDerZehn = { "Adrian", "Chris", "Jan", "Jana", "Johann" };
+    //public string[] ClubDerZehn = { "Adrian", "Anna", "Chris", "Jan", "Jana", "Johann" };
+    public string[] ClubDerZehn = { "Anna", "Jan", "Jana", "Johann" };
     private TMP_Text contestantName;
     // Start is called before the first frame update
     void Start()
