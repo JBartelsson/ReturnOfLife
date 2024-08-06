@@ -114,7 +114,7 @@ public class SoundManager : MonoBehaviour
 
     private void OnTurnChanged(EventManager.GameEvents.LevelEvents.TurnChangedArgs arg0)
     {
-        //Turn changes
+        PlayOneShot(Sound.EndTurn);
     }
 
 
@@ -125,25 +125,25 @@ public class SoundManager : MonoBehaviour
 
     private void OnLifeformRevived(CallerArgs arg0)
     {
-        
+        PlayOneShot(Sound.LifeformRevived);
     }
 
     private void OnLifeformKilled(CallerArgs arg0)
     {
-        
+        PlayOneShot(Sound.LifeformKilled);
     }
 
     private void OnDrawCards(EventManager.GameEvents.DeckChangedArgs arg0)
     {
-        //Wird pro Karte aufgerufen
+        PlayOneShot(Sound.OnDrawCards);
     }
 
     private void OnCardSelected(CardInstance arg0)
     {
-        //Card Click Sound
+        PlayOneShot(Sound.OnCardSelected);
         if (arg0.CardData.EffectType == CardData.CardEffectType.Wisdom)
         {
-            // If wisdom selected
+            PlayOneShot(Sound.EpiphanyMode);
         }
     }
 
