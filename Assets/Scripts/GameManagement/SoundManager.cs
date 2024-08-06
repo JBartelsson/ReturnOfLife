@@ -47,6 +47,12 @@ public class SoundManager : MonoBehaviour
         this.transform.parent = null;
         DontDestroyOnLoad(this);
     }
+
+    /*private void Start()
+    {
+        FMODUnity.RuntimeManager.StudioSystem.setParameterByName("MusicSelect", 0);
+        StartLoop(Sound.Music);
+    }*/
     
     [Serializable]
     public class SoundItem
@@ -99,7 +105,34 @@ public class SoundManager : MonoBehaviour
         EventManager.Game.Level.OnTurnChanged += OnTurnChanged;
         EventManager.Game.Level.OnEndLevel += OnEndLevel;
     }
+    
+    private void OnDisable()
+    {
+        
+        EventManager.Game.Level.OnLifeformPlanted -= OnPlantPlanted;
+        EventManager.Game.Level.OnScoreChanged -= OnScoreChanged;
+        EventManager.Game.UI.OnCardSelected -= OnCardSelected;
+        EventManager.Game.Level.OnDrawCards -= OnDrawCards;
+        EventManager.Game.Level.OnLifeformKilled -= OnLifeformKilled;
+        EventManager.Game.Level.OnLifeformRevived -= OnLifeformRevived;
+        EventManager.Game.Level.OnEffectUsed -= OnEffectUsed;
+        EventManager.Game.Level.OnTurnChanged -= OnTurnChanged;
+        EventManager.Game.Level.OnEndLevel -= OnEndLevel;
+    }
 
+    /*private void OnSceneReloadComplete(SceneLoader.Scene scene)
+    {
+        switch (scene)
+        {
+            case SceneLoader.Scene.GameScene:
+                FMODUnity.RuntimeManager.StudioSystem.setParameterByName("MusicSelect", 1);
+                break;
+            
+            case SceneLoader.Scene.TitleScreen:
+                FMODUnity.RuntimeManager.StudioSystem.setParameterByName("MusicSelect", 0);
+                break;
+        }
+    }*/
     private void OnEndLevel(EventManager.GameEvents.LevelEvents.LevelEndedArgs arg0)
     {
         if (arg0.WonLevel)
