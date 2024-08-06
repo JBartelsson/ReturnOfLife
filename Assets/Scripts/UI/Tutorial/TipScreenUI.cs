@@ -88,7 +88,12 @@ public class TipScreenUI : MonoBehaviour
             QueueTip(TipType.MultiplyField);
             EventManager.Game.Level.OnLevelInitialized -= OnLevelInitialized;
         }
+        else
+        {
         CloseTip(true);
+            
+        }
+            
     }
 
     public void QueueTip(TipType tipToShow)

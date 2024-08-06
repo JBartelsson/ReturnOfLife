@@ -60,7 +60,7 @@ public class ComboBushCardFunction : CardFunctionBase
             bushCallerArgs.gameManager = GameManager.Instance;
             bushCallerArgs.playedTile = gridTile;
             effectUsed = true;
-            newBushInstance.Execute(bushCallerArgs);
+            GameManager.Instance.TryQueueLifeform(bushCallerArgs);
         });
         
         EventManager.Game.Level.OnEffectUsed?.Invoke(null);

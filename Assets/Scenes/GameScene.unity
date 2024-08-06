@@ -723,6 +723,23 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -26.800003
       objectReference: {fileID: 0}
+    - target: {fileID: 4574920810679078511, guid: d0df6d8f51d3cdf4383671d2f6b8176f, type: 3}
+      propertyPath: tips.Array.data[2].tipText
+      value: If the cards in your draw pile are empty, the discard pile gets shuffled
+        into the draw pile.
+      objectReference: {fileID: 0}
+    - target: {fileID: 4574920810679078511, guid: d0df6d8f51d3cdf4383671d2f6b8176f, type: 3}
+      propertyPath: tips.Array.data[2].tipType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4574920810679078511, guid: d0df6d8f51d3cdf4383671d2f6b8176f, type: 3}
+      propertyPath: tips.Array.data[3].tipText
+      value: This is your last turn. Gather all the points you can!
+      objectReference: {fileID: 0}
+    - target: {fileID: 4574920810679078511, guid: d0df6d8f51d3cdf4383671d2f6b8176f, type: 3}
+      propertyPath: tips.Array.data[3].tipType
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4718028905536506715, guid: d0df6d8f51d3cdf4383671d2f6b8176f, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1458,7 +1475,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4244db174c471a74ba030e1518279d90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startDeck: {fileID: 11400000, guid: 22115b2d89455484894cf219c331c07d, type: 2}
+  startDeck: {fileID: 11400000, guid: d47908b174d44a5449715d6e978e9519, type: 2}
   handSize: 6
   standardMana: 3
   standardTurns: 3

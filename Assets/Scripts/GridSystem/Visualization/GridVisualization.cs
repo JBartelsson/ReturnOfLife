@@ -11,46 +11,50 @@ using UnityEngine.UI;
 
 public class GridVisualization : MonoBehaviour, IPointerClickHandler
 {
-    [FormerlySerializedAs("spriteRenderer")] [SerializeField] private SpriteRenderer lifeFormSpriteRenderer;
+    [SerializeField] private SpriteRenderer lifeFormSpriteRenderer;
 
-    [FormerlySerializedAs("markedSprite")]
-    [FormerlySerializedAs("markedMaterial")]
-    [Header("UI Hover Effects")]
-    [SerializeField] private Sprite editorSprite;
-    [FormerlySerializedAs("previewMaterial")] [SerializeField] private Sprite hoverSprite;
+    [SerializeField] private Transform lifeFormSpriteRendererAnimationTarget;
 
-    [FormerlySerializedAs("visualizer")] [SerializeField] private SpriteRenderer hoverEffectSpriteRenderer;
+    [Header("UI Hover Effects")] [SerializeField]
+    private Sprite editorSprite;
+
+    [SerializeField] private Sprite hoverSprite;
+
+    [SerializeField] private SpriteRenderer hoverEffectSpriteRenderer;
 
     [Header("Special Fields")] [SerializeField]
     private GameObject fieldMarker;
 
     [SerializeField] private List<FieldSprite> fieldMaterials;
 
-    
+
     [SerializeField] private Sprite fieldPlantedSprite;
     [SerializeField] private SpriteRenderer groundStatusSpriteRenderer;
+
     [Header("Status References")] [SerializeField]
     private SpriteRenderer statusSpriteRenderer;
 
     [SerializeField] private Sprite deathSprite;
-    [Header("Preview Settings")] 
-    [SerializeField]
+
+    [Header("Preview Settings")] [SerializeField]
     private SpriteRenderer redCrossSpriteRenderer;
 
     [SerializeField] private Sprite cantPlaceSprite;
     [SerializeField] private Sprite canPlaceSprite;
-    [SerializeField]
-    private SpriteRenderer previewSpriteRenderer;
+    [SerializeField] private SpriteRenderer previewSpriteRenderer;
 
-    [Header("Second Move Settings")] 
-    [SerializeField]
+    [Header("Second Move Settings")] [SerializeField]
     private TextMeshPro secondMoveText;
+
     private GridTile ownGridTile;
+
+    private Vector3 lifeformSpriteOGPosition;
 
 
     private VisualizationState visualizationState = VisualizationState.NONE;
 
     public GridTile OwnGridTile => ownGridTile;
+
     public enum VisualizationState
     {
         MARKED_FOR_EDITOR,
@@ -68,6 +72,11 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
     [SerializeField] private Material plantFertilizedMaterial;
     [SerializeField] private Material plantNonFertilizedMaterial;
 
+    [Header("Particle Systems")] [SerializeField]
+    private ParticleSystem groundSpawnParticle;
+
+    [SerializeField] private ParticleSystem spawnRaysParticle;
+
     private void Awake()
     {
         lifeFormSpriteRenderer.sprite = null;
@@ -75,7 +84,11 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
         statusSpriteRenderer.gameObject.SetActive(false);
         secondMoveText.gameObject.SetActive(false);
         redCrossSpriteRenderer.gameObject.SetActive(false);
+    }
 
+    private void Start()
+    {
+        lifeformSpriteOGPosition = lifeFormSpriteRenderer.transform.position;
     }
 
     private void OnEnable()
@@ -85,13 +98,12 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
         EventManager.Game.UI.OnHoverForEditor += OnHoverForEditor;
         EventManager.Game.UI.OnSecondMoveNeeded += OnSecondMoveNeeded;
         EventManager.Game.UI.OnSecondMoveQueueEmpty += OnSecondMoveQueueEmpty;
-
     }
 
     private void OnSecondMoveQueueEmpty()
     {
-        secondMoveText.DOFade(0f, Constants.UI_FAST_FADE_SPEED).OnComplete(()=> secondMoveText.gameObject.SetActive(false));
-
+        secondMoveText.DOFade(0f, Constants.UI_FAST_FADE_SPEED)
+            .OnComplete(() => secondMoveText.gameObject.SetActive(false));
     }
 
     private void OnSecondMoveNeeded(EventManager.GameEvents.UIEvents.OnSecondMoveNeededArgs args)
@@ -110,11 +122,12 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
         EventManager.Game.UI.OnLifeformHoverCanceled -= OnPlantHoverCanceled;
         EventManager.Game.UI.OnHoverForEditor -= OnHoverForEditor;
     }
+
     private void OnHoverForEditor(EventManager.GameEvents.UIEvents.OnHoverForEditorArgs args)
     {
         if (args.hoveredGridTile != ownGridTile) return;
         visualizationState = VisualizationState.MARKED_FOR_EDITOR;
-        UpdateContent();
+        SetMarkedState();
     }
 
     private void OnPlantHoverCanceled()
@@ -123,13 +136,12 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
         redCrossSpriteRenderer.gameObject.SetActive(false);
         previewSpriteRenderer.sprite = null;
         secondMoveText.gameObject.SetActive(false);
-        UpdateContent();
+        SetMarkedState();
     }
 
 
     private void OnPlantHoverChanged(EventManager.GameEvents.UIEvents.OnLifeformChangedArgs args)
     {
-        
         visualizationState = VisualizationState.NONE;
         if (args.hoveredCardInstance.GetCardStats().EffectPattern.IsTileInPattern(args.hoveredGridTile, ownGridTile))
         {
@@ -149,8 +161,8 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
             else
             {
                 redCrossSpriteRenderer.sprite = canPlaceSprite;
-
             }
+
             SetNewSprite(args.hoveredCardInstance, previewSpriteRenderer, true);
         }
         else
@@ -162,6 +174,15 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
     private void SetNewSprite(Sprite newSprite, SpriteRenderer target)
     {
         target.sprite = newSprite;
+    }
+
+    private void AnimateSpawn()
+    {
+        groundSpawnParticle.Play();
+        spawnRaysParticle.Play();
+        lifeFormSpriteRenderer.transform.position = lifeformSpriteOGPosition;
+        lifeFormSpriteRenderer.transform.DOMove(lifeFormSpriteRendererAnimationTarget.position, .3f)
+            .SetEase(Ease.OutSine);
     }
 
     private void SetPreviewSprite(Sprite newPreviewSprite)
@@ -195,7 +216,6 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
             statusSpriteRenderer.sprite = deathSprite;
             target.material.SetFloat("_Saturation", Constants.DEATH_SATURATION_VALUE);
         }
-
     }
 
     private void ClearGridTile()
@@ -237,6 +257,8 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
         if (ownGridTile.Content.Count > 0)
         {
             SetNewSprite(ownGridTile.Content[0], lifeFormSpriteRenderer);
+            if (!ownGridTile.CardInstance.IsDead())
+                AnimateSpawn();
         }
         else
         {
@@ -252,7 +274,8 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
     {
         if (ownGridTile.IsLava())
         {
-            groundStatusSpriteRenderer.sprite = fieldMaterials.FirstOrDefault((x) => x.FieldType == SpecialFieldType.NONE)?.Sprite;
+            groundStatusSpriteRenderer.sprite =
+                fieldMaterials.FirstOrDefault((x) => x.FieldType == SpecialFieldType.NONE)?.Sprite;
             return;
         }
 
@@ -264,17 +287,17 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
                 groundStatusSpriteRenderer.sprite = fieldPlantedSprite;
                 return;
             }
+
             if (ownGridTile.SpecialField.AlreadyFulfilled)
             {
                 groundStatusSpriteRenderer.sprite = fieldPlantedSprite;
                 return;
             }
-            
         }
+
         //Set Ground Sprite
         groundStatusSpriteRenderer.sprite =
             fieldMaterials.First((x) => x.FieldType == ownGridTile.FieldType).Sprite;
-
     }
 
     public void OnPointerClick(PointerEventData eventData)

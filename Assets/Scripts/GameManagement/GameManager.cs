@@ -55,7 +55,10 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private int standardMana = 3;
     [SerializeField] private int standardTurns = 3;
-    [FormerlySerializedAs("standardDiscard")] [SerializeField] private int standardDiscards = 3;
+
+    [FormerlySerializedAs("standardDiscard")] [SerializeField]
+    private int standardDiscards = 3;
+
     [SerializeField] private PlanetProgressionSO planetProgression;
     private GameState currentGameState = GameState.None;
 
@@ -123,9 +126,11 @@ public class GameManager : MonoBehaviour
             this.secondMoveNumber = secondMoveNumber;
         }
     }
+
     private List<SecondMoveQueueItem> secondMoveQueue = new();
     private SecondMoveCallerArgs secondMoveArgs = new SecondMoveCallerArgs();
     private bool secondMoveQueueEmptyCalled = false;
+    private float queueTimer;
 
     private void Awake()
     {
@@ -297,11 +302,12 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-
-        if (playingQueue.Count != 0 && !blockQueue)
+        if (playingQueue.Count != 0)
         {
+            if (blockQueue && playingQueue[0].callerType != CALLER_TYPE.EFFECT) return;
             blockQueue = true;
             PlayLifeForm(playingQueue[0]);
+
             return;
         }
 
@@ -429,7 +435,7 @@ public class GameManager : MonoBehaviour
         selectedCardBlueprint.Execute(callerArgs);
         CheckSpecialFields();
         EventManager.Game.UI.OnEndSingleCardPlay?.Invoke();
-        
+
         //If card has an editor (2nd move) and the editor is not blocked e.g. by plant sacrifice
         Debug.Log($"Editor is blocked: {callerArgs.BlockSecondMove}");
         if (selectedCardBlueprint.CardSecondMove != null && !callerArgs.BlockSecondMove)
@@ -653,6 +659,5 @@ public class GameManager : MonoBehaviour
         Deck.DiscardCard(index);
         Deck.DrawCards(1);
         SetDiscards(currentDiscards - 1);
-        
     }
 }
