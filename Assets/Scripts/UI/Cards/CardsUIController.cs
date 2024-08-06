@@ -213,6 +213,7 @@ public class CardsUIController : MonoBehaviour
         {
             GameObject newCard = Instantiate(cardPrefab, cardsParent);
             CardHandUI cardHandUI = newCard.GetComponent<CardHandUI>();
+            cardHandUI.NormalSortingLayer = handSize - i;
             cardHandUI.CardUI.CardIndex = i;
             currentCards.Add(cardHandUI);
         }

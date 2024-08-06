@@ -10,7 +10,14 @@ public class CardHandUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
 {
     [SerializeField] private CardUI cardUI;
     [SerializeField] private Canvas cardCanvas;
-    [SerializeField] private int normalSortingLayer;
+    private int normalSortingLayer;
+
+    public int NormalSortingLayer
+    {
+        get => normalSortingLayer;
+        set => normalSortingLayer = value;
+    }
+
     [SerializeField] private int hoveredSortingLayer;
     public CardUI CardUI
     {
@@ -86,8 +93,8 @@ public class CardHandUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     public void OnPointerExit(PointerEventData eventData)
     {
         if (cardSelected) return;
-        cardUI.CardParent.DOLocalMove(originalPosition, .3f);
         PutCardInBack();
+        cardUI.CardParent.DOLocalMove(originalPosition, .3f);
     }
 
     private void PutCardInFront()
