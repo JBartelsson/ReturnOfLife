@@ -47,6 +47,12 @@ public class SoundManager : MonoBehaviour
         this.transform.parent = null;
         DontDestroyOnLoad(this);
     }
+
+    /*private void Start()
+    {
+        FMODUnity.RuntimeManager.StudioSystem.setParameterByName("MusicSelect", 0);
+        StartLoop(Sound.Music);
+    }*/
     
     [Serializable]
     public class SoundItem
@@ -89,6 +95,7 @@ public class SoundManager : MonoBehaviour
 
     private void OnEnable()
     {
+        //EventManager.Game.SceneSwitch.OnSceneReloadComplete += OnSceneReloadComplete;
         EventManager.Game.Level.OnLifeformPlanted += OnPlantPlanted;
         EventManager.Game.Level.OnScoreChanged += OnScoreChanged;
         EventManager.Game.UI.OnCardSelected += OnCardSelected;
@@ -100,21 +107,49 @@ public class SoundManager : MonoBehaviour
         EventManager.Game.Level.OnEndLevel += OnEndLevel;
     }
 
+    private void OnDisable()
+    {
+        //EventManager.Game.SceneSwitch.OnSceneReloadComplete -= OnSceneReloadComplete;
+        EventManager.Game.Level.OnLifeformPlanted -= OnPlantPlanted;
+        EventManager.Game.Level.OnScoreChanged -= OnScoreChanged;
+        EventManager.Game.UI.OnCardSelected -= OnCardSelected;
+        EventManager.Game.Level.OnDrawCards -= OnDrawCards;
+        EventManager.Game.Level.OnLifeformKilled -= OnLifeformKilled;
+        EventManager.Game.Level.OnLifeformRevived -= OnLifeformRevived;
+        EventManager.Game.Level.OnEffectUsed -= OnEffectUsed;
+        EventManager.Game.Level.OnTurnChanged -= OnTurnChanged;
+        EventManager.Game.Level.OnEndLevel -= OnEndLevel;
+    }
+
+    /*private void OnSceneReloadComplete(EventManager.GameEvents.SceneReloadArgs scene)
+    {
+        switch (scene)
+        {
+            case SceneLoader.Scene.GameScene:
+                FMODUnity.RuntimeManager.StudioSystem.setParameterByName("MusicSelect", 1);
+                break;
+            
+            case SceneLoader.Scene.TitleScreen:
+                FMODUnity.RuntimeManager.StudioSystem.setParameterByName("MusicSelect", 0);
+                break;
+        }
+    }*/
+    
     private void OnEndLevel(EventManager.GameEvents.LevelEvents.LevelEndedArgs arg0)
     {
         if (arg0.WonLevel)
         {
-            //Won level   
+            PlayOneShot(Sound.OnEndLevel);   //Won
         }
         else
         {
-            //Lose level   
+            PlayOneShot(Sound.OnEndLevel);  //Lose
         }
     }
 
     private void OnTurnChanged(EventManager.GameEvents.LevelEvents.TurnChangedArgs arg0)
     {
-        //Turn changes
+        PlayOneShot(Sound.EndTurn);
     }
 
 
@@ -125,31 +160,31 @@ public class SoundManager : MonoBehaviour
 
     private void OnLifeformRevived(CallerArgs arg0)
     {
-        
+        PlayOneShot(Sound.LifeformRevived);
     }
 
     private void OnLifeformKilled(CallerArgs arg0)
     {
-        
+        PlayOneShot(Sound.LifeformKilled);
     }
 
     private void OnDrawCards(EventManager.GameEvents.DeckChangedArgs arg0)
     {
-        //Wird pro Karte aufgerufen
+        PlayOneShot(Sound.OnDrawCards);
     }
 
     private void OnCardSelected(CardInstance arg0)
     {
-        //Card Click Sound
+        PlayOneShot(Sound.OnCardSelected);
         if (arg0.CardData.EffectType == CardData.CardEffectType.Wisdom)
         {
-            // If wisdom selected
+            PlayOneShot(Sound.EpiphanyMode);
         }
     }
 
     private void OnScoreChanged(EventManager.GameEvents.LevelEvents.ScoreChangedArgs args)
     {
-        // on Score change
+        PlayOneShot(Sound.OnScoreChanged); 
         //args.ScoreAdded sind die Anzahl der Punkte
     }
 
@@ -158,11 +193,11 @@ public class SoundManager : MonoBehaviour
         
         if (!args.plantedCardInstance.IsUpgraded())
         {
-            //Play normal sound
+            PlayOneShot(Sound.PlantedLifeform);
         }
         else
         {
-            //Play upgraded placement sound
+            PlayOneShot(Sound.PlantedUpgradedLifeform);
         }
         
         //Lifeform plant
