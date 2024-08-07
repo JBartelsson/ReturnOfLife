@@ -990,18 +990,19 @@ MonoBehaviour:
   tips:
   - tipPosition: {fileID: 5993239960829835894}
     tipType: 0
-    tipText: YO Multiply field make 1,5x and go boom!
+    tipText: Multiply Fields reward you 50% extra points to the lifeforms in it.
+      They trigger only when all connected Multiply Fields are filled.
   - tipPosition: {fileID: 5993239960829835894}
     tipType: 3
-    tipText: Some Lifeforms feature extra Moves. Click on the highlighted fields
-      to play it or cancel it with right click.
-  - tipPosition: {fileID: 997462539022838888}
-    tipType: 2
-    tipText: This is your last turn. Gather all the points you can!
+    tipText: Some Lifeforms feature <b>extra Moves</b>. Click on the highlighted
+      fields to play it or cancel it with right click.
   - tipPosition: {fileID: 997462539022838888}
     tipType: 1
     tipText: If the cards in your draw pile are empty, the discard pile gets shuffled
       into the draw pile.
+  - tipPosition: {fileID: 997462539022838888}
+    tipType: 2
+    tipText: This is your <b>last turn</b>. Gather all the points you can!
   - tipPosition: {fileID: 5993239960829835894}
     tipType: 4
     tipText: Don't forget your rewards!
@@ -1010,6 +1011,7 @@ MonoBehaviour:
   tipText: {fileID: 1631771969307094313}
   animationSpeed: 0.3
   tipScreenRect: {fileID: 8778504073971773665}
+  tipQueue: 
 --- !u!1 &5894803721118931822
 GameObject:
   m_ObjectHideFlags: 0
