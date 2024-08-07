@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{27c54876-ced0-48be-9a4b-16ddd40bcbe7}">
+		<property name="assetPath">
+			<value>SFX/RevivedLifeform.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>2.6123333333333334</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{8c6137e3-bde7-4c00-8e58-02ba76506efc}</destination>
+		</relationship>
+	</object>
+</objects>
