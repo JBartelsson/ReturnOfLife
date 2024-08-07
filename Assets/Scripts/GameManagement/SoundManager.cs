@@ -95,6 +95,7 @@ public class SoundManager : MonoBehaviour
 
     private void OnEnable()
     {
+        //EventManager.Game.SceneSwitch.OnSceneReloadComplete += OnSceneReloadComplete;
         EventManager.Game.Level.OnLifeformPlanted += OnPlantPlanted;
         EventManager.Game.Level.OnScoreChanged += OnScoreChanged;
         EventManager.Game.UI.OnCardSelected += OnCardSelected;
@@ -105,10 +106,10 @@ public class SoundManager : MonoBehaviour
         EventManager.Game.Level.OnTurnChanged += OnTurnChanged;
         EventManager.Game.Level.OnEndLevel += OnEndLevel;
     }
-    
+
     private void OnDisable()
     {
-        
+        //EventManager.Game.SceneSwitch.OnSceneReloadComplete -= OnSceneReloadComplete;
         EventManager.Game.Level.OnLifeformPlanted -= OnPlantPlanted;
         EventManager.Game.Level.OnScoreChanged -= OnScoreChanged;
         EventManager.Game.UI.OnCardSelected -= OnCardSelected;
@@ -120,7 +121,7 @@ public class SoundManager : MonoBehaviour
         EventManager.Game.Level.OnEndLevel -= OnEndLevel;
     }
 
-    /*private void OnSceneReloadComplete(SceneLoader.Scene scene)
+    /*private void OnSceneReloadComplete(EventManager.GameEvents.SceneReloadArgs scene)
     {
         switch (scene)
         {
@@ -133,15 +134,16 @@ public class SoundManager : MonoBehaviour
                 break;
         }
     }*/
+    
     private void OnEndLevel(EventManager.GameEvents.LevelEvents.LevelEndedArgs arg0)
     {
         if (arg0.WonLevel)
         {
-            //Won level   
+            PlayOneShot(Sound.OnEndLevel);   //Won
         }
         else
         {
-            //Lose level   
+            PlayOneShot(Sound.OnEndLevel);  //Lose
         }
     }
 
@@ -182,7 +184,7 @@ public class SoundManager : MonoBehaviour
 
     private void OnScoreChanged(EventManager.GameEvents.LevelEvents.ScoreChangedArgs args)
     {
-        // on Score change
+        PlayOneShot(Sound.OnScoreChanged); 
         //args.ScoreAdded sind die Anzahl der Punkte
     }
 

@@ -2306,7 +2306,7 @@ MonoBehaviour:
         Data2: 1168497625
         Data3: -293684302
         Data4: -918694672
-      Path: event:/SFX/LifeformDestroyed
+      Path: event:/SFX/FieldSounds/LifeformDestroyed
   - sound: 9
     EventReference:
       Guid:
@@ -2314,7 +2314,7 @@ MonoBehaviour:
         Data2: 1328671553
         Data3: 922087840
         Data4: 1085782498
-      Path: event:/SFX/LifeformRevived
+      Path: event:/SFX/FieldSounds/LifeformRevived
   - sound: 10
     EventReference:
       Guid:
