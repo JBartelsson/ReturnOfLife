@@ -687,7 +687,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   allMainCanvases:
   - {fileID: 7023456510512442625}
-  - {fileID: 7098127971944039228}
+  - {fileID: 1602854661309876043}
 --- !u!1 &3000337536125834506
 GameObject:
   m_ObjectHideFlags: 0
@@ -2907,14 +2907,14 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 82956d60162b38f4f9cd2f5554fdae44, type: 3}
+--- !u!223 &1602854661309876043 stripped
+Canvas:
+  m_CorrespondingSourceObject: {fileID: 2978291465242307363, guid: 82956d60162b38f4f9cd2f5554fdae44, type: 3}
+  m_PrefabInstance: {fileID: 4569886557819645032}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &3299573895283667330 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1342371092482022890, guid: 82956d60162b38f4f9cd2f5554fdae44, type: 3}
-  m_PrefabInstance: {fileID: 4569886557819645032}
-  m_PrefabAsset: {fileID: 0}
---- !u!223 &7098127971944039228 stripped
-Canvas:
-  m_CorrespondingSourceObject: {fileID: 6767470244229361492, guid: 82956d60162b38f4f9cd2f5554fdae44, type: 3}
   m_PrefabInstance: {fileID: 4569886557819645032}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5695721803944597066

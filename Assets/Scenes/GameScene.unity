@@ -427,6 +427,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -24.699997
       objectReference: {fileID: 0}
+    - target: {fileID: 1602854661309876043, guid: d0df6d8f51d3cdf4383671d2f6b8176f, type: 3}
+      propertyPath: m_AdditionalShaderChannelsFlag
+      value: 25
+      objectReference: {fileID: 0}
     - target: {fileID: 1662768364245005715, guid: d0df6d8f51d3cdf4383671d2f6b8176f, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 0
@@ -890,7 +894,7 @@ PrefabInstance:
     - target: {fileID: 4574920810679078511, guid: d0df6d8f51d3cdf4383671d2f6b8176f, type: 3}
       propertyPath: tips.Array.data[0].tipText
       value: Multiply Fields reward you 50% extra points to the lifeforms in it.
-        It triggers only when all connected Multiply Fields are filled.
+        They trigger only when all connected Multiply Fields are filled.
       objectReference: {fileID: 0}
     - target: {fileID: 4574920810679078511, guid: d0df6d8f51d3cdf4383671d2f6b8176f, type: 3}
       propertyPath: tips.Array.data[1].tipText
@@ -1202,6 +1206,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -26.800003
       objectReference: {fileID: 0}
+    - target: {fileID: 7518977610899623336, guid: d0df6d8f51d3cdf4383671d2f6b8176f, type: 3}
+      propertyPath: allMainCanvases.Array.data[1]
+      value: 
+      objectReference: {fileID: 1300439681}
     - target: {fileID: 7551134277445024707, guid: d0df6d8f51d3cdf4383671d2f6b8176f, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1671,7 +1679,7 @@ MonoBehaviour:
   standardTurns: 3
   standardDiscards: 3
   planetProgression: {fileID: 11400000, guid: 6e94a5606a9b013458f6d7b745fea5df, type: 2}
-  debug: 1
+  debug: 0
 --- !u!1 &1045059058
 GameObject:
   m_ObjectHideFlags: 0
@@ -1761,6 +1769,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 464d6970f13cf934ba265933480cde87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!223 &1300439681 stripped
+Canvas:
+  m_CorrespondingSourceObject: {fileID: 1602854661309876043, guid: d0df6d8f51d3cdf4383671d2f6b8176f, type: 3}
+  m_PrefabInstance: {fileID: 177584358}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1383556014
 GameObject:
   m_ObjectHideFlags: 0
