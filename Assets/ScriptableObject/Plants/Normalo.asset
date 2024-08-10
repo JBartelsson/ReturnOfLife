@@ -16,13 +16,13 @@ MonoBehaviour:
   <CardName>k__BackingField: Normalo
   lifeformType: 5
   regularCardStats:
-    Points: 15
+    Points: 20
     EffectPattern: {fileID: 11400000, guid: 5286373c1ec30ab40a6e3cfe5fe7e13b, type: 2}
     CardText: Does nothing.
     PlayCost: 1
     SecondMoveCallAmount: 1
   upgradedCardStats:
-    Points: 30
+    Points: 40
     EffectPattern: {fileID: 11400000, guid: 5286373c1ec30ab40a6e3cfe5fe7e13b, type: 2}
     CardText: Does nothing.
     PlayCost: 1
