@@ -62,8 +62,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private PlanetProgressionSO planetProgression;
     private GameState currentGameState = GameState.None;
 
-    [Header("Debug Settings")] 
-    [SerializeField] private bool debug = false;
+    [Header("Debug Settings")] [SerializeField]
+    private bool debug = false;
+
     private Deck _deck = new Deck();
 
     public Deck Deck
@@ -147,7 +148,7 @@ public class GameManager : MonoBehaviour
             DontDestroyOnLoad(this);
 #if UNITY_EDITOR
             if (!debug)
-            SceneLoader.Load(SceneLoader.Scene.GameScene);
+                SceneLoader.Load(SceneLoader.Scene.GameScene);
 #endif
         }
         else
@@ -335,12 +336,12 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.Space))
         {
             AddPointScore(500, new CallerArgs(), SCORING_ORIGIN.LIFEFORM);
         }
-        #endif
+#endif
     }
 
     public void ExecuteSecondMove(GridTile selectedGridTile)
@@ -405,13 +406,11 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log($"Trying to end turn of card {selectedCardIndex}");
             //Deck manipulation, in the future in the Deck class
-            ReduceMana(_deck.HandCards[selectedCardIndex].GetCardStats().PlayCost);
+            ReduceMana(_deck.HandCards[selectedCardIndex].GetPlayCost());
             Debug.Log($"Current Wisdoms: {currentWisdoms.Count}");
             CardInstance playedCard = _deck.HandCards[selectedCardIndex];
             foreach (var wisdom in currentWisdoms)
             {
-                Debug.Log($"REDUCE MANA FOR {wisdom.GetCardStats().PlayCost}");
-                ReduceMana(wisdom.GetCardStats().PlayCost);
                 _deck.DiscardCard(wisdom);
             }
 
@@ -615,10 +614,10 @@ public class GameManager : MonoBehaviour
 
     public CardInstance GetTemporaryCardInstance(int cardIndex)
     {
-        List<WisdomType> currentWisdomTypes = new();
+        List<CardInstance> currentWisdomTypes = new();
         foreach (var wisdom in currentWisdoms)
         {
-            currentWisdomTypes.Add(wisdom.CardData.WisdomType);
+            currentWisdomTypes.Add(wisdom);
         }
 
         CardInstance newCardInstance = new CardInstance(_deck.HandCards[cardIndex], currentWisdomTypes);
@@ -655,7 +654,16 @@ public class GameManager : MonoBehaviour
 
     public bool EnoughManaFor(CardInstance cardInstance)
     {
-        return EnoughMana(cardInstance.GetCardStats().PlayCost);
+        return EnoughMana(cardInstance.GetPlayCost());
+    }
+
+    public bool AddWisdomsAndCheckMana(CardInstance cardInstance)
+    {
+        cardInstance.Upgrades.AddRange(currentWisdoms);
+        Debug.Log($"CURRENT WISDOM AMOUNT: {currentWisdoms.Count}");
+        bool enoughMana = GameManager.Instance.EnoughManaFor(cardInstance);
+        cardInstance.Upgrades.Clear();
+        return enoughMana;
     }
 
 

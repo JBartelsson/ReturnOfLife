@@ -145,7 +145,7 @@ public class CardsUIController : MonoBehaviour
         // clickCooldownTimer = Constants.CLICK_COOLDOWN;
         if (currentState == State.PlacePlant)
         {
-            if (!GameManager.Instance.EnoughManaFor(GameManager.Instance.Deck.HandCards[activePlantIndex])) return;
+            if (!GameManager.Instance.AddWisdomsAndCheckMana(GameManager.Instance.Deck.HandCards[activePlantIndex])) return;
             GridTile gridTile = GridManager.Instance.Grid.GetGridObject(Mouse.current.position.ReadValue());
             if (gridTile != null && activePlantIndex != -1)
             {
@@ -274,6 +274,7 @@ public class CardsUIController : MonoBehaviour
     {
         GameManager.Instance.AddWisdom(currentCards[cardIndex].CardUI.CardInstance);
         activeWisdoms.Add(cardIndex);
+        GameManager.Instance.AddMana(0);
         DeselectAllOtherWisdomOfSameType(cardIndex);
     }
 
@@ -331,6 +332,8 @@ public class CardsUIController : MonoBehaviour
     private void DeselectWisdom(int cardIndex)
     {
         GameManager.Instance.RemoveWisdom(currentCards[cardIndex].CardUI.CardInstance);
+        //Invoke Mana Change again for Red Drop Sprite
+        GameManager.Instance.AddMana(0);
         activeWisdoms.Remove(cardIndex);
         currentCards[cardIndex].SetHoverState(false);
         EventManager.Game.UI.OnLifeformHoverCanceled?.Invoke();
@@ -431,4 +434,6 @@ public class CardsUIController : MonoBehaviour
             }
         }
     }
+
+    
 }

@@ -8,7 +8,7 @@ using UnityEngine;
 public class CardInstance : ICloneable
 {
     private CardData cardData;
-    private List<WisdomType> upgrades = new();
+    private List<CardInstance> upgrades = new();
     private CardFunctionBase cardFunction;
     private CardSecondMoveBase cardSecondMove;
     private CardAccessCheckBase cardAccessCheck;
@@ -29,14 +29,14 @@ public class CardInstance : ICloneable
 
     private static int cardInstanceID = 0;
 
-    public CardInstance(CardData newCardData, List<WisdomType> newFertilizers = null)
+    public CardInstance(CardData newCardData, List<CardInstance> newFertilizers = null)
     {
         cardData = newCardData.Copy();
         TryAddFertilizer(newFertilizers);
         InitScripts();
     }
 
-    public CardInstance(CardInstance other, List<WisdomType> newFertilizers = null)
+    public CardInstance(CardInstance other, List<CardInstance> newFertilizers = null)
     {
         cardData = other.cardData.Copy();
         TryAddFertilizer(newFertilizers);
@@ -109,7 +109,7 @@ public class CardInstance : ICloneable
     }
 
 
-    private void TryAddFertilizer(List<WisdomType> newFertilizers)
+    private void TryAddFertilizer(List<CardInstance> newFertilizers)
     {
         if (newFertilizers == null) return;
         upgrades.AddRange(newFertilizers);
@@ -121,7 +121,7 @@ public class CardInstance : ICloneable
         set => cardData = value;
     }
 
-    public List<WisdomType> Upgrades
+    public List<CardInstance> Upgrades
     {
         get => upgrades;
         set => upgrades = value;
@@ -158,12 +158,12 @@ public class CardInstance : ICloneable
 
     public bool IsUpgraded()
     {
-        return upgrades.Contains(WisdomType.Basic);
+        return upgrades.Any((x) => x.cardData.WisdomType == WisdomType.Basic);
     }
 
     public int ReturnTriggerAmount()
     {
-        return upgrades.Where((x) => x == WisdomType.Retrigger).Count();
+        return upgrades.Count(x => x.cardData.WisdomType == WisdomType.Retrigger);
     }
 
     public CardData.CardStats GetCardStats()
@@ -246,6 +246,17 @@ public class CardInstance : ICloneable
         EventManager.Game.Level.OnLifeformRevived?.Invoke(callerArgs);
 
         GameManager.Instance.TryQueueLifeform(reviveCallerArgs);
+    }
+
+    public int GetPlayCost()
+    {
+        int playcost = GetCardStats().PlayCost;
+        foreach (var upgrade in upgrades)
+        {
+            playcost += upgrade.GetCardStats().PlayCost;
+        }
+
+        return playcost;
     }
 
     public bool IsDead()

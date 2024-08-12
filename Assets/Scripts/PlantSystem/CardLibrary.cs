@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -7,6 +8,12 @@ public class CardLibrary : MonoBehaviour
 {
     [FormerlySerializedAs("cardData")] [FormerlySerializedAs("cardInstances")] [SerializeField] private List<CardData> cardDataList;
 
+    public class CardReference
+    {
+        public CardData.LifeformTypeEnum lifeformType;
+        public CardData CardData;
+        
+    }
     private void Awake()
     {
         Debug.Log($"Instance on Awake is {Instance}");
@@ -26,6 +33,10 @@ public class CardLibrary : MonoBehaviour
 
     public static CardLibrary Instance { get; private set; }
 
+    public CardData GetCardDataOfLifeFormType(CardData.LifeformTypeEnum lifeformType)
+    {
+        return cardDataList.FirstOrDefault((x) => x.LifeformType == lifeformType);
+    }
     public CardCollection ReturnAmountOfCardInstances(int amount)
     {
         if (amount > cardDataList.Count) return null;

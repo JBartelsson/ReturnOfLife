@@ -140,7 +140,7 @@ public class CardHandUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     public void OnManaChanged(EventManager.GameEvents.LevelEvents.ManaChangedArgs arg0)
     {
         if (cardUI.CardInstance == null) return;
-        if (!GameManager.Instance.EnoughManaFor(cardUI.CardInstance))
+        if (!GameManager.Instance.AddWisdomsAndCheckMana(cardUI.CardInstance))
         {
             cardUI.CostDrop.sprite = cardUI.DropSpriteRed;
             canPlayCard = true;

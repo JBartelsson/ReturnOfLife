@@ -150,7 +150,7 @@ public class GridTile
         CardInstance oldCardInstance = CardInstance;
         if (!CardInstance.IsUpgraded())
         {
-            CardInstance.Upgrades.Add(WisdomType.Basic);
+            CardInstance.Upgrades.Add(new CardInstance(CardLibrary.Instance.GetCardDataOfLifeFormType(LifeformTypeEnum.Epiphany)));
         }
         
         oldCardInstance.TryReviveLifeform(reviveCallerArgs);
