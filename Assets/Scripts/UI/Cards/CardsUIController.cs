@@ -94,9 +94,21 @@ public class CardsUIController : MonoBehaviour
 
     private void DiscardCard()
     {
-        if (activePlantIndex == -1 ) return;
-        GameManager.Instance.DiscardCard(activePlantIndex);
-        CancelPlaying();
+        if (activePlantIndex != -1 )
+        {
+            GameManager.Instance.DiscardCard(activePlantIndex);
+            CancelPlaying();
+        }
+        else
+        {
+            if (activeWisdoms.Count != 0)
+            {
+                GameManager.Instance.DiscardCard(activeWisdoms[0]);
+                CancelPlaying();
+
+            }
+        }
+        
     }
 
     private void OnSecondMoveNeeded(EventManager.GameEvents.UIEvents.OnSecondMoveNeededArgs neededArgs)

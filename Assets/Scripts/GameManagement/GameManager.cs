@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using DG.Tweening;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -406,13 +407,20 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log($"Trying to end turn of card {selectedCardIndex}");
             //Deck manipulation, in the future in the Deck class
-            ReduceMana(_deck.HandCards[selectedCardIndex].GetPlayCost());
-            Debug.Log($"Current Wisdoms: {currentWisdoms.Count}");
             CardInstance playedCard = _deck.HandCards[selectedCardIndex];
+            Debug.Log($"Current Wisdoms: {currentWisdoms.Count}");
+
+            playedCard.Upgrades.AddRange(currentWisdoms);
+            Debug.Log($"After Add Card Wisdoms: {playedCard.Upgrades.Count}");
+
+            ReduceMana(playedCard.GetPlayCost());
             foreach (var wisdom in currentWisdoms)
             {
                 _deck.DiscardCard(wisdom);
             }
+            Debug.Log($"Played Card Wisdoms: {playedCard.Upgrades.Count}");
+            RemoveAllWisdoms();
+            
 
             _deck.DiscardCard(playedCard);
             //Event calling
@@ -421,7 +429,6 @@ public class GameManager : MonoBehaviour
             Debug.Log("PLANT PLANTED!");
 
             selectedPlantNeedNeighbor = true;
-            RemoveAllWisdoms();
             selectedCardIndex = -1;
         }
 
@@ -478,9 +485,9 @@ public class GameManager : MonoBehaviour
             return;
         }
 
+        RemoveAllWisdoms();
         SetMana(standardMana);
         SetDiscards(standardDiscards);
-        RemoveAllWisdoms();
 
 
         EventManager.Game.Level.OnTurnChanged?.Invoke(new EventManager.GameEvents.LevelEvents.TurnChangedArgs()
@@ -659,8 +666,10 @@ public class GameManager : MonoBehaviour
 
     public bool AddWisdomsAndCheckMana(CardInstance cardInstance)
     {
-        cardInstance.Upgrades.AddRange(currentWisdoms);
-        Debug.Log($"CURRENT WISDOM AMOUNT: {currentWisdoms.Count}");
+        if (cardInstance.CardData.EffectType == CardData.CardEffectType.Plant)
+        {
+            cardInstance.Upgrades.AddRange(currentWisdoms);
+        }
         bool enoughMana = GameManager.Instance.EnoughManaFor(cardInstance);
         cardInstance.Upgrades.Clear();
         return enoughMana;
@@ -670,6 +679,7 @@ public class GameManager : MonoBehaviour
     public void RemoveAllWisdoms()
     {
         currentWisdoms.Clear();
+        AddMana(0);
         EventManager.Game.Level.OnWisdomChanged?.Invoke(new EventManager.GameEvents.LevelEvents.WisdomChangedArgs()
         {
             currentWisdoms = this.currentWisdoms

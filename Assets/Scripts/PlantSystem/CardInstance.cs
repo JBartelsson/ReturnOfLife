@@ -254,6 +254,7 @@ public class CardInstance : ICloneable
         foreach (var upgrade in upgrades)
         {
             playcost += upgrade.GetCardStats().PlayCost;
+
         }
 
         return playcost;
