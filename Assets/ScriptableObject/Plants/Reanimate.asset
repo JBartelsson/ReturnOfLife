@@ -20,7 +20,7 @@ MonoBehaviour:
     EffectPattern: {fileID: 11400000, guid: 4263142aff317ce42bc4b97925970b8d, type: 2}
     CardText: Revives up to one Lifeform in the <b>Pattern</b> and triggers its upgraded
       effects.
-    PlayCost: 2
+    PlayCost: 1
     SecondMoveCallAmount: 1
   upgradedCardStats:
     Points: 1
