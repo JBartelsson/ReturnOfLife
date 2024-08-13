@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   deck:
   - cardDataReference: {fileID: 11400000, guid: 662b499d15f1ad84193d91f4fa014184, type: 2}
-    amount: 1
+    amount: 2
   - cardDataReference: {fileID: 11400000, guid: fd3d643ded233674b82fadd4fb8f792d, type: 2}
-    amount: 1
+    amount: 2
+  - cardDataReference: {fileID: 11400000, guid: a416360e50c533b498d0e17cb1bc9e51, type: 2}
+    amount: 2

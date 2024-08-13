@@ -194,9 +194,9 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1811265891
-  m_SortingLayer: -2
+  m_SortingLayer: -1
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 2040095ba8909834b8c78c701b0acabf, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0873e24efd569ad469f4618bd4c9755a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1673,7 +1673,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4244db174c471a74ba030e1518279d90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startDeck: {fileID: 11400000, guid: 22115b2d89455484894cf219c331c07d, type: 2}
+  startDeck: {fileID: 11400000, guid: d47908b174d44a5449715d6e978e9519, type: 2}
   handSize: 6
   standardMana: 3
   standardTurns: 3
