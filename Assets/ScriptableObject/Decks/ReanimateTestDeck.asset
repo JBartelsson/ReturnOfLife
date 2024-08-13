@@ -22,6 +22,8 @@ MonoBehaviour:
   - cardDataReference: {fileID: 11400000, guid: ad5acc2c55572ca449ce56c739d7eb9e, type: 2}
     amount: 1
   - cardDataReference: {fileID: 11400000, guid: 98c6f96c449621649ac14102db1c8d68, type: 2}
-    amount: 4
+    amount: 2
   - cardDataReference: {fileID: 11400000, guid: a416360e50c533b498d0e17cb1bc9e51, type: 2}
     amount: 1
+  - cardDataReference: {fileID: 11400000, guid: 662b499d15f1ad84193d91f4fa014184, type: 2}
+    amount: 2

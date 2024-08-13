@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 15e73d1213f6ecc41ad002f5f49479f5, type: 3}
-  m_Name: A_Level9a
+  m_Name: A_Level 5a
   m_EditorClassIdentifier: 
   pattern:
-    dataString: CCCBBBBCCCBBABCCCBBABBAAAAABBABBBBBBABBBBBBBBBBBB
+    dataString: ABBBBBABCCCCCBBCBBBCBBCBABCBBCBBBCBBCCCCCBABBBBBA
     gridSize: 7
-  neededECOPoints: 450
+  neededECOPoints: 350
