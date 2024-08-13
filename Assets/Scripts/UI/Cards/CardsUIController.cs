@@ -104,7 +104,7 @@ public class CardsUIController : MonoBehaviour
             if (activeWisdoms.Count != 0)
             {
                 GameManager.Instance.DiscardCard(activeWisdoms[0]);
-                CancelPlaying();
+                GameInputOnCancel();
 
             }
         }
