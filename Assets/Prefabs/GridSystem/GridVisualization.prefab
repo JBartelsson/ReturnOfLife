@@ -2039,15 +2039,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3250534566555443445, guid: f64d7bf987c0bfd418852cf588f6a8ae, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.42571428
+      value: 0.6208332
       objectReference: {fileID: 0}
     - target: {fileID: 3250534566555443445, guid: f64d7bf987c0bfd418852cf588f6a8ae, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.42571434
+      value: 0.62083334
       objectReference: {fileID: 0}
     - target: {fileID: 3250534566555443445, guid: f64d7bf987c0bfd418852cf588f6a8ae, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.42571434
+      value: 0.62083334
       objectReference: {fileID: 0}
     - target: {fileID: 3250534566555443445, guid: f64d7bf987c0bfd418852cf588f6a8ae, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2099,27 +2099,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6295839408976700237, guid: f64d7bf987c0bfd418852cf588f6a8ae, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7422152248985625080, guid: f64d7bf987c0bfd418852cf588f6a8ae, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 10308, guid: 0000000000000000f000000000000000, type: 0}
+      objectReference: {fileID: 2100000, guid: 34f0b9cb37bac8c41bdd3a8ffc0e020c, type: 2}
     - target: {fileID: 7422152248985625080, guid: f64d7bf987c0bfd418852cf588f6a8ae, type: 3}
       propertyPath: m_Materials.Array.data[1]
       value: 
-      objectReference: {fileID: 10308, guid: 0000000000000000f000000000000000, type: 0}
+      objectReference: {fileID: 2100000, guid: 34f0b9cb37bac8c41bdd3a8ffc0e020c, type: 2}
     - target: {fileID: 8420685314018767152, guid: f64d7bf987c0bfd418852cf588f6a8ae, type: 3}
       propertyPath: looping
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8420685314018767152, guid: f64d7bf987c0bfd418852cf588f6a8ae, type: 3}
       propertyPath: lengthInSec
-      value: 1
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8420685314018767152, guid: f64d7bf987c0bfd418852cf588f6a8ae, type: 3}
       propertyPath: playOnAwake
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8420685314018767152, guid: f64d7bf987c0bfd418852cf588f6a8ae, type: 3}
       propertyPath: simulationSpeed
@@ -2131,35 +2131,35 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8420685314018767152, guid: f64d7bf987c0bfd418852cf588f6a8ae, type: 3}
       propertyPath: InitialModule.startSpeed.scalar
-      value: 7.09
+      value: 2.7627285
       objectReference: {fileID: 0}
     - target: {fileID: 8420685314018767152, guid: f64d7bf987c0bfd418852cf588f6a8ae, type: 3}
       propertyPath: InitialModule.startLifetime.scalar
-      value: 0.9
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 8420685314018767152, guid: f64d7bf987c0bfd418852cf588f6a8ae, type: 3}
       propertyPath: InitialModule.startSpeed.minScalar
-      value: 6.07
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8420685314018767152, guid: f64d7bf987c0bfd418852cf588f6a8ae, type: 3}
       propertyPath: InitialModule.startColor.maxColor.b
-      value: 0.9217341
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8420685314018767152, guid: f64d7bf987c0bfd418852cf588f6a8ae, type: 3}
       propertyPath: InitialModule.startColor.maxColor.g
-      value: 0.6177643
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8420685314018767152, guid: f64d7bf987c0bfd418852cf588f6a8ae, type: 3}
       propertyPath: InitialModule.startColor.maxColor.r
-      value: 0.97735846
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8420685314018767152, guid: f64d7bf987c0bfd418852cf588f6a8ae, type: 3}
       propertyPath: InitialModule.startColor.minColor.b
-      value: 0.94478685
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8420685314018767152, guid: f64d7bf987c0bfd418852cf588f6a8ae, type: 3}
       propertyPath: InitialModule.startColor.minColor.g
-      value: 0.49622637
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8420685314018767152, guid: f64d7bf987c0bfd418852cf588f6a8ae, type: 3}
       propertyPath: InitialModule.startColor.minColor.r
@@ -2167,15 +2167,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8420685314018767152, guid: f64d7bf987c0bfd418852cf588f6a8ae, type: 3}
       propertyPath: InitialModule.startColor.minMaxState
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8420685314018767152, guid: f64d7bf987c0bfd418852cf588f6a8ae, type: 3}
       propertyPath: TrailModule.colorOverTrail.maxColor.b
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8420685314018767152, guid: f64d7bf987c0bfd418852cf588f6a8ae, type: 3}
       propertyPath: TrailModule.colorOverTrail.maxColor.g
-      value: 1
+      value: 0.70609957
       objectReference: {fileID: 0}
     - target: {fileID: 8420685314018767152, guid: f64d7bf987c0bfd418852cf588f6a8ae, type: 3}
       propertyPath: TrailModule.colorOverTrail.maxColor.r
@@ -2183,15 +2183,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8420685314018767152, guid: f64d7bf987c0bfd418852cf588f6a8ae, type: 3}
       propertyPath: TrailModule.colorOverLifetime.maxGradient.key0.b
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8420685314018767152, guid: f64d7bf987c0bfd418852cf588f6a8ae, type: 3}
       propertyPath: TrailModule.colorOverLifetime.maxGradient.key0.g
-      value: 0.4921424
+      value: 0.64586043
       objectReference: {fileID: 0}
     - target: {fileID: 8420685314018767152, guid: f64d7bf987c0bfd418852cf588f6a8ae, type: 3}
       propertyPath: TrailModule.colorOverLifetime.maxGradient.key0.r
-      value: 0.4660377
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
