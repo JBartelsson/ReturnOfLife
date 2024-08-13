@@ -47,7 +47,15 @@ public class WiggleAnimation : MonoBehaviour
             bottomPosition = rectTransform.position.y - strength;
             rectTransform.position = new Vector3(rectTransform.position.x, topPosition, rectTransform.position.z);
 
-            animationTween = rectTransform.DOMoveY(bottomPosition, speed).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutSine);
+            if (!localMove)
+            {
+                animationTween = rectTransform.DOMoveY(bottomPosition, speed).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutSine);
+            }
+            else
+            {
+                animationTween = rectTransform.DOLocalMoveY(bottomPosition, speed).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutSine);
+
+            }
         }
         else
         {
