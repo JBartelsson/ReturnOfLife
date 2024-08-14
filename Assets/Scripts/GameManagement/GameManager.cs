@@ -255,8 +255,10 @@ public class GameManager : MonoBehaviour
         EventManager.Game.Level.OnLevelInitialized?.Invoke(
             new EventManager.GameEvents.LevelEvents.LevelInitializedArgs()
             {
-                currentLevel = currentLevel,
-                levelName = currentLevel.name
+                CurrentLevel = currentLevel,
+                CurrentLevelNumber = currentStage,
+                MaxLevelNumber = planetProgression.Progression.Count,
+                LevelName = currentLevel.name
             });
     }
 

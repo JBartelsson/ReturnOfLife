@@ -188,8 +188,10 @@ public static class EventManager
 
             public class LevelInitializedArgs : Args
             {
-                public LevelSO currentLevel;
-                public string levelName;
+                public LevelSO CurrentLevel;
+                public int CurrentLevelNumber;
+                public int MaxLevelNumber;
+                public string LevelName;
             }
 
             public class TurnChangedArgs : Args

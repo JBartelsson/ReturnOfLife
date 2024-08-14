@@ -37,7 +37,7 @@ public class GameUIController : MonoBehaviour
 
     private void OnLevelInitialized(EventManager.GameEvents.LevelEvents.LevelInitializedArgs arg0)
     {
-        levelText.text = arg0.levelName;
+        levelText.text = $"Level {arg0.CurrentLevelNumber + 1}/{arg0.MaxLevelNumber}";
     }
 
     private void OnScoreChanged(EventManager.GameEvents.LevelEvents.ScoreChangedArgs args)
