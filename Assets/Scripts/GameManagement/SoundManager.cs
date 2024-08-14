@@ -102,24 +102,13 @@ public class SoundManager : MonoBehaviour
         EventManager.Game.SceneSwitch.OnSceneReloadComplete += OnSceneReloadComplete;
     }
 
-    private void OnSceneReloadComplete(EventManager.GameEvents.SceneReloadArgs arg0)
-    {
-        if (arg0.newScene == SceneLoader.Scene.GameScene)
-        {
-            InitializeGameEvents();
-        }
-
-        if (arg0.newScene == SceneLoader.Scene.TitleScreen)
-        {
-            StartLoop(Sound.Music);
-        }
-    }
-
     private void InitializeGameEvents()
     {
         EventManager.Game.Level.OnLifeformPlanted += OnPlantPlanted;
         EventManager.Game.Level.OnScoreChanged += OnScoreChanged;
         EventManager.Game.UI.OnCardSelected += OnCardSelected;
+        EventManager.Game.UI.OnTutorialScreenChange += OnTutorialScreenChange;
+        EventManager.Game.UI.OnOpenCardView += OnOpenCardView;
         EventManager.Game.Level.OnDrawCards += OnDrawCards;
         EventManager.Game.Level.OnLifeformKilled += OnLifeformKilled;
         EventManager.Game.Level.OnLifeformRevived += OnLifeformRevived;
@@ -134,12 +123,29 @@ public class SoundManager : MonoBehaviour
         EventManager.Game.Level.OnLifeformPlanted -= OnPlantPlanted;
         EventManager.Game.Level.OnScoreChanged -= OnScoreChanged;
         EventManager.Game.UI.OnCardSelected -= OnCardSelected;
+        EventManager.Game.UI.OnTutorialScreenChange += OnTutorialScreenChange;
+        EventManager.Game.UI.OnOpenCardView += OnOpenCardView;
         EventManager.Game.Level.OnDrawCards -= OnDrawCards;
         EventManager.Game.Level.OnLifeformKilled -= OnLifeformKilled;
         EventManager.Game.Level.OnLifeformRevived -= OnLifeformRevived;
         EventManager.Game.Level.OnEffectUsed -= OnEffectUsed;
         EventManager.Game.Level.OnTurnChanged -= OnTurnChanged;
         EventManager.Game.Level.OnEndLevel -= OnEndLevel;
+    }
+
+    private void OnSceneReloadComplete(EventManager.GameEvents.SceneReloadArgs arg0)
+    {
+        if (arg0.newScene == SceneLoader.Scene.GameScene)
+        {
+            InitializeGameEvents();
+            FMODUnity.RuntimeManager.StudioSystem.setParameterByName("MusicSelect", 1);
+        }
+
+        if (arg0.newScene == SceneLoader.Scene.TitleScreen)
+        {
+            FMODUnity.RuntimeManager.StudioSystem.setParameterByName("MusicSelect", 0);
+            StartLoop(Sound.Music);
+        }
     }
 
     /*private void OnSceneReloadComplete(EventManager.GameEvents.SceneReloadArgs scene)
@@ -156,6 +162,14 @@ public class SoundManager : MonoBehaviour
         }
     }*/
 
+    private void OnTutorialScreenChange(bool arg0)  //doesnt work?
+    {
+        if (arg0 == true)
+        {
+            PlayOneShot(Sound.OnTipShowed);
+        }
+    }
+
     private void OnEndLevel(EventManager.GameEvents.LevelEvents.LevelEndedArgs arg0)
     {
         if (arg0.WonLevel)
@@ -168,6 +182,11 @@ public class SoundManager : MonoBehaviour
         }
     }
 
+    private void OnOpenCardView(EventManager.GameEvents.UIEvents.OnOpenCardViewArgs arg0)
+    {
+        PlayOneShot(Sound.OnDeckView);
+    }
+    
     private void OnTurnChanged(EventManager.GameEvents.LevelEvents.TurnChangedArgs arg0)
     {
         PlayOneShot(Sound.EndTurn);
