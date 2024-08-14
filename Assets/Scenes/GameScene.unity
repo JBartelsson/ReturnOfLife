@@ -1647,13 +1647,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startDeck: {fileID: 11400000, guid: 22115b2d89455484894cf219c331c07d, type: 2}
-  debugStartDeck: {fileID: 11400000, guid: d47908b174d44a5449715d6e978e9519, type: 2}
+  debugStartDeck: {fileID: 11400000, guid: e3d359489b1588f449fcd4c6fcb6a63d, type: 2}
   handSize: 6
   standardMana: 3
   standardTurns: 3
   standardDiscards: 3
   planetProgression: {fileID: 11400000, guid: 6e94a5606a9b013458f6d7b745fea5df, type: 2}
-  debug: 1
+  sceneDebug: 0
 --- !u!1 &1045059058
 GameObject:
   m_ObjectHideFlags: 0
