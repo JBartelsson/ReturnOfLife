@@ -199,8 +199,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
-    eirmod tempor invidunt ut labore et dolore magna aliquyam
+  m_text: Lorem ipsum <sprite=0> dolor sit amet, consetetur sadipscing elitr, sed
+    diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 20d3f8f76a05b1943b8825a0acc0ca7b, type: 2}
   m_sharedMaterial: {fileID: 1583322838915064218, guid: 20d3f8f76a05b1943b8825a0acc0ca7b, type: 2}
@@ -219,7 +219,7 @@ MonoBehaviour:
     bottomLeft: {r: 1, g: 1, b: 1, a: 1}
     bottomRight: {r: 1, g: 1, b: 1, a: 1}
   m_fontColorGradientPreset: {fileID: 0}
-  m_spriteAsset: {fileID: 0}
+  m_spriteAsset: {fileID: 11400000, guid: a859aee1b0cfafe49885780a4abccdec, type: 2}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
   m_TextStyleHashCode: -1183493901
@@ -990,8 +990,8 @@ MonoBehaviour:
   tips:
   - tipPosition: {fileID: 5993239960829835894}
     tipType: 0
-    tipText: Multiply Fields reward you 50% extra points to the lifeforms in it.
-      They trigger only when all connected Multiply Fields are filled.
+    tipText: Multiply Fields <sprite=0> reward you 50% extra points to the lifeforms
+      in it. They trigger only when all connected Multiply Fields are filled.
   - tipPosition: {fileID: 5993239960829835894}
     tipType: 3
     tipText: Some Lifeforms feature <b>extra Moves</b>. Click on the highlighted
