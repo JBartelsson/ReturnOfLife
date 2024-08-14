@@ -63,12 +63,12 @@ Material:
     m_Ints: []
     m_Floats:
     - _Alpha: 1
-    - _PulseMax: 1
+    - _PulseMax: 0.8
     - _PulseMin: 0.3
     - _PulseSpeed: 1
     - _Saturation: 1
     - _WindIntensity: 0.2
     - _WindSpeed: 0.3
     m_Colors:
-    - _GlowColor: {r: 2.842767, g: 1.91826, b: 0, a: 0}
+    - _GlowColor: {r: 1.4213835, g: 0.95913, b: 0, a: 0}
   m_BuildTextureStacks: []

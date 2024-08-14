@@ -1927,7 +1927,7 @@ MonoBehaviour:
   secondMoveText: {fileID: 6844569353054982758}
   notEnoughManaText: {fileID: 8180463089639751379}
   plantFertilizedMaterial: {fileID: -876546973899608171, guid: ba1e87f12de7514489e255d5136721a6, type: 3}
-  plantNonFertilizedMaterial: {fileID: 2100000, guid: eb988fb0b27001b48a8c925260174581, type: 2}
+  plantNonFertilizedMaterial: {fileID: 2100000, guid: 7cfb0b9714109b645a51f70f69a9314f, type: 2}
   groundSpawnParticle: {fileID: 3782777355976800545}
   spawnRaysParticle: {fileID: 4244204417004148909}
 --- !u!114 &5915872477216182871
