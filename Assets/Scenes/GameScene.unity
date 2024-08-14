@@ -1674,6 +1674,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startDeck: {fileID: 11400000, guid: 22115b2d89455484894cf219c331c07d, type: 2}
+  debugStartDeck: {fileID: 11400000, guid: d47908b174d44a5449715d6e978e9519, type: 2}
   handSize: 6
   standardMana: 3
   standardTurns: 3
@@ -1899,7 +1900,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 32
+    m_Bits: 96
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
