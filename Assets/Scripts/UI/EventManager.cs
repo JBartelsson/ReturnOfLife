@@ -29,6 +29,7 @@ public static class EventManager
         Game.Level.OnLifeformPlanted = delegate { };
         Game.Level.OnLifeformKilled = delegate { };
         Game.Level.OnLifeformRevived = delegate { };
+        Game.Level.OnTriggerSpecialField = delegate { };
 
 
         Game.UI.OnSecondMoveNeeded = delegate { };
@@ -165,8 +166,13 @@ public static class EventManager
             public UnityAction<CallerArgs> OnLifeformRevived;
             public UnityAction<CallerArgs> OnLifeformKilled;
             public UnityAction<CallerArgs> OnEffectUsed;
+            public UnityAction<TriggerSpecialFieldArgs> OnTriggerSpecialField;
 
 
+            public class TriggerSpecialFieldArgs : Args
+            {
+                public SpecialField triggeredField;
+            }
             public class LevelEndedArgs : Args
             {
                 public bool WonLevel;

@@ -73,6 +73,7 @@ public class SpecialField
                             Mathf.FloorToInt(specialFieldGridTile.CardInstance.CardData.RuntimePoints *
                                              Constants.MULTIPLICATION_FIELD_MULTIPLIER), multiplyFieldCallerArgs,
                             GameManager.SCORING_ORIGIN.MULTIPLICATION);
+                        
                     }
 
                     break;
@@ -85,7 +86,10 @@ public class SpecialField
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-
+            EventManager.Game.Level.OnTriggerSpecialField?.Invoke(new EventManager.GameEvents.LevelEvents.TriggerSpecialFieldArgs()
+            {
+                triggeredField = this
+            });
             alreadyFulfilled = true;
         }
     }

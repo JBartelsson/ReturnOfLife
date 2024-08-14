@@ -108,6 +108,14 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
         EventManager.Game.UI.OnSecondMoveQueueEmpty += OnSecondMoveQueueEmpty;
         EventManager.Game.UI.OnCardSelectGridTileUpdate += OnCardSelectGridTileUpdate;
         EventManager.Game.Level.OnLifeformPlanted += OnLifeformPlanted;
+        EventManager.Game.Level.OnTriggerSpecialField += OnTriggerMpField;
+    }
+
+    private void OnTriggerMpField(EventManager.GameEvents.LevelEvents.TriggerSpecialFieldArgs arg0)
+    {
+        if (arg0.triggeredField.FieldType != SpecialFieldType.MULTIPLY) return;
+        if (!arg0.triggeredField.SpecialFieldGridTiles.Contains(ownGridTile)) return;
+        spawnRaysParticle.Play();
     }
 
     private void OnLifeformPlanted(EventManager.GameEvents.LevelEvents.OnLifeformPlantedArgs arg0)
@@ -232,7 +240,6 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
     private void AnimateSpawn()
     {
         groundSpawnParticle.Play();
-        spawnRaysParticle.Play();
         lifeFormSpriteRenderer.transform.position = lifeformSpriteOGPosition;
         lifeFormSpriteRenderer.transform.DOMove(lifeFormSpriteRendererAnimationTarget.position, .3f)
             .SetEase(Ease.OutSine);
