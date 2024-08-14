@@ -51,6 +51,8 @@ public class GameManager : MonoBehaviour
     [Header("Game Options")] [SerializeField]
     private StartDeckSO startDeck;
 
+    [SerializeField] private StartDeckSO debugStartDeck;
+
     [SerializeField] private int handSize = 5;
 
 
@@ -178,7 +180,13 @@ public class GameManager : MonoBehaviour
             Debug.Log("On scene Load");
             GridManager.Instance.OnGridReady += Instance_OnGridReady;
             if (!_deck.IsInitialized())
+            {
+                #if UNITY_EDITOR
+                _deck.InitializeDeck(debugStartDeck, handSize, handSize);
+                #else
                 _deck.InitializeDeck(startDeck, handSize, handSize);
+#endif
+            }
 
             BuildLevel();
         }

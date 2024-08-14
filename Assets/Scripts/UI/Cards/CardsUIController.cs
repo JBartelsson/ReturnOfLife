@@ -275,7 +275,26 @@ public class CardsUIController : MonoBehaviour
         }
         
         EventManager.Game.UI.OnCardSelected?.Invoke(currentCards[cardIndex].CardUI.CardInstance);
+        //Set Green arrows and stuff
+        if (activePlantIndex != -1)
+        {
+            CallerArgs tempCallerArgs = GameManager.Instance.GetTemporaryCallerArgs(activePlantIndex, null);
+            CardInstance tempCardInstance = GameManager.Instance.GetTemporaryCardInstance(activePlantIndex);
+            GridManager.Instance.Grid.ForEachGridTile((gridTile) =>
+            {
+                tempCallerArgs.playedTile = gridTile;
+                CardInstance cardInstanceOnGridTile = gridTile.CardInstance;
+                bool canBeExecuted = tempCardInstance.CanExecute(tempCallerArgs);
 
+                EventManager.Game.UI.OnCardSelectGridTileUpdate?.Invoke(
+                    new EventManager.GameEvents.UIEvents.CardSelectGridUpdateArgs()
+                    {
+                        Status = canBeExecuted,
+                        UpdatedTile = gridTile
+                    });
+            });
+            
+        }
 
         currentGridTile = null;
         currentCards[cardIndex].SetHoverState(true);
@@ -301,20 +320,7 @@ public class CardsUIController : MonoBehaviour
                 currentCards[i].SetHoverState(false);
         }
 
-        CallerArgs tempCallerArgs = GameManager.Instance.GetTemporaryCallerArgs(activePlantIndex, null);
-        CardInstance tempCardInstance = GameManager.Instance.GetTemporaryCardInstance(activePlantIndex);
-        GridManager.Instance.Grid.ForEachGridTile((gridTile) =>
-        {
-            tempCallerArgs.playedTile = gridTile;
-            CardInstance cardInstanceOnGridTile = gridTile.CardInstance;
-            bool canBeExecuted = tempCardInstance.CanExecute(tempCallerArgs);
-            
-            EventManager.Game.UI.OnCardSelectGridTileUpdate?.Invoke(new EventManager.GameEvents.UIEvents.CardSelectGridUpdateArgs()
-            {
-                Status = canBeExecuted,
-                UpdatedTile = gridTile
-            });
-        });
+        
         
         SwitchState(State.PlacePlant);
     }

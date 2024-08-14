@@ -3,8 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class CardsViewUI : MonoBehaviour
+public class CardsViewUI : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField] private CanvasGroup cardsViewCanvasGroup;
 
@@ -76,5 +77,13 @@ public class CardsViewUI : MonoBehaviour
     private int Comparison(CardInstance x, CardInstance y)
     {
         return x.CardData.CardName.CompareTo(y.CardData.CardName);
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        EventManager.Game.UI.OnOpenCardView?.Invoke(new EventManager.GameEvents.UIEvents.OnOpenCardViewArgs()
+        {
+            State = false
+        });
     }
 }
