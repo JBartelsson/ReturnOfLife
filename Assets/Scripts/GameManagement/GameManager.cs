@@ -65,8 +65,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private PlanetProgressionSO planetProgression;
     private GameState currentGameState = GameState.None;
 
-    [Header("Debug Settings")] [SerializeField]
-    private bool debug = false;
+    [FormerlySerializedAs("debug")] [Header("Debug Settings")] [SerializeField]
+    private bool sceneDebug = false;
 
     private Deck _deck = new Deck();
 
@@ -150,7 +150,7 @@ public class GameManager : MonoBehaviour
             this.transform.parent = null;
             DontDestroyOnLoad(this);
 #if UNITY_EDITOR
-            if (!debug)
+            if (!sceneDebug)
                 SceneLoader.Load(SceneLoader.Scene.GameScene);
 #endif
         }

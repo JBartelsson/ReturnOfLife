@@ -35,13 +35,17 @@ public class SoundManager : MonoBehaviour
         OnDeckView = 20,
         Music = 21,
     }
+
     public static SoundManager Instance { get; private set; }
+
     private void Awake()
     {
         if (Instance != null)
         {
-            Destroy(Instance.gameObject);
+            Destroy(this.gameObject);
+            return;
         }
+
         Instance = this;
         //Resetting Parenting structure so dontdestroyonload does work
         this.transform.parent = null;
@@ -53,7 +57,7 @@ public class SoundManager : MonoBehaviour
         FMODUnity.RuntimeManager.StudioSystem.setParameterByName("MusicSelect", 0);
         StartLoop(Sound.Music);
     }*/
-    
+
     [Serializable]
     public class SoundItem
     {
@@ -95,7 +99,24 @@ public class SoundManager : MonoBehaviour
 
     private void OnEnable()
     {
-        //EventManager.Game.SceneSwitch.OnSceneReloadComplete += OnSceneReloadComplete;
+        EventManager.Game.SceneSwitch.OnSceneReloadComplete += OnSceneReloadComplete;
+    }
+
+    private void OnSceneReloadComplete(EventManager.GameEvents.SceneReloadArgs arg0)
+    {
+        if (arg0.newScene == SceneLoader.Scene.GameScene)
+        {
+            InitializeGameEvents();
+        }
+
+        if (arg0.newScene == SceneLoader.Scene.TitleScreen)
+        {
+            StartLoop(Sound.Music);
+        }
+    }
+
+    private void InitializeGameEvents()
+    {
         EventManager.Game.Level.OnLifeformPlanted += OnPlantPlanted;
         EventManager.Game.Level.OnScoreChanged += OnScoreChanged;
         EventManager.Game.UI.OnCardSelected += OnCardSelected;
@@ -128,22 +149,22 @@ public class SoundManager : MonoBehaviour
             case SceneLoader.Scene.GameScene:
                 FMODUnity.RuntimeManager.StudioSystem.setParameterByName("MusicSelect", 1);
                 break;
-            
+
             case SceneLoader.Scene.TitleScreen:
                 FMODUnity.RuntimeManager.StudioSystem.setParameterByName("MusicSelect", 0);
                 break;
         }
     }*/
-    
+
     private void OnEndLevel(EventManager.GameEvents.LevelEvents.LevelEndedArgs arg0)
     {
         if (arg0.WonLevel)
         {
-            PlayOneShot(Sound.OnEndLevel);   //Won
+            PlayOneShot(Sound.OnEndLevel); //Won
         }
         else
         {
-            PlayOneShot(Sound.OnEndLevel);  //Lose
+            PlayOneShot(Sound.OnEndLevel); //Lose
         }
     }
 
@@ -184,13 +205,12 @@ public class SoundManager : MonoBehaviour
 
     private void OnScoreChanged(EventManager.GameEvents.LevelEvents.ScoreChangedArgs args)
     {
-        PlayOneShot(Sound.OnScoreChanged); 
+        PlayOneShot(Sound.OnScoreChanged);
         //args.ScoreAdded sind die Anzahl der Punkte
     }
 
     private void OnPlantPlanted(EventManager.GameEvents.LevelEvents.OnLifeformPlantedArgs args)
     {
-        
         if (!args.plantedCardInstance.IsUpgraded())
         {
             PlayOneShot(Sound.PlantedLifeform);
@@ -199,7 +219,7 @@ public class SoundManager : MonoBehaviour
         {
             PlayOneShot(Sound.PlantedUpgradedLifeform);
         }
-        
+
         //Lifeform plant
         switch (args.plantedCardInstance.CardData.LifeformType)
         {
@@ -224,7 +244,6 @@ public class SoundManager : MonoBehaviour
             default:
                 throw new ArgumentOutOfRangeException();
         }
-
     }
 
     private void PlayOneShot(Sound sound)

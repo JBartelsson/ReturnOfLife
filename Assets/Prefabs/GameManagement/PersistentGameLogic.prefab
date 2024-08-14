@@ -1,0 +1,255 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3105724091352511275
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3624117392408474571}
+  - component: {fileID: 4634755893824077799}
+  m_Layer: 0
+  m_Name: SoundManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3624117392408474571
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3105724091352511275}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5645821132546595592}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4634755893824077799
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3105724091352511275}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4702180f80af70941934b34b9109a149, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundItems:
+  - sound: 1
+    EventReference:
+      Guid:
+        Data1: -960198466
+        Data2: 1189215979
+        Data3: -1311282792
+        Data4: -507873016
+      Path: event:/SFX/FieldSounds/LifeformPlanted/PlantedLifeform
+  - sound: 2
+    EventReference:
+      Guid:
+        Data1: -657432226
+        Data2: 1119146394
+        Data3: 1665165193
+        Data4: -2041945977
+      Path: event:/SFX/FieldSounds/LifeformPlanted/PlantedUpgradedLifeform
+  - sound: 22
+    EventReference:
+      Guid:
+        Data1: -464469263
+        Data2: 1201999263
+        Data3: 1199411085
+        Data4: 510081786
+      Path: event:/SFX/FieldSounds/LifeformPlanted/PlantedNormalo
+  - sound: 3
+    EventReference:
+      Guid:
+        Data1: 866600707
+        Data2: 1171893284
+        Data3: -1793750898
+        Data4: 192514625
+      Path: event:/SFX/FieldSounds/LifeformPlanted/PlantedBindweed
+  - sound: 4
+    EventReference:
+      Guid:
+        Data1: 480766235
+        Data2: 1265503231
+        Data3: 283552904
+        Data4: -16778689
+      Path: event:/SFX/FieldSounds/LifeformPlanted/PlantedAntisocial
+  - sound: 5
+    EventReference:
+      Guid:
+        Data1: 1836501804
+        Data2: 1124958262
+        Data3: 1288073126
+        Data4: -271727136
+      Path: event:/SFX/FieldSounds/LifeformPlanted/PlantedEpiphyt
+  - sound: 6
+    EventReference:
+      Guid:
+        Data1: -223865635
+        Data2: 1124838139
+        Data3: -1510576473
+        Data4: 1275204795
+      Path: event:/SFX/FieldSounds/LifeformPlanted/PlantedLycoperdon
+  - sound: 7
+    EventReference:
+      Guid:
+        Data1: -764923134
+        Data2: 1244565715
+        Data3: -829017924
+        Data4: 1809976087
+      Path: event:/SFX/FieldSounds/LifeformPlanted/PlantedReanimate
+  - sound: 8
+    EventReference:
+      Guid:
+        Data1: 979652164
+        Data2: 1168497625
+        Data3: -293684302
+        Data4: -918694672
+      Path: event:/SFX/FieldSounds/LifeformDestroyed
+  - sound: 9
+    EventReference:
+      Guid:
+        Data1: -637977266
+        Data2: 1328671553
+        Data3: 922087840
+        Data4: 1085782498
+      Path: event:/SFX/FieldSounds/LifeformRevived
+  - sound: 10
+    EventReference:
+      Guid:
+        Data1: -483528208
+        Data2: 1221798224
+        Data3: 1047889301
+        Data4: 1264398843
+      Path: event:/SFX/UISounds/CardsDrawn
+  - sound: 11
+    EventReference:
+      Guid:
+        Data1: 1166252884
+        Data2: 1277492920
+        Data3: -634796134
+        Data4: 569691543
+      Path: event:/SFX/UISounds/ScoreChanged
+  - sound: 12
+    EventReference:
+      Guid:
+        Data1: -505204404
+        Data2: 1255939703
+        Data3: -107785590
+        Data4: 332002118
+      Path: event:/SFX/UISounds/ButtonClick
+  - sound: 13
+    EventReference:
+      Guid:
+        Data1: -1182515700
+        Data2: 1242620727
+        Data3: -438703693
+        Data4: -1231830292
+      Path: event:/SFX/UISounds/CardHover
+  - sound: 14
+    EventReference:
+      Guid:
+        Data1: 1837189206
+        Data2: 1195747332
+        Data3: -1484822373
+        Data4: 1708178883
+      Path: event:/SFX/UISounds/CardClick
+  - sound: 15
+    EventReference:
+      Guid:
+        Data1: -1670597817
+        Data2: 1157787619
+        Data3: -2102005584
+        Data4: -110788427
+      Path: event:/SFX/UISounds/CardDiscarded
+  - sound: 16
+    EventReference:
+      Guid:
+        Data1: 1793984730
+        Data2: 1157030786
+        Data3: 1739465884
+        Data4: -1467123007
+      Path: event:/SFX/UISounds/EpiphanyMode
+  - sound: 17
+    EventReference:
+      Guid:
+        Data1: -2018431619
+        Data2: 1265522932
+        Data3: -1565089138
+        Data4: -1105580917
+      Path: event:/SFX/UISounds/EndTurn
+  - sound: 18
+    EventReference:
+      Guid:
+        Data1: 2138663464
+        Data2: 1097091970
+        Data3: -1953899588
+        Data4: -1691133982
+      Path: event:/SFX/UISounds/Endlevel
+  - sound: 19
+    EventReference:
+      Guid:
+        Data1: 1676095411
+        Data2: 1170964522
+        Data3: 1681246852
+        Data4: -963372986
+      Path: event:/SFX/UISounds/TipAppears
+  - sound: 20
+    EventReference:
+      Guid:
+        Data1: -74551154
+        Data2: 1245042839
+        Data3: 1044749952
+        Data4: -2041531016
+      Path: event:/SFX/UISounds/ShowDeck
+  - sound: 21
+    EventReference:
+      Guid:
+        Data1: -1359156070
+        Data2: 1291810201
+        Data3: 989506493
+        Data4: 1308440776
+      Path: event:/Music/Music
+--- !u!1 &7227752879844946171
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5645821132546595592}
+  m_Layer: 0
+  m_Name: PersistentGameLogic
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5645821132546595592
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7227752879844946171}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 3624117392408474571}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
