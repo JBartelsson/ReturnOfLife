@@ -779,8 +779,8 @@ MonoBehaviour:
       fields to play it or cancel it with right click.
   - tipPosition: {fileID: 997462539022838888}
     tipType: 1
-    tipText: If the cards in your draw pile are empty, the discard pile gets shuffled
-      into the draw pile.
+    tipText: If your draw pile is empty, the discard pile gets shuffled into the
+      draw pile.
   - tipPosition: {fileID: 997462539022838888}
     tipType: 2
     tipText: This is your <b>last turn</b>. Gather all the points you can!
