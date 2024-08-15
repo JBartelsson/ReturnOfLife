@@ -9,7 +9,7 @@ public class TitleScreen : MonoBehaviour
     {
         //Start Game Loop
         //SceneManager.LoadScene("SceneNameXY");
-        SceneLoader.Load(SceneLoader.Scene.GameScene);
+        EventManager.Game.UI.OnShowDeckPickCanvas?.Invoke(true);
     }
 
     public void OpenSettings()

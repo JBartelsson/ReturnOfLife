@@ -105,4 +105,5 @@ MonoBehaviour:
     m_ClassDefinitionType: 0
     sprite: {fileID: 21300000, guid: 7f1d2c1dca0d2374d94e45a9274fc01b, type: 3}
   spriteInfoList: []
-  fallbackSpriteAssets: []
+  fallbackSpriteAssets:
+  - {fileID: 11400000, guid: abab92f1c82c8b044bd7c23f69c669b1, type: 2}

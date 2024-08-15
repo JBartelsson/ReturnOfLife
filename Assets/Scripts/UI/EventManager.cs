@@ -48,6 +48,9 @@ public static class EventManager
         Game.UI.OnEndSingleCardPlay = delegate { };
         Game.UI.OnCardSelected = delegate { };
         Game.UI.OnCardSelectGridTileUpdate = delegate { };
+        Game.UI.OnShowDeckPickCanvas = delegate { };
+
+        Game.GameSettings.OnDeckUnlocked = delegate { };
     }
 
 
@@ -57,6 +60,7 @@ public static class EventManager
         public UIEvents UI = new UIEvents();
         public InputEvents Input = new InputEvents();
         public SceneSwitchEvents SceneSwitch = new SceneSwitchEvents();
+        public GameSettingsEvents GameSettings = new GameSettingsEvents();
 
         public class Args
         {
@@ -83,6 +87,16 @@ public static class EventManager
         public class SceneSwitchEvents
         {
             public UnityAction<SceneReloadArgs> OnSceneReloadComplete;
+        }
+
+        public class GameSettingsEvents
+        {
+            public UnityAction<DeckUnlockedArgs> OnDeckUnlocked;
+
+            public class DeckUnlockedArgs
+            {
+                public StartDeckSO UnlockedDeck;
+            }
         }
 
         public class UIEvents
@@ -140,7 +154,8 @@ public static class EventManager
             public UnityAction OnEndSingleCardPlay;
             public UnityAction<CardInstance> OnCardSelected;
             public UnityAction<CardSelectGridUpdateArgs> OnCardSelectGridTileUpdate;
-           
+            public UnityAction<bool> OnShowDeckPickCanvas;
+
         }
 
         public class LevelEvents

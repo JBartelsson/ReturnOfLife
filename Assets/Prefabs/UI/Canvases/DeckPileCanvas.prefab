@@ -147,6 +147,7 @@ GameObject:
   - component: {fileID: 7561459058606973937}
   - component: {fileID: 5828133823082306541}
   - component: {fileID: 6881793212290061918}
+  - component: {fileID: 4134723241005714742}
   m_Layer: 5
   m_Name: DeckPileCanvas
   m_TagString: Untagged
@@ -253,6 +254,20 @@ MonoBehaviour:
   pile: 0
   numberText: {fileID: 5157373201524853066}
   deckViewCanvas: {fileID: 7061348404191677077}
+--- !u!114 &4134723241005714742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8324837245356192078}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 166fe60eb3594d94cb236d0ecf9ce10d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scaleValue: 1.08
+  scaleSpeed: 0.1
 --- !u!1 &8335282903936348235
 GameObject:
   m_ObjectHideFlags: 0

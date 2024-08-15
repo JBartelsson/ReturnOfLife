@@ -48,10 +48,6 @@ public class GameManager : MonoBehaviour
         Tutorial
     }
 
-    [Header("Game Options")] [SerializeField]
-    private StartDeckSO startDeck;
-
-    [SerializeField] private StartDeckSO debugStartDeck;
 
     [SerializeField] private int handSize = 5;
 
@@ -104,12 +100,6 @@ public class GameManager : MonoBehaviour
     {
         get => currentScore;
         set => currentScore = value;
-    }
-
-    public StartDeckSO StartDeck
-    {
-        get => startDeck;
-        set => startDeck = value;
     }
 
     public enum SCORING_ORIGIN
@@ -179,14 +169,7 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("On scene Load");
             GridManager.Instance.OnGridReady += Instance_OnGridReady;
-            if (!_deck.IsInitialized())
-            {
-                #if UNITY_EDITOR
-                _deck.InitializeDeck(debugStartDeck, handSize, handSize);
-                #else
-                _deck.InitializeDeck(startDeck, handSize, handSize);
-#endif
-            }
+            _deck.InitializeDeck(GameSettings.Instance.SelectedStartDeck, handSize, handSize);
 
             BuildLevel();
         }
@@ -353,6 +336,12 @@ public class GameManager : MonoBehaviour
             AddPointScore(500, new CallerArgs(), SCORING_ORIGIN.LIFEFORM);
         }
 #endif
+#if UNITY_EDITOR
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            currentStage = planetProgression.Progression.Count - 2;
+        }
+#endif
     }
 
     public void ExecuteSecondMove(GridTile selectedGridTile)
@@ -426,8 +415,9 @@ public class GameManager : MonoBehaviour
             {
                 _deck.DiscardCard(wisdom);
             }
+
             RemoveAllWisdoms();
-            
+
 
             _deck.DiscardCard(playedCard);
             //Event calling
@@ -603,9 +593,7 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
-        currentStage = 0;
-        _deck.InitializeDeck(startDeck);
-        SceneLoader.Reload();
+        SceneLoader.Load(SceneLoader.Scene.TitleScreen);
     }
 
     public void NextLevel()
@@ -677,6 +665,7 @@ public class GameManager : MonoBehaviour
         {
             cardInstance.Upgrades.AddRange(currentWisdoms);
         }
+
         bool enoughMana = GameManager.Instance.EnoughManaFor(cardInstance);
         cardInstance.Upgrades.Clear();
         return enoughMana;

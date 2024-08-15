@@ -1,8 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
-
+[ExecuteInEditMode]
 public class WiggleAnimation : MonoBehaviour
 {
     [SerializeField] private float strength = 10f;
@@ -21,6 +22,11 @@ public class WiggleAnimation : MonoBehaviour
         X,
         Y
     }
+
+    // private void OnValidate()
+    // {
+    //     StartAnimation();
+    // }
 
     // Start is called before the first frame update
     void OnEnable()
@@ -43,16 +49,20 @@ public class WiggleAnimation : MonoBehaviour
         }
         if (moveDirection == MoveDirection.Y)
         {
-            topPosition = rectTransform.position.y + strength;
-            bottomPosition = rectTransform.position.y - strength;
-            rectTransform.position = new Vector3(rectTransform.position.x, topPosition, rectTransform.position.z);
+            
 
             if (!localMove)
             {
+                topPosition = rectTransform.position.y + strength;
+                bottomPosition = rectTransform.position.y - strength;
+                rectTransform.position = new Vector3(rectTransform.position.x, topPosition, rectTransform.position.z);
                 animationTween = rectTransform.DOMoveY(bottomPosition, speed).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutSine);
             }
             else
             {
+                topPosition = rectTransform.localPosition.y + strength;
+                bottomPosition = rectTransform.localPosition.y - strength;
+                rectTransform.localPosition = new Vector3(rectTransform.localPosition.x, topPosition, rectTransform.localPosition.z);
                 animationTween = rectTransform.DOLocalMoveY(bottomPosition, speed).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutSine);
 
             }

@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class CardPickController : MonoBehaviour
 {
-    [SerializeField] private GameObject cardPickCanvas;
+    [SerializeField] private CanvasGroup cardPickCanvas;
     private List<AddableCardUI> addableCards = new();
     [SerializeField] private Transform cardsParent;
     [SerializeField] private GameObject addableCardPrefab;
@@ -31,7 +31,7 @@ public class CardPickController : MonoBehaviour
     {
         EventManager.Game.UI.OnCardPickScreenChange += OnCardPickScreenChange;
         EventManager.Game.Level.OnEndLevel += OnEndLevel;
-        cardPickCanvas.SetActive(false);
+        UIUtils.InitFadeState(cardPickCanvas);
         skipButton.onClick.AddListener(SkipButton);
     }
 
@@ -69,7 +69,7 @@ public class CardPickController : MonoBehaviour
             Debug.LogWarning("Card Pick Window Not Initialized");
         }
         EventManager.Game.UI.OnChangeOtherCanvasesStatus(!args.status);
-        cardPickCanvas.SetActive(args.status);
+        UIUtils.FadeStandard(cardPickCanvas, args.status);
         if (args.status)
         {
             if (cardCollection == null)
