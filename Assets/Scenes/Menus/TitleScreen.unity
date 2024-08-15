@@ -1196,7 +1196,7 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: 22115b2d89455484894cf219c331c07d, type: 2}
     - target: {fileID: 7508343636413544247, guid: 7f9065ec08541e44c805b690e81fec44, type: 3}
       propertyPath: unlockAllStartDecksDebug
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

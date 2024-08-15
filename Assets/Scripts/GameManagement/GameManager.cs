@@ -169,6 +169,7 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("On scene Load");
             GridManager.Instance.OnGridReady += Instance_OnGridReady;
+            if (!_deck.IsInitialized())
             _deck.InitializeDeck(GameSettings.Instance.SelectedStartDeck, handSize, handSize);
 
             BuildLevel();
@@ -593,6 +594,7 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
+        _deck = new();
         SceneLoader.Load(SceneLoader.Scene.TitleScreen);
     }
 
