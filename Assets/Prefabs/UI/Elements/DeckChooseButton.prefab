@@ -83,13 +83,29 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 785891488957393220, guid: b7765e5a8b3378e4fa55111c9724f0c2, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: -40
+      objectReference: {fileID: 0}
+    - target: {fileID: 785891488957393220, guid: b7765e5a8b3378e4fa55111c9724f0c2, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: -40
+      objectReference: {fileID: 0}
+    - target: {fileID: 785891488957393220, guid: b7765e5a8b3378e4fa55111c9724f0c2, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 785891488957393220, guid: b7765e5a8b3378e4fa55111c9724f0c2, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3257068057974205389, guid: b7765e5a8b3378e4fa55111c9724f0c2, type: 3}
       propertyPath: m_text
-      value: Standard Deck
+      value: Standard Deck (not in demo)
       objectReference: {fileID: 0}
     - target: {fileID: 3257068057974205389, guid: b7765e5a8b3378e4fa55111c9724f0c2, type: 3}
       propertyPath: m_fontSize
-      value: 40.11
+      value: 35.45
       objectReference: {fileID: 0}
     - target: {fileID: 3257068057974205389, guid: b7765e5a8b3378e4fa55111c9724f0c2, type: 3}
       propertyPath: m_fontAsset

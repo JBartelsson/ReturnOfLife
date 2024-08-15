@@ -25,6 +25,10 @@ public class DeckChooseButton : MonoBehaviour
         string buttonTextString = startDeckSo.StartDeckName;
         if (!startDeckSo.Unlocked)
         {
+            if (startDeckSo.Unavailable)
+            {
+                buttonTextString += "\n(not in demo)";
+            }
             buttonTextString += @"<sprite name=""Lock"">";
             this.buttonText.text = buttonTextString;
 

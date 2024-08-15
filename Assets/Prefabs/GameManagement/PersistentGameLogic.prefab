@@ -48,6 +48,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 22115b2d89455484894cf219c331c07d, type: 2}
   - {fileID: 11400000, guid: e3d359489b1588f449fcd4c6fcb6a63d, type: 2}
   - {fileID: 11400000, guid: 300adccdecf2d3447b4696b2d7ac2db8, type: 2}
+  - {fileID: 11400000, guid: c7d9b625b76dc5749836d9be2f959e8a, type: 2}
+  - {fileID: 11400000, guid: 96abd9179e5a5844b89ebcfd68c17f03, type: 2}
+  debugStartDeck: {fileID: 0}
+  debug: 0
+  unlockAllStartDecksDebug: 0
 --- !u!1 &3105724091352511275
 GameObject:
   m_ObjectHideFlags: 0

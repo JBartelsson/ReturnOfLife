@@ -57,6 +57,7 @@ public class GameSettings : PersistentSingleton<GameSettings>
         StartDeckSO nextDeck = availableStartDecks.FirstOrDefault((x) => !x.Unlocked);
         Debug.Log("Trying to enable new Deck");
         if (nextDeck == null) return;
+        if (!nextDeck.Unavailable) return;
         nextDeck.Unlocked = true;
         Debug.Log("Invoking Event for Unlock Deck");
 

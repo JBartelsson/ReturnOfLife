@@ -19,7 +19,9 @@ public class StartDeckSO : ScriptableObject
 
 
     [SerializeField] private List<DeckEntry> deck = new();
-    [FormerlySerializedAs("unlocked")] [SerializeField] private bool unlockAtStart;
+    [SerializeField] private bool unlockAtStart;
+    [FormerlySerializedAs("available")] [SerializeField] private bool unavailable;
+
 
     public bool UnlockAtStart
     {
@@ -29,9 +31,10 @@ public class StartDeckSO : ScriptableObject
 
 
     public string StartDeckName => startDeckName;
-    public List<DeckEntry> Deck { get => deck; set => deck = value; }
 
     private bool unlocked = false;
+    public List<DeckEntry> Deck { get => deck; set => deck = value; }
+    public bool Unavailable => unavailable;
     
     public bool Unlocked
     {
