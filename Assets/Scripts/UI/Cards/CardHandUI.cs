@@ -72,7 +72,14 @@ public class CardHandUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
         if (state)
         {
             cardUI.BackgroundSprite.material = cardUI.HoverMaterial;
-            PutCardInFront();
+            if (cardUI.CardInstance.CardData.WisdomType != WisdomType.Basic)
+            {
+                PutCardInFront();
+            }
+            else
+            {
+                PutCardInFrontWisdom();
+            }
 
         }
         else
@@ -98,6 +105,11 @@ public class CardHandUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     }
 
     private void PutCardInFront()
+    {
+        if (cardCanvas == null) return;
+        cardCanvas.sortingOrder = hoveredSortingLayer + 1;
+    }
+    private void PutCardInFrontWisdom()
     {
         if (cardCanvas == null) return;
         cardCanvas.sortingOrder = hoveredSortingLayer;
