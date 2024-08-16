@@ -227,7 +227,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1902350892653476967}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.033}
+  m_LocalPosition: {x: 0, y: 0, z: -0.033000052}
   m_LocalScale: {x: 0.48, y: 0.48, z: 0.48}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -235,7 +235,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0.614}
+  m_AnchoredPosition: {x: 0, y: 0.6640001}
   m_SizeDelta: {x: 1, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!212 &2504419161722489102
@@ -661,7 +661,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4621008245698233939}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.123}
+  m_LocalPosition: {x: 0, y: 0, z: -0.20275587}
   m_LocalScale: {x: 0.12, y: 0.120000005, z: 0.120000005}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -669,7 +669,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0.418}
+  m_AnchoredPosition: {x: 0, y: 0.47832412}
   m_SizeDelta: {x: 20, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &7383538570203711414
@@ -1688,15 +1688,15 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8408557517616437385}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.123}
-  m_LocalScale: {x: 0.12, y: 0.120000005, z: 0.120000005}
+  m_LocalPosition: {x: 0, y: 0, z: -0.20275587}
+  m_LocalScale: {x: 0.12, y: 0.12, z: 0.12}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 755433184723919493}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0.418}
+  m_AnchoredPosition: {x: 0, y: 0.47832412}
   m_SizeDelta: {x: 20, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &3051499767916047501
@@ -1925,6 +1925,7 @@ MonoBehaviour:
   previewSpriteRenderer: {fileID: 7725089348602594353}
   placementArrowWiggle: {fileID: 8903814755585554085}
   secondMoveText: {fileID: 6844569353054982758}
+  secondMoveScale: 0.18
   notEnoughManaText: {fileID: 8180463089639751379}
   plantFertilizedMaterial: {fileID: -876546973899608171, guid: ba1e87f12de7514489e255d5136721a6, type: 3}
   plantNonFertilizedMaterial: {fileID: 2100000, guid: 7cfb0b9714109b645a51f70f69a9314f, type: 2}

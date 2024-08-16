@@ -31,6 +31,8 @@ public class CardHandUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     private bool canPlayCard = true;
     private bool cardSelected = false;
     private Vector3 originalPosition;
+    private Tween shakeTween;
+    private Quaternion ogRotation;
     
 
     private Tween cardUpTween;
@@ -41,6 +43,11 @@ public class CardHandUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
         PutCardInBack();
     }
 
+    private void OnEnable()
+    {
+        EventManager.Game.Level.OnManaChanged += OnManaChanged;
+        EventManager.Game.Level.OnWisdomChanged += OnWisdomChanged;
+    }
     private void SetPosition()
     {
         Debug.Log(cardUI.CardParent.position);
@@ -50,7 +57,12 @@ public class CardHandUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     public void OnPointerClick(PointerEventData eventData)
     {
         Debug.Log($"CARDCLICKENABLED IS {cardClickEnabled}");
-        if (!cardClickEnabled) return;
+        if (!cardClickEnabled)
+        {
+            EventManager.Game.UI.OnSecondMoveStillOpen?.Invoke();
+            OnSecondMoveStillOpen();
+            return;
+        }
         if (!canPlayCard) return;
         //IF not left click
         if (eventData.pointerId != -1) return;
@@ -121,10 +133,17 @@ public class CardHandUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
         cardCanvas.sortingOrder = normalSortingLayer;
     }
     
-    private void OnEnable()
+    
+
+    private void OnSecondMoveStillOpen()
     {
-        EventManager.Game.Level.OnManaChanged += OnManaChanged;
-        EventManager.Game.Level.OnWisdomChanged += OnWisdomChanged;
+        Debug.Log("Second Move still open triggerd");
+        if (shakeTween != null) shakeTween.Complete(); 
+        ogRotation = transform.rotation;
+        shakeTween = transform.DOShakeRotation(Constants.UI_FAST_FADE_SPEED, new Vector3(0,0, 10f), vibrato: 10, randomnessMode: ShakeRandomnessMode.Harmonic).OnComplete(() =>
+        {
+            transform.DORotateQuaternion(ogRotation, .1f);
+        });
     }
 
 

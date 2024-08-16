@@ -49,6 +49,8 @@ public static class EventManager
         Game.UI.OnCardSelected = delegate { };
         Game.UI.OnCardSelectGridTileUpdate = delegate { };
         Game.UI.OnShowDeckPickCanvas = delegate { };
+        Game.UI.OnSecondMoveStillOpen = delegate { };
+
 
         Game.GameSettings.OnDeckUnlocked = delegate { };
     }
@@ -155,7 +157,7 @@ public static class EventManager
             public UnityAction<CardInstance> OnCardSelected;
             public UnityAction<CardSelectGridUpdateArgs> OnCardSelectGridTileUpdate;
             public UnityAction<bool> OnShowDeckPickCanvas;
-
+            public UnityAction OnSecondMoveStillOpen;
         }
 
         public class LevelEvents

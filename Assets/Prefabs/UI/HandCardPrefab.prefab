@@ -160,7 +160,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardUI: {fileID: 6271659122452762061}
   cardCanvas: {fileID: 8338834195772883035}
-  normalSortingLayer: 0
+  cardOverlay: {fileID: 0}
   hoveredSortingLayer: 100
   CardMouseHoverTransform: {fileID: 4411154796157988143}
 --- !u!114 &6271659122452762061 stripped

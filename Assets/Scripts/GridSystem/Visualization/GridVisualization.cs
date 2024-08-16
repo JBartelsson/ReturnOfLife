@@ -49,8 +49,12 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
     [Header("Text Settings")] [SerializeField]
     private TextMeshPro secondMoveText;
 
+    [SerializeField] private float secondMoveScale = 1.1f;
+    [SerializeField] private float secondMoveArrowScale = .54f;
     [SerializeField] private TextMeshPro notEnoughManaText;
-
+    private Tween secondMoveArrowTween;
+    private Tween secondMoveScaleTween;
+    
     private GridTile ownGridTile;
 
     private Vector3 lifeformSpriteOGPosition;
@@ -109,6 +113,17 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
         EventManager.Game.UI.OnCardSelectGridTileUpdate += OnCardSelectGridTileUpdate;
         EventManager.Game.Level.OnLifeformPlanted += OnLifeformPlanted;
         EventManager.Game.Level.OnTriggerSpecialField += OnTriggerMpField;
+        EventManager.Game.UI.OnSecondMoveStillOpen += OnSecondMoveStillOpen;
+    }
+
+    private void OnSecondMoveStillOpen()
+    {
+        if (secondMoveArrowTween != null) secondMoveArrowTween.Complete();
+        if (secondMoveScaleTween != null) secondMoveScaleTween.Complete();
+        secondMoveScaleTween =
+        secondMoveText.transform.DOScale(secondMoveScale, Constants.UI_FAST_FADE_SPEED).SetLoops(2, LoopType.Yoyo).SetEase(Ease.InOutCubic);
+        secondMoveArrowTween = 
+        placementArrowWiggle.transform.DOScale(secondMoveArrowScale, Constants.UI_FAST_FADE_SPEED).SetLoops(2, LoopType.Yoyo).SetEase(Ease.InOutCubic);
     }
 
     private void OnTriggerMpField(EventManager.GameEvents.LevelEvents.TriggerSpecialFieldArgs arg0)
@@ -154,7 +169,7 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
         {
             secondMoveText.DOFade(0f, 0f);
             secondMoveText.gameObject.SetActive(true);
-            secondMoveText.text = args.SecondMoveCallerArgs.CallingCardInstance.CardData.SecondMoveText;
+            secondMoveText.text = args.SecondMoveCallerArgs.CallingCardInstance.CardData.SecondMoveText + "\n" + args.SecondMoveCallerArgs.SecondMoveNumber + "x";
             Tween fadeTween = secondMoveText.DOFade(1f, Constants.UI_FAST_FADE_SPEED);
             if (args.SecondMoveCallerArgs.CallingCardInstance.CardData.RuntimePoints != 0)
             {
