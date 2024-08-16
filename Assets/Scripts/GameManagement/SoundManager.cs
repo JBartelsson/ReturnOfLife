@@ -32,6 +32,8 @@ public class SoundManager : MonoBehaviour
         EpiphanyMode = 16,
         EndTurn = 17,
         OnEndLevel = 18,
+        OnLoseLevel = 24,
+        WinGame = 25,
         OnTipShowed = 19,
         OnDeckView = 20,
         Music = 21,
@@ -111,6 +113,7 @@ public class SoundManager : MonoBehaviour
         EventManager.Game.UI.OnTutorialScreenChange += OnTutorialScreenChange;
         EventManager.Game.UI.OnOpenCardView += OnOpenCardView;
         EventManager.Game.UI.OnSecondMoveStillOpen += OnSecondMoveStillOpen;
+        EventManager.Game.Level.OnPlanetProgressionWon += OnPlanetProgressionWon;
         EventManager.Game.Level.OnDrawCards += OnDrawCards;
         EventManager.Game.Level.OnLifeformKilled += OnLifeformKilled;
         EventManager.Game.Level.OnLifeformRevived += OnLifeformRevived;
@@ -128,6 +131,7 @@ public class SoundManager : MonoBehaviour
         EventManager.Game.UI.OnTutorialScreenChange -= OnTutorialScreenChange;
         EventManager.Game.UI.OnOpenCardView -= OnOpenCardView;
         EventManager.Game.UI.OnSecondMoveStillOpen -= OnSecondMoveStillOpen;
+        EventManager.Game.Level.OnPlanetProgressionWon -= OnPlanetProgressionWon;
         EventManager.Game.Level.OnDrawCards -= OnDrawCards;
         EventManager.Game.Level.OnLifeformKilled -= OnLifeformKilled;
         EventManager.Game.Level.OnLifeformRevived -= OnLifeformRevived;
@@ -186,8 +190,13 @@ public class SoundManager : MonoBehaviour
         }
         else
         {
-            PlayOneShot(Sound.OnEndLevel); //Lose
+            PlayOneShot(Sound.OnLoseLevel); //Lose
         }
+    }
+
+    private void OnPlanetProgressionWon()
+    {
+        PlayOneShot(Sound.WinGame);
     }
 
     private void OnOpenCardView(EventManager.GameEvents.UIEvents.OnOpenCardViewArgs arg0)
