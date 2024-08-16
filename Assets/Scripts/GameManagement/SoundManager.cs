@@ -22,6 +22,7 @@ public class SoundManager : MonoBehaviour
         PlantedReanimate = 7,
         LifeformKilled = 8,
         LifeformRevived = 9,
+        ActionFailed = 23,
         OnDrawCards = 10,
         OnScoreChanged = 11,
         ButtonClick = 12,
@@ -109,6 +110,7 @@ public class SoundManager : MonoBehaviour
         EventManager.Game.UI.OnCardSelected += OnCardSelected;
         EventManager.Game.UI.OnTutorialScreenChange += OnTutorialScreenChange;
         EventManager.Game.UI.OnOpenCardView += OnOpenCardView;
+        EventManager.Game.UI.OnSecondMoveStillOpen += OnSecondMoveStillOpen;
         EventManager.Game.Level.OnDrawCards += OnDrawCards;
         EventManager.Game.Level.OnLifeformKilled += OnLifeformKilled;
         EventManager.Game.Level.OnLifeformRevived += OnLifeformRevived;
@@ -123,8 +125,9 @@ public class SoundManager : MonoBehaviour
         EventManager.Game.Level.OnLifeformPlanted -= OnPlantPlanted;
         EventManager.Game.Level.OnScoreChanged -= OnScoreChanged;
         EventManager.Game.UI.OnCardSelected -= OnCardSelected;
-        EventManager.Game.UI.OnTutorialScreenChange += OnTutorialScreenChange;
-        EventManager.Game.UI.OnOpenCardView += OnOpenCardView;
+        EventManager.Game.UI.OnTutorialScreenChange -= OnTutorialScreenChange;
+        EventManager.Game.UI.OnOpenCardView -= OnOpenCardView;
+        EventManager.Game.UI.OnSecondMoveStillOpen -= OnSecondMoveStillOpen;
         EventManager.Game.Level.OnDrawCards -= OnDrawCards;
         EventManager.Game.Level.OnLifeformKilled -= OnLifeformKilled;
         EventManager.Game.Level.OnLifeformRevived -= OnLifeformRevived;
@@ -168,6 +171,11 @@ public class SoundManager : MonoBehaviour
         {
             PlayOneShot(Sound.OnTipShowed);
         }
+    }
+
+    private void OnSecondMoveStillOpen()
+    {
+        PlayOneShot(Sound.ActionFailed);
     }
 
     private void OnEndLevel(EventManager.GameEvents.LevelEvents.LevelEndedArgs arg0)

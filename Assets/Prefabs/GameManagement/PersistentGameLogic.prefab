@@ -274,6 +274,14 @@ MonoBehaviour:
         Data3: 989506493
         Data4: 1308440776
       Path: event:/Music/Music
+  - sound: 23
+    EventReference:
+      Guid:
+        Data1: 636914470
+        Data2: 1203781709
+        Data3: 2132883104
+        Data4: -741301273
+      Path: event:/SFX/UISounds/ActionFailed
 --- !u!1 &7227752879844946171
 GameObject:
   m_ObjectHideFlags: 0
