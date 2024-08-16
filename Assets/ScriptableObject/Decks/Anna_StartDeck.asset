@@ -20,4 +20,5 @@ MonoBehaviour:
     amount: 2
   - cardDataReference: {fileID: 11400000, guid: 662b499d15f1ad84193d91f4fa014184, type: 2}
     amount: 6
-  unlocked: 1
+  unlockAtStart: 1
+  unavailable: 0
