@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
-[ExecuteInEditMode]
+
 public class WiggleAnimation : MonoBehaviour
 {
     [SerializeField] private float strength = 10f;

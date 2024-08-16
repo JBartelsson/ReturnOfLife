@@ -70,5 +70,5 @@ Material:
     - _WindIntensity: 0.2
     - _WindSpeed: 0.3
     m_Colors:
-    - _GlowColor: {r: 1.4213835, g: 0.95913, b: 0, a: 0}
+    - _GlowColor: {r: 3.482202, g: 3.482202, b: 3.482202, a: 1}
   m_BuildTextureStacks: []

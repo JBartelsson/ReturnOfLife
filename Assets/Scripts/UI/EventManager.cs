@@ -88,6 +88,7 @@ public static class EventManager
 
         public class SceneSwitchEvents
         {
+            public UnityAction<SceneReloadArgs> OnSceneReloadStarted;
             public UnityAction<SceneReloadArgs> OnSceneReloadComplete;
         }
 

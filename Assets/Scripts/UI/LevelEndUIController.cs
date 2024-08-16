@@ -7,20 +7,20 @@ using UnityEngine.UI;
 
 public class LevelEndUIController : MonoBehaviour
 {
-    
     [SerializeField] private Button nextButton;
     [SerializeField] private Button gameOverButton;
     [SerializeField] private Button pickACardButton;
     [SerializeField] private TextMeshProUGUI statusText;
     [SerializeField] private TextMeshProUGUI headerText;
-    [SerializeField] private Canvas endLevelCanvas;
+    [SerializeField] private CanvasGroup endLevelCanvas;
     [SerializeField] private Color gameOverColor;
     [SerializeField] private Color winColor;
     [SerializeField] private Image bgImage;
     private static bool cardAddUsed = false;
+
     private void Start()
     {
-        endLevelCanvas.gameObject.SetActive(false);
+        UIUtils.InitFadeState(endLevelCanvas);
         EventManager.Game.Level.OnEndLevel += OnEndLevel;
         EventManager.Game.Level.OnCardAdded += OnCardAdded;
         nextButton.onClick.AddListener(NextLevel);
@@ -47,7 +47,6 @@ public class LevelEndUIController : MonoBehaviour
         nextButton.onClick.RemoveListener(NextLevel);
         nextButton.onClick.RemoveListener(GameOver);
         pickACardButton.onClick.RemoveListener(PickACardClick);
-
     }
 
     private void OnEndLevel(EventManager.GameEvents.LevelEvents.LevelEndedArgs args)
@@ -56,7 +55,7 @@ public class LevelEndUIController : MonoBehaviour
         nextButton.gameObject.SetActive(args.WonLevel);
         pickACardButton.gameObject.SetActive(args.WonLevel);
         statusText.text = $"{args.CurrentScore}/{args.NeededScore}";
-        endLevelCanvas.gameObject.SetActive(true);
+        UIUtils.FadeStandard(endLevelCanvas, true);
         if (args.WonLevel)
         {
             headerText.text = "Success!";
@@ -66,7 +65,6 @@ public class LevelEndUIController : MonoBehaviour
         {
             headerText.text = "Too bad!";
             bgImage.color = gameOverColor;
-
         }
     }
 
@@ -78,17 +76,17 @@ public class LevelEndUIController : MonoBehaviour
             cardAddUsed = true;
             return;
         }
+
         GameManager.Instance.NextLevel();
-        endLevelCanvas.gameObject.SetActive(false);
+        UIUtils.FadeStandard(endLevelCanvas, false);
 
     }
-    
+
     private void GameOver()
     {
         Debug.Log("Clicked Game OVer Button");
         GameManager.Instance.GameOver();
-        endLevelCanvas.gameObject.SetActive(false);
-
+        UIUtils.FadeStandard(endLevelCanvas, false);
     }
 
     private void OnDisable()

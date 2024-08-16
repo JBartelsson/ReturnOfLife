@@ -147,6 +147,7 @@ GameObject:
   - component: {fileID: 6454240331449454458}
   - component: {fileID: 4625164349254506089}
   - component: {fileID: 7627632189817980130}
+  - component: {fileID: 6758439228620654167}
   m_Layer: 5
   m_Name: LevelEndCanvas
   m_TagString: Untagged
@@ -259,10 +260,22 @@ MonoBehaviour:
   pickACardButton: {fileID: 6462958479519441694}
   statusText: {fileID: 8887230247093665770}
   headerText: {fileID: 6786398089457343450}
-  endLevelCanvas: {fileID: 3515434597734316255}
+  endLevelCanvas: {fileID: 6758439228620654167}
   gameOverColor: {r: 0.25490198, g: 0, b: 0.028206743, a: 1}
   winColor: {r: 0.009483157, g: 0.21698111, b: 0, a: 1}
   bgImage: {fileID: 6968180512738828369}
+--- !u!225 &6758439228620654167
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3695816769315109515}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &5075251031152960376
 GameObject:
   m_ObjectHideFlags: 0
