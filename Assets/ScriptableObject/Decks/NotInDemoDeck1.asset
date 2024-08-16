@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf1bd9b9c80383c468f2d3e89a03269b, type: 3}
   m_Name: NotInDemoDeck1
   m_EditorClassIdentifier: 
-  startDeckName: Lyco Deck
+  startDeckName: Sun Deck
   deck:
   - cardDataReference: {fileID: 11400000, guid: f015392eac15d4f4fae338bba164cabd, type: 2}
     amount: 2
@@ -21,3 +21,4 @@ MonoBehaviour:
   - cardDataReference: {fileID: 11400000, guid: a416360e50c533b498d0e17cb1bc9e51, type: 2}
     amount: 2
   unlockAtStart: 0
+  unavailable: 1
