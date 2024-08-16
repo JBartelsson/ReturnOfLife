@@ -505,6 +505,7 @@ public class GameManager : MonoBehaviour
 
     private void EndLevel()
     {
+        if(CheckForGameWin()) return;
         EventManager.Game.Level.OnEndLevel?.Invoke(new EventManager.GameEvents.LevelEvents.LevelEndedArgs()
         {
             WonLevel = currentLevel.RequirementsMet(this),
@@ -598,14 +599,20 @@ public class GameManager : MonoBehaviour
         SceneLoader.Load(SceneLoader.Scene.TitleScreen);
     }
 
-    public void NextLevel()
+    private bool CheckForGameWin()
     {
-        DOTween.Clear(true);
         if (planetProgression.IsBoss(currentStage))
         {
             WinGame();
-            return;
+            return true;
         }
+
+        return false;
+    }
+    public void NextLevel()
+    {
+        DOTween.Clear(true);
+        if(CheckForGameWin()) return;
 
         currentStage++;
         SceneLoader.Reload();

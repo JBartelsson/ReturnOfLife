@@ -36,7 +36,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 144.49998}
+  m_AnchoredPosition: {x: 0, y: 94}
   m_SizeDelta: {x: 945.91, y: 65.1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7428669361917895153
@@ -130,7 +130,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: -127.538086}
+  m_margin: {x: 0, y: 0, z: 0, w: 4.902405}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -148,8 +148,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 208dc28bb95aeea42a127f5eff9cc035, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  strength: 6.3
-  speed: 1.7
+  strength: 10
+  speed: 1.5
   rectTransform: {fileID: 1640539722859764348}
   moveDirection: 1
   localMove: 1
@@ -296,7 +296,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameOverButton: {fileID: 2787223148973287598}
-  gameWonCanvas: {fileID: 2978291465242307363}
+  gameWonCanvas: {fileID: 6111082518672735973}
   unlockTextCanvasGroup: {fileID: 5327243110154970712}
   unlockText: {fileID: 3634600779392496814}
 --- !u!1 &3812950914546762503
@@ -346,6 +346,7 @@ GameObject:
   - component: {fileID: 2978291465242307363}
   - component: {fileID: 3913108755919538665}
   - component: {fileID: 3917887531494334184}
+  - component: {fileID: 6111082518672735973}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -436,6 +437,18 @@ MonoBehaviour:
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
   m_PresetInfoIsWorld: 0
+--- !u!225 &6111082518672735973
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3996454482674429679}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &8067930927977519665
 GameObject:
   m_ObjectHideFlags: 0

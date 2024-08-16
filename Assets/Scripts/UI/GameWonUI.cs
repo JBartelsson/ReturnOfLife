@@ -8,14 +8,14 @@ using UnityEngine.UI;
 public class GameWonUI : MonoBehaviour
 {
     [SerializeField] private Button gameOverButton;
-    [SerializeField] private Canvas gameWonCanvas;
+    [SerializeField] private CanvasGroup gameWonCanvas;
     [SerializeField] private CanvasGroup unlockTextCanvasGroup;
     [SerializeField] private TextMeshProUGUI unlockText;
 
     private void Awake()
     {
         gameOverButton.onClick.AddListener(GameOver);
-        gameWonCanvas.gameObject.SetActive(false);
+        UIUtils.InitFadeState(gameWonCanvas);
         // UIUtils.InitFadeState(unlockTextCanvasGroup);
 
     }
@@ -37,17 +37,18 @@ public class GameWonUI : MonoBehaviour
     private void OnDisable()
     {
         EventManager.Game.Level.OnPlanetProgressionWon -= OnPlanetProgressionWon;
-
     }
 
     private void OnPlanetProgressionWon()
     {
-        gameWonCanvas.gameObject.SetActive(true);
+        UIUtils.FadeStandard(gameWonCanvas, true);
+
     }
 
     private void GameOver()
     {
         GameManager.Instance.GameOver();
-        gameWonCanvas.gameObject.SetActive(false);
+        UIUtils.FadeStandard(gameWonCanvas, false);
+
     }
 }
