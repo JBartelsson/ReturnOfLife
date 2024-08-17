@@ -22,6 +22,7 @@ public class SoundManager : MonoBehaviour
         PlantedReanimate = 7,
         LifeformKilled = 8,
         LifeformRevived = 9,
+        ActionFailed = 23,
         OnDrawCards = 10,
         OnScoreChanged = 11,
         ButtonClick = 12,
@@ -31,6 +32,8 @@ public class SoundManager : MonoBehaviour
         EpiphanyMode = 16,
         EndTurn = 17,
         OnEndLevel = 18,
+        OnLoseLevel = 24,
+        WinGame = 25,
         OnTipShowed = 19,
         OnDeckView = 20,
         Music = 21,
@@ -109,6 +112,8 @@ public class SoundManager : MonoBehaviour
         EventManager.Game.UI.OnCardSelected += OnCardSelected;
         EventManager.Game.UI.OnTutorialScreenChange += OnTutorialScreenChange;
         EventManager.Game.UI.OnOpenCardView += OnOpenCardView;
+        EventManager.Game.UI.OnSecondMoveStillOpen += OnSecondMoveStillOpen;
+        EventManager.Game.Level.OnPlanetProgressionWon += OnPlanetProgressionWon;
         EventManager.Game.Level.OnDrawCards += OnDrawCards;
         EventManager.Game.Level.OnLifeformKilled += OnLifeformKilled;
         EventManager.Game.Level.OnLifeformRevived += OnLifeformRevived;
@@ -123,8 +128,10 @@ public class SoundManager : MonoBehaviour
         EventManager.Game.Level.OnLifeformPlanted -= OnPlantPlanted;
         EventManager.Game.Level.OnScoreChanged -= OnScoreChanged;
         EventManager.Game.UI.OnCardSelected -= OnCardSelected;
-        EventManager.Game.UI.OnTutorialScreenChange += OnTutorialScreenChange;
-        EventManager.Game.UI.OnOpenCardView += OnOpenCardView;
+        EventManager.Game.UI.OnTutorialScreenChange -= OnTutorialScreenChange;
+        EventManager.Game.UI.OnOpenCardView -= OnOpenCardView;
+        EventManager.Game.UI.OnSecondMoveStillOpen -= OnSecondMoveStillOpen;
+        EventManager.Game.Level.OnPlanetProgressionWon -= OnPlanetProgressionWon;
         EventManager.Game.Level.OnDrawCards -= OnDrawCards;
         EventManager.Game.Level.OnLifeformKilled -= OnLifeformKilled;
         EventManager.Game.Level.OnLifeformRevived -= OnLifeformRevived;
@@ -170,6 +177,11 @@ public class SoundManager : MonoBehaviour
         }
     }
 
+    private void OnSecondMoveStillOpen()
+    {
+        PlayOneShot(Sound.ActionFailed);
+    }
+
     private void OnEndLevel(EventManager.GameEvents.LevelEvents.LevelEndedArgs arg0)
     {
         if (arg0.WonLevel)
@@ -178,8 +190,13 @@ public class SoundManager : MonoBehaviour
         }
         else
         {
-            PlayOneShot(Sound.OnEndLevel); //Lose
+            PlayOneShot(Sound.OnLoseLevel); //Lose
         }
+    }
+
+    private void OnPlanetProgressionWon()
+    {
+        PlayOneShot(Sound.WinGame);
     }
 
     private void OnOpenCardView(EventManager.GameEvents.UIEvents.OnOpenCardViewArgs arg0)

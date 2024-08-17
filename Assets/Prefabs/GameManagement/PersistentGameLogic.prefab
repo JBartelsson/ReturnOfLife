@@ -274,6 +274,30 @@ MonoBehaviour:
         Data3: 989506493
         Data4: 1308440776
       Path: event:/Music/Music
+  - sound: 23
+    EventReference:
+      Guid:
+        Data1: 636914470
+        Data2: 1203781709
+        Data3: 2132883104
+        Data4: -741301273
+      Path: event:/SFX/UISounds/ActionFailed
+  - sound: 24
+    EventReference:
+      Guid:
+        Data1: -1816474626
+        Data2: 1337706617
+        Data3: 677855156
+        Data4: -1600905780
+      Path: event:/SFX/UISounds/EndlevelLose
+  - sound: 25
+    EventReference:
+      Guid:
+        Data1: -2143499707
+        Data2: 1188151374
+        Data3: 1115430801
+        Data4: -1878317700
+      Path: event:/SFX/UISounds/WinGame
 --- !u!1 &7227752879844946171
 GameObject:
   m_ObjectHideFlags: 0
