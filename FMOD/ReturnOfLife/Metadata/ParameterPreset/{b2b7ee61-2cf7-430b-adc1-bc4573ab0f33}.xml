@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="ParameterPreset" id="{b2b7ee61-2cf7-430b-adc1-bc4573ab0f33}">
+		<property name="name">
+			<value>Turn</value>
+		</property>
+		<relationship name="folder">
+			<destination>{60b44dfc-fad0-41f1-b491-327e84d1ba26}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{1cef51a5-0714-4f63-8b64-5751e6b2445d}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{1cef51a5-0714-4f63-8b64-5751e6b2445d}">
+		<property name="maximum">
+			<value>2</value>
+		</property>
+		<property name="isGlobal">
+			<value>true</value>
+		</property>
+		<property name="initialValue">
+			<value>2</value>
+		</property>
+		<property name="isExposedRecursively">
+			<value>false</value>
+		</property>
+	</object>
+</objects>

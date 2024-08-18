@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{622ea5c2-7e1c-46e9-a008-7d323db97b14}">
+		<property name="assetPath">
+			<value>Music/ReturnOfLife_Level_Default_V01_LayerHarmonicsStrong.wav</value>
+		</property>
+		<property name="isStreaming">
+			<value>true</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>57.313437499999999</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{8c6137e3-bde7-4c00-8e58-02ba76506efc}</destination>
+		</relationship>
+	</object>
+</objects>
