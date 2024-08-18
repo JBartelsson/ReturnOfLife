@@ -225,7 +225,7 @@ public class SoundManager : MonoBehaviour
         PlayOneShot(Sound.LifeformKilled);
     }
 
-    private void OnDrawCards(EventManager.GameEvents.LevelEvents.DeckChangedArgs deckChangedArgs)
+    private void OnDrawCards(EventManager.GameEvents.DeckChangedArgs deckChangedArgs)
     {
         PlayOneShot(Sound.OnDrawCards);
     }
