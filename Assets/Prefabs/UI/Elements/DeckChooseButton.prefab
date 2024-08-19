@@ -58,15 +58,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.22264141, b: 0.024878614, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 6680cd5419f42c04896dcd841dcd25d8, type: 3}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 278c2e3dbb069064585cf918a1e05b87, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 0
   m_FillMethod: 4
@@ -223,6 +223,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7658731574826463332, guid: b7765e5a8b3378e4fa55111c9724f0c2, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7658731574826463332, guid: b7765e5a8b3378e4fa55111c9724f0c2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 21f76f7c31dc8d04fae14cd4a5b12318, type: 3}
     - target: {fileID: 7658731574826463332, guid: b7765e5a8b3378e4fa55111c9724f0c2, type: 3}
       propertyPath: m_Color.b
       value: 0.5921569

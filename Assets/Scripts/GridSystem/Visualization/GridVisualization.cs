@@ -142,7 +142,6 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
     private void OnCardSelectGridTileUpdate(EventManager.GameEvents.UIEvents.CardSelectGridUpdateArgs args)
     {
         if (args.UpdatedTile != ownGridTile) return;
-        Debug.Log($"Update arrived at {ownGridTile}. Status is {args.Status}");
         if (args.Status)
         {
             markedForMove = true;
