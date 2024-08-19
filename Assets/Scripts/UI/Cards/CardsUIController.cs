@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -11,8 +13,11 @@ public class CardsUIController : MonoBehaviour
     [SerializeField] private GameObject cardPrefab;
     [SerializeField] private Transform cardsParent;
     [SerializeField] private Transform hoveredCardsTransform;
+    [SerializeField] private Transform discardPileLocation;
+    [SerializeField] private Transform drawPileLocation;
     [SerializeField] private Button discardButton;
     [SerializeField] private TextMeshProUGUI discardLeftText;
+    [SerializeField] private CardsUIContainer cardsUIContainer;
     
     private List<CardHandUI> currentCards = new();
     private int activePlantIndex = -1;
@@ -24,6 +29,7 @@ public class CardsUIController : MonoBehaviour
     private GridTile currentGridTile;
     private float clickCooldownTimer = 0;
     private bool gameplayBlocked = false;
+    private CardInstance hoveredCardInstance;
     public enum State
     {
         SelectCard,
@@ -34,10 +40,33 @@ public class CardsUIController : MonoBehaviour
     private State currentState = State.SelectCard;
     public static CardsUIController Instance { get; private set; }
 
+    public enum AnimationType
+    {
+        Discard,
+        Draw,
+        None
+    }
+
+    private AnimationType currentAnimationPlaying = AnimationType.None;
+    private List<AnimationItem> animationQueue = new();
+    private bool blockQueue = false;
+
+    public class AnimationItem
+    {
+        public Sequence Animation;
+        public AnimationType AnimationType;
+
+        public AnimationItem(Sequence animation, AnimationType animationType)
+        {
+            Animation = animation;
+            AnimationType = animationType;
+        }
+    }
+    
     private void OnEnable()
     {
-        EventManager.Game.Level.OnDrawCards += OnDrawCards;
-        EventManager.Game.Level.OnUpdateCards += OnUpdateCards;
+        EventManager.Game.Level.OnDrawCard += OnDrawCard;
+        EventManager.Game.Level.OnDiscardCard += OnDiscardCard;
         EventManager.Game.UI.OnSecondMoveNeeded += OnSecondMoveNeeded;
         EventManager.Game.UI.OnEndSingleCardPlay += OnPlantPlanted;
         EventManager.Game.Level.OnTurnChanged += OnTurnChanged;
@@ -51,6 +80,8 @@ public class CardsUIController : MonoBehaviour
             DiscardCard();
         });
     }
+
+   
 
     private void OnDiscardUsed(int discardsLeft)
     {
@@ -220,61 +251,138 @@ public class CardsUIController : MonoBehaviour
 
     private void InitCards(int handSize)
     {
-        int currentCardSize = currentCards.Count;
         Debug.Log("NEW CARD UI PREFABS ARE BEING GENERATED");
-        for (int i = 0; i < handSize - currentCardSize; i++)
+        for (int i = 0; i < handSize ; i++)
         {
             GameObject newCard = Instantiate(cardPrefab, cardsParent);
             CardHandUI cardHandUI = newCard.GetComponent<CardHandUI>();
-            cardHandUI.NormalSortingLayer = handSize - i;
-            cardHandUI.CardUI.CardIndex = i;
+            cardHandUI.CardUI.gameObject.SetActive(false);
+            cardHandUI.transform.position = new Vector3(0, -10000, 0);
+            cardHandUI.NormalSortingOrder = handSize - i;
+            cardHandUI.CardUI.CardIndex = -1;
+            cardHandUI.DiscardPileLocation = discardPileLocation;
+            cardHandUI.DrawPileLocation = drawPileLocation;
+            cardHandUI.PutCardInBack();
             currentCards.Add(cardHandUI);
         }
     }
 
+    private CardHandUI GetEmptyHandCardUI()
+    {
+        return currentCards.FirstOrDefault((cardHandUI => cardHandUI.CardUI.CardIndex == -1));
+    }
+    private void AddToAnimationQueue(Sequence animationSequence, AnimationType animationType)
+    {
+        animationQueue.Add(new AnimationItem(animationSequence, animationType));
+        Debug.Log($"Queuing {animationType} Animation");
+        PlayNextQueueItem();
+    }
+    private void PlayNextQueueItem(bool force = false)
+    {
+        if (force)
+        {
+            animationQueue.RemoveAt(0);
+            if (animationQueue.Count == 0) blockQueue = false;
+        }
+        Debug.Log($"Animation queue count {animationQueue.Count}, blockqueue: {blockQueue}, force: {force}");
+        if (animationQueue.Count != 0)
+        {
+            if (blockQueue && !force) return;
+            
+            animationQueue.Sort((item, animationItem) =>
+            {
+                return ((int)item.AnimationType).CompareTo((int)animationItem.AnimationType);
+            });
+            Debug.Log("Showing Animation Queue");
+            foreach (var animationItem in animationQueue)
+            {
+                Debug.Log($"{animationItem.AnimationType}");
+            }
+            Debug.Log("End of Animation Queue");
+
+            animationQueue[0].Animation.OnComplete(() =>
+            {
+                Debug.Log("Callback worked!");
+                blockQueue = false;
+                PlayNextQueueItem(true);
+            });
+            blockQueue = true;
+            Debug.Log($"Playing a {animationQueue[0].AnimationType} animation at time {Time.time}");
+            animationQueue[0].Animation.Play();
+        }
+    }
     // ReSharper disable Unity.PerformanceAnalysis
-    private void OnDrawCards(EventManager.GameEvents.DeckChangedArgs arg0)
+    private void OnDrawCard(EventManager.GameEvents.LevelEvents.DeckChangedArgs deckChangedArgs)
     {
-        if (arg0.ChangedDeck.MaxHandSize != currentCards.Count)
+        if (currentCards.Count < GameManager.Instance.Deck.MaxHandSize)
         {
-            Debug.Log(arg0.ChangedDeck.MaxHandSize);
-            InitCards(arg0.ChangedDeck.MaxHandSize);
+            InitCards(GameManager.Instance.Deck.MaxHandSize);
         }
 
-        ;
-        for (int i = 0; i < currentCards.Count; i++)
+        StartCoroutine(SetCardUI(deckChangedArgs, deckChangedArgs.ChangedDeck.HandCards.Last(), deckChangedArgs.ChangedDeck.HandCards.Count() - 1));
+        
+    }
+
+    private IEnumerator SetCardUI(EventManager.GameEvents.LevelEvents.DeckChangedArgs deckChangedArgs, CardInstance card, int index)
+    {
+        while (blockQueue) yield return null;
+        cardsUIContainer.CalculatePositions();
+        CardHandUI cardHandUI = GetEmptyHandCardUI();
+        if (cardHandUI != null)
         {
-            if (i < arg0.ChangedDeck.HandCards.Count)
+            cardHandUI.CardUI.SetCardUI(card);
+            cardHandUI.CardUI.CardIndex = index;
+            cardHandUI.OnManaChanged(null);
+            for (int i = 0; i < currentCards.Count; i++)
+            
             {
-                currentCards[i].CardUI.SetCardUI(arg0.ChangedDeck.HandCards[i]);
-                currentCards[i].OnManaChanged(null);
+                SetCardTargetPosition(currentCards[i]);
             }
-            else
-            {
-                currentCards[i].CardUI.SetCardUI(null);
-            }
+            AddToAnimationQueue(cardHandUI.PlayDrawAnimation(), AnimationType.Draw);
+            Debug.Log($"SHOULD PLAY DRAW ANIMATION OF INDEX {cardHandUI.CardUI.CardIndex}");
+        }
+        else
+        {
+            Debug.Log("THERE ARE ALREADY MAX Cards and Drawing was possible in UI. FIX THIS!");
         }
     }
 
-    private void OnUpdateCards(EventManager.GameEvents.DeckChangedArgs args)
+    private void OnDiscardCard(EventManager.GameEvents.LevelEvents.DiscardCardArgs arg0)
     {
-        OnDrawCards(args);
+        cardsUIContainer.CalculatePositions();
+        Debug.Log($"DISCARDING CARD {arg0.DiscardedIndex}");
+
+        for (var i = 0; i < currentCards.Count; i++)
+        {
+            if (currentCards[i].IsDisabled()) continue;
+            if (currentCards[i].CardUI.CardIndex == arg0.DiscardedIndex)
+            {
+                AddToAnimationQueue(currentCards[i].PlayDiscardAnimation(), AnimationType.Discard);
+                continue;
+            }
+            if (currentCards[i].CardUI.CardIndex > arg0.DiscardedIndex)
+            {
+                currentCards[i].CardUI.CardIndex--;
+            }
+
+            SetCardTargetPosition(currentCards[i]);
+        }
     }
 
-    public void SelectCard(int cardIndex)
+    public void SelectCard(CardHandUI cardHandUI)
     {
         EventManager.Game.UI.OnLifeformHoverCanceled?.Invoke();
-        if (currentCards[cardIndex].CardUI.CardInstance.CardData.EffectType == CardData.CardEffectType.Wisdom)
+        if (cardHandUI.CardUI.CardInstance.CardData.EffectType == CardData.CardEffectType.Wisdom)
         {
-            HandleWisdomClick(cardIndex);
+            HandleWisdomClick(cardHandUI.CardUI.CardIndex);
         }
 
-        if (currentCards[cardIndex].CardUI.CardInstance.CardData.EffectType == CardData.CardEffectType.Plant)
+        if (cardHandUI.CardUI.CardInstance.CardData.EffectType == CardData.CardEffectType.Plant)
         {
-            HandlePlantClick(cardIndex);
+            HandlePlantClick(cardHandUI.CardUI.CardIndex);
         }
         
-        EventManager.Game.UI.OnCardSelected?.Invoke(currentCards[cardIndex].CardUI.CardInstance);
+        EventManager.Game.UI.OnCardSelected?.Invoke(cardHandUI.CardUI.CardInstance);
         //Set Green arrows and stuff
         if (activePlantIndex != -1)
         {
@@ -297,8 +405,14 @@ public class CardsUIController : MonoBehaviour
         }
 
         currentGridTile = null;
-        currentCards[cardIndex].SetHoverState(true);
+        cardHandUI.SetHoverState(true);
 
+    }
+
+    private void SetCardTargetPosition(CardHandUI cardHandUI)
+    {
+        cardHandUI.SetCardLayer(GameManager.Instance.Deck.MaxHandSize - cardHandUI.CardUI.CardIndex);
+        cardHandUI.SetTargetPosition(cardsUIContainer.GetCardTargetPositionByIndex(cardHandUI.CardUI.CardIndex));
     }
 
     private void HandleWisdomClick(int cardIndex)
@@ -316,26 +430,27 @@ public class CardsUIController : MonoBehaviour
         {
             if (currentCards[i].CardUI.CardInstance == null) continue;
             if (currentCards[i].CardUI.CardInstance.CardData.EffectType == CardData.CardEffectType.Plant &&
-                i != cardIndex)
+                currentCards[i].CardUI.CardIndex != cardIndex)
                 currentCards[i].SetHoverState(false);
         }
 
         
-        
+        hoveredCardInstance =
+            GameManager.Instance.GetTemporaryCardInstance(activePlantIndex);
         SwitchState(State.PlacePlant);
     }
 
-    public void DeselectCard(int cardIndex)
+    public void DeselectCard(CardHandUI cardHandUI)
     {
         //DESELECT ALL CARDS AT THE MOMENT, NEEDS TO CHANGE
-        if (currentCards[cardIndex].CardUI.CardInstance.CardData.EffectType == CardData.CardEffectType.Wisdom)
+        if (cardHandUI.CardUI.CardInstance.CardData.EffectType == CardData.CardEffectType.Wisdom)
         {
-            DeselectWisdom(cardIndex);
+            DeselectWisdom(cardHandUI.CardUI.CardIndex);
         }
 
-        if (currentCards[cardIndex].CardUI.CardInstance.CardData.EffectType == CardData.CardEffectType.Plant)
+        if (cardHandUI.CardUI.CardInstance.CardData.EffectType == CardData.CardEffectType.Plant)
         {
-            DeselectPlant(cardIndex);
+            DeselectPlant(cardHandUI.CardUI.CardIndex);
         }
     }
 
@@ -361,7 +476,7 @@ public class CardsUIController : MonoBehaviour
     {
         for (int i = 0; i < GameManager.Instance.Deck.HandCards.Count; i++)
         {
-            if (SameWisdomAlreadyInStack(i) && i != cardIndex)
+            if (SameWisdomAlreadyInStack(i) && currentCards[i].CardUI.CardIndex != cardIndex)
             {
                 GameManager.Instance.RemoveWisdom(currentCards[i].CardUI.CardInstance);
                 activeWisdoms.Remove(i);
@@ -439,8 +554,7 @@ public class CardsUIController : MonoBehaviour
             if (currentGridTile == null) return;
             if (currentGridTile != oldGridTile)
             {
-                CardInstance hoveredCardInstance =
-                    GameManager.Instance.GetTemporaryCardInstance(activePlantIndex);
+                
                 EventManager.Game.UI.OnLifeformHoverChanged?.Invoke(
                     new EventManager.GameEvents.UIEvents.OnLifeformChangedArgs()
                     {

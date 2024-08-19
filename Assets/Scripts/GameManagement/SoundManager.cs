@@ -114,7 +114,7 @@ public class SoundManager : MonoBehaviour
         EventManager.Game.UI.OnOpenCardView += OnOpenCardView;
         EventManager.Game.UI.OnSecondMoveStillOpen += OnSecondMoveStillOpen;
         EventManager.Game.Level.OnPlanetProgressionWon += OnPlanetProgressionWon;
-        EventManager.Game.Level.OnDrawCards += OnDrawCards;
+        EventManager.Game.Level.OnDrawCard += OnDrawCards;
         EventManager.Game.Level.OnLifeformKilled += OnLifeformKilled;
         EventManager.Game.Level.OnLifeformRevived += OnLifeformRevived;
         EventManager.Game.Level.OnEffectUsed += OnEffectUsed;
@@ -132,7 +132,7 @@ public class SoundManager : MonoBehaviour
         EventManager.Game.UI.OnOpenCardView -= OnOpenCardView;
         EventManager.Game.UI.OnSecondMoveStillOpen -= OnSecondMoveStillOpen;
         EventManager.Game.Level.OnPlanetProgressionWon -= OnPlanetProgressionWon;
-        EventManager.Game.Level.OnDrawCards -= OnDrawCards;
+        EventManager.Game.Level.OnDrawCard -= OnDrawCards;
         EventManager.Game.Level.OnLifeformKilled -= OnLifeformKilled;
         EventManager.Game.Level.OnLifeformRevived -= OnLifeformRevived;
         EventManager.Game.Level.OnEffectUsed -= OnEffectUsed;
@@ -225,7 +225,7 @@ public class SoundManager : MonoBehaviour
         PlayOneShot(Sound.LifeformKilled);
     }
 
-    private void OnDrawCards(EventManager.GameEvents.DeckChangedArgs deckChangedArgs)
+    private void OnDrawCards(EventManager.GameEvents.LevelEvents.DeckChangedArgs deckChangedArgs)
     {
         PlayOneShot(Sound.OnDrawCards);
     }

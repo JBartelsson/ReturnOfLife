@@ -22,7 +22,8 @@ public static class SceneLoader
     {
         oldScene = targetScene;
         SceneLoader.targetScene = targetScene;
-        DOTween.Clear(true);
+        Debug.Log($"Load Scene {targetScene}");
+        // DOTween.Clear(true);
         SceneManager.LoadScene(SceneLoader.Scene.LoadingScene.ToString(), LoadSceneMode.Additive);
     }
 
@@ -43,6 +44,7 @@ public static class SceneLoader
         if (sceneAsyncOperation == null)return;
         sceneAsyncOperation.completed += operation =>
         {
+            Debug.Log($"Reload successful");
             EventManager.Game.SceneSwitch.OnSceneReloadComplete?.Invoke(reloadArgs);
         };
     }

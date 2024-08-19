@@ -167,8 +167,9 @@ public class Deck
     public void DiscardCard(CardInstance card)
     {
         _discardPile.Add(card);
+        int index = HandCards.IndexOf(card);
         HandCards.Remove(card);
-        OnHandCardsChanged();
+        OnHandCardsChanged(card, index);
     }
 
     public void DiscardCard(int index)
@@ -213,17 +214,18 @@ public class Deck
         }
     }
 
-    private void OnHandCardsChanged()
+    private void OnHandCardsChanged(CardInstance card, int index)
     {
-        EventManager.Game.Level.OnUpdateCards?.Invoke(new EventManager.GameEvents.DeckChangedArgs()
+        EventManager.Game.Level.OnDiscardCard?.Invoke(new EventManager.GameEvents.LevelEvents.DiscardCardArgs()
         {
-            ChangedDeck = this
+            DiscardedCard = card,
+            DiscardedIndex = index
         });
     }
 
     private void OnCardsDrawn()
     {
-        EventManager.Game.Level.OnDrawCards?.Invoke(new EventManager.GameEvents.DeckChangedArgs()
+        EventManager.Game.Level.OnDrawCard?.Invoke(new EventManager.GameEvents.LevelEvents.DeckChangedArgs()
         {
             ChangedDeck = this
         });
@@ -259,7 +261,7 @@ public class Deck
         AddTemporaryCardToDeck(card, pos);
         _playerDeck.AddCardToCollection(card);
         EventManager.Game.Level.OnCardAdded?.Invoke(card);
-        EventManager.Game.Level.OnDeckChanged?.Invoke(new EventManager.GameEvents.DeckChangedArgs()
+        EventManager.Game.Level.OnDeckChanged?.Invoke(new EventManager.GameEvents.LevelEvents.DeckChangedArgs()
         {
             ChangedDeck = this
         });
@@ -279,7 +281,7 @@ public class Deck
     {
         RemoveTemporaryCardFromDeck(card);
         _playerDeck.RemoveCardFromCollection(card);
-        EventManager.Game.Level.OnDeckChanged?.Invoke(new EventManager.GameEvents.DeckChangedArgs()
+        EventManager.Game.Level.OnDeckChanged?.Invoke(new EventManager.GameEvents.LevelEvents.DeckChangedArgs()
         {
             ChangedDeck = this
         });

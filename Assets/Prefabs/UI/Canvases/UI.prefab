@@ -3011,6 +3011,14 @@ PrefabInstance:
       propertyPath: discardLeftText
       value: 
       objectReference: {fileID: 380821369358792723}
+    - target: {fileID: 7257045549500335597, guid: 9989978ee65539f4aa8098124b0cc14f, type: 3}
+      propertyPath: drawPileLocation
+      value: 
+      objectReference: {fileID: 6804164088480439272}
+    - target: {fileID: 7257045549500335597, guid: 9989978ee65539f4aa8098124b0cc14f, type: 3}
+      propertyPath: discardPileLocation
+      value: 
+      objectReference: {fileID: 2280815691528188264}
     - target: {fileID: 7431634977897560588, guid: 9989978ee65539f4aa8098124b0cc14f, type: 3}
       propertyPath: m_IsActive
       value: 0

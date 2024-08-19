@@ -20,17 +20,31 @@ public class DeckViewUI : MonoBehaviour, IPointerClickHandler
     private List<CardInstance> cards;
     private void OnEnable()
     {
-        EventManager.Game.Level.OnDrawCards += OnDrawCards;
-        EventManager.Game.Level.OnUpdateCards += OnDrawCards;
+        EventManager.Game.Level.OnDrawCard += OnDrawCards;
+        EventManager.Game.Level.OnDiscardCard += OnDiscardCard;
         EventManager.Game.Level.OnDeckChanged += OnDeckChanged;
+        EventManager.Game.UI.OnOpenCardView += OnOpenCardView;
     }
 
-    private void OnDeckChanged(EventManager.GameEvents.DeckChangedArgs arg0)
+    private void OnOpenCardView(EventManager.GameEvents.UIEvents.OnOpenCardViewArgs arg0)
+    {
+        if (arg0.Pile == this.pile)
+        {
+            cardViewOpen = arg0.State;
+        }
+    }
+
+    private void OnDiscardCard(EventManager.GameEvents.LevelEvents.DiscardCardArgs arg0)
     {
         UpdatePile();
     }
 
-    private void OnDrawCards(EventManager.GameEvents.DeckChangedArgs arg0)
+    private void OnDeckChanged(EventManager.GameEvents.LevelEvents.DeckChangedArgs arg0)
+    {
+        UpdatePile();
+    }
+
+    private void OnDrawCards(EventManager.GameEvents.LevelEvents.DeckChangedArgs arg0)
     {
         UpdatePile();
     }

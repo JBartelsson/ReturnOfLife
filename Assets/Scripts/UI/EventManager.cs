@@ -11,8 +11,8 @@ public static class EventManager
     {
         Game.Level.OnEndLevel = delegate { };
         Game.Level.OnManaChanged = delegate { };
-        Game.Level.OnDrawCards = delegate { };
-        Game.Level.OnUpdateCards = delegate { };
+        Game.Level.OnDrawCard = delegate { };
+        Game.Level.OnDiscardCard = delegate { };
         Game.Level.OnDeckChanged = delegate { };
         Game.Level.OnScoreChanged = delegate { };
         Game.Level.OnTurnChanged = delegate { };
@@ -69,10 +69,7 @@ public static class EventManager
             public Component sender;
         }
 
-        public class DeckChangedArgs : Args
-        {
-            public Deck ChangedDeck;
-        }
+        
 
         public class SceneReloadArgs : Args
         {
@@ -166,8 +163,8 @@ public static class EventManager
             public UnityAction<TurnChangedArgs> OnTurnChanged;
             public UnityAction<ScoreChangedArgs> OnScoreChanged;
             public UnityAction<ManaChangedArgs> OnManaChanged;
-            public UnityAction<DeckChangedArgs> OnDrawCards;
-            public UnityAction<DeckChangedArgs> OnUpdateCards;
+            public UnityAction<DeckChangedArgs> OnDrawCard;
+            public UnityAction<DiscardCardArgs> OnDiscardCard;
             public UnityAction<DeckChangedArgs> OnDeckChanged;
             public UnityAction<Args> OnInCardSelection;
             public UnityAction<LevelEndedArgs> OnEndLevel;
@@ -186,7 +183,17 @@ public static class EventManager
             public UnityAction<CallerArgs> OnEffectUsed;
             public UnityAction<TriggerSpecialFieldArgs> OnTriggerSpecialField;
 
+            public class DeckChangedArgs : Args
+            {
+                public Deck ChangedDeck;
+            }
 
+            public class DiscardCardArgs : Args
+            {
+                public CardInstance DiscardedCard;
+                public int DiscardedIndex;
+
+            }
             public class TriggerSpecialFieldArgs : Args
             {
                 public SpecialField triggeredField;
