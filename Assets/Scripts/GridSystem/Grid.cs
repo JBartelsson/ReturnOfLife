@@ -328,4 +328,11 @@ public class Grid
         OnGridTileChanged = null;
         ForEachGridTile((gridTile) => { gridTile.ResetSubscriptions(); });
     }
+
+    public GridTile GetCenterGridTile()
+    {
+        int flooredHalf = Mathf.FloorToInt(gridArray.GetLength(0) / 2f);
+        return gridArray[flooredHalf, flooredHalf];
+    }
+
 }
