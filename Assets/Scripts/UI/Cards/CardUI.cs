@@ -12,7 +12,7 @@ using UnityEngine.Experimental.GlobalIllumination;
 using UnityEngine.Rendering;
 using UnityEngine.Serialization;
 using static CardData;
-
+[Serializable]
 public class CardUI : MonoBehaviour
 {
     #region Fields and Properties
@@ -80,7 +80,11 @@ public class CardUI : MonoBehaviour
     private readonly string EFFECTTYPE_PLANT = "Plant";
     private readonly string EFFECTTYPE_WISDOM = "Wisdom";
     
-    public CardInstance CardInstance => _cardInstance;
+    public CardInstance CardInstance
+    {
+        get => _cardInstance;
+        set => _cardInstance = value;
+    }
 
     public Sprite DropSpriteBlue
     {
@@ -144,6 +148,8 @@ public class CardUI : MonoBehaviour
         }
         else
         {
+            Debug.Log($"Set Card UI was called with Instance null on Index {_cardIndex}");
+            _cardIndex = -1;
             ToggleVisibility(false);
         }
     }

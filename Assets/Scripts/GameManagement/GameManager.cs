@@ -195,8 +195,15 @@ public class GameManager : MonoBehaviour
             EventManager.Game.UI.OnTutorialScreenChange?.Invoke(true);
             SwitchState(GameState.Tutorial);
         }
-
         GridManager.Instance.OnGridReady -= Instance_OnGridReady;
+        EventManager.Game.Level.OnLevelInitialized?.Invoke(
+            new EventManager.GameEvents.LevelEvents.LevelInitializedArgs()
+            {
+                CurrentLevel = currentLevel,
+                CurrentLevelNumber = currentStage,
+                MaxLevelNumber = planetProgression.Progression.Count,
+                LevelName = currentLevel.name
+            });
     }
 
     private void SwitchState(GameState newGameState)
@@ -244,14 +251,7 @@ public class GameManager : MonoBehaviour
     {
         currentLevel = planetProgression.GetRandomEnemy(currentStage);
         GridManager.Instance.BuildGrid(currentLevel);
-        EventManager.Game.Level.OnLevelInitialized?.Invoke(
-            new EventManager.GameEvents.LevelEvents.LevelInitializedArgs()
-            {
-                CurrentLevel = currentLevel,
-                CurrentLevelNumber = currentStage,
-                MaxLevelNumber = planetProgression.Progression.Count,
-                LevelName = currentLevel.name
-            });
+        
     }
 
     private void InitializeLevel()
@@ -418,9 +418,9 @@ public class GameManager : MonoBehaviour
             }
 
             RemoveAllWisdoms();
-
-
             _deck.DiscardCard(playedCard);
+
+
             //Event calling
 
             currentPlayedCards++;
@@ -611,7 +611,6 @@ public class GameManager : MonoBehaviour
     }
     public void NextLevel()
     {
-        DOTween.Clear(true);
         if(CheckForGameWin()) return;
 
         currentStage++;

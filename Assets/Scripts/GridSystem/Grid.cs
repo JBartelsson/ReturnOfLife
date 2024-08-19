@@ -100,12 +100,9 @@ public class Grid
     private void GetXY(Vector3 worldPosition, out int x, out int y)
     {
         Plane gridPlane = new Plane(originPosition, originPosition + Vector3.left, originPosition + Vector3.forward);
-        Debug.DrawLine(worldPosition, worldPosition + Vector3.up, Color.green, 100f);
         Ray clickRay = Camera.main.ScreenPointToRay(worldPosition);
         gridPlane.Raycast(clickRay, out float enter);
         Vector3 intersectionPoint = clickRay.origin + clickRay.direction.normalized * enter;
-        Debug.DrawRay(clickRay.origin, clickRay.direction * 100f, Color.yellow, 100f);
-        Debug.DrawLine(intersectionPoint, originPosition, Color.red, 100f);
         x = Mathf.FloorToInt((intersectionPoint - originPosition).x / cellSize);
         y = Mathf.FloorToInt((intersectionPoint - originPosition).z / cellSize);
     }
