@@ -16,6 +16,8 @@ public class CardsViewUI : MonoBehaviour, IPointerClickHandler
     [SerializeField] private TextMeshProUGUI cardCanvasTitle;
 
     private List<CardUI> currentCardUIs = new ();
+
+    private DeckViewUI.Pile currentPile;
     // Start is called before the first frame update
     void Start()
     {
@@ -27,7 +29,7 @@ public class CardsViewUI : MonoBehaviour, IPointerClickHandler
     {
         //Fade in or out
         UIUtils.FadeStandard(cardsViewCanvasGroup, args.State);
-
+        currentPile = args.Pile;
         string title = "";
         switch (args.Pile)
         {
@@ -83,7 +85,8 @@ public class CardsViewUI : MonoBehaviour, IPointerClickHandler
     {
         EventManager.Game.UI.OnOpenCardView?.Invoke(new EventManager.GameEvents.UIEvents.OnOpenCardViewArgs()
         {
-            State = false
+            State = false,
+            Pile =  currentPile
         });
     }
 }
