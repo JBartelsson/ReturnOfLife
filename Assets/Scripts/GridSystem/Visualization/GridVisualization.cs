@@ -29,6 +29,7 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
 
 
     [SerializeField] private Sprite fieldPlantedSprite;
+    [SerializeField] private Sprite fieldPlantedMPSprite;
     [SerializeField] private SpriteRenderer groundStatusSpriteRenderer;
 
     [Header("Status References")] [SerializeField]
@@ -54,7 +55,7 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
     [SerializeField] private TextMeshPro notEnoughManaText;
     private Tween secondMoveArrowTween;
     private Tween secondMoveScaleTween;
-    
+
     private GridTile ownGridTile;
 
     private Vector3 lifeformSpriteOGPosition;
@@ -121,9 +122,11 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
         if (secondMoveArrowTween != null) secondMoveArrowTween.Complete();
         if (secondMoveScaleTween != null) secondMoveScaleTween.Complete();
         secondMoveScaleTween =
-        secondMoveText.transform.DOScale(secondMoveScale, Constants.UI_FAST_FADE_SPEED).SetLoops(2, LoopType.Yoyo).SetEase(Ease.InOutCubic);
-        secondMoveArrowTween = 
-        placementArrowWiggle.transform.DOScale(secondMoveArrowScale, Constants.UI_FAST_FADE_SPEED).SetLoops(2, LoopType.Yoyo).SetEase(Ease.InOutCubic);
+            secondMoveText.transform.DOScale(secondMoveScale, Constants.UI_FAST_FADE_SPEED).SetLoops(2, LoopType.Yoyo)
+                .SetEase(Ease.InOutCubic);
+        secondMoveArrowTween =
+            placementArrowWiggle.transform.DOScale(secondMoveArrowScale, Constants.UI_FAST_FADE_SPEED)
+                .SetLoops(2, LoopType.Yoyo).SetEase(Ease.InOutCubic);
     }
 
     private void OnTriggerMpField(EventManager.GameEvents.LevelEvents.TriggerSpecialFieldArgs arg0)
@@ -168,7 +171,8 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
         {
             secondMoveText.DOFade(0f, 0f);
             secondMoveText.gameObject.SetActive(true);
-            secondMoveText.text = args.SecondMoveCallerArgs.CallingCardInstance.CardData.SecondMoveText + "\n" + args.SecondMoveCallerArgs.SecondMoveNumber + "x";
+            secondMoveText.text = args.SecondMoveCallerArgs.CallingCardInstance.CardData.SecondMoveText + "\n" +
+                                  args.SecondMoveCallerArgs.SecondMoveNumber + "x";
             Tween fadeTween = secondMoveText.DOFade(1f, Constants.UI_FAST_FADE_SPEED);
             if (args.SecondMoveCallerArgs.CallingCardInstance.CardData.RuntimePoints != 0)
             {
@@ -224,7 +228,7 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
 
         redCrossSpriteRenderer.gameObject.SetActive(false);
         notEnoughManaText.gameObject.SetActive(false);
-        SetMarkedState();   
+        SetMarkedState();
         if (args.hoveredGridTile == ownGridTile)
         {
             SetNewSprite(args.hoveredCardInstance, previewSpriteRenderer, true);
@@ -309,6 +313,7 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
             ShowWiggleArrow();
             hoverEffectSpriteRenderer.sprite = editorSprite;
         }
+
         switch (visualizationState)
         {
             case VisualizationState.MARKED_FOR_MOVE:
@@ -365,24 +370,23 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
             bool condition = false;
             if (ownGridTile.SpecialField == null)
             {
+                Debug.Log("Own Grid Tile has no Special Field");
                 groundStatusSpriteRenderer.sprite = fieldPlantedSprite;
                 return;
             }
+            Debug.Log("Own Grid Tile has Special Field");
 
-            if (ownGridTile.SpecialField.AlreadyFulfilled)
-            {
-                groundStatusSpriteRenderer.sprite = fieldPlantedSprite;
-                return;
-            }
+            groundStatusSpriteRenderer.sprite = fieldPlantedMPSprite;
+            return;
         }
+    
 
-        //Set Ground Sprite
-        groundStatusSpriteRenderer.sprite =
-            fieldMaterials.First((x) => x.FieldType == ownGridTile.FieldType).Sprite;
-    }
+    //Set Ground Sprite
+    groundStatusSpriteRenderer.sprite = fieldMaterials.First((x) => x.FieldType == ownGridTile.FieldType).Sprite;
+}
 
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        Debug.Log($"Clicked {name}");
-    }
+public void OnPointerClick(PointerEventData eventData)
+{
+    Debug.Log($"Clicked {name}");
+}
 }

@@ -1916,6 +1916,7 @@ MonoBehaviour:
   - FieldType: 10
     Sprite: {fileID: 21300000, guid: 7f1d2c1dca0d2374d94e45a9274fc01b, type: 3}
   fieldPlantedSprite: {fileID: 21300000, guid: 6cbbc08c423c7d9439462216e66905cf, type: 3}
+  fieldPlantedMPSprite: {fileID: 21300000, guid: 1134d9ad399873841a12dee8aa29f13f, type: 3}
   groundStatusSpriteRenderer: {fileID: 3183129030241490190}
   statusSpriteRenderer: {fileID: 1856605024649796988}
   deathSprite: {fileID: 21300000, guid: a35cae7a7f31efe42bf2f18153d332f9, type: 3}
