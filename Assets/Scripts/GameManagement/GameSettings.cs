@@ -23,6 +23,7 @@ public class GameSettings : PersistentSingleton<GameSettings>
         {
             SelectedStartDeck = debugStartDeck;
         }
+        #endif
 
         
     }
@@ -34,6 +35,8 @@ public class GameSettings : PersistentSingleton<GameSettings>
         {
             startDeck.Unlocked = startDeck.UnlockAtStart;
         }
+#if UNITY_EDITOR
+
         if (unlockAllStartDecksDebug)
         {
             foreach (StartDeckSO startDeckSo in availableStartDecks)
