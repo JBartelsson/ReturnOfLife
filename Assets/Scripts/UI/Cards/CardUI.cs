@@ -12,6 +12,8 @@ using UnityEngine.Experimental.GlobalIllumination;
 using UnityEngine.Rendering;
 using UnityEngine.Serialization;
 using static CardData;
+using static System.Net.Mime.MediaTypeNames;
+using Image = UnityEngine.UI.Image;
 [Serializable]
 public class CardUI : MonoBehaviour
 {
@@ -29,7 +31,7 @@ public class CardUI : MonoBehaviour
     [SerializeField] protected Image _costDrop;
     [SerializeField] protected Sprite _dropSpriteBlue;
 
-  
+    [SerializeField] protected Image _cardBackground;
 
     [SerializeField] protected Sprite _dropSpriteRed;
     [SerializeField] protected Image _cardRarity;
@@ -67,6 +69,9 @@ public class CardUI : MonoBehaviour
 
     [SerializeField] protected Sprite _plantTypeIcon;
     [SerializeField] protected Sprite _wisdomTypeIcon;
+
+    [SerializeField] protected Sprite _plantBackground;
+    [SerializeField] protected Sprite _wisdomBackground;
 
     [FormerlySerializedAs("backgroundSprite")] [Header("Hover Effect")] [SerializeField]
     protected Image _backgroundSprite;
@@ -160,9 +165,12 @@ public class CardUI : MonoBehaviour
         {
             case CardEffectType.Plant:
                 _backgroundSprite.color = _plantColor;
+                _cardBackground.sprite = _plantBackground;
+
                 break;
             case CardEffectType.Wisdom:
                 _backgroundSprite.color = _wisdomColor;
+                _cardBackground.sprite = _wisdomBackground;
                 break;
             case CardEffectType.Instant:
                 break;

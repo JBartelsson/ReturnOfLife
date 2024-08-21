@@ -369,14 +369,14 @@ RectTransform:
   m_GameObject: {fileID: 2904987305880126775}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
+  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 6133112448831711212}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -82.9}
+  m_AnchoredPosition: {x: 0, y: -57}
   m_SizeDelta: {x: 75.07331, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1156635067080091388
@@ -472,6 +472,7 @@ MonoBehaviour:
   _cardImage: {fileID: 6612825900506483587}
   _costDrop: {fileID: 1215338025049925912}
   _dropSpriteBlue: {fileID: 21300000, guid: f2b43ac95fd5c5f43a2b25507c1fb9f6, type: 3}
+  _cardBackground: {fileID: 6626060879351948569}
   _dropSpriteRed: {fileID: 21300000, guid: 6408533200b8b3d499c1f7bcac888906, type: 3}
   _cardRarity: {fileID: 0}
   _elementIcon: {fileID: 0}
@@ -494,6 +495,8 @@ MonoBehaviour:
   _epicRarityIcon: {fileID: 0}
   _plantTypeIcon: {fileID: 0}
   _wisdomTypeIcon: {fileID: 0}
+  _plantBackground: {fileID: 21300000, guid: 4b5e9c8b8fbd9ba4ea26f5512a44c554, type: 3}
+  _wisdomBackground: {fileID: 21300000, guid: 0a7d175393fc1f743befcc698a0daf9c, type: 3}
   _backgroundSprite: {fileID: 6626060879351948569}
   hoverMaterial: {fileID: 2100000, guid: d0ccc4d27d1542443840c84533abed40, type: 2}
   cardParent: {fileID: 6133112448831711212}
@@ -571,7 +574,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 38.5, y: -26.8}
+  m_AnchoredPosition: {x: 34, y: -104}
   m_SizeDelta: {x: 182.9109, y: 36.58218}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7524495109340059697
@@ -705,7 +708,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 15, y: -15}
+  m_AnchoredPosition: {x: 15, y: -14}
   m_SizeDelta: {x: 21.8325, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2093463695806639420
@@ -738,8 +741,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 20
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 1933519b6e506454bac4685f16e53912, type: 2}
-  m_sharedMaterial: {fileID: 1583322838915064218, guid: 1933519b6e506454bac4685f16e53912, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: cc24229fd354fa44c9024a36068a45cf, type: 2}
+  m_sharedMaterial: {fileID: -4487085085902730435, guid: cc24229fd354fa44c9024a36068a45cf, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -946,7 +949,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 48eb4cb3309aef347bf655b250766a52, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4b5e9c8b8fbd9ba4ea26f5512a44c554, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1275,7 +1278,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -20}
   m_SizeDelta: {x: 30, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1531384703502690918
@@ -1350,7 +1353,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 85.5}
+  m_AnchoredPosition: {x: -5, y: 85.2}
   m_SizeDelta: {x: 118.3, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &494826705615962966
@@ -1416,7 +1419,7 @@ MonoBehaviour:
   m_fontSizeMin: 4
   m_fontSizeMax: 12
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
