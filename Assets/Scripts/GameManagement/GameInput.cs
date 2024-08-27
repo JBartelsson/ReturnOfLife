@@ -27,6 +27,7 @@ public class GameInput : MonoBehaviour
 
         playerInputActions.GameInputs.Interact.performed += Interact_Performed;
         playerInputActions.GameInputs.Cancel.performed += Cancel_performed;
+        playerInputActions.GameInputs.Pause.performed += PauseOnperformed;
 
         if (PlayerPrefs.HasKey(PLAYER_PREFS_BINDINGS))
         {
@@ -34,10 +35,17 @@ public class GameInput : MonoBehaviour
         }
     }
 
+    private void PauseOnperformed(InputAction.CallbackContext obj)
+    {
+        EventManager.Game.Input.OnPause?.Invoke();
+    }
+
     private void OnDestroy()
     {
         playerInputActions.GameInputs.Interact.performed -= Interact_Performed;
         playerInputActions.GameInputs.Cancel.performed -= Cancel_performed;
+        playerInputActions.GameInputs.Pause.performed -= PauseOnperformed;
+
 
         playerInputActions.Dispose();
     }

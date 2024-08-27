@@ -502,7 +502,7 @@ public class GameManager : MonoBehaviour
     private void SetDiscards(int discards)
     {
         currentDiscards = discards;
-        EventManager.Game.Level.OnDiscardUsed(currentDiscards);
+        EventManager.Game.Level.OnDiscardUsed?.Invoke(currentDiscards);
     }
 
     private void EndLevel()

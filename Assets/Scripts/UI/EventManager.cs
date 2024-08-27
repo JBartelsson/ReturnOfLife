@@ -51,6 +51,8 @@ public static class EventManager
         Game.UI.OnShowDeckPickCanvas = delegate { };
         Game.UI.OnSecondMoveStillOpen = delegate { };
         Game.UI.OnShowDeckPickCanvas = delegate { };
+        Game.UI.OnPauseMenuOpen = delegate { };
+        Game.UI.OnPauseMenuClosed = delegate { };
 
 
         Game.GameSettings.OnDeckUnlocked = delegate { };
@@ -82,6 +84,7 @@ public static class EventManager
         {
             public UnityAction OnInteract;
             public UnityAction OnCancel;
+            public UnityAction OnPause;
         }
 
         public class SceneSwitchEvents
@@ -157,6 +160,9 @@ public static class EventManager
             public UnityAction<CardSelectGridUpdateArgs> OnCardSelectGridTileUpdate;
             public UnityAction<bool> OnShowDeckPickCanvas;
             public UnityAction OnSecondMoveStillOpen;
+            //bool determines if its the TitleScreen Settings
+            public UnityAction<bool> OnPauseMenuOpen;
+            public UnityAction OnPauseMenuClosed;
         }
 
         public class LevelEvents

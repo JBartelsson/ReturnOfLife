@@ -27,6 +27,11 @@ public static class SceneLoader
         SceneManager.LoadScene(SceneLoader.Scene.LoadingScene.ToString(), LoadSceneMode.Additive);
     }
 
+    public static Scene GetActiveScene()
+    {
+        return targetScene;
+    }
+
     public static void Reload()
     {
         Load(targetScene);

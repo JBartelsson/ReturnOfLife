@@ -85,7 +85,7 @@ public class CardsUIController : MonoBehaviour
 
     private void OnDiscardUsed(int discardsLeft)
     {
-        discardLeftText.text = $"({discardsLeft} left)";
+        discardLeftText.text = $"Discard ({discardsLeft})";
         if (discardsLeft == 0)
         {
             discardButton.interactable = false;

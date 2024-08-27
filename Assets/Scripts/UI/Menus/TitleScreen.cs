@@ -14,11 +14,7 @@ public class TitleScreen : MonoBehaviour
 
     public void OpenSettings()
     {
-        //setactive PauseMenu (inTitleScreen = true)
-        return;
-        //Load Settings Menu
-        SceneLoader.Load(SceneLoader.Scene.Settings);
-        //SceneManager.LoadScene(3);
+        EventManager.Game.UI.OnPauseMenuOpen?.Invoke(true);
     }
 
     public void OpenCredits()
