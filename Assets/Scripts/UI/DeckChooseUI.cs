@@ -21,6 +21,13 @@ public class DeckChooseUI : MonoBehaviour
         EventManager.Game.UI.OnShowDeckPickCanvas += OnShowDeckPickCanvas;
     }
 
+    private void OnDisable()
+    {
+        EventManager.Game.UI.OnShowDeckPickCanvas -= OnShowDeckPickCanvas;
+
+    }
+
+
     private void OnShowDeckPickCanvas(bool state)
     {
         UIUtils.FadeStandard(deckPickcanvasGroup, state);
