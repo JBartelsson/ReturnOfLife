@@ -298,6 +298,14 @@ MonoBehaviour:
         Data3: 1115430801
         Data4: -1878317700
       Path: event:/SFX/UISounds/WinGame
+  - sound: 26
+    EventReference:
+      Guid:
+        Data1: 735298298
+        Data2: 1112391350
+        Data3: -2124652395
+        Data4: -685798683
+      Path: event:/SFX/UISounds/Croak
 --- !u!1 &7227752879844946171
 GameObject:
   m_ObjectHideFlags: 0
