@@ -195,16 +195,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tutorialList:
   - tutorialImageObject: {fileID: 3806195118588392283}
-    tutorialText: Plant Lifeforms to gather <color=green>Eco Points</color>.
+    tutorialText: Plant Lifeforms to gather <color=#009711>Eco Points</color><sprite
+      name="Eco">
   - tutorialImageObject: {fileID: 3355735696674330821}
-    tutorialText: You have <color=yellow>3 discards</color> per turn. You draw a
-      <color=green>new card</color> for every discarded one.
+    tutorialText: You have <color=#cc8500>3 discards</color> per turn. You draw a
+      <color=#009711>new card</color> for every discarded one.
   - tutorialImageObject: {fileID: 4815904902703475207}
-    tutorialText: 'Reach the specified amount of <color=green>Eco</color> to <color=green>move
-      on</color>.<br>
+    tutorialText: 'Reach the specified amount of <color=#009711>Eco</color><sprite
+      name="Eco"> to <color=#009711>move on</color>.<br>
 
-      <color=red>Warning:</color> You only have <color=red>3
-      Turns</color>.'
+      <color=red>Warning:</color>
+      You only have <color=red>3 Turns</color>.'
   tutorialScreen: {fileID: 7541340167093326947}
   tutorialText: {fileID: 2236884030866902589}
   tutorialImage: {fileID: 0}
@@ -661,7 +662,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Plant Lifeforms to gather Eco-Points.
+  m_text: Plant Lifeforms to gather Eco-Points<sprite name="Eco">.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 20d3f8f76a05b1943b8825a0acc0ca7b, type: 2}
   m_sharedMaterial: {fileID: 1583322838915064218, guid: 20d3f8f76a05b1943b8825a0acc0ca7b, type: 2}
@@ -724,7 +725,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: -94.76343, w: 0}
+  m_margin: {x: 0, y: 0, z: -229.73657, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
