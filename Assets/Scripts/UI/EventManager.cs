@@ -50,6 +50,7 @@ public static class EventManager
         Game.UI.OnCardSelectGridTileUpdate = delegate { };
         Game.UI.OnShowDeckPickCanvas = delegate { };
         Game.UI.OnSecondMoveStillOpen = delegate { };
+        Game.UI.OnShowDeckPickCanvas = delegate { };
 
 
         Game.GameSettings.OnDeckUnlocked = delegate { };
