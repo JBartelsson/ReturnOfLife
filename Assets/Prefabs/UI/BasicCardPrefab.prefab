@@ -495,8 +495,8 @@ MonoBehaviour:
   _epicRarityIcon: {fileID: 0}
   _plantTypeIcon: {fileID: 0}
   _wisdomTypeIcon: {fileID: 0}
-  _plantBackground: {fileID: 21300000, guid: 4b5e9c8b8fbd9ba4ea26f5512a44c554, type: 3}
-  _wisdomBackground: {fileID: 21300000, guid: 0a7d175393fc1f743befcc698a0daf9c, type: 3}
+  _plantBackground: {fileID: 21300000, guid: 9a78728266abdb844ba2b55852539bbb, type: 3}
+  _wisdomBackground: {fileID: 21300000, guid: 41e556ca059f72646a47e71d1df6bf7e, type: 3}
   _backgroundSprite: {fileID: 6626060879351948569}
   hoverMaterial: {fileID: 2100000, guid: d0ccc4d27d1542443840c84533abed40, type: 2}
   cardParent: {fileID: 6133112448831711212}
@@ -607,8 +607,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Epiphany
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 64db92a7023117947b2fda3992925f8e, type: 2}
-  m_sharedMaterial: {fileID: 2648027845887463637, guid: 64db92a7023117947b2fda3992925f8e, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 20d3f8f76a05b1943b8825a0acc0ca7b, type: 2}
+  m_sharedMaterial: {fileID: 1583322838915064218, guid: 20d3f8f76a05b1943b8825a0acc0ca7b, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
