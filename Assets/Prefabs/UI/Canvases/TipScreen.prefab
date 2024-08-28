@@ -235,8 +235,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Lorem ipsum <sprite=0> dolor sit amet, consetetur sadipscing elitr, sed
-    diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
+  m_text: Multiply Fields <sprite=0> reward you 50% extra points to the lifeforms
+    in it. They trigger only when all connected Multiply Fields are filled with <b>living</b>
+    plants.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 20d3f8f76a05b1943b8825a0acc0ca7b, type: 2}
   m_sharedMaterial: {fileID: 1583322838915064218, guid: 20d3f8f76a05b1943b8825a0acc0ca7b, type: 2}
@@ -263,7 +264,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 32
+  m_fontSize: 31.65
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -938,7 +939,8 @@ MonoBehaviour:
   - tipPosition: {fileID: 5993239960829835894}
     tipType: 0
     tipText: Multiply Fields <sprite=0> reward you 50% extra points to the lifeforms
-      in it. They trigger only when all connected Multiply Fields are filled.
+      in it. They trigger only when all connected Multiply Fields are filled with
+      <b>living</b> plants.
   - tipPosition: {fileID: 5993239960829835894}
     tipType: 3
     tipText: Some Lifeforms feature <b>extra Moves</b>. Click on the highlighted
