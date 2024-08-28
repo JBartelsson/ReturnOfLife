@@ -15,6 +15,7 @@ public class DeckViewUI : MonoBehaviour, IPointerClickHandler
     [SerializeField] private Pile pile;
     [SerializeField] private TextMeshProUGUI numberText;
     [SerializeField] private Canvas deckViewCanvas;
+    private int ogSortingOrder;
 
     private bool cardViewOpen = false;
     private List<CardInstance> cards;
@@ -24,6 +25,8 @@ public class DeckViewUI : MonoBehaviour, IPointerClickHandler
         EventManager.Game.Level.OnDiscardCard += OnDiscardCard;
         EventManager.Game.Level.OnDeckChanged += OnDeckChanged;
         EventManager.Game.UI.OnOpenCardView += OnOpenCardView;
+        ogSortingOrder = deckViewCanvas.sortingOrder;
+        Debug.Log($"Deckview Sorting: {ogSortingOrder}");
     }
 
     private void OnOpenCardView(EventManager.GameEvents.UIEvents.OnOpenCardViewArgs arg0)
@@ -85,8 +88,8 @@ public class DeckViewUI : MonoBehaviour, IPointerClickHandler
         }
         else
         {
-            deckViewCanvas.overrideSorting = false;
-            deckViewCanvas.sortingOrder = 0;
+            deckViewCanvas.sortingOrder = ogSortingOrder;
+            deckViewCanvas.overrideSorting = true;
         }
     }
 }

@@ -452,7 +452,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5588759435562414766, guid: de10637162fb0264a84bbdd1bbb0ddc8, type: 3}
       propertyPath: m_fontSize
-      value: 18
+      value: 27.5
       objectReference: {fileID: 0}
     - target: {fileID: 5780904548430954842, guid: de10637162fb0264a84bbdd1bbb0ddc8, type: 3}
       propertyPath: m_Name
@@ -625,6 +625,14 @@ PrefabInstance:
     - target: {fileID: 3175518197345702898, guid: b1218f08f83fd4845ab7d461c7f18731, type: 3}
       propertyPath: m_Name
       value: BaseCanvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 3579757449783421643, guid: b1218f08f83fd4845ab7d461c7f18731, type: 3}
+      propertyPath: m_SortingOrder
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 3579757449783421643, guid: b1218f08f83fd4845ab7d461c7f18731, type: 3}
+      propertyPath: m_OverrideSorting
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3849873084716752462, guid: b1218f08f83fd4845ab7d461c7f18731, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
