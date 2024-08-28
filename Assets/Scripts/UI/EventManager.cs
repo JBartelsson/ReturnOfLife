@@ -53,7 +53,6 @@ public static class EventManager
         Game.UI.OnShowDeckPickCanvas = delegate { };
         Game.UI.OnPauseMenuOpen = delegate { };
         Game.UI.OnPauseMenuClosed = delegate { };
-        Game.UI.OnSceneTransition = delegate { };
 
 
         Game.GameSettings.OnDeckUnlocked = delegate { };

@@ -38,7 +38,11 @@ public class GameSettings : PersistentSingleton<GameSettings>
         {
             UnlockAllStartDecks();
         }
+#endif
 
+
+#if DEVELOPMENT_BUILD
+UnlockAllStartDecks();
 
 #endif
     }
