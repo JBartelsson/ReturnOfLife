@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e8b50ae5f69e2046bcf6f1f5f58bf0c, type: 3}
   m_Name: ComboBush
   m_EditorClassIdentifier: 
-  plantSprite: {fileID: 21300000, guid: b40c094e3bd0650428a0235a7908851c, type: 3}
+  plantSprite: {fileID: 21300000, guid: 401cd1e6a53b9e14fa396c168ffd99cc, type: 3}
   <CardName>k__BackingField: Lycoperdon
   lifeformType: 3
   regularCardStats:
