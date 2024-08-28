@@ -53,6 +53,7 @@ public static class EventManager
         Game.UI.OnShowDeckPickCanvas = delegate { };
         Game.UI.OnPauseMenuOpen = delegate { };
         Game.UI.OnPauseMenuClosed = delegate { };
+        Game.UI.OnSceneTransition = delegate { };
 
 
         Game.GameSettings.OnDeckUnlocked = delegate { };
@@ -163,6 +164,7 @@ public static class EventManager
             //bool determines if its the TitleScreen Settings
             public UnityAction<bool> OnPauseMenuOpen;
             public UnityAction OnPauseMenuClosed;
+            public UnityAction OnSceneTransition;
         }
 
         public class LevelEvents

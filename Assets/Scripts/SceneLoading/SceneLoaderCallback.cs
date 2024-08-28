@@ -47,7 +47,11 @@ public class SceneLoaderCallback : MonoBehaviour
         sequence.Append(wipeLeft.DOScale(new Vector3(1, 1, 1), .25f))
             .Join(wipeRight.DOScale(new Vector3(1, 1, 1), .25f))
             .Append(middleImage.transform.DOScale(originalScale, 0.4f).SetEase(Ease.OutBack))
-            .SetEase(Ease.InOutSine).OnComplete(SceneLoader.LoaderCallback);
+            .SetEase(Ease.InOutSine).OnComplete(()=>
+            {
+                EventManager.Game.UI.OnSceneTransition?.Invoke();
+                SceneLoader.LoaderCallback();
+            });
         sequence.Play();
         // fadeGroup.DOFade(1f, .25f).OnComplete(SceneLoader.LoaderCallback);
 
