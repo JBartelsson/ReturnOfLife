@@ -24,8 +24,8 @@ MonoBehaviour:
   upgradedCardStats:
     Points: 0
     EffectPattern: {fileID: 11400000, guid: 03c55ff4c842f654baba9ec08d703ece, type: 2}
-    CardText: Kills up to three Lifeforms in the <b>Pattern+</b> and grants their
-      mana.
+    CardText: Kills up to <color=#a02e0e>three</color> Lifeforms in the <color=#a02e0e><b>Pattern+</b></color>
+      and grants their mana.
     PlayCost: 0
     SecondMoveCallAmount: 3
   <Element>k__BackingField: 0

@@ -18,14 +18,12 @@ public class GameSettings : PersistentSingleton<GameSettings>
     {
         base.Awake();
         SelectedStartDeck = availableStartDecks[0];
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         if (debug)
         {
             SelectedStartDeck = debugStartDeck;
         }
-        #endif
-
-        
+#endif
     }
 
     private void OnEnable()
@@ -36,15 +34,21 @@ public class GameSettings : PersistentSingleton<GameSettings>
             startDeck.Unlocked = startDeck.UnlockAtStart;
         }
 #if UNITY_EDITOR
-
         if (unlockAllStartDecksDebug)
         {
-            foreach (StartDeckSO startDeckSo in availableStartDecks)
-            {
-                startDeckSo.Unlocked = true;
-            }
+            UnlockAllStartDecks();
         }
+
+
 #endif
+    }
+
+    private void UnlockAllStartDecks()
+    {
+        foreach (StartDeckSO startDeckSo in availableStartDecks)
+        {
+            startDeckSo.Unlocked = true;
+        }
     }
 
     private void OnSceneReloadComplete(EventManager.GameEvents.SceneReloadArgs arg0)
@@ -53,6 +57,14 @@ public class GameSettings : PersistentSingleton<GameSettings>
         {
             EventManager.Game.Level.OnPlanetProgressionWon += OnPlanetProgressionWon;
         }
+    }
+
+    private void Update()
+    {
+        // if (Input.GetKeyDown(KeyCode.A))
+        // {
+        //     UnlockAllStartDecks();
+        // }
     }
 
     private void OnPlanetProgressionWon()
@@ -64,9 +76,10 @@ public class GameSettings : PersistentSingleton<GameSettings>
         nextDeck.Unlocked = true;
         Debug.Log("Invoking Event for Unlock Deck");
 
-        EventManager.Game.GameSettings.OnDeckUnlocked?.Invoke(new EventManager.GameEvents.GameSettingsEvents.DeckUnlockedArgs()
-        {
-            UnlockedDeck = nextDeck
-        });
+        EventManager.Game.GameSettings.OnDeckUnlocked?.Invoke(
+            new EventManager.GameEvents.GameSettingsEvents.DeckUnlockedArgs()
+            {
+                UnlockedDeck = nextDeck
+            });
     }
 }

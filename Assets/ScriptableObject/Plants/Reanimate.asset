@@ -25,8 +25,8 @@ MonoBehaviour:
   upgradedCardStats:
     Points: 1
     EffectPattern: {fileID: 11400000, guid: 03c55ff4c842f654baba9ec08d703ece, type: 2}
-    CardText: Revives up to three Lifeforms in the <b>Pattern+</b> and triggers their
-      upgraded effects.
+    CardText: Revives up to <color=#a02e0e>three</color> Lifeforms in the <color=#a02e0e><b>Pattern+</b></color>
+      and triggers their upgraded effects.
     PlayCost: 2
     SecondMoveCallAmount: 3
   <Element>k__BackingField: 0
