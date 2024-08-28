@@ -143,13 +143,14 @@ public class SoundManager : MonoBehaviour
 
     private void OnSceneReloadComplete(EventManager.GameEvents.SceneReloadArgs arg0)
     {
+        Debug.Log($"Sound Manager received {arg0.oldSCene} as old and {arg0.newScene} as new");
         if (arg0.newScene == SceneLoader.Scene.GameScene)
         {
             InitializeGameEvents();
             FMODUnity.RuntimeManager.StudioSystem.setParameterByName("MusicSelect", 1);
         }
 
-        if (arg0.newScene == SceneLoader.Scene.TitleScreen)
+        if (arg0.newScene == SceneLoader.Scene.TitleScreen && arg0.oldSCene == SceneLoader.Scene.None)
         {
             FMODUnity.RuntimeManager.StudioSystem.setParameterByName("MusicSelect", 0);
             StartLoop(Sound.Music);

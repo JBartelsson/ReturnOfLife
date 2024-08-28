@@ -15,12 +15,12 @@ public static class SceneLoader
         None
     }
 
-    private static Scene targetScene = Scene.GameScene;
-    private static Scene oldScene = Scene.TitleScreen;
+    private static Scene targetScene = Scene.None;
+    private static Scene oldScene = Scene.None;
 
     public static void Load(Scene targetScene)
     {
-        oldScene = targetScene;
+        oldScene = SceneLoader.targetScene;
         SceneLoader.targetScene = targetScene;
         Debug.Log($"Load Scene {targetScene}");
         // DOTween.Clear(true);
