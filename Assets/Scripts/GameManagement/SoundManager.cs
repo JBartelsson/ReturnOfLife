@@ -150,8 +150,9 @@ public class SoundManager : MonoBehaviour
             FMODUnity.RuntimeManager.StudioSystem.setParameterByName("MusicSelect", 1);
         }
 
-        if (arg0.newScene == SceneLoader.Scene.TitleScreen && arg0.oldSCene == SceneLoader.Scene.None)
+        if (arg0.newScene == SceneLoader.Scene.TitleScreen)
         {
+            if (arg0.oldSCene == SceneLoader.Scene.Credits) return;
             FMODUnity.RuntimeManager.StudioSystem.setParameterByName("MusicSelect", 0);
             StartLoop(Sound.Music);
         }
