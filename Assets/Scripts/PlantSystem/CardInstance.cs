@@ -178,6 +178,11 @@ public class CardInstance : ICloneable
         }
     }
 
+    public bool PointsChangeOnUpgrade()
+    {
+        return cardData.RegularCardStats.Points != cardData.UpgradedCardStats.Points;
+    }
+
     public void Execute(CallerArgs callerArgs)
     {
         callerArgs.CallingCardInstance = this;

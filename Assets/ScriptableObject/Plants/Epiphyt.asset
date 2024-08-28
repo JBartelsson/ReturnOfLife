@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e8b50ae5f69e2046bcf6f1f5f58bf0c, type: 3}
   m_Name: Epiphyt
   m_EditorClassIdentifier: 
-  plantSprite: {fileID: 21300000, guid: 35128c3a173f79449ba565f08b7bdfd9, type: 3}
+  plantSprite: {fileID: 21300000, guid: 3f4b321108edac9448fe773e55512716, type: 3}
   <CardName>k__BackingField: Epiphyt
   lifeformType: 4
   regularCardStats:

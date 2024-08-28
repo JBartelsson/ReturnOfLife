@@ -104,6 +104,7 @@ public class SoundManager : MonoBehaviour
     private void OnEnable()
     {
         EventManager.Game.SceneSwitch.OnSceneReloadComplete += OnSceneReloadComplete;
+        EventManager.Game.UI.OnSceneTransition += OnSceneTransition;
     }
 
     private void InitializeGameEvents()
@@ -123,6 +124,8 @@ public class SoundManager : MonoBehaviour
         EventManager.Game.Level.OnEndLevel += OnEndLevel;
     }
 
+  
+
     private void OnDisable()
     {
         //EventManager.Game.SceneSwitch.OnSceneReloadComplete -= OnSceneReloadComplete;
@@ -139,6 +142,12 @@ public class SoundManager : MonoBehaviour
         EventManager.Game.Level.OnEffectUsed -= OnEffectUsed;
         EventManager.Game.Level.OnTurnChanged -= OnTurnChanged;
         EventManager.Game.Level.OnEndLevel -= OnEndLevel;
+
+    }
+    
+    private void OnSceneTransition()
+    {
+        PlayOneShot(Sound.Croak);
     }
 
     private void OnSceneReloadComplete(EventManager.GameEvents.SceneReloadArgs arg0)
@@ -150,8 +159,9 @@ public class SoundManager : MonoBehaviour
             FMODUnity.RuntimeManager.StudioSystem.setParameterByName("MusicSelect", 1);
         }
 
-        if (arg0.newScene == SceneLoader.Scene.TitleScreen && arg0.oldSCene == SceneLoader.Scene.None)
+        if (arg0.newScene == SceneLoader.Scene.TitleScreen)
         {
+            if (arg0.oldSCene == SceneLoader.Scene.Credits) return;
             FMODUnity.RuntimeManager.StudioSystem.setParameterByName("MusicSelect", 0);
             StartLoop(Sound.Music);
         }

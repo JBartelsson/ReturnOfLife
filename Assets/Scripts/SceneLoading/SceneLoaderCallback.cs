@@ -8,12 +8,13 @@ using UnityEngine.UI;
 public class SceneLoaderCallback : MonoBehaviour
 {
     bool isFirstUpdate = true;
+
     private void Update()
     {
         if (isFirstUpdate)
         {
             isFirstUpdate = false;
-           LoadingAnimation();
+            LoadingAnimation();
         }
     }
 
@@ -46,15 +47,11 @@ public class SceneLoaderCallback : MonoBehaviour
         sequence = DOTween.Sequence();
         sequence.Append(wipeLeft.DOScale(new Vector3(1, 1, 1), .25f))
             .Join(wipeRight.DOScale(new Vector3(1, 1, 1), .25f))
+            .AppendCallback(() => EventManager.Game.UI.OnSceneTransition?.Invoke())
             .Append(middleImage.transform.DOScale(originalScale, 0.4f).SetEase(Ease.OutBack))
-            .SetEase(Ease.InOutSine).OnComplete(()=>
-            {
-                EventManager.Game.UI.OnSceneTransition?.Invoke();
-                SceneLoader.LoaderCallback();
-            });
+            .SetEase(Ease.InOutSine).OnComplete(() => { SceneLoader.LoaderCallback(); });
         sequence.Play();
         // fadeGroup.DOFade(1f, .25f).OnComplete(SceneLoader.LoaderCallback);
-
     }
 
     private void OnEnable()
@@ -81,9 +78,7 @@ public class SceneLoaderCallback : MonoBehaviour
             .Join(wipeLeftSecond.DOScale(new Vector3(0, 1, 1), .25f))
             .Join(wipeRightSecond.DOScale(new Vector3(0, 1, 1), .25f))
             .SetEase(Ease.InOutSine)
-        .AppendCallback(() => Destroy(this.gameObject));
+            .AppendCallback(() => Destroy(this.gameObject));
         endSequence.Play();
     }
-
-  
 }

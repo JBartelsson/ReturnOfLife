@@ -14,6 +14,7 @@ using UnityEngine.Serialization;
 using static CardData;
 using static System.Net.Mime.MediaTypeNames;
 using Image = UnityEngine.UI.Image;
+
 [Serializable]
 public class CardUI : MonoBehaviour
 {
@@ -22,7 +23,6 @@ public class CardUI : MonoBehaviour
     protected CardInstance _cardInstance;
     protected int _cardIndex = 0;
 
-    
 
     [Header("Prefab Elements")] //references objects in the card prefab
     [SerializeField]
@@ -65,7 +65,6 @@ public class CardUI : MonoBehaviour
     [SerializeField] protected Sprite _rareRarityIcon;
     [SerializeField] protected Sprite _epicRarityIcon;
 
-    
 
     [SerializeField] protected Sprite _plantTypeIcon;
     [SerializeField] protected Sprite _wisdomTypeIcon;
@@ -76,15 +75,14 @@ public class CardUI : MonoBehaviour
     [FormerlySerializedAs("backgroundSprite")] [Header("Hover Effect")] [SerializeField]
     protected Image _backgroundSprite;
 
-    
 
     [SerializeField] protected Material hoverMaterial;
-    
+
     [SerializeField] protected Transform cardParent;
 
     private readonly string EFFECTTYPE_PLANT = "Plant";
     private readonly string EFFECTTYPE_WISDOM = "Wisdom";
-    
+
     public CardInstance CardInstance
     {
         get => _cardInstance;
@@ -102,16 +100,19 @@ public class CardUI : MonoBehaviour
         get => _dropSpriteRed;
         set => _dropSpriteRed = value;
     }
+
     public int CardIndex
     {
         get => _cardIndex;
         set => _cardIndex = value;
     }
+
     public Material HoverMaterial
     {
         get => hoverMaterial;
         set => hoverMaterial = value;
     }
+
     public Image CostDrop
     {
         get => _costDrop;
@@ -129,13 +130,10 @@ public class CardUI : MonoBehaviour
         get => cardParent;
         set => cardParent = value;
     }
-   
 
     #endregion
 
     #region Methods
-
-    
 
     public void SetCardUI(CardInstance cardInstance, bool upgradePreview = false)
     {
@@ -204,10 +202,13 @@ public class CardUI : MonoBehaviour
         _cardName.text = cardName;
         _playCost.text = cardStats.PlayCost.ToString();
         _cardText.text = cardStats.CardText;
+        string pointsString = "";
         if (cardStats.Points != 0)
         {
             _pointsSymbol.SetActive(true);
-            _pointsText.text = cardStats.Points.ToString();
+            if (upgradePreview && _cardInstance.PointsChangeOnUpgrade()) pointsString += "<color=#a02e0e>";
+            pointsString += cardStats.Points.ToString();
+            _pointsText.text = pointsString;
         }
         else
         {
@@ -285,6 +286,4 @@ public class CardUI : MonoBehaviour
     }
 
     #endregion
-
-   
 }
