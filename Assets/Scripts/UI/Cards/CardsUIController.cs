@@ -22,7 +22,7 @@ public class CardsUIController : MonoBehaviour
     private List<CardHandUI> currentCards = new();
     private int activePlantIndex = -1;
 
-    private List<int> activeWisdoms = new();
+    private List<CardHandUI> activeWisdoms = new();
 
     //Hovering Effect
     private GridTile oldGridTile;
@@ -128,13 +128,13 @@ public class CardsUIController : MonoBehaviour
         if (activePlantIndex != -1 )
         {
             GameManager.Instance.DiscardCard(activePlantIndex);
-            CancelPlaying();
+            GameInputOnCancel();
         }
         else
         {
             if (activeWisdoms.Count != 0)
             {
-                GameManager.Instance.DiscardCard(activeWisdoms[0]);
+                GameManager.Instance.DiscardCard(activeWisdoms[0].CardUI.CardIndex);
                 GameInputOnCancel();
 
             }
@@ -417,10 +417,16 @@ public class CardsUIController : MonoBehaviour
 
     private void HandleWisdomClick(int cardIndex)
     {
-        GameManager.Instance.AddWisdom(currentCards[cardIndex].CardUI.CardInstance);
-        activeWisdoms.Add(cardIndex);
-        GameManager.Instance.AddMana(0);
+        CardHandUI currentWisdom = currentCards.FirstOrDefault((x) => x.CardUI.CardIndex == cardIndex);
+        if (currentWisdom == null)
+        {
+            Debug.Log("WISDOM WASNT FOUND!");
+            return;
+        }
+        GameManager.Instance.AddWisdom(currentWisdom.CardUI.CardInstance);
+        activeWisdoms.Add(currentWisdom);
         DeselectAllOtherWisdomOfSameType(cardIndex);
+        GameManager.Instance.AddMana(0);
     }
 
     private void HandlePlantClick(int cardIndex)
@@ -464,22 +470,25 @@ public class CardsUIController : MonoBehaviour
 
     private void DeselectWisdom(int cardIndex)
     {
-        GameManager.Instance.RemoveWisdom(currentCards[cardIndex].CardUI.CardInstance);
+        CardHandUI currentWisdom = currentCards.FirstOrDefault((x) => x.CardUI.CardIndex == cardIndex);
+        if (currentWisdom == null) return;
+        GameManager.Instance.RemoveWisdom(currentWisdom.CardUI.CardInstance);
         //Invoke Mana Change again for Red Drop Sprite
+        activeWisdoms.Remove(currentWisdom);
+        currentWisdom.SetHoverState(false);
         GameManager.Instance.AddMana(0);
-        activeWisdoms.Remove(cardIndex);
-        currentCards[cardIndex].SetHoverState(false);
         EventManager.Game.UI.OnLifeformHoverCanceled?.Invoke();
     }
 
     private void DeselectAllOtherWisdomOfSameType(int cardIndex)
     {
-        for (int i = 0; i < GameManager.Instance.Deck.HandCards.Count; i++)
+        for (int i = 0; i < currentCards.Count; i++)
         {
-            if (SameWisdomAlreadyInStack(i) && currentCards[i].CardUI.CardIndex != cardIndex)
+            if (currentCards[i].CardUI.CardInstance.CardData.EffectType == CardData.CardEffectType.Wisdom &&
+                currentCards[i].CardUI.CardIndex != cardIndex)
             {
                 GameManager.Instance.RemoveWisdom(currentCards[i].CardUI.CardInstance);
-                activeWisdoms.Remove(i);
+                activeWisdoms.RemoveAll((x) => x.CardUI.CardIndex == i);
                 currentCards[i].SetHoverState(false);
             }
         }
@@ -487,39 +496,39 @@ public class CardsUIController : MonoBehaviour
 
     private bool WisdomInCardStack()
     {
-        foreach (var index in activeWisdoms)
-        {
-            if (GameManager.Instance.Deck.HandCards[index].CardData.EffectType == CardData.CardEffectType.Wisdom)
-            {
-                return true;
-            }
-        }
+        // foreach (var index in activeWisdoms)
+        // {
+        //     if (GameManager.Instance.Deck.HandCards[index].CardData.EffectType == CardData.CardEffectType.Wisdom)
+        //     {
+        //         return true;
+        //     }
+        // }
 
         return false;
     }
 
     private bool WisdomAlreadyPlayed()
     {
-        foreach (var index in activeWisdoms)
-        {
-            if (GameManager.Instance.Deck.HandCards[index].CardData.EffectType == CardData.CardEffectType.Wisdom)
-            {
-                return true;
-            }
-        }
+        // foreach (var index in activeWisdoms)
+        // {
+        //     if (GameManager.Instance.Deck.HandCards[index].CardData.EffectType == CardData.CardEffectType.Wisdom)
+        //     {
+        //         return true;
+        //     }
+        // }
 
         return false;
     }
 
     private bool PlantInCardStack()
     {
-        foreach (var index in activeWisdoms)
-        {
-            if (GameManager.Instance.Deck.HandCards[index].CardData.EffectType == CardData.CardEffectType.Plant)
-            {
-                return true;
-            }
-        }
+        // foreach (var index in activeWisdoms)
+        // {
+        //     if (GameManager.Instance.Deck.HandCards[index].CardData.EffectType == CardData.CardEffectType.Plant)
+        //     {
+        //         return true;
+        //     }
+        // }
 
         return false;
     }
@@ -532,14 +541,14 @@ public class CardsUIController : MonoBehaviour
             return false;
         }
 
-        foreach (var index in activeWisdoms)
-        {
-            if (currentCards[index].CardUI.CardInstance.CardData.CardName ==
-                GameManager.Instance.Deck.HandCards[cardIndex].CardData.CardName)
-            {
-                return true;
-            }
-        }
+        // foreach (var index in activeWisdoms)
+        // {
+        //     if (currentCards[index].CardUI.CardInstance.CardData.CardName ==
+        //         GameManager.Instance.Deck.HandCards[cardIndex].CardData.CardName)
+        //     {
+        //         return true;
+        //     }
+        // }
 
         return false;
     }
