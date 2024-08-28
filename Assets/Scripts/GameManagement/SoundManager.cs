@@ -36,6 +36,7 @@ public class SoundManager : MonoBehaviour
         WinGame = 25,
         OnTipShowed = 19,
         OnDeckView = 20,
+        Croak = 26,
         Music = 21,
     }
 
