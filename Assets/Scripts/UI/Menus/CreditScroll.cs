@@ -21,8 +21,8 @@ public class CreditScroll : MonoBehaviour
         if (scrollingObjects.transform.position.y >= scrollStoppingPoint)
             // start speed damping
             return;
-        if (Input.GetKeyDown("space")) currentSpeed = scrollSpeed * scrollSpeedMultipier;
-        if (Input.GetKeyUp("space")) currentSpeed = scrollSpeed;
+        if (Input.GetMouseButtonDown(0)) currentSpeed = scrollSpeed * scrollSpeedMultipier;
+        if (Input.GetMouseButtonUp(0)) currentSpeed = scrollSpeed;
         scrollingObjects.transform.position += new Vector3(0, currentSpeed, 0);
         
     }
