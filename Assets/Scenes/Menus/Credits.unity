@@ -522,7 +522,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scrollingObjects: {fileID: 631427929}
   scrollStoppingPoint: 4500
-  scrollSpeed: 0.15
+  scrollSpeed: 0.25
   scrollSpeedMultipier: 5
 --- !u!1 &723610816
 GameObject:
