@@ -59,17 +59,17 @@ public class LevelEndUIController : MonoBehaviour
         nextButton.gameObject.SetActive(args.WonLevel);
         rewardsText.gameObject.SetActive(args.WonLevel);
         pickACardButton.gameObject.SetActive(args.WonLevel);
-        statusText.text = $"{args.CurrentScore}/{args.NeededScore}";
         UIUtils.FadeStandard(endLevelCanvas, true);
+        statusText.text = (args.WonLevel ? "<color=#009711>" : "<color=red>") + $"{args.CurrentScore}</color>/{args.NeededScore}";
         if (args.WonLevel)
         {
-            headerText.text = "Spledongl approves!";
+            headerText.text = "Spledongl\napproves!";
             bgImage.color = winColor;
             statusImage.sprite = happyNadi;
         }
         else
         {
-            headerText.text = "Too bad!";
+            headerText.text = "This field\nremains toxic";
             bgImage.color = gameOverColor;
             statusImage.sprite = sadgeNadi;
         }
