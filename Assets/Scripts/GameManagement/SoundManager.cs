@@ -208,7 +208,7 @@ public class SoundManager : MonoBehaviour
 
     private void OnPlanetProgressionWon()
     {
-        PlayOneShot(Sound.WinGame);
+        FMODUnity.RuntimeManager.StudioSystem.setParameterByName("MusicSelect", 3);
     }
 
     private void OnOpenCardView(EventManager.GameEvents.UIEvents.OnOpenCardViewArgs arg0)

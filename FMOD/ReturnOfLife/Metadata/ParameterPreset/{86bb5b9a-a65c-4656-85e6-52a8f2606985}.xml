@@ -16,12 +16,14 @@
 			<value>2</value>
 		</property>
 		<property name="maximum">
-			<value>3</value>
+			<value>5</value>
 		</property>
 		<property name="enumerationLabels">
 			<value>MenuMusic</value>
 			<value>LevelMusic</value>
 			<value>BossMusic</value>
+			<value>WinSound</value>
+			<value>LoseSound</value>
 		</property>
 		<property name="isGlobal">
 			<value>true</value>
