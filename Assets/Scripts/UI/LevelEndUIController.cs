@@ -9,9 +9,13 @@ public class LevelEndUIController : MonoBehaviour
 {
     [SerializeField] private Button nextButton;
     [SerializeField] private Button gameOverButton;
+    [SerializeField] private TextMeshProUGUI rewardsText;
     [SerializeField] private Button pickACardButton;
     [SerializeField] private TextMeshProUGUI statusText;
     [SerializeField] private TextMeshProUGUI headerText;
+    [SerializeField] private Image statusImage;
+    [SerializeField] private Sprite happyNadi;
+    [SerializeField] private Sprite sadgeNadi;
     [SerializeField] private CanvasGroup endLevelCanvas;
     [SerializeField] private Color gameOverColor;
     [SerializeField] private Color winColor;
@@ -53,18 +57,21 @@ public class LevelEndUIController : MonoBehaviour
     {
         gameOverButton.gameObject.SetActive(!args.WonLevel);
         nextButton.gameObject.SetActive(args.WonLevel);
+        rewardsText.gameObject.SetActive(args.WonLevel);
         pickACardButton.gameObject.SetActive(args.WonLevel);
         statusText.text = $"{args.CurrentScore}/{args.NeededScore}";
         UIUtils.FadeStandard(endLevelCanvas, true);
         if (args.WonLevel)
         {
-            headerText.text = "Success!";
+            headerText.text = "Spledongl approves!";
             bgImage.color = winColor;
+            statusImage.sprite = happyNadi;
         }
         else
         {
             headerText.text = "Too bad!";
             bgImage.color = gameOverColor;
+            statusImage.sprite = sadgeNadi;
         }
     }
 
