@@ -194,25 +194,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tutorialList:
-  - tutorialImageObject: {fileID: 3806195118588392283}
+  - tutorialImageObject: {fileID: 4815904902703475207}
     tutorialText: Plant Lifeforms to gather <color=#009711>Eco Points</color><sprite
       name="Eco">
+  - tutorialImageObject: {fileID: 5246507818173414300}
+    tutorialText: Some lifeforms depend on a <b>Pattern</b>. You can see it by hovering
+      over the field when selecting a lifeform.
   - tutorialImageObject: {fileID: 3355735696674330821}
-    tutorialText: You have <color=#cc8500>3 discards</color> per turn. You draw a
-      <color=#009711>new card</color> for every discarded one.
-  - tutorialImageObject: {fileID: 4815904902703475207}
+    tutorialText: You can <color=#cc8500>discard</color> a card <color=#cc8500>3</color>
+      times  per turn. You draw a <color=#009711>new card</color> for every discarded
+      one.
+  - tutorialImageObject: {fileID: 3806195118588392283}
     tutorialText: 'Reach the specified amount of <color=#009711>Eco</color><sprite
       name="Eco"> to <color=#009711>move on</color>.<br>
 
       <color=red>Warning:</color>
       You only have <color=red>3 Turns</color>.'
-  - tutorialImageObject: {fileID: 5246507818173414300}
-    tutorialText: Look. Funny <color=red>Patterns</color>.
   tutorialScreen: {fileID: 7541340167093326947}
   tutorialText: {fileID: 2236884030866902589}
   tutorialImage: {fileID: 0}
   continueButton: {fileID: 5051364078665597562}
-  tutorialCanvasGroup: {fileID: 6233995893287607610}
+  tutorialCanvasGroup: {fileID: 916694741106035359}
   animationSpeed: 0.3
 --- !u!225 &7541340167093326947
 CanvasGroup:
@@ -221,6 +223,56 @@ CanvasGroup:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1012195857647577445}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!1 &1029658216035807155
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2618920191645605870}
+  - component: {fileID: 916694741106035359}
+  m_Layer: 0
+  m_Name: TutorialCanvasGroup
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2618920191645605870
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1029658216035807155}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 6080462618975229060}
+  - {fileID: 1119981388472887473}
+  m_Father: {fileID: 6814107728386724778}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -960, y: -540}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!225 &916694741106035359
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1029658216035807155}
   m_Enabled: 1
   m_Alpha: 1
   m_Interactable: 1
@@ -624,16 +676,16 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4157798142605093852}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6814107728386724778}
+  m_Father: {fileID: 2618920191645605870}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 370, y: 0}
+  m_AnchoredPosition: {x: 1330, y: 540}
   m_SizeDelta: {x: 543.4, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7504451477826974600
@@ -843,12 +895,11 @@ RectTransform:
   - {fileID: 6522495830908528636}
   - {fileID: 4929149358773422001}
   - {fileID: 4038350406446161684}
-  - {fileID: 3012040604342598593}
-  m_Father: {fileID: 6814107728386724778}
+  m_Father: {fileID: 2618920191645605870}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -310, y: 0}
+  m_AnchoredPosition: {x: 650, y: 540}
   m_SizeDelta: {x: 762.34, y: 573.2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3452872166210054766
@@ -1005,7 +1056,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -12.8, y: -118.3}
+  m_AnchoredPosition: {x: -12.8, y: 1}
   m_SizeDelta: {x: 952, y: 535}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6630057364578052044
@@ -1055,7 +1106,7 @@ GameObject:
   - component: {fileID: 1644130401345799817}
   - component: {fileID: 6266376594726004707}
   m_Layer: 5
-  m_Name: Image
+  m_Name: ScreenshotBorder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1068,17 +1119,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6767409358180867927}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1119981388472887473}
+  m_Father: {fileID: 6814107728386724778}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -310, y: 0}
+  m_SizeDelta: {x: 662.3401, y: 573.2001}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1644130401345799817
 CanvasRenderer:
@@ -1238,8 +1289,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1119981388472887473}
-  - {fileID: 6080462618975229060}
+  - {fileID: 2618920191645605870}
+  - {fileID: 3012040604342598593}
   m_Father: {fileID: 3173273736298132991}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
