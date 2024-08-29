@@ -45,6 +45,8 @@ public class CardUI : MonoBehaviour
 
     [Header("Points")] [SerializeField] protected TextMeshProUGUI _pointsText;
     [SerializeField] protected GameObject _pointsSymbol;
+    [SerializeField] private Image pointsImageNormal;
+    [SerializeField] private Image pointsImageUpgraded;
 
     [Header("Card Colors")] [SerializeField]
     protected Color _plantColor;
@@ -206,7 +208,16 @@ public class CardUI : MonoBehaviour
         if (cardStats.Points != 0)
         {
             _pointsSymbol.SetActive(true);
-            if (upgradePreview && _cardInstance.PointsChangeOnUpgrade()) pointsString += "<color=#a02e0e>";
+            if (upgradePreview && _cardInstance.PointsChangeOnUpgrade())
+            {
+                pointsImageUpgraded.enabled = true;
+                pointsImageNormal.enabled = false;
+            }
+            else
+            {
+                pointsImageUpgraded.enabled = false;
+                pointsImageNormal.enabled = true;
+            }
             pointsString += cardStats.Points.ToString();
             _pointsText.text = pointsString;
         }
