@@ -604,7 +604,7 @@ public class GameManager : MonoBehaviour
 
     private bool CheckForGameWin()
     {
-        if (planetProgression.IsBoss(currentStage))
+        if (planetProgression.IsBoss(currentStage) && currentLevel.RequirementsMet(this))
         {
             WinGame();
             return true;
