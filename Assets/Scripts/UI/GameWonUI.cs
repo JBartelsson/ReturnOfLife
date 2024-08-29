@@ -16,7 +16,7 @@ public class GameWonUI : MonoBehaviour
     {
         gameOverButton.onClick.AddListener(GameOver);
         UIUtils.InitFadeState(gameWonCanvas);
-        // UIUtils.InitFadeState(unlockTextCanvasGroup);
+        UIUtils.InitFadeState(unlockTextCanvasGroup);
 
     }
 

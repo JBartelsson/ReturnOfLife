@@ -52,7 +52,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 96abd9179e5a5844b89ebcfd68c17f03, type: 2}
   debugStartDeck: {fileID: 0}
   debug: 0
-  unlockAllStartDecksDebug: 1
+  unlockAllStartDecksDebug: 0
 --- !u!1 &3105724091352511275
 GameObject:
   m_ObjectHideFlags: 0

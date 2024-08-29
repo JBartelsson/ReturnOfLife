@@ -87,6 +87,7 @@ GameObject:
   - component: {fileID: 3347661585679182185}
   - component: {fileID: 3400157394071145602}
   - component: {fileID: 211174997516159}
+  - component: {fileID: 2635016673572379456}
   m_Layer: 5
   m_Name: UnlockText
   m_TagString: Untagged
@@ -224,9 +225,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   strength: 10
   speed: 1
-  rectTransform: {fileID: 0}
+  rectTransform: {fileID: 3204097497901277636}
   moveDirection: 1
-  localMove: 0
+  localMove: 1
+--- !u!225 &2635016673572379456
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2183834393446722987}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &2264552990069865281
 GameObject:
   m_ObjectHideFlags: 0
@@ -435,7 +448,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameOverButton: {fileID: 2787223148973287598}
   gameWonCanvas: {fileID: 6111082518672735973}
-  unlockTextCanvasGroup: {fileID: 6111082518672735973}
+  unlockTextCanvasGroup: {fileID: 2635016673572379456}
   unlockText: {fileID: 3400157394071145602}
 --- !u!1 &3812950914546762503
 GameObject:
