@@ -22,7 +22,7 @@ MonoBehaviour:
     PlayCost: 1
     SecondMoveCallAmount: 1
   upgradedCardStats:
-    Points: 40
+    Points: 45
     EffectPattern: {fileID: 11400000, guid: 5286373c1ec30ab40a6e3cfe5fe7e13b, type: 2}
     CardText: Does nothing.
     PlayCost: 1
