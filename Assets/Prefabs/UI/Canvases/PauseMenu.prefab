@@ -250,7 +250,19 @@ MonoBehaviour:
   m_Value: 0.5
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7180941289124941210}
+        m_TargetAssemblyTypeName: SoundSlider, Assembly-CSharp
+        m_MethodName: ChangeMasterVolume
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &730992411379477293
 GameObject:
   m_ObjectHideFlags: 0
@@ -1355,7 +1367,19 @@ MonoBehaviour:
   m_Value: 0.5
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7180941289124941210}
+        m_TargetAssemblyTypeName: SoundSlider, Assembly-CSharp
+        m_MethodName: ChangeMusicVolume
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &2852647554656180308
 GameObject:
   m_ObjectHideFlags: 0
@@ -2372,7 +2396,19 @@ MonoBehaviour:
   m_Value: 0.5
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7180941289124941210}
+        m_TargetAssemblyTypeName: SoundSlider, Assembly-CSharp
+        m_MethodName: ChangeMusicVolume
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &5587541429448342077
 GameObject:
   m_ObjectHideFlags: 0
@@ -2656,6 +2692,7 @@ GameObject:
   m_Component:
   - component: {fileID: 654340838888884557}
   - component: {fileID: 1051490594588144622}
+  - component: {fileID: 7180941289124941210}
   m_Layer: 5
   m_Name: PauseMenu
   m_TagString: Untagged
@@ -2697,6 +2734,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pauseMenuCanvasGroup: {fileID: 7463191970470471802}
   mainMenuButton: {fileID: 5924652948202817474}
+--- !u!114 &7180941289124941210
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6113569675835425950}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60296301a48bec848a442977a4b434d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  masterSlider: {fileID: 5674135058408412232}
+  musicSlider: {fileID: 633026237167552112}
+  sfxSlider: {fileID: 1533922842415515412}
 --- !u!1 &6281143939077260720
 GameObject:
   m_ObjectHideFlags: 0

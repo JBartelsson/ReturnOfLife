@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using FMOD.Studio;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,7 +9,7 @@ public class PauseMenu : MonoBehaviour
 {
     [SerializeField] private CanvasGroup pauseMenuCanvasGroup;
     [SerializeField] private Button mainMenuButton;
-
+    
     private bool pauseMenuOpen = false;
     // Start is called before the first frame update
     void Start()
@@ -29,6 +30,11 @@ public class PauseMenu : MonoBehaviour
         EventManager.Game.UI.OnPauseMenuClosed -= OnPauseMenuClosed;
         EventManager.Game.Input.OnPause -= OnPause;
 
+    }
+
+    private void MasterSliderChanged()
+    {
+        
     }
 
     private void OnPause()
