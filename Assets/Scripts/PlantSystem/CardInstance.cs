@@ -180,7 +180,7 @@ public class CardInstance : ICloneable
 
     public bool PointsChangeOnUpgrade()
     {
-        return cardData.RegularCardStats.Points != cardData.UpgradedCardStats.Points;
+        return cardData.RegularCardStats.Points.EcoPoints != cardData.UpgradedCardStats.Points.EcoPoints;
     }
 
     public void Execute(CallerArgs callerArgs)
@@ -232,7 +232,7 @@ public class CardInstance : ICloneable
         cardFunction.Clear(callerArgs);
         cardStatus = CardStatusEnum.Dead;
         EventManager.Game.Level.OnLifeformRevived?.Invoke(callerArgs);
-        CardFunctionBase.RewardPoints(callerArgs, -1 * CardData.RuntimePoints);
+        // CardFunctionBase.RewardPoints(callerArgs, -1 * CardData.RuntimeScore);
     }
 
     public void TryReviveLifeform(CallerArgs callerArgs)

@@ -12,7 +12,7 @@ public class CardData : ScriptableObject, ICloneable
   
     private void Awake()
     {
-        runtimePoints = regularCardStats.Points;
+        runtimeScore = regularCardStats.Points;
         plantTypeID = cardDataIDCounter;
         cardDataIDCounter++;
     }
@@ -170,6 +170,7 @@ public class CardData : ScriptableObject, ICloneable
         set => lifeformType = value;
     }
 
+    [SerializeField] private Score TestScore;
     [SerializeField] private CardStats regularCardStats;
     [SerializeField] private CardStats upgradedCardStats;
     [field: SerializeField] public CardElement Element { get; private set; }
@@ -187,7 +188,8 @@ public class CardData : ScriptableObject, ICloneable
 
     public string SecondMoveText => secondMoveText;
 
-    private int runtimePoints = 0;
+    private Score runtimeScore = new Score(0);
+    
     
     private static int cardDataIDCounter = 0;
     private int plantTypeID;
@@ -198,7 +200,7 @@ public class CardData : ScriptableObject, ICloneable
     [Serializable]
     public class CardStats
     {
-        public int Points;
+        public Score Points;
         [FormerlySerializedAs("effectPattern")] public PatternSO EffectPattern;
         [TextArea]
         public string CardText;
@@ -227,10 +229,10 @@ public class CardData : ScriptableObject, ICloneable
         set => overridePointFunction = value;
     }
 
-    public int RuntimePoints
+    public Score RuntimeScore
     {
-        get => runtimePoints;
-        set => runtimePoints = value;
+        get => runtimeScore;
+        set => runtimeScore = value;
     }
     public CardFunctionCall CardFunction
     {

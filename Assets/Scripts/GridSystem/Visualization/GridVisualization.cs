@@ -174,7 +174,7 @@ public class GridVisualization : MonoBehaviour, IPointerClickHandler
             secondMoveText.text = args.SecondMoveCallerArgs.CallingCardInstance.CardData.SecondMoveText + "\n" +
                                   args.SecondMoveCallerArgs.SecondMoveNumber + "x";
             Tween fadeTween = secondMoveText.DOFade(1f, Constants.UI_FAST_FADE_SPEED);
-            if (args.SecondMoveCallerArgs.CallingCardInstance.CardData.RuntimePoints != 0)
+            if (args.SecondMoveCallerArgs.CallingCardInstance.CardData.RuntimeScore.EcoPoints != 0)
             {
                 fadeTween.SetDelay(Constants.UI_POINT_DISAPPEAR_SPEED * 3);
             }

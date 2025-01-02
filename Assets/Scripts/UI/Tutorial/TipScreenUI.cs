@@ -105,6 +105,9 @@ public class TipScreenUI : MonoBehaviour
 
     public void QueueTip(TipType tipToShow)
     {
+        #if UNITY_EDITOR
+        if (!GameManager.Instance.ShowTutorial) return;
+        #endif
         tipQueue.Add(tipToShow);
     }
     

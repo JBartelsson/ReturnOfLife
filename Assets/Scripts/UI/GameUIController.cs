@@ -12,6 +12,8 @@ public class GameUIController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI manaText;
     [Header("Score")]
     [SerializeField] private TextMeshProUGUI ecoText;
+    [SerializeField] private TextMeshProUGUI currentScoreText;
+    [SerializeField] private TextMeshProUGUI neededScoreText;
 
     [Header("Level name")] [SerializeField]
     private TextMeshProUGUI levelText;
@@ -38,11 +40,12 @@ public class GameUIController : MonoBehaviour
     private void OnLevelInitialized(EventManager.GameEvents.LevelEvents.LevelInitializedArgs arg0)
     {
         levelText.text = $"Level {arg0.CurrentLevelNumber + 1}/{arg0.MaxLevelNumber}";
+        neededScoreText.text = $"{arg0.CurrentLevel.NeededEcoPoints}";
     }
 
     private void OnScoreChanged(EventManager.GameEvents.LevelEvents.ScoreChangedArgs args)
     {
-        ecoText.SetText($"{args.NewScore.EcoPoints.ToString()}/{args.CurrentLevel.NeededEcoPoints}");
+        ecoText.SetText($"{args.NewScore.EcoPoints.ToString()}x{args.NewScore.Mult.ToString()}");
     }
 
     private void OnManaChanged(EventManager.GameEvents.LevelEvents.ManaChangedArgs args)
@@ -55,6 +58,10 @@ public class GameUIController : MonoBehaviour
     private void UpdateTurn(EventManager.GameEvents.LevelEvents.TurnChangedArgs args)
     {
         turnsText.SetText(args.TurnNumber.ToString() + "/3");
+        ecoText.SetText($"{GameManager.Instance.TurnScore.EcoPoints.ToString()}x{GameManager.Instance.TurnScore.Mult.ToString()}");
+
+        currentScoreText.text = $"{GameManager.Instance.TotalScore}";
+
     }
 
     public void EndTurn()

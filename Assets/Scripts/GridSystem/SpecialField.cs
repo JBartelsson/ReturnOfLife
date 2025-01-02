@@ -69,9 +69,7 @@ public class SpecialField
                             callerType = CALLER_TYPE.EFFECT,
                             playedTile = specialFieldGridTile
                         };
-                        GameManager.Instance.AddPointScore(
-                            Mathf.FloorToInt(specialFieldGridTile.CardInstance.CardData.RuntimePoints *
-                                             Constants.MULTIPLICATION_FIELD_MULTIPLIER), multiplyFieldCallerArgs,
+                        GameManager.Instance.AddPointScore(specialFieldGridTile.CardInstance.CardData.RuntimeScore, multiplyFieldCallerArgs,
                             GameManager.SCORING_ORIGIN.MULTIPLICATION);
                         
                     }

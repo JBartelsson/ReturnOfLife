@@ -209,7 +209,7 @@ public static class EventManager
             public class LevelEndedArgs : Args
             {
                 public bool WonLevel;
-                public int CurrentScore;
+                public int TotalScore;
                 public int NeededScore;
             }
 
@@ -244,8 +244,8 @@ public static class EventManager
 
             public class ScoreChangedArgs : Args
             {
-                public GameManager.Score ScoreAdded;
-                public GameManager.Score NewScore;
+                public Score ScoreAdded;
+                public Score NewScore;
                 public LevelSO CurrentLevel;
                 public CallerArgs scoreChangedCallerArgs;
                 public GameManager.SCORING_ORIGIN ScoringOrigin;

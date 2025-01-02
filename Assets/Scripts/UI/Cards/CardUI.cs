@@ -205,7 +205,7 @@ public class CardUI : MonoBehaviour
         _playCost.text = cardStats.PlayCost.ToString();
         _cardText.text = cardStats.CardText;
         string pointsString = "";
-        if (cardStats.Points != 0)
+        if (cardStats.Points.EcoPoints != 0)
         {
             _pointsSymbol.SetActive(true);
             if (upgradePreview && _cardInstance.PointsChangeOnUpgrade())

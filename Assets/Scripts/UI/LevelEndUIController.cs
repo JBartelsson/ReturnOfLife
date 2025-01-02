@@ -60,7 +60,7 @@ public class LevelEndUIController : MonoBehaviour
         rewardsText.gameObject.SetActive(args.WonLevel);
         pickACardButton.gameObject.SetActive(args.WonLevel);
         UIUtils.FadeStandard(endLevelCanvas, true);
-        statusText.text = (args.WonLevel ? "<color=#009711>" : "<color=red>") + $"{args.CurrentScore}</color>/{args.NeededScore}";
+        statusText.text = (args.WonLevel ? "<color=#009711>" : "<color=red>") + $"{args.TotalScore}</color>/{args.NeededScore}";
         if (args.WonLevel)
         {
             headerText.text = "Spledongl\napproves!";

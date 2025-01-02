@@ -32,7 +32,7 @@ public class AntisocialFunction : CardFunctionBase
         if (hasPlantInPattern)
         {
             Debug.Log($"OVERRIDING PLANT FUNCTION!");
-            callingCardData.RuntimePoints = 0;
+            callingCardData.RuntimeScore = new Score(0);
             callingCardData.OverridePointFunction = true;
         }
     }

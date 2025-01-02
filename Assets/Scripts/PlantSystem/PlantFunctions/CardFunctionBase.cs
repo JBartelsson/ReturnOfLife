@@ -17,14 +17,15 @@ public abstract class CardFunctionBase : PlantScriptBase
         CardInstance cardInstance = callerArgs.CallingCardInstance;
         if (!cardInstance.CardData.OverridePointFunction)
         {
-            cardInstance.CardData.RuntimePoints = cardInstance.GetCardStats().Points;
+            cardInstance.CardData.RuntimeScore = cardInstance.GetCardStats().Points;
         }
 
         //Only give points for planting a plant, when it is the first on its tile
         if (alreadyContainedPlant) return;
         if (callerArgs.playedTile == null) return;
-        if (cardInstance.CardData.RuntimePoints != 0 || cardInstance.CardData.OverridePointFunction)
-            RewardPoints(callerArgs, cardInstance.CardData.RuntimePoints);
+        // if (cardInstance.CardData.RuntimeScore != 0 || cardInstance.CardData.OverridePointFunction)
+            callerArgs.gameManager.AddPointScore(cardInstance.CardData.RuntimeScore, callerArgs,
+                GameManager.SCORING_ORIGIN.LIFEFORM);
     }
 
     public static void RewardPoints(CallerArgs callerArgs, int rewardedPoints)
@@ -36,8 +37,8 @@ public abstract class CardFunctionBase : PlantScriptBase
             return;
         }
 
-        callerArgs.gameManager.AddPointScore(Mathf.FloorToInt(basePoints), callerArgs,
-            GameManager.SCORING_ORIGIN.LIFEFORM);
+        // callerArgs.gameManager.AddPointScore(Mathf.FloorToInt(basePoints), callerArgs,
+            // GameManager.SCORING_ORIGIN.LIFEFORM);
         foreach (var modifier in callerArgs.playedTile.FieldModifiers)
         {
             switch (modifier.modifierType)

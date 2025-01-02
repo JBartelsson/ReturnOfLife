@@ -16,23 +16,6 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
-    [Serializable]
-    public struct Score
-    {
-        public Score(int ecoPoints = 0)
-        {
-            this.ecoPoints = ecoPoints;
-        }
-
-        public int EcoPoints
-        {
-            get => ecoPoints;
-            set => ecoPoints = value;
-        }
-
-        private int ecoPoints;
-    }
-
 
     public enum GameState
     {
@@ -64,6 +47,10 @@ public class GameManager : MonoBehaviour
     [FormerlySerializedAs("debug")] [Header("Debug Settings")] [SerializeField]
     private bool sceneDebug = false;
 
+    [SerializeField] private bool showTutorial;
+
+    public bool ShowTutorial => showTutorial;
+
     private Deck _deck = new Deck();
 
     public Deck Deck
@@ -88,7 +75,14 @@ public class GameManager : MonoBehaviour
     private CardInstance selectedCardBlueprint = null;
 
     //Score Related
-    private Score currentScore;
+    private Score turnScore;
+    private int totalScore;
+
+    public int TotalScore
+    {
+        get => totalScore;
+        set => totalScore = value;
+    }
 
     // Progression Related
     private LevelSO currentLevel;
@@ -96,10 +90,10 @@ public class GameManager : MonoBehaviour
 
     private bool editorBlocked = false;
 
-    public Score CurrentScore
+    public Score TurnScore
     {
-        get => currentScore;
-        set => currentScore = value;
+        get => turnScore;
+        set => turnScore = value;
     }
 
     public enum SCORING_ORIGIN
@@ -184,6 +178,9 @@ public class GameManager : MonoBehaviour
 
     private void Instance_OnGridReady(object sender, EventArgs e)
     {
+        #if UNITY_EDITOR
+        tutorialShowed = !showTutorial;
+        #endif
         if (tutorialShowed)
         {
             EventManager.Game.UI.OnTutorialScreenChange?.Invoke(false);
@@ -197,6 +194,7 @@ public class GameManager : MonoBehaviour
             EventManager.Game.UI.OnTutorialScreenChange?.Invoke(true);
             SwitchState(GameState.Tutorial);
         }
+
         GridManager.Instance.OnGridReady -= Instance_OnGridReady;
         EventManager.Game.Level.OnLevelInitialized?.Invoke(
             new EventManager.GameEvents.LevelEvents.LevelInitializedArgs()
@@ -253,14 +251,13 @@ public class GameManager : MonoBehaviour
     {
         currentLevel = planetProgression.GetRandomEnemy(currentStage);
         GridManager.Instance.BuildGrid(currentLevel);
-        
     }
 
     private void InitializeLevel()
     {
         _deck.Reset();
         Debug.Log("RESETTING LEVEL");
-        SetPointScore(0);
+        totalScore = 0;
         currentTurns = 0;
         currentPlayedCards = 0;
         selectedPlantNeedNeighbor = false;
@@ -336,7 +333,7 @@ public class GameManager : MonoBehaviour
 #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            AddPointScore(500, new CallerArgs(), SCORING_ORIGIN.LIFEFORM);
+            AddPointScore(new Score(500), new CallerArgs(), SCORING_ORIGIN.LIFEFORM);
         }
 #endif
 #if UNITY_EDITOR
@@ -485,6 +482,8 @@ public class GameManager : MonoBehaviour
             return;
         }
 
+        totalScore += turnScore.GetTotalScore();
+        ResetTurnScore();
         RemoveAllWisdoms();
         SetMana(standardMana);
         SetDiscards(standardDiscards);
@@ -507,11 +506,11 @@ public class GameManager : MonoBehaviour
 
     private void EndLevel()
     {
-        if(CheckForGameWin()) return;
+        if (CheckForGameWin()) return;
         EventManager.Game.Level.OnEndLevel?.Invoke(new EventManager.GameEvents.LevelEvents.LevelEndedArgs()
         {
             WonLevel = currentLevel.RequirementsMet(this),
-            CurrentScore = currentScore.EcoPoints,
+            TotalScore = totalScore,
             NeededScore = currentLevel.NeededEcoPoints
         });
     }
@@ -542,24 +541,31 @@ public class GameManager : MonoBehaviour
 
     //Score related
 
-    public void AddPointScore(int amount, CallerArgs scoreCallerArgs, SCORING_ORIGIN scoringOrigin)
+    public void AddPointScore(Score amount, CallerArgs scoreCallerArgs, SCORING_ORIGIN scoringOrigin)
     {
-        SetPointScore(currentScore.EcoPoints + amount, scoreCallerArgs, scoringOrigin);
-    }
-
-    private void SetPointScore(int newScore, CallerArgs scoreCallerArgs = null,
-        SCORING_ORIGIN scoringOrigin = SCORING_ORIGIN.LIFEFORM)
-    {
-        int oldScore = currentScore.EcoPoints;
-        currentScore.EcoPoints = newScore;
+        turnScore += amount;
         EventManager.Game.Level.OnScoreChanged?.Invoke(new EventManager.GameEvents.LevelEvents.ScoreChangedArgs()
         {
             sender = this,
-            NewScore = currentScore,
+            NewScore = turnScore,
             CurrentLevel = currentLevel,
             scoreChangedCallerArgs = scoreCallerArgs,
             ScoringOrigin = scoringOrigin,
-            ScoreAdded = new Score(newScore - oldScore)
+            ScoreAdded = amount
+        });
+    }
+
+    private void SetTurnScore(Score newScore, CallerArgs scoreCallerArgs = null,
+        SCORING_ORIGIN scoringOrigin = SCORING_ORIGIN.LIFEFORM)
+    {
+        turnScore = newScore;
+        EventManager.Game.Level.OnScoreChanged?.Invoke(new EventManager.GameEvents.LevelEvents.ScoreChangedArgs()
+        {
+            sender = this,
+            NewScore = turnScore,
+            CurrentLevel = currentLevel,
+            scoreChangedCallerArgs = scoreCallerArgs,
+            ScoringOrigin = scoringOrigin,
         });
         // if (currentLevel.RequirementsMet(this))
         // {
@@ -567,6 +573,10 @@ public class GameManager : MonoBehaviour
         // }
     }
 
+    public void ResetTurnScore()
+    {
+        SetTurnScore(new Score(0, 1));
+    }
     private bool SetMana(int amount)
     {
         if (amount < 0)
@@ -612,9 +622,10 @@ public class GameManager : MonoBehaviour
 
         return false;
     }
+
     public void NextLevel()
     {
-        if(CheckForGameWin()) return;
+        if (CheckForGameWin()) return;
 
         currentStage++;
         SceneLoader.Reload();
