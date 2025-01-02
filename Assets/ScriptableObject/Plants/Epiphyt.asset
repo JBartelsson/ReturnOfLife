@@ -15,14 +15,24 @@ MonoBehaviour:
   plantSprite: {fileID: 21300000, guid: 3f4b321108edac9448fe773e55512716, type: 3}
   <CardName>k__BackingField: Epiphyt
   lifeformType: 4
+  TestScore:
+    ecoPoints: 0
+    mult: 0
+    multMultiplier: 0
   regularCardStats:
-    Points: 0
+    Points:
+      ecoPoints: 0
+      mult: 0
+      multMultiplier: 1
     EffectPattern: {fileID: 11400000, guid: 0b9b2a87fef7c7746b6a64e574cdd886, type: 2}
     CardText: Kills up to one Lifeform in the <b>Pattern</b> and grants its mana.
     PlayCost: 0
     SecondMoveCallAmount: 1
   upgradedCardStats:
-    Points: 0
+    Points:
+      ecoPoints: 0
+      mult: 0
+      multMultiplier: 0
     EffectPattern: {fileID: 11400000, guid: 03c55ff4c842f654baba9ec08d703ece, type: 2}
     CardText: Kills up to <color=#a02e0e>three</color> Lifeforms in the <color=#a02e0e><b>Pattern+</b></color>
       and grants their mana.
@@ -37,11 +47,11 @@ MonoBehaviour:
   cardFunction:
     executionType: 0
     scriptType:
-      _classRef: SinglePlacementFunction, Assembly-CSharp
+      _classRef: EpiphytFunction, Assembly-CSharp
   cardEditor:
     executionType: 0
     scriptType:
-      _classRef: EpiphytSecondMove, Assembly-CSharp
+      _classRef: 
   cardAccessCheck:
     executionType: 3
     scriptType:

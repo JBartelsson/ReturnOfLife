@@ -15,14 +15,24 @@ MonoBehaviour:
   plantSprite: {fileID: 21300000, guid: 1789e29763747da43a24247c67c5e453, type: 3}
   <CardName>k__BackingField: Normalo
   lifeformType: 5
+  TestScore:
+    ecoPoints: 0
+    mult: 0
+    multMultiplier: 0
   regularCardStats:
-    Points: 20
+    Points:
+      ecoPoints: 0
+      mult: 0
+      multMultiplier: 2
     EffectPattern: {fileID: 11400000, guid: 5286373c1ec30ab40a6e3cfe5fe7e13b, type: 2}
     CardText: Does nothing.
     PlayCost: 1
     SecondMoveCallAmount: 1
   upgradedCardStats:
-    Points: 45
+    Points:
+      ecoPoints: 0
+      mult: 0
+      multMultiplier: 0
     EffectPattern: {fileID: 11400000, guid: 5286373c1ec30ab40a6e3cfe5fe7e13b, type: 2}
     CardText: Does nothing.
     PlayCost: 1

@@ -15,15 +15,25 @@ MonoBehaviour:
   plantSprite: {fileID: 21300000, guid: 401cd1e6a53b9e14fa396c168ffd99cc, type: 3}
   <CardName>k__BackingField: Lycoperdon
   lifeformType: 3
+  TestScore:
+    ecoPoints: 0
+    mult: 0
+    multMultiplier: 0
   regularCardStats:
-    Points: 15
+    Points:
+      ecoPoints: 0
+      mult: 0
+      multMultiplier: 1
     EffectPattern: {fileID: 11400000, guid: a66e24e2058a24543bbfc0274f6f0133, type: 2}
     CardText: If a Lifeform is planted on the same field, it kills the Lifeform and
       plants new Lycoperdon on empty fields in the <b>Pattern</b>.
     PlayCost: 2
     SecondMoveCallAmount: 1
   upgradedCardStats:
-    Points: 15
+    Points:
+      ecoPoints: 0
+      mult: 0
+      multMultiplier: 0
     EffectPattern: {fileID: 11400000, guid: b83dc6f660126f24c89ca6f7dd25b3e7, type: 2}
     CardText: If a Lifeform is planted on the same field, it kills the Lifeform and
       plants new Lycoperdon on empty fields in the <color=#a02e0e><b>Pattern+</b></color>.

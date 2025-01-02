@@ -273,6 +273,66 @@ public class Grid
         }
     }
 
+    public void ForEveryLifeformInCluster(CardData.LifeformTypeEnum lifeformTypeEnum, GridTile gridTile,
+        Action<GridTile> executeFunc)
+    {
+        List<GridTile> visitedTiles = new List<GridTile>();
+        ForEveryCluster(ref visitedTiles, gridTile, executeFunc, (nextTile, currentTile) =>
+        {
+            Debug.Log($"Comparison is schnonk");
+            if (nextTile.CardInstance == null) return false;
+            Debug.Log($"tile 1 not null");
+            if (currentTile.CardInstance == null) return false;
+            Debug.Log($"tile 2 not null");
+            bool comparison = nextTile.CardInstance.CardData.LifeformType == lifeformTypeEnum;
+            Debug.Log($"Comparison is {comparison}");
+            return comparison;
+        } );
+    }
+    public void ForEveryCluster(ref List<GridTile> visitedTiles,
+        GridTile gridTile, Action<GridTile> executeFunc, Func<GridTile, GridTile, bool> comparison)
+    {
+        executeFunc(gridTile);
+        visitedTiles.Add(gridTile);
+
+        if (gridTile.RightNeighbor != null)
+        {
+            if (comparison(gridTile.RightNeighbor,  gridTile) &&
+                !visitedTiles.Contains(gridTile.RightNeighbor))
+            {
+                ForEveryCluster(ref visitedTiles, gridTile.RightNeighbor, executeFunc, comparison);
+            }
+        }
+
+        if (gridTile.TopNeighbor != null)
+        {
+            if (comparison(gridTile.TopNeighbor,  gridTile) &&
+                !visitedTiles.Contains(gridTile.TopNeighbor))
+            {
+                ForEveryCluster(ref visitedTiles, gridTile.TopNeighbor, executeFunc, comparison);
+            }
+        }
+        
+        if (gridTile.LeftNeighbor != null)
+        {
+            if (comparison(gridTile.LeftNeighbor,  gridTile) &&
+                !visitedTiles.Contains(gridTile.LeftNeighbor))
+            {
+                ForEveryCluster(ref visitedTiles, gridTile.LeftNeighbor, executeFunc, comparison);
+            }
+        }
+        
+        if (gridTile.BottomNeighbor != null)
+        {
+            if (comparison(gridTile.BottomNeighbor,  gridTile) &&
+                !visitedTiles.Contains(gridTile.BottomNeighbor))
+            {
+                ForEveryCluster(ref visitedTiles, gridTile.BottomNeighbor, executeFunc, comparison);
+            }
+        }
+        
+    }
+
     public void AddSpecialField(Pattern.Index index, Pattern.Index offset, SpecialFieldType fieldType,
         EnemiesSO currentEnemy)
     {

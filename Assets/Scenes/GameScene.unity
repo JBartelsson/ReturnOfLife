@@ -1253,6 +1253,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -26.800003
       objectReference: {fileID: 0}
+    - target: {fileID: 5328078232577313869, guid: d0df6d8f51d3cdf4383671d2f6b8176f, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -0.97509766
+      objectReference: {fileID: 0}
+    - target: {fileID: 5328078232577313869, guid: d0df6d8f51d3cdf4383671d2f6b8176f, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 1.1999512
+      objectReference: {fileID: 0}
     - target: {fileID: 5426894679119508901, guid: d0df6d8f51d3cdf4383671d2f6b8176f, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -24.699997
@@ -1295,7 +1303,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5710706428549498998, guid: d0df6d8f51d3cdf4383671d2f6b8176f, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.00002609683
+      value: 0.00059935224
       objectReference: {fileID: 0}
     - target: {fileID: 5719628174205547297, guid: d0df6d8f51d3cdf4383671d2f6b8176f, type: 3}
       propertyPath: m_AnchorMax.x
@@ -1360,6 +1368,14 @@ PrefabInstance:
     - target: {fileID: 6257313890184006677, guid: d0df6d8f51d3cdf4383671d2f6b8176f, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6399706415483700545, guid: d0df6d8f51d3cdf4383671d2f6b8176f, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -0.97509766
+      objectReference: {fileID: 0}
+    - target: {fileID: 6399706415483700545, guid: d0df6d8f51d3cdf4383671d2f6b8176f, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 1.1999512
       objectReference: {fileID: 0}
     - target: {fileID: 6487222159216590931, guid: d0df6d8f51d3cdf4383671d2f6b8176f, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -2038,6 +2054,7 @@ MonoBehaviour:
   standardDiscards: 3
   planetProgression: {fileID: 11400000, guid: 6e94a5606a9b013458f6d7b745fea5df, type: 2}
   sceneDebug: 0
+  showTutorial: 0
 --- !u!1 &1045059058
 GameObject:
   m_ObjectHideFlags: 0
