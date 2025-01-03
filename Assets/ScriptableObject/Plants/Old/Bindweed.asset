@@ -10,51 +10,49 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2e8b50ae5f69e2046bcf6f1f5f58bf0c, type: 3}
-  m_Name: ComboBush
+  m_Name: Bindweed
   m_EditorClassIdentifier: 
-  plantSprite: {fileID: 21300000, guid: 401cd1e6a53b9e14fa396c168ffd99cc, type: 3}
-  <CardName>k__BackingField: Lycoperdon
-  lifeformType: 3
+  plantSprite: {fileID: 21300000, guid: 59558476e5778284da4f81efc287f155, type: 3}
+  <CardName>k__BackingField: Bindweed
+  lifeformType: 2
   TestScore:
     ecoPoints: 0
     mult: 0
     multMultiplier: 0
   regularCardStats:
-    Points:
-      ecoPoints: 0
+    Score:
+      ecoPoints: 20
       mult: 0
       multMultiplier: 1
-    EffectPattern: {fileID: 11400000, guid: a66e24e2058a24543bbfc0274f6f0133, type: 2}
-    CardText: If a Lifeform is planted on the same field, it kills the Lifeform and
-      plants new Lycoperdon on empty fields in the <b>Pattern</b>.
-    PlayCost: 2
+    EffectPattern: {fileID: 11400000, guid: 58e5ab6e4cf343746a10423e47c88ec9, type: 2}
+    CardText: When planted, plant another Bindweed inside the <b>Pattern</b>.
+    PlayCost: 1
     SecondMoveCallAmount: 1
   upgradedCardStats:
-    Points:
+    Score:
       ecoPoints: 0
       mult: 0
       multMultiplier: 0
-    EffectPattern: {fileID: 11400000, guid: b83dc6f660126f24c89ca6f7dd25b3e7, type: 2}
-    CardText: If a Lifeform is planted on the same field, it kills the Lifeform and
-      plants new Lycoperdon on empty fields in the <color=#a02e0e><b>Pattern+</b></color>.
-    PlayCost: 2
+    EffectPattern: {fileID: 11400000, guid: 35ecfea0a95cba64c9dba6c3b6e94bb9, type: 2}
+    CardText: When planted, plant another Bindweed inside the <color=#a02e0e><b>Pattern+</b></color>.
+    PlayCost: 1
     SecondMoveCallAmount: 1
   <Element>k__BackingField: 0
   effectType: 0
   wisdomType: 0
   <Rarity>k__BackingField: 0
-  secondMoveText: 
+  secondMoveText: Plant Bindweed
   overridePointFunction: 0
   cardFunction:
     executionType: 2
     scriptType:
       _classRef: ComboBushCardFunction, Assembly-CSharp
   cardEditor:
-    executionType: 3
-    scriptType:
-      _classRef: 
-  cardAccessCheck:
     executionType: 0
+    scriptType:
+      _classRef: BindweedSecondMove, Assembly-CSharp
+  cardAccessCheck:
+    executionType: 3
     scriptType:
       _classRef: ComboBushAccessCheck, Assembly-CSharp
     OverrideNeighboring: 0
@@ -63,6 +61,6 @@ MonoBehaviour:
     scriptType:
       _classRef: CheckForNeighboring, Assembly-CSharp
   cardPassiveCall:
-    executionType: 0
+    executionType: 3
     scriptType:
       _classRef: 

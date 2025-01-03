@@ -20,7 +20,7 @@ MonoBehaviour:
     mult: 0
     multMultiplier: 0
   regularCardStats:
-    Points:
+    Score:
       ecoPoints: 0
       mult: 0
       multMultiplier: 1
@@ -29,7 +29,7 @@ MonoBehaviour:
     PlayCost: 0
     SecondMoveCallAmount: 1
   upgradedCardStats:
-    Points:
+    Score:
       ecoPoints: 0
       mult: 0
       multMultiplier: 0
@@ -47,7 +47,7 @@ MonoBehaviour:
   cardFunction:
     executionType: 0
     scriptType:
-      _classRef: EpiphytFunction, Assembly-CSharp
+      _classRef: ComboBushCardFunction, Assembly-CSharp
   cardEditor:
     executionType: 0
     scriptType:
@@ -55,7 +55,7 @@ MonoBehaviour:
   cardAccessCheck:
     executionType: 3
     scriptType:
-      _classRef: NoOtherCardsPlacable, Assembly-CSharp
+      _classRef: ComboBushAccessCheck, Assembly-CSharp
     OverrideNeighboring: 0
   cardCanExecuteCheck:
     executionType: 0

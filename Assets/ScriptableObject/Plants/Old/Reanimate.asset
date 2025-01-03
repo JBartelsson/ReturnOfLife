@@ -1,0 +1,68 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e8b50ae5f69e2046bcf6f1f5f58bf0c, type: 3}
+  m_Name: Reanimate
+  m_EditorClassIdentifier: 
+  plantSprite: {fileID: 21300000, guid: 8e63551e5b5cd5a4f84778fb6d4f18bc, type: 3}
+  <CardName>k__BackingField: Reanimate
+  lifeformType: 6
+  TestScore:
+    ecoPoints: 0
+    mult: 0
+    multMultiplier: 0
+  regularCardStats:
+    Score:
+      ecoPoints: 0
+      mult: 0
+      multMultiplier: 1
+    EffectPattern: {fileID: 11400000, guid: 4263142aff317ce42bc4b97925970b8d, type: 2}
+    CardText: Revives up to one Lifeform in the <b>Pattern</b> and triggers its upgraded
+      effects.
+    PlayCost: 1
+    SecondMoveCallAmount: 1
+  upgradedCardStats:
+    Score:
+      ecoPoints: 0
+      mult: 0
+      multMultiplier: 0
+    EffectPattern: {fileID: 11400000, guid: 03c55ff4c842f654baba9ec08d703ece, type: 2}
+    CardText: Revives up to <color=#a02e0e>three</color> Lifeforms in the <color=#a02e0e><b>Pattern+</b></color>
+      and triggers their upgraded effects.
+    PlayCost: 2
+    SecondMoveCallAmount: 3
+  <Element>k__BackingField: 0
+  effectType: 0
+  wisdomType: 0
+  <Rarity>k__BackingField: 1
+  secondMoveText: Revive Lifeform
+  overridePointFunction: 0
+  cardFunction:
+    executionType: 0
+    scriptType:
+      _classRef: ComboBushCardFunction, Assembly-CSharp
+  cardEditor:
+    executionType: 3
+    scriptType:
+      _classRef: 
+  cardAccessCheck:
+    executionType: 3
+    scriptType:
+      _classRef: ComboBushAccessCheck, Assembly-CSharp
+    OverrideNeighboring: 0
+  cardCanExecuteCheck:
+    executionType: 0
+    scriptType:
+      _classRef: CheckForNeighboring, Assembly-CSharp
+  cardPassiveCall:
+    executionType: 0
+    scriptType:
+      _classRef: 

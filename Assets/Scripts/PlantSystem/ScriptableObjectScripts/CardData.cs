@@ -25,7 +25,7 @@ public class CardData : ScriptableObject, ICloneable
         Normalo = 5,
         Reanimate = 6,
         Epiphany = 7,
-        Pairy = 8,
+        TheSwarm = 8,
         Triolyt = 9,
         Socius = 10,
         Motherbush = 11
@@ -183,9 +183,11 @@ public class CardData : ScriptableObject, ICloneable
         set => lifeformType = value;
     }
 
-    [SerializeField] private Score TestScore;
     [SerializeField] private CardStats regularCardStats;
-    [SerializeField] private CardStats upgradedCardStats;
+    [SerializeField] private CardStats effectCardStats;
+
+    
+
     [field: SerializeField] public CardElement Element { get; private set; }
 
     [FormerlySerializedAs("EffectType")] [SerializeField]
@@ -291,12 +293,13 @@ public class CardData : ScriptableObject, ICloneable
         get => regularCardStats;
         set => regularCardStats = value;
     }
-
-    public CardStats UpgradedCardStats
+    
+    public CardStats EffectCardStats
     {
-        get => upgradedCardStats;
-        set => upgradedCardStats = value;
+        get => effectCardStats;
+        set => effectCardStats = value;
     }
+
 
     public CardEffectType EffectType => effectType;
 

@@ -476,14 +476,14 @@ public class GameManager : MonoBehaviour
     public void EndTurn()
     {
         currentTurns++;
+        totalScore += turnScore.GetTotalScore();
+        ResetTurnScore();
         if (currentTurns > standardTurns)
         {
             EndLevel();
             return;
         }
 
-        totalScore += turnScore.GetTotalScore();
-        ResetTurnScore();
         RemoveAllWisdoms();
         SetMana(standardMana);
         SetDiscards(standardDiscards);

@@ -188,9 +188,8 @@ public class CardUI : MonoBehaviour
     private void SetCardTexts(bool upgradePreview)
     {
         SetCardEffectTypeText();
-        CardStats cardStats = !upgradePreview
-            ? _cardInstance.CardData.RegularCardStats
-            : _cardInstance.CardData.UpgradedCardStats;
+        CardStats cardStats = _cardInstance.CardData.RegularCardStats;
+
         string cardName;
         if (_cardInstance.CardData.EffectType == CardEffectType.Plant)
         {
@@ -208,16 +207,9 @@ public class CardUI : MonoBehaviour
         if (cardStats.Score.EcoPoints != 0)
         {
             _pointsSymbol.SetActive(true);
-            if (upgradePreview && _cardInstance.PointsChangeOnUpgrade())
-            {
-                pointsImageUpgraded.enabled = true;
-                pointsImageNormal.enabled = false;
-            }
-            else
-            {
-                pointsImageUpgraded.enabled = false;
-                pointsImageNormal.enabled = true;
-            }
+
+            pointsImageUpgraded.enabled = false;
+            pointsImageNormal.enabled = true;
             pointsString += cardStats.Score.ToString();
             _pointsText.text = pointsString;
         }

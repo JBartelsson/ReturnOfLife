@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2e8b50ae5f69e2046bcf6f1f5f58bf0c, type: 3}
-  m_Name: Motherbush
+  m_Name: Socius
   m_EditorClassIdentifier: 
-  plantSprite: {fileID: -8828791587317919967, guid: c03394cd0a38e9949bb3b0e42eb10e02, type: 3}
-  <CardName>k__BackingField: Motherbush
-  lifeformType: 11
+  plantSprite: {fileID: -8926943045046772140, guid: b6abafd79fe5a1d4da37002c252803ef, type: 3}
+  <CardName>k__BackingField: Triolyt
+  lifeformType: 9
   regularCardStats:
     Score:
-      ecoPoints: 0
+      ecoPoints: 3
       mult: 0
       multMultiplier: 1
     EffectPattern: {fileID: 11400000, guid: 5286373c1ec30ab40a6e3cfe5fe7e13b, type: 2}
@@ -26,8 +26,8 @@ MonoBehaviour:
     SecondMoveCallAmount: 1
   effectCardStats:
     Score:
-      ecoPoints: 0
-      mult: 0.5
+      ecoPoints: 15
+      mult: 0
       multMultiplier: 1
     EffectPattern: {fileID: 0}
     CardText: 
@@ -42,7 +42,7 @@ MonoBehaviour:
   cardFunction:
     executionType: 0
     scriptType:
-      _classRef: Function_AddScoreForInstance, Assembly-CSharp
+      _classRef: Function_Triolyt, Assembly-CSharp
   cardEditor:
     executionType: 0
     scriptType:

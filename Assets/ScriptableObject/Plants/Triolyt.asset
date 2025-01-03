@@ -10,32 +10,28 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2e8b50ae5f69e2046bcf6f1f5f58bf0c, type: 3}
-  m_Name: Antisocial
+  m_Name: Triolyt
   m_EditorClassIdentifier: 
-  plantSprite: {fileID: 21300000, guid: 55dde419c45bb264094a6e6f5dd9d1e9, type: 3}
-  <CardName>k__BackingField: Antisocial
-  lifeformType: 1
-  TestScore:
-    ecoPoints: 0
-    mult: 0
-    multMultiplier: 0
+  plantSprite: {fileID: -8926943045046772140, guid: b6abafd79fe5a1d4da37002c252803ef, type: 3}
+  <CardName>k__BackingField: Triolyt
+  lifeformType: 9
   regularCardStats:
-    Points:
-      ecoPoints: 0
+    Score:
+      ecoPoints: 3
       mult: 0
       multMultiplier: 1
-    EffectPattern: {fileID: 11400000, guid: cc8af7e4462826c46adbd43adf3d9ec2, type: 2}
-    CardText: Only grants points if there is no Antisocial in the <b>Pattern</b>.
-    PlayCost: 2
+    EffectPattern: {fileID: 11400000, guid: 5286373c1ec30ab40a6e3cfe5fe7e13b, type: 2}
+    CardText: 
+    PlayCost: 0
     SecondMoveCallAmount: 1
-  upgradedCardStats:
-    Points:
-      ecoPoints: 0
+  effectCardStats:
+    Score:
+      ecoPoints: 15
       mult: 0
-      multMultiplier: 0
-    EffectPattern: {fileID: 11400000, guid: cc8af7e4462826c46adbd43adf3d9ec2, type: 2}
-    CardText: Only grants points if there is no Antisocial in the <b>Pattern</b>.
-    PlayCost: 2
+      multMultiplier: 1
+    EffectPattern: {fileID: 0}
+    CardText: 
+    PlayCost: 0
     SecondMoveCallAmount: 1
   <Element>k__BackingField: 0
   effectType: 0
@@ -44,9 +40,9 @@ MonoBehaviour:
   secondMoveText: 
   overridePointFunction: 0
   cardFunction:
-    executionType: 2
+    executionType: 0
     scriptType:
-      _classRef: SinglePlacementFunction, Assembly-CSharp
+      _classRef: Function_Triolyt, Assembly-CSharp
   cardEditor:
     executionType: 0
     scriptType:

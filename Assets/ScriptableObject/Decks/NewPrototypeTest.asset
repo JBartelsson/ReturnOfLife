@@ -16,5 +16,9 @@ MonoBehaviour:
   deck:
   - cardDataReference: {fileID: 11400000, guid: f0e35e00fb3ca7d4e9463c85cdbb77ec, type: 2}
     amount: 20
+  - cardDataReference: {fileID: 11400000, guid: a25da172ef09df743b2b53945fed78f4, type: 2}
+    amount: 4
+  - cardDataReference: {fileID: 11400000, guid: b7e15c8236e34aa4ab5c8314c7b0b37d, type: 2}
+    amount: 20
   unlockAtStart: 0
   unavailable: 0

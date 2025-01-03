@@ -12,6 +12,7 @@ public abstract class CardFunctionBase : PlantScriptBase
     {
         Debug.Log($"EXECUTING PLANT FUNCTION");
         bool alreadyContainedPlant = callerArgs.playedTile.ContainsAnyPlant();
+        Debug.Log("Before EXECUTING:" + callerArgs.playedTile);
         ExecuteCard(callerArgs);
         //Reward points if no override is defined
         CardInstance cardInstance = callerArgs.CallingCardInstance;
@@ -21,8 +22,10 @@ public abstract class CardFunctionBase : PlantScriptBase
         //Only give points for planting a plant, when it is the first on its tile
         if (alreadyContainedPlant) return;
         if (callerArgs.playedTile == null) return;
+        Debug.Log("Before ADDING:" + callerArgs.playedTile);
         // if (cardInstance.CardData.RuntimeScore != 0 || cardInstance.CardData.OverridePointFunction)
-            
+        callerArgs.gameManager.AddPointScore(callerArgs.CallingCardInstance.GetTotalCardScore(), callerArgs,
+            GameManager.SCORING_ORIGIN.LIFEFORM);    
     }
 
     public static void RewardPoints(CallerArgs callerArgs, int rewardedPoints)

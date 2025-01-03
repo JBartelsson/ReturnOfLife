@@ -168,21 +168,18 @@ public class CardInstance : ICloneable
 
     public CardData.CardStats GetCardStats()
     {
-        if (!IsUpgraded())
-        {
             return cardData.RegularCardStats;
-        }
-        else
-        {
-            return cardData.UpgradedCardStats;
-        }
     }
-
-    public bool PointsChangeOnUpgrade()
+    
+    public Score GetTotalCardScore()
     {
-        return cardData.RegularCardStats.Score.EcoPoints != cardData.UpgradedCardStats.Score.EcoPoints;
+        return cardData.RegularCardStats.Score + cardData.RuntimeScore;
     }
 
+    public CardData.CardStats GetEffectCardStats()
+    {
+        return cardData.EffectCardStats;
+    }
     public void Execute(CallerArgs callerArgs)
     {
         callerArgs.CallingCardInstance = this;

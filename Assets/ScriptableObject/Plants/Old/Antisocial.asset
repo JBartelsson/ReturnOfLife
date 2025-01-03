@@ -10,32 +10,32 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2e8b50ae5f69e2046bcf6f1f5f58bf0c, type: 3}
-  m_Name: Normalo
+  m_Name: Antisocial
   m_EditorClassIdentifier: 
-  plantSprite: {fileID: 21300000, guid: 1789e29763747da43a24247c67c5e453, type: 3}
-  <CardName>k__BackingField: Normalo
-  lifeformType: 5
+  plantSprite: {fileID: 21300000, guid: 55dde419c45bb264094a6e6f5dd9d1e9, type: 3}
+  <CardName>k__BackingField: Antisocial
+  lifeformType: 1
   TestScore:
     ecoPoints: 0
     mult: 0
     multMultiplier: 0
   regularCardStats:
-    Points:
+    Score:
       ecoPoints: 0
       mult: 0
-      multMultiplier: 2
-    EffectPattern: {fileID: 11400000, guid: 5286373c1ec30ab40a6e3cfe5fe7e13b, type: 2}
-    CardText: Does nothing.
-    PlayCost: 1
+      multMultiplier: 1
+    EffectPattern: {fileID: 11400000, guid: cc8af7e4462826c46adbd43adf3d9ec2, type: 2}
+    CardText: Only grants points if there is no Antisocial in the <b>Pattern</b>.
+    PlayCost: 2
     SecondMoveCallAmount: 1
   upgradedCardStats:
-    Points:
+    Score:
       ecoPoints: 0
       mult: 0
       multMultiplier: 0
-    EffectPattern: {fileID: 11400000, guid: 5286373c1ec30ab40a6e3cfe5fe7e13b, type: 2}
-    CardText: Does nothing.
-    PlayCost: 1
+    EffectPattern: {fileID: 11400000, guid: cc8af7e4462826c46adbd43adf3d9ec2, type: 2}
+    CardText: Only grants points if there is no Antisocial in the <b>Pattern</b>.
+    PlayCost: 2
     SecondMoveCallAmount: 1
   <Element>k__BackingField: 0
   effectType: 0
@@ -46,7 +46,7 @@ MonoBehaviour:
   cardFunction:
     executionType: 2
     scriptType:
-      _classRef: SinglePlacementFunction, Assembly-CSharp
+      _classRef: ComboBushCardFunction, Assembly-CSharp
   cardEditor:
     executionType: 0
     scriptType:
@@ -54,7 +54,7 @@ MonoBehaviour:
   cardAccessCheck:
     executionType: 0
     scriptType:
-      _classRef: NoOtherCardsPlacable, Assembly-CSharp
+      _classRef: ComboBushAccessCheck, Assembly-CSharp
     OverrideNeighboring: 0
   cardCanExecuteCheck:
     executionType: 0
