@@ -145,7 +145,6 @@ public class CardsUIController : MonoBehaviour
     private void OnSecondMoveNeeded(EventManager.GameEvents.UIEvents.OnSecondMoveNeededArgs neededArgs)
     {
         SwitchState(State.SecondMove);
-        Debug.Log("EDITOR INITIALIZED");
         foreach (CardHandUI cardUI in currentCards)
         {
             cardUI.SetActiveState(false);
@@ -172,7 +171,6 @@ public class CardsUIController : MonoBehaviour
                 secondMovePlayable = true;
             }
         });
-        Debug.Log($"Second Move is {secondMovePlayable}!");
         if (!secondMovePlayable)
         {
             CancelPlaying(true);
@@ -219,7 +217,6 @@ public class CardsUIController : MonoBehaviour
     {
         if (gameplayBlocked && !overwriteEditorBlock) return;
         //If right click
-        Debug.Log("GAME INPUT ON CANCEL IS CALLED");
         if (currentState == State.SecondMove)
         {
             GameManager.Instance.CancelSecondMove();
@@ -251,7 +248,6 @@ public class CardsUIController : MonoBehaviour
 
     private void InitCards(int handSize)
     {
-        Debug.Log("NEW CARD UI PREFABS ARE BEING GENERATED");
         for (int i = 0; i < handSize ; i++)
         {
             GameObject newCard = Instantiate(cardPrefab, cardsParent);
@@ -274,7 +270,6 @@ public class CardsUIController : MonoBehaviour
     private void AddToAnimationQueue(Sequence animationSequence, AnimationType animationType)
     {
         animationQueue.Add(new AnimationItem(animationSequence, animationType));
-        Debug.Log($"Queuing {animationType} Animation");
         PlayNextQueueItem();
     }
     private void PlayNextQueueItem(bool force = false)
@@ -284,7 +279,6 @@ public class CardsUIController : MonoBehaviour
             animationQueue.RemoveAt(0);
             if (animationQueue.Count == 0) blockQueue = false;
         }
-        Debug.Log($"Animation queue count {animationQueue.Count}, blockqueue: {blockQueue}, force: {force}");
         if (animationQueue.Count != 0)
         {
             if (blockQueue && !force) return;
@@ -293,21 +287,17 @@ public class CardsUIController : MonoBehaviour
             {
                 return ((int)item.AnimationType).CompareTo((int)animationItem.AnimationType);
             });
-            Debug.Log("Showing Animation Queue");
             foreach (var animationItem in animationQueue)
             {
                 Debug.Log($"{animationItem.AnimationType}");
             }
-            Debug.Log("End of Animation Queue");
 
             animationQueue[0].Animation.OnComplete(() =>
             {
-                Debug.Log("Callback worked!");
                 blockQueue = false;
                 PlayNextQueueItem(true);
             });
             blockQueue = true;
-            Debug.Log($"Playing a {animationQueue[0].AnimationType} animation at time {Time.time}");
             animationQueue[0].Animation.Play();
         }
     }
@@ -339,18 +329,15 @@ public class CardsUIController : MonoBehaviour
                 SetCardTargetPosition(currentCards[i]);
             }
             AddToAnimationQueue(cardHandUI.PlayDrawAnimation(), AnimationType.Draw);
-            Debug.Log($"SHOULD PLAY DRAW ANIMATION OF INDEX {cardHandUI.CardUI.CardIndex}");
         }
         else
         {
-            Debug.Log("THERE ARE ALREADY MAX Cards and Drawing was possible in UI. FIX THIS!");
         }
     }
 
     private void OnDiscardCard(EventManager.GameEvents.LevelEvents.DiscardCardArgs arg0)
     {
         cardsUIContainer.CalculatePositions();
-        Debug.Log($"DISCARDING CARD {arg0.DiscardedIndex}");
 
         for (var i = 0; i < currentCards.Count; i++)
         {
@@ -420,7 +407,6 @@ public class CardsUIController : MonoBehaviour
         CardHandUI currentWisdom = currentCards.FirstOrDefault((x) => x.CardUI.CardIndex == cardIndex);
         if (currentWisdom == null)
         {
-            Debug.Log("WISDOM WASNT FOUND!");
             return;
         }
         GameManager.Instance.AddWisdom(currentWisdom.CardUI.CardInstance);

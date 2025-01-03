@@ -2876,9 +2876,13 @@ PrefabInstance:
       value: PersistentGameLogic
       objectReference: {fileID: 0}
     - target: {fileID: 7508343636413544247, guid: 7f9065ec08541e44c805b690e81fec44, type: 3}
+      propertyPath: debug
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7508343636413544247, guid: 7f9065ec08541e44c805b690e81fec44, type: 3}
       propertyPath: debugStartDeck
       value: 
-      objectReference: {fileID: 11400000, guid: 22115b2d89455484894cf219c331c07d, type: 2}
+      objectReference: {fileID: 11400000, guid: 3fc26081a5068224a8c185a373ee3ff7, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

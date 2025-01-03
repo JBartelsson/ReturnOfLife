@@ -205,7 +205,7 @@ public class CardUI : MonoBehaviour
         _playCost.text = cardStats.PlayCost.ToString();
         _cardText.text = cardStats.CardText;
         string pointsString = "";
-        if (cardStats.Points.EcoPoints != 0)
+        if (cardStats.Score.EcoPoints != 0)
         {
             _pointsSymbol.SetActive(true);
             if (upgradePreview && _cardInstance.PointsChangeOnUpgrade())
@@ -218,7 +218,7 @@ public class CardUI : MonoBehaviour
                 pointsImageUpgraded.enabled = false;
                 pointsImageNormal.enabled = true;
             }
-            pointsString += cardStats.Points.ToString();
+            pointsString += cardStats.Score.ToString();
             _pointsText.text = pointsString;
         }
         else

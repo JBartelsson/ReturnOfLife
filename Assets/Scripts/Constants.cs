@@ -11,10 +11,10 @@ public class Constants
     //UI Related
     public const float HOVERED_ALPHA_VALUE = .3f;
     public const float DEATH_SATURATION_VALUE = 0f;
-    public static readonly Color POSITIVE_GREEN_COLOR = new Color(0, 152/256f, 18/256f);
+    public static readonly Color ECO_POINTS_COLOR = new Color(0, 152/256f, 18/256f);
     public static readonly Color NEUTRAL_GRAY_COLOR = new Color(116/256f, 116/256f, 116/256f);
-    public static readonly Color NEGATIVE_RED_COLOR = new Color(150/256f, 20/256f, 20/256f);
-    public static readonly Color MULTIPLICATION_COLOR = new Color(255/256f, 160/256f, 0/256f);
+    public static readonly Color MULTIPLICATION_COLOR = new Color(220/256f, 20/256f, 20/256f);
+    public static readonly Color MULTIPLICATION_FIELD_COLOR = new Color(255/256f, 160/256f, 0/256f);
     public const float UI_POINT_SPEED = .5f;
     public const float UI_POINT_DISAPPEAR_SPEED = .25f;
     public const float UI_POINT_WAIT_INTERVAL = .25f;

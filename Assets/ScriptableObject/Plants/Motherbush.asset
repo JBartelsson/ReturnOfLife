@@ -1,0 +1,66 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e8b50ae5f69e2046bcf6f1f5f58bf0c, type: 3}
+  m_Name: Motherbush
+  m_EditorClassIdentifier: 
+  plantSprite: {fileID: -8828791587317919967, guid: c03394cd0a38e9949bb3b0e42eb10e02, type: 3}
+  <CardName>k__BackingField: Motherbush
+  lifeformType: 11
+  TestScore:
+    ecoPoints: 0
+    mult: 0
+    multMultiplier: 0
+  regularCardStats:
+    Score:
+      ecoPoints: 0
+      mult: 0.5
+      multMultiplier: 1
+    EffectPattern: {fileID: 11400000, guid: 5286373c1ec30ab40a6e3cfe5fe7e13b, type: 2}
+    CardText: 
+    PlayCost: 0
+    SecondMoveCallAmount: 1
+  upgradedCardStats:
+    Score:
+      ecoPoints: 0
+      mult: 0
+      multMultiplier: 0
+    EffectPattern: {fileID: 0}
+    CardText: 
+    PlayCost: 0
+    SecondMoveCallAmount: 1
+  <Element>k__BackingField: 0
+  effectType: 0
+  wisdomType: 0
+  <Rarity>k__BackingField: 0
+  secondMoveText: 
+  overridePointFunction: 0
+  cardFunction:
+    executionType: 0
+    scriptType:
+      _classRef: Function_Motherbush, Assembly-CSharp
+  cardEditor:
+    executionType: 0
+    scriptType:
+      _classRef: 
+  cardAccessCheck:
+    executionType: 0
+    scriptType:
+      _classRef: NoOtherCardsPlacable, Assembly-CSharp
+    OverrideNeighboring: 0
+  cardCanExecuteCheck:
+    executionType: 0
+    scriptType:
+      _classRef: CheckForNeighboring, Assembly-CSharp
+  cardPassiveCall:
+    executionType: 0
+    scriptType:
+      _classRef: 

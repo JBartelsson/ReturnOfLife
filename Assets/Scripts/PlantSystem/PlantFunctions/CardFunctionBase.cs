@@ -15,17 +15,14 @@ public abstract class CardFunctionBase : PlantScriptBase
         ExecuteCard(callerArgs);
         //Reward points if no override is defined
         CardInstance cardInstance = callerArgs.CallingCardInstance;
-        if (!cardInstance.CardData.OverridePointFunction)
-        {
-            cardInstance.CardData.RuntimeScore = cardInstance.GetCardStats().Points;
-        }
+
+        Debug.Log(cardInstance.CardData.RuntimeScore);
 
         //Only give points for planting a plant, when it is the first on its tile
         if (alreadyContainedPlant) return;
         if (callerArgs.playedTile == null) return;
         // if (cardInstance.CardData.RuntimeScore != 0 || cardInstance.CardData.OverridePointFunction)
-            callerArgs.gameManager.AddPointScore(cardInstance.CardData.RuntimeScore, callerArgs,
-                GameManager.SCORING_ORIGIN.LIFEFORM);
+            
     }
 
     public static void RewardPoints(CallerArgs callerArgs, int rewardedPoints)

@@ -290,7 +290,7 @@ public class SoundManager : MonoBehaviour
                 PlayOneShot(Sound.PlantedReanimate);
                 break;
             default:
-                throw new ArgumentOutOfRangeException();
+                break;
         }
     }
 

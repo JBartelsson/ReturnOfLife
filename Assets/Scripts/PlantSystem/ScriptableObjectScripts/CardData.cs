@@ -9,17 +9,26 @@ using UnityEngine.Serialization;
 [CreateAssetMenu(menuName = "ScriptableObjects/Card")]
 public class CardData : ScriptableObject, ICloneable
 {
-  
     private void Awake()
     {
-        runtimeScore = regularCardStats.Points;
+        runtimeScore = new Score(0);
         plantTypeID = cardDataIDCounter;
         cardDataIDCounter++;
     }
 
     public enum LifeformTypeEnum
     {
-        Antisocial = 1, Bindweed = 2, Lycoperdon = 3, Epiphyt = 4, Normalo = 5, Reanimate = 6, Epiphany = 7
+        Antisocial = 1,
+        Bindweed = 2,
+        Lycoperdon = 3,
+        Epiphyt = 4,
+        Normalo = 5,
+        Reanimate = 6,
+        Epiphany = 7,
+        Pairy = 8,
+        Triolyt = 9,
+        Socius = 10,
+        Motherbush = 11
     }
 
     [Serializable]
@@ -77,6 +86,7 @@ public class CardData : ScriptableObject, ICloneable
     {
         [ClassExtends(typeof(CardAccessCheckBase))]
         public ClassTypeReference scriptType = typeof(CardFunctionBase);
+
         public bool OverrideNeighboring = false;
 
         public ClassTypeReference ScriptType
@@ -110,6 +120,7 @@ public class CardData : ScriptableObject, ICloneable
             this.executionType = executionType;
         }
     }
+
     [Serializable]
     public class CardCanExecuteCheckCall : Executable
     {
@@ -159,8 +170,10 @@ public class CardData : ScriptableObject, ICloneable
 
     [Header("Card Stats")] [SerializeField]
     private Sprite plantSprite;
+
     [field: Header("Text Information")]
-    [field: SerializeField] public string CardName { get; private set; }
+    [field: SerializeField]
+    public string CardName { get; private set; }
 
     [SerializeField] private LifeformTypeEnum lifeformType;
 
@@ -174,23 +187,22 @@ public class CardData : ScriptableObject, ICloneable
     [SerializeField] private CardStats regularCardStats;
     [SerializeField] private CardStats upgradedCardStats;
     [field: SerializeField] public CardElement Element { get; private set; }
-    [FormerlySerializedAs("EffectType")] [SerializeField] private CardEffectType effectType;
 
-    
+    [FormerlySerializedAs("EffectType")] [SerializeField]
+    private CardEffectType effectType;
 
-    [FormerlySerializedAs("WisdomType")]
-    [ConditionalHide("effectType", CardEffectType.Wisdom)]
-    [SerializeField] private WisdomType wisdomType;
+
+    [FormerlySerializedAs("WisdomType")] [ConditionalHide("effectType", CardEffectType.Wisdom)] [SerializeField]
+    private WisdomType wisdomType;
 
     [field: SerializeField] public CardRarity Rarity { get; private set; }
-    [Header("UI Stuff")]
-    [SerializeField] private string secondMoveText;
+    [Header("UI Stuff")] [SerializeField] private string secondMoveText;
 
     public string SecondMoveText => secondMoveText;
 
     private Score runtimeScore = new Score(0);
-    
-    
+
+
     private static int cardDataIDCounter = 0;
     private int plantTypeID;
 
@@ -200,22 +212,30 @@ public class CardData : ScriptableObject, ICloneable
     [Serializable]
     public class CardStats
     {
-        public Score Points;
-        [FormerlySerializedAs("effectPattern")] public PatternSO EffectPattern;
-        [TextArea]
-        public string CardText;
+        [FormerlySerializedAs("Points")] public Score Score;
+
+        [FormerlySerializedAs("effectPattern")]
+        public PatternSO EffectPattern;
+
+        [TextArea] public string CardText;
         public int PlayCost;
         public int SecondMoveCallAmount = 1;
     }
 
 
-    [Header("Card Functions")] 
-    [SerializeField] private bool overridePointFunction = false;
+    [Header("Card Functions")] [SerializeField]
+    private bool overridePointFunction = false;
 
 
-    [FormerlySerializedAs("plantFunction")] [SerializeField] private CardFunctionCall cardFunction;
-    [FormerlySerializedAs("plantEditor")] [SerializeField] private CardEditorCall cardEditor = null;
-    [FormerlySerializedAs("plantAccessCheck")] [SerializeField] private CardAccessCheckCall cardAccessCheck = null;
+    [FormerlySerializedAs("plantFunction")] [SerializeField]
+    private CardFunctionCall cardFunction;
+
+    [FormerlySerializedAs("plantEditor")] [SerializeField]
+    private CardEditorCall cardEditor = null;
+
+    [FormerlySerializedAs("plantAccessCheck")] [SerializeField]
+    private CardAccessCheckCall cardAccessCheck = null;
+
     [SerializeField] private CardCanExecuteCheckCall cardCanExecuteCheck = null;
 
 
@@ -223,6 +243,7 @@ public class CardData : ScriptableObject, ICloneable
     private CardPassiveCall cardPassiveCall = null;
 
     public CardCanExecuteCheckCall CardCanExecuteCheck => cardCanExecuteCheck;
+
     public bool OverridePointFunction
     {
         get => overridePointFunction;
@@ -234,6 +255,7 @@ public class CardData : ScriptableObject, ICloneable
         get => runtimeScore;
         set => runtimeScore = value;
     }
+
     public CardFunctionCall CardFunction
     {
         get => cardFunction;
@@ -263,7 +285,7 @@ public class CardData : ScriptableObject, ICloneable
         get => plantSprite;
         set => plantSprite = value;
     }
-    
+
     public CardStats RegularCardStats
     {
         get => regularCardStats;
@@ -275,10 +297,11 @@ public class CardData : ScriptableObject, ICloneable
         get => upgradedCardStats;
         set => upgradedCardStats = value;
     }
-    
+
     public CardEffectType EffectType => effectType;
 
     public WisdomType WisdomType => wisdomType;
+
     public object Clone()
     {
         return this.Copy();

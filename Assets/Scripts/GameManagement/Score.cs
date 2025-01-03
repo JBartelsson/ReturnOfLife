@@ -45,5 +45,8 @@ public struct Score
     public static Score operator +(Score a, Score b)
         => new Score(a.ecoPoints + b.ecoPoints, (a.mult + b.mult) * b.multMultiplier);
 
-    
+    public override string ToString()
+    {
+        return $"Eco: {ecoPoints}, Mult: {mult}, MultMult: {multMultiplier}";
+    }
 }

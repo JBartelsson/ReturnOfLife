@@ -13,7 +13,19 @@ public class PointsRewardText : MonoBehaviour
 
     private Vector3 originalPosition;
     private Sequence animationSequence;
-    private List<EventManager.GameEvents.LevelEvents.ScoreChangedArgs> scoreQueue = new();
+    private List<ScoreAnimationEntry> scoreQueue = new();
+
+    public class ScoreAnimationEntry
+    {
+        public enum ScoreTypeEnum
+        {
+            EcoPoints, AdditiveMultiplication, MultMultiplication
+        }
+
+        public ScoreTypeEnum ScoreType;
+        public float number;
+        
+    }
     private void OnEnable()
     {
         EventManager.Game.Level.OnScoreChanged += OnScoreChanged;
@@ -35,12 +47,35 @@ public class PointsRewardText : MonoBehaviour
     {
         if (args.scoreChangedCallerArgs == null) return;
         if (args.scoreChangedCallerArgs.playedTile != gridVisualization.OwnGridTile) return;
-        scoreQueue.Add(args);
+        if (args.ScoreAdded.EcoPoints != 0)
+        {
+            scoreQueue.Add(new ScoreAnimationEntry()
+            {
+                number = args.ScoreAdded.EcoPoints,
+                ScoreType =  ScoreAnimationEntry.ScoreTypeEnum.EcoPoints
+            });
+        }
+        if (args.ScoreAdded.Mult != 0)
+        {
+            scoreQueue.Add(new ScoreAnimationEntry()
+            {
+                number = args.ScoreAdded.Mult,
+                ScoreType =  ScoreAnimationEntry.ScoreTypeEnum.AdditiveMultiplication
+            });
+        }
+        if (args.ScoreAdded.MultMultiplier != 1f)
+        {
+            scoreQueue.Add(new ScoreAnimationEntry()
+            {
+                number = args.ScoreAdded.MultMultiplier,
+                ScoreType =  ScoreAnimationEntry.ScoreTypeEnum.MultMultiplication
+            });
+        }
     }
 
-    public void AnimateText(EventManager.GameEvents.LevelEvents.ScoreChangedArgs args)
+    public void AnimateText(ScoreAnimationEntry scoreAnimationEntry)
     {
-        SetUpText(args);
+        SetUpText(scoreAnimationEntry);
         // animationSequence.Append(scoreText.DOFade(1f, Constants.UI_POINT_SPEED));
         animationSequence = DOTween.Sequence();
         animationSequence.Append(scoreText.DOFade(1f, Constants.UI_POINT_DISAPPEAR_SPEED));
@@ -63,30 +98,40 @@ public class PointsRewardText : MonoBehaviour
         }
     }
 
-    public void SetUpText(EventManager.GameEvents.LevelEvents.ScoreChangedArgs args)
+    public void SetUpText(ScoreAnimationEntry scoreAnimationEntry)
     {
         scoreText.gameObject.SetActive(true);
         scoreText.transform.position = originalPosition;
         string preFix = "";
         scoreText.color = Constants.NEUTRAL_GRAY_COLOR;
-        if (args.ScoreAdded.EcoPoints > 0)
+        if (scoreAnimationEntry.number > 0)
         {
             preFix = "+";
-            scoreText.color = Constants.POSITIVE_GREEN_COLOR;
         }
-        else if (args.ScoreAdded.EcoPoints < 0)
+        else if (scoreAnimationEntry.number < 0)
         {
-            preFix = "";
-            scoreText.color = Constants.NEGATIVE_RED_COLOR;
+            preFix = "-";
         }
 
-        if (args.ScoringOrigin == GameManager.SCORING_ORIGIN.MULTIPLICATION)
+        switch (scoreAnimationEntry.ScoreType)
         {
-            scoreText.color = Constants.MULTIPLICATION_COLOR;
+            case ScoreAnimationEntry.ScoreTypeEnum.EcoPoints:
+                scoreText.color = Constants.ECO_POINTS_COLOR;
+                scoreAnimationEntry.number = Mathf.FloorToInt(scoreAnimationEntry.number);
+                break;
+            case ScoreAnimationEntry.ScoreTypeEnum.AdditiveMultiplication:
+                scoreText.color = Constants.MULTIPLICATION_COLOR;
+                break;
+            case ScoreAnimationEntry.ScoreTypeEnum.MultMultiplication:
+                scoreText.color = Constants.MULTIPLICATION_COLOR;
+                preFix = "x";
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
         }
 
         scoreText.DOFade(0f, 0f);
-        scoreText.text = preFix + args.ScoreAdded.EcoPoints.ToString() + " ";
+        scoreText.text = preFix + scoreAnimationEntry.number.ToString() + " ";
     }
 
 }

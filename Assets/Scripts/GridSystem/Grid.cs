@@ -279,13 +279,9 @@ public class Grid
         List<GridTile> visitedTiles = new List<GridTile>();
         ForEveryCluster(ref visitedTiles, gridTile, executeFunc, (nextTile, currentTile) =>
         {
-            Debug.Log($"Comparison is schnonk");
             if (nextTile.CardInstance == null) return false;
-            Debug.Log($"tile 1 not null");
             if (currentTile.CardInstance == null) return false;
-            Debug.Log($"tile 2 not null");
             bool comparison = nextTile.CardInstance.CardData.LifeformType == lifeformTypeEnum;
-            Debug.Log($"Comparison is {comparison}");
             return comparison;
         } );
     }

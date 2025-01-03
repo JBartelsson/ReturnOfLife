@@ -180,7 +180,7 @@ public class CardInstance : ICloneable
 
     public bool PointsChangeOnUpgrade()
     {
-        return cardData.RegularCardStats.Points.EcoPoints != cardData.UpgradedCardStats.Points.EcoPoints;
+        return cardData.RegularCardStats.Score.EcoPoints != cardData.UpgradedCardStats.Score.EcoPoints;
     }
 
     public void Execute(CallerArgs callerArgs)

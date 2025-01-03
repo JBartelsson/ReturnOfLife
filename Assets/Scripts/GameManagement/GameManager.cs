@@ -595,7 +595,6 @@ public class GameManager : MonoBehaviour
 
     public bool AddMana(int amount)
     {
-        Debug.Log($"ADD MANA CALLED FOR {amount}");
         return SetMana(currentMana + amount);
     }
 
